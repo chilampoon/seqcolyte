@@ -1,0 +1,32 @@
+# Raw + simulated sequencing data (never committed)
+data/
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+
+# Barcode whitelists (large, license-restricted mirrors)
+whitelists/
+
+# Generated ground-truth labels (reproducible from config + control via `make sim`)
+sim/labels/*.tsv
+
+# Build/run logs
+*.log
+
+# Secrets
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
