@@ -70,6 +70,26 @@ is a drift guard. See [`protocols/tenx_3p_v3.provenance.md`](protocols/tenx_3p_v
 Target chemistry: **10x Chromium 3' Gene Expression v3/v3.1** — R1 = 16 bp cell barcode + 12 bp UMI
 (28 bp); R2 = cDNA; i7 8 bp single index; whitelist `3M-february-2018`.
 
+### LLM extraction from a protocol PDF (Day-2 preview)
+
+The deterministic HTML parser above handles one curated document. To generalize to an arbitrary
+**protocol PDF**, `extract/doc_extract.py` runs **Claude Code headless** (`claude -p --json-schema`,
+model `claude-opus-4-8`) over the pypdf-extracted text and returns structured oligos + final library
+in the same schema. It uses the authenticated `claude` CLI — no API key needed.
+
+```bash
+python -m extract from-doc \
+  --doc /path/to/10xChromium3v3.pdf --spec tenx_3p_v3 --eval
+```
+
+The LLM output is never trusted blindly: the verified constants are a **soft cross-check**, and a
+checked-in **groundtruth** (`groundtruth_oligos.json` / `groundtruth_final_lib_struct.json` next to
+the PDF) is a real **eval**. On the 10x 3' v3 protocol PDF it currently scores **oligo-sequence
+recall 8/11 (0.73)**, an **exact match** on the assembled final-library structure, and **8/11**
+agreement with the independent verified constants. Output → `spec/tenx_3p_v3.pdf.json` (LLM-sourced,
+non-deterministic — distinct from the byte-reproducible `spec/tenx_3p_v3.json`). This is a lead-in to
+the Day-2 agent loop; it is not part of the deterministic Day-1 pipeline.
+
 ### The failure simulator (`sim/`)
 
 Config-driven and reproducible from one YAML
