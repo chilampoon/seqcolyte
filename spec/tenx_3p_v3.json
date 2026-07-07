@@ -624,6 +624,48 @@
       }
     ]
   },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "mRNA capture using Beads-oligo-dT in the droplets, and reverse transcription using MMLV",
+      "note": null
+    },
+    {
+      "step": 2,
+      "title": "The terminal tranferase acitivity of MMLV adds extra Cs",
+      "note": null
+    },
+    {
+      "step": 3,
+      "title": "Adding TSO for second strand synthesis",
+      "note": null
+    },
+    {
+      "step": 4,
+      "title": "Adding cDNA Forward and Reverse primers to amplify full length cDNA",
+      "note": null
+    },
+    {
+      "step": 5,
+      "title": "Use Fragmentase to fragment cDNA and perform A-tailing",
+      "note": null
+    },
+    {
+      "step": 6,
+      "title": "Add double stranded Illumina Truseq adapter (with a T overhang) for ligation",
+      "note": null
+    },
+    {
+      "step": 7,
+      "title": "Add Library PCR Primers 1 & 2 to amplify library",
+      "note": null
+    },
+    {
+      "step": 8,
+      "title": "Final library structure",
+      "note": null
+    }
+  ],
   "whitelists": {
     "cell_barcode_3M_feb2018": {
       "name": "3M-february-2018",

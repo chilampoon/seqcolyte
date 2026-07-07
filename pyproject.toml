@@ -23,7 +23,7 @@ dependencies = [
 dev = ["pytest>=8.0"]
 
 [tool.setuptools]
-packages = ["seqcolyte", "seqcolyte.spec", "seqcolyte.io", "extract", "sim", "sim.modes"]
+packages = ["seqcolyte", "seqcolyte.spec", "seqcolyte.io", "extract", "sim", "sim.modes", "qc"]
 
 [tool.setuptools.package-data]
 "seqcolyte.spec" = ["schema.json"]

@@ -44,6 +44,7 @@ class ParsedProtocol:
     oligo_kinds: dict[str, str] = field(default_factory=dict)
     final_library: dict[str, str] = field(default_factory=dict)
     sequencing: dict[str, int] = field(default_factory=dict)
+    library_generation: list = field(default_factory=list)
 
 
 def _clean_seq(fragment: str) -> str:
@@ -135,6 +136,25 @@ def _parse_final_library(soup) -> dict[str, str]:
     raise ValueError("V3/V3.1/V4 final library section not found")
 
 
+def _parse_library_generation(soup) -> list[dict]:
+    """The ordered 'Step-by-step library generation' section: one entry per numbered <h3> step."""
+    h2 = next((h for h in soup.find_all("h2") if "step-by-step" in h.get_text().lower()), None)
+    if h2 is None:
+        return []
+    steps: list[dict] = []
+    for el in h2.find_all_next():
+        if el.name == "h2":
+            break  # reached the next section (Library sequencing)
+        if el.name == "h3":
+            title = re.sub(r"\s+", " ", el.get_text()).strip().rstrip(":")
+            m = re.match(r"\((\d+)\)\s*(.*)", title)
+            if m:
+                steps.append({"step": int(m.group(1)), "title": m.group(2).strip(), "note": None})
+            else:
+                steps.append({"step": len(steps) + 1, "title": title, "note": None})
+    return steps
+
+
 def _parse_sequencing(soup) -> dict[str, int]:
     text = soup.get_text()
     out: dict[str, int] = {}
@@ -161,4 +181,5 @@ def parse_protocol(html_path: str | Path) -> ParsedProtocol:
         oligo_kinds=kinds,
         final_library=_parse_final_library(soup),
         sequencing=_parse_sequencing(soup),
+        library_generation=_parse_library_generation(soup),
     )

@@ -317,6 +317,7 @@ def build_spec(html_path: str | Path = DEFAULT_HTML) -> dict:
         "oligos": _build_oligos(parsed, cb_len, umi_len, idx_len),
         "final_library": _build_final_library(parsed, cb_len, umi_len, idx_len),
         "read_structure": _build_read_structure(parsed, cb_len, umi_len, idx_len, r2_cycles),
+        "library_generation": parsed.library_generation,
         "whitelists": {
             "cell_barcode_3M_feb2018": {
                 "name": "3M-february-2018",

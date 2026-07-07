@@ -17,29 +17,31 @@ planned second modality.
    1. PROTOCOL                2. EXPECTED STRUCTURE            3. QC THE READS
   ┌──────────────┐          ┌───────────────────────┐       ┌──────────────────────┐
   │  10x PDF     │  ──────▶ │  oligos               │ ────▶ │  decide which checks  │
-  │  (or the     │          │  library sequencing   │       │  to run, run them,    │
-  │   scg HTML)  │          │  (how R1/R2/I1 read)  │       │  and rank the failures│
+  │  (or the     │          │  library generation   │       │  to run, run them,    │
+  │   scg HTML)  │          │  library sequencing   │       │  rank + diagnose the  │
+  │              │          │  (how R1/R2/I1 read)  │       │  failures             │
   └──────────────┘          └───────────────────────┘       └──────────────────────┘
-        ✅                          ✅  (mostly)                       🚧  next
+        ✅                          ✅                                ✅
                                                                         ▲
                                     raw FASTQ ─────────────────────────┘
                                 (real control + simulated failures)
 ```
 
-**What's built vs. what's next:**
+**What's built:**
 
 | Step | Piece | Status |
 |------|-------|:------:|
 | 1 | Ingest a protocol PDF | ✅ |
 | 2 | Extract **oligos** | ✅ |
+| 2 | Extract **step-by-step library generation** (the 8-step build) | ✅ |
 | 2 | Extract **library sequencing** (R1 = barcode+UMI, R2 = cDNA, I1 = index) | ✅ |
-| 2 | Extract **step-by-step library generation** (the 8-step build) | 🚧 not yet |
 | — | **Simulate raw data** (clean control + labeled adapter-dimer failures) | ✅ |
-| 3 | **Decide & run QC checks**, rank failures with an evidence chain | 🚧 not started |
+| 3 | **Decide & run QC checks**, rank + diagnose failures | ✅ |
 
-So steps 1–2 give you a machine-readable "expected structure" spec, and the simulator gives you
-labeled test data. Step 3 — the agent that reads the spec, looks at the FASTQ, and decides what to
-check — is the next build.
+All three steps run end to end. Because the simulator emits ground-truth labels, the QC even
+**scores itself** — on the adapter-dimer test set it catches every injected failure
+(recall 1.0, precision ~0.91). Oxford Nanopore is the next modality; only new spec fields + a
+failure-mode plugin are needed, not an engine rewrite.
 
 ---
 
@@ -62,15 +64,26 @@ python -m extract from-doc --doc your_protocol.pdf --spec tenx_3p_v3 --eval
                                                      # -> spec/tenx_3p_v3.pdf.json
 ```
 
-**Make the test data and run the whole chain:**
+**Make the test data, then QC it (the whole chain):**
 
 ```bash
-make pipeline         # download control FASTQ -> subsample -> sanity-check -> simulate failures
-make summary          # print the one-page summary
+make pipeline         # control FASTQ -> subsample -> sanity -> simulate failures -> QC -> summary
 ```
 
 That downloads a real 10x dataset (~5.5 GB, once), subsamples it to ~40k read pairs, verifies it's
-genuinely clean, then injects adapter-dimer failures with per-read ground-truth labels.
+genuinely clean, injects adapter-dimer failures with per-read ground-truth labels, and QCs the
+result.
+
+**Run QC on any FASTQ pair yourself:**
+
+```bash
+python -m qc run \
+  --spec spec/tenx_3p_v3.json \
+  --r1 R1.fastq.gz --r2 R2.fastq.gz \
+  --whitelist whitelists/3M-february-2018.txt.gz \
+  --labels labels.tsv        # optional — enables the self-scoring eval
+                             # add --no-llm for a fast, offline, deterministic report
+```
 
 ---
 
@@ -97,17 +110,26 @@ demultiplexes) into either a **read-through** (`TSO + short insert + poly(A) + �
 labels TSV (`clean` / `readthrough` / `pure_dimer` per read), and a run manifest. Re-running gives
 byte-identical output.
 
+**The QC — `qc/` (Step 3).** Reads the spec + a FASTQ pair, runs a **deterministic check toolbox**
+whose expectations come from the spec (R1 length, whitelist hit-rate, TSO-at-R2-start, adapter
+read-through, poly-G tail), then Claude **ranks the findings and writes a plain-language diagnosis**
+with an evidence chain back to the spec — the "hybrid": reproducible checks, an agent deciding what
+matters. Every finding says what it means and links to the spec fact it violates. With `--labels`
+it scores its own read-level detection against the ground truth. `--no-llm` gives a fast,
+fully-deterministic report (the checks and eval never need the model).
+
 ---
 
 ## Project layout
 
 ```
-extract/      protocol -> spec.  HTML parser (deterministic) + PDF/LLM extractor
+extract/      Steps 1-2: protocol -> spec.  HTML parser (deterministic) + PDF/LLM extractor
 spec/         tenx_3p_v3.json — the expected-structure spec (committed)
 sim/          failure simulator, data download, sanity checks, ground-truth labels
+qc/           Step 3: checks + LLM ranking/diagnosis + label-based self-eval
 seqcolyte/    shared core: DNA utils, spec loader, FASTQ I/O
 protocols/    the source documents + provenance notes
-tests/        39 offline unit tests
+tests/        47 offline unit tests
 ```
 
 ---

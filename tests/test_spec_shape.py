@@ -39,3 +39,10 @@ def test_segment_slices():
     spec = load_spec(SPEC_PATH)
     assert spec.segment_slice("R1", "cell_barcode") == slice(0, 16)
     assert spec.segment_slice("R1", "umi") == slice(16, 28)
+
+
+def test_library_generation_steps():
+    spec = load_spec(SPEC_PATH)
+    steps = spec.data["library_generation"]
+    assert [s["step"] for s in steps] == list(range(1, 9))  # 8 ordered steps
+    assert "Final library structure" in steps[-1]["title"]

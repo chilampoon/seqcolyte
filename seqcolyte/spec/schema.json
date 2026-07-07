@@ -46,6 +46,18 @@
       "required": ["reads"],
       "properties": { "reads": { "type": "array", "items": { "$ref": "#/$defs/read" } } }
     },
+    "library_generation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step", "title"],
+        "properties": {
+          "step": { "type": "integer" },
+          "title": { "type": "string" },
+          "note": { "type": ["string", "null"] }
+        }
+      }
+    },
     "whitelists": { "type": "object", "additionalProperties": { "$ref": "#/$defs/whitelist" } },
     "build": {
       "type": "object",

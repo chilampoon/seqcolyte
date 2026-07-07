@@ -81,6 +81,19 @@ EXTRACTION_SCHEMA: dict = {
                 "annotation_lines": {"type": "array", "items": {"type": "string"}},
             },
         },
+        "library_generation": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["step", "title"],
+                "properties": {
+                    "step": {"type": "integer"},
+                    "title": {"type": "string"},
+                    "note": {"type": "string"},
+                },
+            },
+        },
     },
 }
 
@@ -98,6 +111,11 @@ the required JSON schema:
    Index sequencing primer, Illumina P5 adapter, Illumina P7 adapter.
 2. `final_library`: the FINAL library structure (often labelled "... PCR Product" or
    "Final library"): its full 5'->3' top strand with placeholder tokens, plus the raw strand text.
+3. `library_generation`: the ordered step-by-step library-build workflow, if the document
+   describes it (e.g. mRNA capture / reverse transcription -> template switching -> cDNA
+   amplification -> fragmentation + A-tailing -> adapter ligation -> sample-index PCR -> final
+   library). One entry per step: `{step: <1-based int>, title: <short step name>, note: <optional>}`.
+   Omit or leave empty if the document does not describe the build steps.
 
 CONVENTIONS (follow EXACTLY — these determine correctness):
 - All sequences 5'->3', uppercase ACGTN only. Transcribe the exact characters from the document.
@@ -271,6 +289,7 @@ def assemble_spec(extraction: dict, *, spec_id: str, assay: str, chemistry_versi
                           "method": "claude_llm_extraction"}],
         },
         "read_structure": read_structure,
+        "library_generation": extraction.get("library_generation", []),
         "whitelists": whitelist_block,
         "build": {"builder_version": "llm-1.0", "deterministic": False,
                   "source_html_sha256": None, "extraction_method": "claude_llm", "model": model},
