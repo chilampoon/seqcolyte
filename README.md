@@ -1,6 +1,6 @@
 # Seqcolyte
 
-**A protocol-aware QC agent for single-cell sequencing.**
+seqcolyte = sequencing acolyte
 
 Give it a library-prep **protocol** and your **raw FASTQ**. It works out what the reads should look
 like from the protocol, checks whether they do, and tells you — in plain terms — what went wrong.
@@ -14,7 +14,7 @@ Targets **10x Chromium 3′ Gene Expression (v3/v3.1)** on Illumina today; Nanop
 ```
   1. PROTOCOL  ──▶  2. EXPECTED STRUCTURE  ──▶  3. QC THE READS
    10x PDF          oligos · library build      run spec-derived checks,
-   (or HTML)        · read structure            rank + diagnose failures
+                    · read structure            rank + diagnose failures
                           spec ▲                       ▲ raw FASTQ
                                                 (control + simulated failures)
 ```
