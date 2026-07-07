@@ -1,0 +1,26 @@
+# Reproducible adapter-dimer simulation for 10x 3' v3/v3.1.
+# Everything is regenerable from this one file: `python -m sim run --config sim/configs/adapter_dimer_f30.yaml`.
+name: adapter_dimer_f30
+spec: spec/tenx_3p_v3.json
+
+input:
+  r1: data/raw/pbmc_1k_v3_sub_R1.fastq.gz   # clean control (from `make data`)
+  r2: data/raw/pbmc_1k_v3_sub_R2.fastq.gz
+
+output:
+  r1: data/sim/adapter_dimer_f30/R1.fastq.gz   # byte-identical copy of the control R1
+  r2: data/sim/adapter_dimer_f30/R2.fastq.gz   # rewritten R2 (failures injected)
+  labels: sim/labels/adapter_dimer_f30.tsv     # per-read ground truth (checked in)
+  manifest: data/sim/adapter_dimer_f30/run.json
+
+seed: 1729
+failure_mode: adapter_dimer
+
+params:
+  affected_fraction: 0.30        # fraction of pairs made into failures
+  dimer_fraction: 0.33           # of the affected: pure dimers (rest are read-through)
+  readthrough_insert_len: { min: 0, max: 30 }
+  polyA_len: { min: 5, max: 20 }
+  quality:
+    phred: 37                    # synthesized bases get a spuriously-high quality
+    overlay_insert: true         # keep the original R2 qualities over the residual insert

@@ -1,0 +1,52 @@
+# Provenance — `spec/tenx_3p_v3.json`
+
+The spec is built **deterministically and offline** by parsing the checked-in source document and
+cross-checking every sequence against independently-verified authoritative values.
+
+## Source document (parsed)
+
+- **`protocols/10xChromium3.html`** — scg_lib_structs "10x Chromium Single Cell 3' Gene Expression"
+  (Teichlab). Retrieved 2026-07-07 from
+  <https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html>.
+  Three sections are used: *Adapter and primer sequences* (oligos, v2 vs v3/v3.1/v4 variants),
+  *Step-by-step library generation* (the final v3/v3.1/v4 library structure), and *Library sequencing*
+  (per-read primer + cycle counts). The SHA-256 of the exact bytes parsed is recorded in the spec at
+  `build.source_html_sha256`.
+
+`extract/html_parser.py` selects the **v3+** variant wherever the page shows a v2-vs-v3+ alternative
+(12 bp UMI, v3+ cDNA reverse primer, v3+ TruSeq adapter). `extract/builder.py` then **asserts** every
+parsed sequence equals the verified value below and recomputes the derived reverse-complements — a
+mismatch fails the build rather than emitting a wrong spec.
+
+## Cross-check oracle (`extract/verified_constants.py`)
+
+Every constant was confirmed against ≥ 2 independent authoritative sources via an adversarial research
+pass (16/16 confirmed, 0 refuted):
+
+- Illumina Adapter Sequences (doc #1000000002694) — TruSeq Read 1/Read 2 primers, P5/P7.
+- Teichlab scg_lib_structs (the source above) — full oligo set + final library structure.
+- 10x Cell Ranger GEX algorithm — TSO, R2 orientation (TSO at 5′, poly-A at 3′), read-through behavior.
+
+## Provenance tags (honest `document` vs `reagent`)
+
+- **`reagent`** — commercial-kit oligo sequences: `Beads-oligo-dT`, `TSO`, `cDNA Reverse primer`.
+- **`document`** — Illumina/protocol-standard sequences: TruSeq Read 1/Read 2 primers, TruSeq adapter,
+  P5, P7, Library PCR primers, Sample index sequencing primer, and the derived read-through adapters
+  (`revcomp` of a document sequence; each carries a `derivation` field).
+
+Each oligo's `evidence[]` records the source document + locator and the `verified_against` URLs.
+
+## Whitelist
+
+`3M-february-2018.txt.gz` (v3/v3.1 cell-barcode inclusion list, 6,794,880 × 16 bp) ships only inside
+Cell Ranger; **no official 10x checksum exists**. `sim/get_data.py` downloads a community mirror
+(<https://raw.githubusercontent.com/f0t1h/3M-february-2018>), asserts the byte size (18,350,152),
+computes an md5, and records it in `whitelists/3M-february-2018.provenance.json`. The committed spec
+keeps `md5: null` with `md5_provenance: "computed_local_no_official_checksum"` so the spec stays
+byte-reproducible and offline; the computed md5 lives in the sidecar (not baked into the artifact).
+
+## Control dataset
+
+10x Genomics "1k PBMCs from a Healthy Donor (v3)" — `pbmc_1k_v3` FASTQs
+(<https://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_1k_v3/pbmc_1k_v3_fastqs.tar>, 5,549,312,000
+bytes), subsampled to ~40k read pairs. This is v3 single-index (matches the spec + whitelist).

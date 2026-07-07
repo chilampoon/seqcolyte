@@ -1,0 +1,546 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "tenx_3p_v3",
+  "assay": "10x Chromium Single Cell 3' Gene Expression",
+  "chemistry_version": "v3/v3.1",
+  "platform": "illumina",
+  "platform_params": {
+    "two_color_chemistry": true,
+    "dark_base": "G",
+    "polyA_base": "A",
+    "index_scheme": "single",
+    "i7_length": 8,
+    "i5_length": null,
+    "read_lengths": {
+      "R1": 28,
+      "R2": 90,
+      "I1": 8
+    }
+  },
+  "source_docs": [
+    {
+      "doc_id": "protocol_pdf",
+      "title": "10x Chromium Single Cell 3' Gene Expression \u2014 protocol PDF",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_3_gene_expression_v3/10xChromium3v3.pdf",
+      "retrieved_date": "2026-07-07"
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_beads_oligo_dt",
+      "name": "Beads-oligo-dT (Gel Bead poly-dT primer)",
+      "aliases": [],
+      "role": "Gel Bead primer: barcoded poly(dT) RT primer that captures poly-adenylated mRNA; carries TruSeq Read 1, 16 nt 10x Barcode, 12 nt UMI",
+      "kind": "assembled",
+      "sequence": "CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Illumina TruSeq Read 1 primer site",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "read 1 sequencing primer"
+        },
+        {
+          "name": "10x Barcode",
+          "sequence": "[CELL_BARCODE:16]",
+          "role": "16 nt cell barcode"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:12]",
+          "role": "12 nt unique molecular identifier"
+        },
+        {
+          "name": "Poly(dT)VN",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+          "role": "30 nt poly(dT) with VN anchor for mRNA capture/priming"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Protocol Step 1.5 Gel Bead Primers. Oligo listing shows 30 T's; schematics label it Poly(dT)VN, so the VN anchor is appended per convention."
+    },
+    {
+      "oligo_id": "oligo_gel_bead_capture_sequence_1_primer",
+      "name": "Gel Bead Capture Sequence 1 primer (Nextera Read 1N)",
+      "aliases": [],
+      "role": "Second Gel Bead primer for Feature Barcoding capture; NOT used for 3' Gene Expression",
+      "kind": "assembled",
+      "sequence": "GTCAGATGTGTATAAGAGACAG[CELL_BARCODE:16][UMI:12]TTGCTAGGACCGGCCTTAAAGC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera Read 1 (Read 1N)",
+          "sequence": "GTCAGATGTGTATAAGAGACAG",
+          "role": "Nextera read 1N primer site"
+        },
+        {
+          "name": "10x Barcode",
+          "sequence": "[CELL_BARCODE:16]",
+          "role": "16 nt cell barcode"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:12]",
+          "role": "12 nt unique molecular identifier"
+        },
+        {
+          "name": "Capture Sequence 1",
+          "sequence": "TTGCTAGGACCGGCCTTAAAGC",
+          "role": "Feature Barcoding capture sequence"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Protocol Step 1.5 second Gel Bead Primer. Primer not used for 3' Gene Expression."
+    },
+    {
+      "oligo_id": "oligo_template_switching_oligo_tso",
+      "name": "Template Switch Oligo (TSO)",
+      "aliases": [],
+      "role": "Template switching oligo primed during reverse transcription; adds constant sequence to 3' end of first-strand cDNA",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "PN-3000228. Written 5'-AAGCAGTGGTATCAACGCAGAGTACATrGrGrG-3'; terminal riboguanosines rGrGrG transcribed as GGG (ends ...ACATGGG)."
+    },
+    {
+      "oligo_id": "oligo_cdna_forward_primer",
+      "name": "cDNA Forward Primer",
+      "aliases": [],
+      "role": "Forward primer for bulk cDNA amplification (anneals to TruSeq Read 1)",
+      "kind": "single",
+      "sequence": "CTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "cDNA Primers PN-2000089, Protocol Step 2.2."
+    },
+    {
+      "oligo_id": "oligo_cdna_reverse_primer",
+      "name": "cDNA Reverse Primer",
+      "aliases": [],
+      "role": "Reverse primer for bulk cDNA amplification (anneals to TSO handle)",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "cDNA Primers PN-2000089, Protocol Step 2.2."
+    },
+    {
+      "oligo_id": "oligo_illumina_truseq_read_1_primer",
+      "name": "Illumina TruSeq Read 1 primer",
+      "aliases": [],
+      "role": "Read 1 sequencing primer site (sequences 16 bp 10x Barcode + 12 bp UMI)",
+      "kind": "single",
+      "sequence": "CTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq Read 1 site; added to molecules during GEM incubation."
+    },
+    {
+      "oligo_id": "oligo_truseq_adapter_double_stranded",
+      "name": "TruSeq Adaptor Oligos (double-stranded)",
+      "aliases": [],
+      "role": "Double-stranded TruSeq Read 2 adaptor ligated during Adaptor Ligation",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Top strand (5'->3')",
+          "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCA",
+          "role": "TruSeq Read 2 adaptor top strand"
+        },
+        {
+          "name": "Bottom strand (written 3'-TCTAGCCTTCTCG-5')",
+          "sequence": "GCTCTTCCGATCT",
+          "role": "TruSeq Read 2 adaptor bottom/complementary strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Adaptor Oligos PN-2000094, Protocol Step 3.3. Document shows 5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCA-3' over 3'-TCTAGCCTTCTCG-5'; bottom strand given here 5'->3' as GCTCTTCCGATCT."
+    },
+    {
+      "oligo_id": "oligo_library_pcr_primer_1_p5",
+      "name": "Sample Index PCR Primer 1 (P5 / Library PCR Primer 1)",
+      "aliases": [],
+      "role": "Library amplification forward primer adding the P5 sequence during Sample Index PCR",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "SI Primer PN-2000095, Protocol Step 3.5. Document: 5'-AATGATACGGCGACCACCGAGATCT-ACACTCTTTCCCTACACGACGCTC-3'."
+    },
+    {
+      "oligo_id": "oligo_library_pcr_primer_2_p7",
+      "name": "Chromium i7 Sample Index PCR Primer 2 (P7 / Library PCR Primer 2)",
+      "aliases": [],
+      "role": "Library amplification reverse primer adding the P7 sequence and the 8 nt i7 sample index during Sample Index PCR",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 adapter"
+        },
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8 nt i7 sample index"
+        },
+        {
+          "name": "TruSeq Read 2 handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGT",
+          "role": "read 2 primer site handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Chromium i7 Sample Index PN-220103, Protocol Step 3.5. Document: 5'-CAAGCAGAAGACGGCATACGAGAT-NNNNNNNN GTGACTGGAGTTCAGACGTGT-3'."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "P5 flow-cell adapter used in Illumina bridge amplification",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standalone P5 sequence."
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "P7 flow-cell adapter used in Illumina bridge amplification",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_pdf",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "Oligonucleotide sequences / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standalone P7 sequence; appears in final library as its reverse complement ATCTCGTATGCCGTCTTCTGCTTG at the P7 end."
+    },
+    {
+      "oligo_id": "oligo_r1_readinto_adapter",
+      "name": "r1 readinto adapter",
+      "aliases": [],
+      "role": "read_through_adapter",
+      "kind": "single",
+      "sequence": "GCTTTAAGGCCGGTCCTAGCAA]21:IMU[]61:EDOGRTB_LLEG[CTGTCTCTTATACACATCTGAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": "revcomp(GTCAGATGTGTATAAGAGACAG[CELL_BARCODE:16][UMI:12]TTGCTAGGACCGGCCTTAAAGC)",
+      "sequence_source": "derived_revcomp",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "derived",
+          "method": "revcomp"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_p5_rc",
+      "name": "p5 rc",
+      "aliases": [],
+      "role": "read_through_adapter",
+      "kind": "single",
+      "sequence": "GTGTAGATCTCGGTGGTCGCCGTATCATT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": "revcomp(AATGATACGGCGACCACCGAGATCTACAC)",
+      "sequence_source": "derived_revcomp",
+      "evidence": [
+        {
+          "source_doc": "protocol_pdf",
+          "locator": "derived",
+          "method": "revcomp"
+        }
+      ],
+      "notes": null
+    }
+  ],
+  "final_library": {
+    "source_label": "Sample Index PCR Product \u2014 Chromium Single Cell 3' Gene Expression Library (Protocol Step 3.5)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNNNNNNNNNNNNNNNNNNNTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "5'-AATGATACGGCGACCACCGAGATCT-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-NNNNNNNNNNNNNNNN-NNNNNNNNNNNN-TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT-cDNA_Insert-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-NNNNNNNN-ATCTCGTATGCCGTCTTCTGCTTG-3'",
+        "source_sequence": "5'-AATGATACGGCGACCACCGAGATCT-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-NNNNNNNNNNNNNNNN-NNNNNNNNNNNN-TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT-cDNA_Insert-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-NNNNNNNN-ATCTCGTATGCCGTCTTCTGCTTG-3'"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "3'-TTACTATGCCGCTGGTGGCTCTAGA-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-NNNNNNNNNNNNNNNN-NNNNNNNNNNNN-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-cDNA_Insert-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-NNNNNNNN-TAGAGCATACGGCAGAAGACGAAC-5'",
+        "source_sequence": "3'-TTACTATGCCGCTGGTGGCTCTAGA-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-NNNNNNNNNNNNNNNN-NNNNNNNNNNNN-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-cDNA_Insert-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-NNNNNNNN-TAGAGCATACGGCAGAAGACGAAC-5'"
+      }
+    ],
+    "annotation_lines": [
+      "P5: AATGATACGGCGACCACCGAGATCTACAC",
+      "TruSeq Read 1 primer site: TCTTTCCCTACACGACGCTCTTCCGATCT",
+      "10x Cell Barcode: [CELL_BARCODE:16]",
+      "UMI: [UMI:12]",
+      "Poly(dT)VN: TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT + VN",
+      "cDNA insert: [CDNA]",
+      "TruSeq Read 2 adaptor: AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+      "i7 Sample Index: [SAMPLE_INDEX:8]",
+      "P7 (reverse complement): ATCTCGTATGCCGTCTTCTGCTTG"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_pdf",
+        "locator": "Sample Index PCR Product \u2014 Chromium Single Cell 3' Gene Expression Library (Protocol Step 3.5)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq Read 1 primer",
+        "template": "bottom",
+        "cycles": 28,
+        "segments": [
+          {
+            "name": "cell_barcode",
+            "type": "barcode",
+            "order": 0,
+            "length": 16,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": "cell_barcode_3M_feb2018",
+            "constant_ref": null,
+            "notes": null
+          },
+          {
+            "name": "umi",
+            "type": "umi",
+            "order": 1,
+            "length": 12,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Sample index sequencing primer",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "sample_index_i7",
+            "type": "index",
+            "order": 0,
+            "length": 8,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina TruSeq Read 2 primer",
+        "template": "top",
+        "cycles": 90,
+        "segments": [
+          {
+            "name": "cdna_insert",
+            "type": "insert",
+            "order": 0,
+            "length_range": [
+              1,
+              90
+            ],
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ],
+        "readthrough_chain": [
+          {
+            "name": "tso_5prime",
+            "type": "constant",
+            "constant_ref": "oligo_template_switching_oligo_tso",
+            "notes": "adapter-dimer leads with the TSO"
+          },
+          {
+            "name": "cdna_short",
+            "type": "insert"
+          },
+          {
+            "name": "polyA",
+            "type": "polyA",
+            "base": "A"
+          },
+          {
+            "name": "umi_rc",
+            "type": "umi",
+            "derivation": "revcomp(umi)"
+          },
+          {
+            "name": "cbc_rc",
+            "type": "barcode",
+            "derivation": "revcomp(cell_barcode)"
+          },
+          {
+            "name": "r1_readinto_adapter",
+            "type": "constant",
+            "constant_ref": "oligo_r1_readinto_adapter"
+          },
+          {
+            "name": "p5_rc",
+            "type": "constant",
+            "constant_ref": "oligo_p5_rc"
+          },
+          {
+            "name": "polyG_pad",
+            "type": "constant",
+            "base": "G"
+          }
+        ]
+      }
+    ]
+  },
+  "whitelists": {
+    "cell_barcode_3M_feb2018": {
+      "name": "3M-february-2018",
+      "path": "whitelists/3M-february-2018.txt.gz",
+      "md5": null,
+      "md5_provenance": "computed_local_no_official_checksum",
+      "source_url": "https://raw.githubusercontent.com/f0t1h/3M-february-2018/master/3M-february-2018.txt.gz",
+      "source_note": "community mirror; no vendor checksum published",
+      "size_bytes_gz": 18350152,
+      "count": 6794880,
+      "length": 16,
+      "retrieved_date": null
+    }
+  },
+  "build": {
+    "builder_version": "llm-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm",
+    "model": "claude-opus-4-8"
+  }
+}

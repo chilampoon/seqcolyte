@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seqcolyte"
+version = "0.1.0"
+description = "Protocol-aware sequencing diagnostic agent (Day 1: spec extraction + failure simulator)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+dependencies = [
+  "numpy>=1.24",
+  "pyyaml>=6.0",
+  "jsonschema>=4.0",
+  "beautifulsoup4>=4.12",
+  "lxml>=5.0",
+  "pysam>=0.22",
+  "docling>=2.108",  # PDF parsing (tables + figure text); pulls pypdfium2 as its backend
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools]
+packages = ["seqcolyte", "seqcolyte.spec", "seqcolyte.io", "extract", "sim", "sim.modes", "qc"]
+
+[tool.setuptools.package-data]
+"seqcolyte.spec" = ["schema.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
