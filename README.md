@@ -1,134 +1,126 @@
 # Seqcolyte
 
-**A protocol-aware sequencing diagnostic agent.** Give it a sequencing protocol + raw FASTQ; it
-extracts the expected library/read structure, runs deterministic QC checks, and reports ranked,
-severity-scored failures with an evidence chain.
+**A protocol-aware QC agent for single-cell sequencing.**
 
-> **Day 1 scope (this repo state):** the substrate only — a scaffold, a machine-checked
-> **read-structure spec**, a real **known-good FASTQ**, and a **failure simulator** that injects a
-> labeled adapter-dimer artifact. **Not yet built** (Day 2+): the QC check tools, the Claude
-> orchestration/agent loop, ranking/severity scoring, and any web UI.
+Point it at a library-prep **protocol** and your **raw FASTQ**. It figures out what the reads are
+*supposed* to look like from the protocol, then checks whether they actually do — and tells you, in
+plain terms, what went wrong and why.
 
-**Day-1 gate:** a correct structured spec for 10x 3' v3 + a known-good FASTQ + a simulated
-adapter-dimer FASTQ derived from it, with per-read ground-truth labels. ✅
+Today it targets **10x Chromium 3′ Gene Expression (v3/v3.1)** on Illumina. Oxford Nanopore is a
+planned second modality.
+
+---
+
+## The idea, in three steps
+
+```
+   1. PROTOCOL                2. EXPECTED STRUCTURE            3. QC THE READS
+  ┌──────────────┐          ┌───────────────────────┐       ┌──────────────────────┐
+  │  10x PDF     │  ──────▶ │  oligos               │ ────▶ │  decide which checks  │
+  │  (or the     │          │  library sequencing   │       │  to run, run them,    │
+  │   scg HTML)  │          │  (how R1/R2/I1 read)  │       │  and rank the failures│
+  └──────────────┘          └───────────────────────┘       └──────────────────────┘
+        ✅                          ✅  (mostly)                       🚧  next
+                                                                        ▲
+                                    raw FASTQ ─────────────────────────┘
+                                (real control + simulated failures)
+```
+
+**What's built vs. what's next:**
+
+| Step | Piece | Status |
+|------|-------|:------:|
+| 1 | Ingest a protocol PDF | ✅ |
+| 2 | Extract **oligos** | ✅ |
+| 2 | Extract **library sequencing** (R1 = barcode+UMI, R2 = cDNA, I1 = index) | ✅ |
+| 2 | Extract **step-by-step library generation** (the 8-step build) | 🚧 not yet |
+| — | **Simulate raw data** (clean control + labeled adapter-dimer failures) | ✅ |
+| 3 | **Decide & run QC checks**, rank failures with an evidence chain | 🚧 not started |
+
+So steps 1–2 give you a machine-readable "expected structure" spec, and the simulator gives you
+labeled test data. Step 3 — the agent that reads the spec, looks at the FASTQ, and decides what to
+check — is the next build.
 
 ---
 
 ## Quickstart
 
 ```bash
-make install          # conda env (bioconda: pysam, seqkit, seqtk, …) + pip install -e .
+make install          # creates the conda env (bioinformatics tools + deps)
 conda activate seqcolyte
-
-make spec             # parse protocols/10xChromium3.html -> spec/tenx_3p_v3.json (offline, reproducible)
-make test             # 34 unit tests, no network / no big data
-
-# network + heavy (≈5.5 GB one-time download, subsampled to ~40k pairs then deleted):
-make whitelist        # 3M-february-2018 cell-barcode whitelist (+ computed md5)
-make data             # pbmc_1k_v3 -> data/raw/pbmc_1k_v3_sub_R{1,2}.fastq.gz
-make sanity           # prove the control is clean (R1==28, whitelist hit-rate ≥0.85)
-make sim              # inject adapter dimers -> data/sim/adapter_dimer_f30/ + labels
-make summary          # print the Day-1 gate summary
-
-# or the whole chain:
-make pipeline
+make test             # 39 unit tests, offline, ~1s
 ```
 
-FASTQs and whitelists are **git-ignored**; the spec and labels are committed.
-
----
-
-## What's here
-
-```
-extract/     protocol HTML -> consolidated spec (parse + cross-check + canonical JSON)
-spec/        tenx_3p_v3.json  — the single source of truth (committed, byte-reproducible)
-sim/         failure simulator, get_data, sanity checks, ground-truth labels
-seqcolyte/   shared core: dna (revcomp), spec loader/model, FASTQ I/O
-protocols/   10xChromium3.html (parsed source) + provenance notes
-tests/       fixture-only unit tests
-```
-
-### The spec (`spec/tenx_3p_v3.json`)
-
-One self-contained, demo-friendly document aligned with the prior groundtruth format:
-
-- **`oligos[]`** — parts list with placeholder tokens (`[CELL_BARCODE:16]`, `[UMI:12]`,
-  `[SAMPLE_INDEX:8]`), `components`, honest `provenance` (`document` vs `reagent`), and an
-  `evidence[]` chain (source-doc locator + `verified_against` URLs).
-- **`final_library`** — annotated sequence + `<p5><cbc><umi>…` tagged strands (renders as the
-  library diagram) + scoring placeholders.
-- **`read_structure.reads[]`** — per-read (R1/R2/I1) ordered segments the simulator + QC consume,
-  plus R2's `readthrough_chain` (the recipe a short-insert read follows).
-- **`whitelists`**, **`platform_params`**, **`source_docs`**, **`build`** (sha256, deterministic).
-
-Built by **parsing `protocols/10xChromium3.html`** and **cross-checking every sequence** against
-independently-verified authoritative values (`extract/verified_constants.py`); the build fails
-loudly on any mismatch. `make spec` regenerates byte-identical output — `python -m extract check`
-is a drift guard. See [`protocols/tenx_3p_v3.provenance.md`](protocols/tenx_3p_v3.provenance.md).
-
-Target chemistry: **10x Chromium 3' Gene Expression v3/v3.1** — R1 = 16 bp cell barcode + 12 bp UMI
-(28 bp); R2 = cDNA; i7 8 bp single index; whitelist `3M-february-2018`.
-
-### LLM extraction from a protocol PDF (Day-2 preview)
-
-The deterministic HTML parser above handles one curated document. To generalize to an arbitrary
-**protocol PDF**, `extract/doc_extract.py` parses the PDF with **docling** (`extract/pdf_text.py`:
-TableFormer reconstructs tables, OCR disabled; and because docling's layout model buckets 10x's
-*vector-text* "Oligonucleotide Sequences" panels into `picture` clusters and drops them, the PDF
-text layer is appended so those sequences aren't lost), then runs **Claude Code headless**
-(`claude -p --json-schema`, model `claude-opus-4-8`) over that text and returns structured oligos +
-final library in the same schema. It uses the authenticated `claude` CLI — no API key needed.
+**Build the expected-structure spec** (two ways):
 
 ```bash
-python -m extract from-doc \
-  --doc /path/to/10xChromium3v3.pdf --spec tenx_3p_v3 --eval
+# a) deterministic — parse the curated scg_lib_structs HTML (byte-reproducible)
+make spec                                            # -> spec/tenx_3p_v3.json
+
+# b) from a real protocol PDF — Claude reads it and fills the same schema
+python -m extract from-doc --doc your_protocol.pdf --spec tenx_3p_v3 --eval
+                                                     # -> spec/tenx_3p_v3.pdf.json
 ```
 
-The LLM output is never trusted blindly: the verified constants are a **soft cross-check**, and a
-checked-in **groundtruth** (`groundtruth_oligos.json` / `groundtruth_final_lib_struct.json` next to
-the PDF) is a real **eval**. On the 10x 3' v3 protocol PDF it currently scores **oligo-sequence
-recall 8/11 (0.73)**, an **exact match** on the assembled final-library structure, and **8/11**
-agreement with the independent verified constants. Output → `spec/tenx_3p_v3.pdf.json` (LLM-sourced,
-non-deterministic — distinct from the byte-reproducible `spec/tenx_3p_v3.json`). This is a lead-in to
-the Day-2 agent loop; it is not part of the deterministic Day-1 pipeline.
+**Make the test data and run the whole chain:**
 
-### The failure simulator (`sim/`)
+```bash
+make pipeline         # download control FASTQ -> subsample -> sanity-check -> simulate failures
+make summary          # print the one-page summary
+```
 
-Config-driven and reproducible from one YAML
-([`sim/configs/adapter_dimer_f30.yaml`](sim/configs/adapter_dimer_f30.yaml)). It rewrites **only R2**
-for a fraction of pairs (default 30% = ~20% read-through + ~10% pure dimer); **R1 is left
-byte-identical** (a 28 bp R1 is exactly CB+UMI, so the library still demultiplexes). Both failure
-types lead with the **TSO** (built from the spec's constants):
-
-- **read-through** — `TSO + insert + poly(A) + revcomp(UMI) + revcomp(CB) + revcomp(R1 primer) +
-  revcomp(P5)`, fit to the read length (→ adapter read-through + reverse-complemented barcode visible).
-- **pure dimer** — `TSO + short poly(A) + poly-G` no-signal tail (the classic empty two-color product).
-
-`revcomp(CB/UMI)` use *that pair's* barcode/UMI (never random); synthesized bases get a spuriously
-high quality so a naive quality filter can't catch them. Deterministic per read via
-`SeedSequence([seed, pair_index])` → byte-identical re-runs. Outputs:
-`data/sim/adapter_dimer_f30/{R1,R2}.fastq.gz`, `sim/labels/adapter_dimer_f30.tsv` (per-read
-`{clean|readthrough|pure_dimer}` + construct recipe), and a `run.json` manifest.
-
-### Regenerating everything from config
-
-`make sim` (or `python -m sim run --config <yaml>`) regenerates the failure FASTQs + labels
-deterministically from the clean control + the config. Change `seed`, `affected_fraction`,
-`dimer_fraction`, insert/poly(A) lengths, or `quality` in the YAML and re-run.
+That downloads a real 10x dataset (~5.5 GB, once), subsamples it to ~40k read pairs, verifies it's
+genuinely clean, then injects adapter-dimer failures with per-read ground-truth labels.
 
 ---
 
-## Extensibility (designed in)
+## The pieces
 
-A second modality drops in **without refactor**: the spec separates platform-invariant read
-structure (barcode/UMI/insert + named constants) from `platform`/`platform_params`, and failure
-modes are registry plugins sharing `revcomp` + the spec's constants. E.g. a 10x 3' **Nanopore** spec
-(`platform: nanopore`, `dark_base: null`) with a `tso_concatemer` failure mode = one new `sim/modes/`
-file; the engine is untouched.
+**The spec — `spec/tenx_3p_v3.json`.** One JSON file that captures the expected library: the
+**oligos** (with placeholder tokens like `[CELL_BARCODE:16]`), the **final library structure**
+(renders as the classic library diagram), and the **read structure** (what R1/R2/I1 should contain).
+Every sequence carries an honest source (`document` vs `reagent`) and an evidence link. It's the
+single source of truth everything else reads.
 
-## Environment
+**Two extractors, one schema.**
+- *Deterministic* (`make spec`) parses the checked-in `protocols/10xChromium3.html` and cross-checks
+  every sequence against independently-verified values — the build fails loudly if anything drifts.
+- *LLM* (`extract from-doc`) reads an arbitrary **PDF** with **docling** (tables + text layer) and
+  has Claude fill the same schema. It runs through your authenticated `claude` CLI — no API key.
+  On the 10x v3 PDF it currently gets oligo recall ~0.73 and an exact match on the library structure,
+  with the deterministic constants as a guardrail. (This is the seed of the Step-3 agent.)
 
-Python 3.11+, `pysam`, `numpy`, `pyyaml`, `jsonschema`, `beautifulsoup4`/`lxml`; `seqkit` + `seqtk`
-on `PATH` (discovered via `shutil.which`, so install method is up to you). `make install` pins them
-via conda/bioconda (`environment.yml`).
+**The simulator (`sim/`).** Turns the clean control into labeled failures, reproducibly from one
+config. For each failure it rewrites only R2 (leaving R1 untouched so the library still
+demultiplexes) into either a **read-through** (`TSO + short insert + poly(A) + …adapter`) or a
+**pure adapter-dimer** (`TSO + poly(A) + poly-G` tail). Output: `data/sim/…/{R1,R2}.fastq.gz`, a
+labels TSV (`clean` / `readthrough` / `pure_dimer` per read), and a run manifest. Re-running gives
+byte-identical output.
+
+---
+
+## Project layout
+
+```
+extract/      protocol -> spec.  HTML parser (deterministic) + PDF/LLM extractor
+spec/         tenx_3p_v3.json — the expected-structure spec (committed)
+sim/          failure simulator, data download, sanity checks, ground-truth labels
+seqcolyte/    shared core: DNA utils, spec loader, FASTQ I/O
+protocols/    the source documents + provenance notes
+tests/        39 offline unit tests
+```
+
+---
+
+## Good to know
+
+- **Big files stay out of git.** FASTQs, the barcode whitelist, and generated labels are
+  `.gitignore`d — they all regenerate from `make pipeline` + the committed config.
+- **Reproducible by design.** The deterministic spec and every simulated FASTQ are byte-identical
+  across runs (fixed seeds, no timestamps). The LLM-extracted spec (`*.pdf.json`) is the one
+  exception — it's model output, kept separate.
+- **Environment.** Python 3.11+ via conda (`environment.yml`); needs `seqkit`/`seqtk` on `PATH`.
+  The PDF extractor pulls in `docling` (heavy — torch); it's optional and only used by `from-doc`.
+- **Built for a second modality.** The spec separates platform-invariant read structure from
+  platform specifics, and failure modes are plugins — so 10x-on-Nanopore (with a TSO-concatemer
+  failure) slots in without a rewrite.
