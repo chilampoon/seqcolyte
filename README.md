@@ -74,11 +74,11 @@ Target chemistry: **10x Chromium 3' Gene Expression v3/v3.1** — R1 = 16 bp cel
 
 The deterministic HTML parser above handles one curated document. To generalize to an arbitrary
 **protocol PDF**, `extract/doc_extract.py` parses the PDF with **docling** (`extract/pdf_text.py`:
-TableFormer reconstructs tables; OCR recovers raster-figure text; and because docling's layout
-model buckets 10x's *vector-text* "Oligonucleotide Sequences" panels into `picture` clusters and
-drops them, the PDF text layer is appended so those sequences aren't lost), then runs **Claude Code
-headless** (`claude -p --json-schema`, model `claude-opus-4-8`) over that text and returns structured
-oligos + final library in the same schema. It uses the authenticated `claude` CLI — no API key needed.
+TableFormer reconstructs tables, OCR disabled; and because docling's layout model buckets 10x's
+*vector-text* "Oligonucleotide Sequences" panels into `picture` clusters and drops them, the PDF
+text layer is appended so those sequences aren't lost), then runs **Claude Code headless**
+(`claude -p --json-schema`, model `claude-opus-4-8`) over that text and returns structured oligos +
+final library in the same schema. It uses the authenticated `claude` CLI — no API key needed.
 
 ```bash
 python -m extract from-doc \
