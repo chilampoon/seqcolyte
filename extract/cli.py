@@ -22,7 +22,7 @@ _WHITELIST_3M = {
     }
 }
 _SPEC_META = {
-    "tenx_3p_v3": {
+    "10x_3p_v3": {
         "assay": "10x Chromium Single Cell 3' Gene Expression", "chemistry_version": "v3/v3.1",
         "protocol_name": "10x Chromium 3' Gene Expression v3", "whitelist": _WHITELIST_3M,
     },

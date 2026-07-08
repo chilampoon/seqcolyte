@@ -1,7 +1,7 @@
 # Reproducible adapter-dimer simulation for 10x 3' v3/v3.1.
 # Everything is regenerable from this one file: `python -m sim run --config sim/configs/adapter_dimer_f30.yaml`.
 name: adapter_dimer_f30
-spec: spec/tenx_3p_v3.json
+spec: spec/10x_3p_v3.json
 
 input:
   r1: data/raw/pbmc_1k_v3_sub_R1.fastq.gz   # clean control (from `make data`)

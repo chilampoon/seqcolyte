@@ -10,7 +10,7 @@ from seqcolyte.io.fastx import FastqRecord, write_fastx_gz
 from sim.config import SimConfig
 
 REPO = Path(__file__).resolve().parents[1]
-SPEC_PATH = REPO / "spec" / "tenx_3p_v3.json"
+SPEC_PATH = REPO / "spec" / "10x_3p_v3.json"
 HTML_PATH = REPO / "protocols" / "10xChromium3.html"
 
 _BASES = "ACGT"

@@ -1,4 +1,7 @@
-"""Extract text from a protocol PDF with **docling** — capturing text inside tables and figures.
+"""Extract text from a protocol document (PDF / text / Excel / office formats).
+
+PDFs go through **docling** — capturing text inside tables and figures — with a text-layer
+appendix (below); plain text is read as-is; other formats (xlsx/docx/html) use docling too.
 
 docling reconstructs document structure far better than a raw text layer: TableFormer rebuilds
 tables (oligo tables survive as tables) and the Markdown export preserves reading order + headings
@@ -40,15 +43,32 @@ def text_layer(pdf_path: str | Path) -> str:
 
     pdf = pdfium.PdfDocument(str(pdf_path))
     try:
-        return "\n".join(pdf[i].get_textpage().get_text_range() for i in range(len(pdf)))
+        # get_text_bounded() with no bounds == full page; get_text_range() aliases to it but warns.
+        return "\n".join(pdf[i].get_textpage().get_text_bounded() for i in range(len(pdf)))
     finally:
         pdf.close()
 
 
-def extract_text(pdf_path: str | Path, *, include_text_layer: bool = True) -> str:
-    """docling Markdown (structure + tables), plus the raw text layer appended so vector-text
-    figures docling drops are still captured."""
-    md = docling_markdown(pdf_path)
-    if include_text_layer:
-        md += _TEXT_LAYER_HEADER + text_layer(pdf_path)
-    return md
+# Text-based formats we can read straight off disk (no parser needed).
+_PLAINTEXT_SUFFIXES = {".txt", ".text", ".md", ".markdown", ".rst", ".csv", ".tsv", ".html", ".htm", ".xml"}
+
+
+def extract_text(doc_path: str | Path, *, include_text_layer: bool = True) -> str:
+    """Extract a protocol document's text — PDF, plain text/HTML, or a binary office format.
+
+    - ``.pdf`` -> docling Markdown (tables reconstructed) + the pypdfium2 text layer (so vector-text
+      figures docling buckets as pictures are still captured).
+    - text / markdown / csv / **html** -> read as-is (all already text).
+    - ``.xlsx`` / ``.xls`` / ``.docx`` / ``.pptx`` (zipped-XML office formats) -> docling's converter,
+      because reading their raw bytes yields the zip container, not text.
+    """
+    path = Path(doc_path)
+    suffix = path.suffix.lower()
+    if suffix in _PLAINTEXT_SUFFIXES:
+        return path.read_text()
+    if suffix == ".pdf":
+        md = docling_markdown(path)
+        if include_text_layer:
+            md += _TEXT_LAYER_HEADER + text_layer(path)
+        return md
+    return docling_markdown(path)  # xlsx / docx / pptx / … handled by docling's format backends

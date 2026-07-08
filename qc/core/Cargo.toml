@@ -1,0 +1,28 @@
+[package]
+name = "qc-core"
+version = "0.1.0"
+edition = "2021"
+description = "Seqcolyte QC compute core — streaming FASTQ profile + deterministic checks + label eval"
+license = "MIT"
+
+[[bin]]
+name = "qc-core"
+path = "src/main.rs"
+
+[dependencies]
+# Default features already give gzip via the pure-Rust flate2 backend; the C-library
+# backends (bz2/xz/zstd) are opt-in, so defaults are the low-risk choice for gzip FASTQ.
+needletail = "0.7"
+rayon = "1.12"
+clap = { version = "4.6", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rustc-hash = "2.1"
+memchr = "2.8"
+anyhow = "1"
+flate2 = "1.1"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

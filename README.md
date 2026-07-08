@@ -3,7 +3,7 @@
 seqcolyte = sequencing acolyte
 
 Give it a library-prep **protocol** and your **raw FASTQ**. It works out what the reads should look
-like from the protocol, checks whether they do, and tells you — in plain terms — what went wrong.
+like from the protocol, checks whether they do, and tells you — in plain terms — what went wrong beyond what cell ranger can tell.
 
 Targets **10x Chromium 3′ Gene Expression (v3/v3.1)** on Illumina today; Nanopore is next.
 
@@ -13,8 +13,8 @@ Targets **10x Chromium 3′ Gene Expression (v3/v3.1)** on Illumina today; Nanop
 
 ```
   1. PROTOCOL  ──▶  2. EXPECTED STRUCTURE  ──▶  3. QC THE READS
-   10x PDF          oligos · library build      run spec-derived checks,
-                    · read structure            rank + diagnose failures
+   text/PDF/table      oligos · library build      run spec-derived checks,
+                       · read structure            rank + diagnose failures
                           spec ▲                       ▲ raw FASTQ
                                                 (control + simulated failures)
 ```
@@ -27,45 +27,43 @@ on the adapter-dimer test set it catches every injected failure (recall 1.0, pre
 ## Run it
 
 ```bash
-make install            # one-time: conda env + package  (or do it by hand, see below)
-conda activate seqcolyte
+pip install -e .
 ```
 
-The interface is three commands — one per step:
+Only `seqcolyte fetch` (downloading the real 10x control) needs an extra tool, `seqkit`, on PATH
+(`brew install seqkit`). Prefer conda? `conda env create -f environment.yml && pip install -e .`
+also works and bundles `seqkit` for you.
+
+Everything is one CLI — `seqcolyte <command>`, one command per step:
 
 ```bash
-# 1+2  protocol -> spec (expected structure)
-python -m extract build                              # from the curated HTML (deterministic)
-python -m extract from-doc --doc protocol.pdf --eval # from any PDF (Claude reads it)
+seqcolyte core                                   # build the qc-core Rust binary (needs cargo)
 
-# make test data (a real 10x control + injected adapter-dimer failures with labels)
-python -m sim.get_data data && python -m sim run --config sim/configs/adapter_dimer_f30.yaml
+# protocol parsing  (input is a protocol document: PDF / text / Excel)
+seqcolyte extract --doc protocol.pdf     # Claude Code reads it 🔶
 
-# 3  QC a FASTQ pair against the spec
-python -m qc run --spec spec/tenx_3p_v3.json \
-  --r1 R1.fastq.gz --r2 R2.fastq.gz \
-  --whitelist whitelists/3M-february-2018.txt.gz \
-  --labels labels.tsv        # optional: enables the self-scoring eval
-                             # --no-llm: fast, offline, deterministic report
+# raw data QC
+seqcolyte qc --r1 R1.fastq.gz --r2 R2.fastq.gz --json-out qc_report.json
+        # --no-llm: fast, offline, deterministic report
 ```
-
-`make pipeline` runs that whole chain in one go; `make test` runs the 47 unit tests. Make is just a
-shortcut — everything is a plain `python -m …` command.
 
 ---
 
 ## What's in the box
 
-- **`spec/tenx_3p_v3.json`** — the expected library: oligos (with `[CELL_BARCODE:16]` tokens), the
+- **`spec/10x_3p_v3.json`** — the expected library: oligos (with `[CELL_BARCODE:16]` tokens), the
   step-by-step build, and the read structure. The single source of truth every step reads.
-- **`extract/`** — two paths to that spec: a deterministic HTML parser (cross-checked, byte-reproducible)
-  and an LLM PDF extractor (docling + Claude, run through your `claude` CLI — no API key).
+- **`extract/`** — the protocol reader: an LLM document extractor (PDF / text / Excel via docling + Claude,
+  through your `claude` CLI — no API key). The checked-in **reference** spec is built separately by a
+  deterministic HTML parser and used to cross-check extractions — reference only, not a user input.
 - **`sim/`** — turns a clean control into labeled adapter-dimer / read-through failures, reproducibly.
-- **`qc/`** — Step 3: deterministic checks derived from the spec (R1 length, whitelist rate, TSO-at-R2-start,
-  adapter read-through, poly-G tail), then Claude ranks + diagnoses them with an evidence chain.
+- **`qc/`** — Step 3. The compute core is `qc/core/` — a streaming Rust CLI (`qc-core`) that profiles the
+  FASTQ and runs the spec-derived checks (R1 length, whitelist rate, TSO-at-R2-start, adapter read-through,
+  poly-G tail) plus the label eval in one pass. The Python around it shells out to that binary, then
+  Claude ranks + diagnoses the findings with a spec-linked evidence chain and (given labels) scores itself.
 
 ```
-extract/  spec/  sim/  qc/  seqcolyte/(core)  protocols/  tests/
+extract/  spec/  sim/  qc/(+ core/ rust compute)  seqcolyte/(core)  protocols/  tests/
 ```
 
 ---

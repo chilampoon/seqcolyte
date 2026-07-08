@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from qc.engine import run_qc
+from qc.rust_engine import RustEngineUnavailable
 
 _ICON = {"pass": "PASS", "warn": "WARN", "fail": "FAIL"}
 
@@ -58,8 +60,12 @@ def main(argv: list[str] | None = None) -> int:
     rp.add_argument("--json-out", default=None, dest="json_out")
     args = ap.parse_args(argv)
 
-    report = run_qc(args.spec, args.r1, args.r2, whitelist=args.whitelist, labels=args.labels,
-                    use_llm=not args.no_llm, model=args.model, max_reads=args.max_reads)
+    try:
+        report = run_qc(args.spec, args.r1, args.r2, whitelist=args.whitelist, labels=args.labels,
+                        use_llm=not args.no_llm, model=args.model, max_reads=args.max_reads)
+    except RustEngineUnavailable as exc:
+        print(f"error: {exc}\nbuild the compute core first:  make rust", file=sys.stderr)
+        return 2
     _print_report(report)
     if args.json_out:
         Path(args.json_out).write_text(json.dumps(report, indent=2) + "\n")

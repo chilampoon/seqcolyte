@@ -11,7 +11,7 @@ _REPO = Path(__file__).resolve().parents[1]
 
 
 def main() -> int:
-    spec = load_spec(_REPO / "spec" / "tenx_3p_v3.json")
+    spec = load_spec(_REPO / "spec" / "10x_3p_v3.json")
     bar = "=" * 72
     print(bar)
     print("SEQCOLYTE — Day 1 gate summary")

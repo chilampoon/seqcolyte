@@ -34,11 +34,11 @@ RANK_SCHEMA: dict = {
 }
 
 
-def rank_with_llm(spec, profile, findings, *, model: str) -> dict:
+def rank_with_llm(spec, profile: dict, findings: list[dict], *, model: str) -> dict:
     payload = {
         "assay": spec.assay, "platform": spec.platform, "chemistry": spec.chemistry_version,
-        "profile": profile.summary(),
-        "findings": [f.to_dict() for f in findings],
+        "profile": profile,
+        "findings": findings,
     }
     prompt = (
         "You are a sequencing-QC analyst. You are given the EXPECTED library structure "

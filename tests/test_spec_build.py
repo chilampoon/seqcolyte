@@ -7,7 +7,7 @@ from conftest import SPEC_PATH
 
 def test_committed_spec_validates():
     spec = load_spec(SPEC_PATH)  # load_spec validates against the schema
-    assert spec.spec_id == "tenx_3p_v3"
+    assert spec.spec_id == "10x_3p_v3"
     assert spec.platform == "illumina"
 
 

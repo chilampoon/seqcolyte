@@ -1,6 +1,6 @@
 {
   "schema_version": "seqcolyte.spec.v1",
-  "spec_id": "tenx_3p_v3",
+  "spec_id": "10x_3p_v3",
   "assay": "10x Chromium Single Cell 3' Gene Expression",
   "chemistry_version": "v3/v3.1",
   "platform": "illumina",
@@ -40,7 +40,7 @@
       "retrieved_date": null
     },
     {
-      "doc_id": "tenx_tso",
+      "doc_id": "10x_tso",
       "title": "10x Genomics \u2014 Template Switch Oligo (Cell Ranger GEX algorithm / KB)",
       "url": "https://www.10xgenomics.com/support/software/cell-ranger/latest/algorithms-overview/cr-gex-algorithm",
       "path": null,

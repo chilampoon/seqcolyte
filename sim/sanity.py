@@ -85,7 +85,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--r1", default=str(_repo / "data/raw/pbmc_1k_v3_sub_R1.fastq.gz"))
     ap.add_argument("--r2", default=str(_repo / "data/raw/pbmc_1k_v3_sub_R2.fastq.gz"))
     ap.add_argument("--whitelist", default=str(_repo / "whitelists/3M-february-2018.txt.gz"))
-    ap.add_argument("--spec", default=str(_repo / "spec/tenx_3p_v3.json"))
+    ap.add_argument("--spec", default=str(_repo / "spec/10x_3p_v3.json"))
     ap.add_argument("--min-hit-rate", type=float, default=0.85, dest="min_hit_rate")
     ap.add_argument("--json-out", default=None, dest="json_out")
     args = ap.parse_args(argv)
