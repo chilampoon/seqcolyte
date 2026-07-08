@@ -1,4 +1,4 @@
-"""Assemble the consolidated ``spec/tenx_3p_v3.json`` from a parsed protocol.
+"""Assemble the consolidated ``spec/10x_3p_v3.json`` from a parsed protocol.
 
 Flow: parse HTML -> cross-check every parsed sequence against ``verified_constants`` (fail loudly
 on mismatch) -> assemble oligos + final_library + read_structure with an honest evidence chain ->
@@ -19,11 +19,11 @@ from extract.verified_constants import CITATIONS, DERIVED, VERIFIED, citation_ur
 __all__ = ["build_spec", "to_canonical_json", "BUILDER_VERSION", "DEFAULT_HTML", "DEFAULT_OUT"]
 
 BUILDER_VERSION = "1.0"
-SPEC_ID = "tenx_3p_v3"
+SPEC_ID = "10x_3p_v3"
 RETRIEVED_DATE = "2026-07-07"
 _REPO = Path(__file__).resolve().parents[1]
 DEFAULT_HTML = _REPO / "protocols" / "10xChromium3.html"
-DEFAULT_OUT = _REPO / "spec" / "tenx_3p_v3.json"
+DEFAULT_OUT = _REPO / "spec" / "10x_3p_v3.json"
 POLYT_LEN = 30  # (T)30 on the bead oligo, per the source diagram
 
 # key -> (oligo_id, name, role, kind, provenance, xcheck_constant_key, aliases, notes)

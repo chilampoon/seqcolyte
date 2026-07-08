@@ -57,7 +57,7 @@ CITATIONS: dict[str, dict] = {
         "title": "Illumina P5/P7 flow-cell adapter sequences (doc #1000000002694)",
         "url": "https://teichlab.github.io/scg_lib_structs/data/illumina-adapter-sequences-1000000002694-14.pdf",
     },
-    "tenx_tso": {
+    "10x_tso": {
         "title": "10x Genomics — Template Switch Oligo (Cell Ranger GEX algorithm / KB)",
         "url": "https://www.10xgenomics.com/support/software/cell-ranger/latest/algorithms-overview/cr-gex-algorithm",
     },
@@ -69,7 +69,7 @@ CITATIONS: dict[str, dict] = {
 
 # Which citation(s) back each verified/derived constant (used to fill evidence.verified_against).
 CONSTANT_CITATIONS: dict[str, list[str]] = {
-    "tso": ["tenx_tso", "scg_10xChromium3"],
+    "tso": ["10x_tso", "scg_10xChromium3"],
     "r1_partial_handle": ["illumina_truseq", "scg_10xChromium3"],
     "cdna_forward_primer": ["scg_10xChromium3"],
     "cdna_reverse_primer": ["scg_10xChromium3"],

@@ -165,7 +165,9 @@ def _run_claude(prompt: str, schema: dict, *, model: str, cwd: str | None = None
 def extract_document(pdf_path: str | Path, protocol_name: str, *, model: str = DEFAULT_MODEL) -> dict:
     """Extract oligos + final_library from a protocol PDF via Claude Code headless."""
     text = extract_text(pdf_path)
-    prompt = _PROMPT.format(protocol_name=protocol_name, doc_text=text)
+    # NB: the template contains literal JSON braces (e.g. `{step: ...}`), so we substitute the two
+    # real placeholders by name rather than str.format (which would read `{step}` as a field).
+    prompt = _PROMPT.replace("{protocol_name}", protocol_name).replace("{doc_text}", text)
     result = _run_claude(prompt, EXTRACTION_SCHEMA, model=model)
     result["source_chars"] = len(text)
     return result

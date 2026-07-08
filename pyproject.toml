@@ -15,12 +15,15 @@ dependencies = [
   "jsonschema>=4.0",
   "beautifulsoup4>=4.12",
   "lxml>=5.0",
-  "pysam>=0.22",
   "docling>=2.108",  # PDF parsing (tables + figure text); pulls pypdfium2 as its backend
 ]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+fast = ["pysam>=0.22"]  # optional: faster FASTQ reading; the reader falls back to stdlib gzip without it
+
+[project.scripts]
+seqcolyte = "seqcolyte.cli:main"
 
 [tool.setuptools]
 packages = ["seqcolyte", "seqcolyte.spec", "seqcolyte.io", "extract", "sim", "sim.modes", "qc"]

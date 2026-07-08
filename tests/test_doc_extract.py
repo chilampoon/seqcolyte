@@ -42,7 +42,7 @@ def test_extraction_schema_is_valid_json_schema():
 
 
 def test_assemble_spec_validates_and_derives_read_structure():
-    spec = assemble_spec(_synthetic_extraction(), spec_id="tenx_3p_v3",
+    spec = assemble_spec(_synthetic_extraction(), spec_id="10x_3p_v3",
                          assay="10x Chromium Single Cell 3' Gene Expression", chemistry_version="v3/v3.1",
                          source_doc_path="x.pdf", model="test", whitelist_block=_WHITELIST)
     assert spec["build"]["extraction_method"] == "claude_llm"

@@ -19,7 +19,7 @@ import pytest
 from qc.rust_engine import run_rust_qc, rust_binary
 
 REPO = Path(__file__).resolve().parents[1]
-SPEC = REPO / "spec" / "tenx_3p_v3.json"
+SPEC = REPO / "spec" / "10x_3p_v3.json"
 WL = REPO / "whitelists" / "3M-february-2018.txt.gz"
 R1 = REPO / "data" / "sim" / "adapter_dimer_f30" / "R1.fastq.gz"
 R2 = REPO / "data" / "sim" / "adapter_dimer_f30" / "R2.fastq.gz"

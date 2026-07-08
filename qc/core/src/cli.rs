@@ -5,7 +5,7 @@ use clap::Parser;
 #[derive(Parser)]
 #[command(name = "qc-core", version, about)]
 pub struct Args {
-    /// Consolidated spec JSON (e.g. spec/tenx_3p_v3.json)
+    /// Consolidated spec JSON (e.g. spec/10x_3p_v3.json)
     #[arg(long)]
     pub spec: String,
 

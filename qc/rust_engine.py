@@ -2,11 +2,11 @@
 
 This mirrors how ``extract/doc_extract.py`` shells out to the ``claude`` CLI: build an argv,
 run it, parse JSON from stdout. The binary streams the FASTQ pair in one pass and returns
-``{"profile": {...}, "findings": [...], "eval": {...}|null}`` that is field-for-field identical
-to the pure-Python compute path (guarded by ``tests/test_rust_parity.py``).
+``{"profile": {...}, "findings": [...], "eval": {...}|null}`` — the sole QC compute path.
+``tests/test_rust_qc.py`` pins that output against a committed golden.
 
 Locate the binary via ``$SEQCOLYTE_QC_BIN`` or the crate's default release path. Raise
-``RustEngineUnavailable`` when it's missing/unbuilt so callers can fall back to Python.
+``RustEngineUnavailable`` when it's missing/unbuilt (build it with ``make rust`` / ``seqcolyte core``).
 """
 
 from __future__ import annotations
