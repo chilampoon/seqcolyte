@@ -41,24 +41,25 @@ python -m extract from-doc --doc protocol.pdf --eval # from any PDF (Claude read
 # make test data (a real 10x control + injected adapter-dimer failures with labels)
 python -m sim.get_data data && python -m sim run --config sim/configs/adapter_dimer_f30.yaml
 
+# build the compute core once (needs cargo/rustc on PATH)
+make rust
+
 # 3  QC a FASTQ pair against the spec
 python -m qc run --spec spec/tenx_3p_v3.json \
   --r1 R1.fastq.gz --r2 R2.fastq.gz \
   --whitelist whitelists/3M-february-2018.txt.gz \
   --labels labels.tsv        # optional: enables the self-scoring eval
-                             # --no-llm:        fast, offline, deterministic report
-                             # --engine rust:   run the compute core as the seqcolyte-qc binary
+                             # --no-llm: fast, offline, deterministic report
 ```
 
-`make pipeline` runs that whole chain in one go; `make test` runs the unit tests (incl. the
-Rust/Python parity gate). Make is just a shortcut — everything is a plain `python -m …` command.
+`make pipeline` runs that whole chain in one go (building the binary first); `make test` runs the
+unit tests. Make is just a shortcut — everything is a plain `python -m …` command.
 
-The per-read compute (FASTQ profiling + the checks + the eval) has two interchangeable engines:
-the pure-Python path and `seqcolyte-qc` — a parity-preserving **Rust** port that streams the FASTQ
-in one pass. It's the **default** (`make rust` to build; `--engine python` to force the pure-Python
-path; the Rust path falls back to Python automatically if the binary isn't built).
-`tests/test_rust_parity.py` asserts the two produce field-for-field-identical output. On 4M read
-pairs the Rust core runs in **~6.0 s vs ~28.9 s** for Python (**~4.8×**, `make bench`).
+The per-read compute (FASTQ profiling + the checks + the eval) is a streaming **Rust** CLI,
+`qc-core`; Python only orchestrates (loads the spec, shells out, ranks + diagnoses, scores).
+On 4M read pairs it runs in **~6.0 s** (`make bench`) — a single pass, no reads held in memory.
+`tests/test_rust_qc.py` pins its output against a committed golden; `cargo test` covers the
+rounding/parity helpers.
 
 ---
 
@@ -69,13 +70,13 @@ pairs the Rust core runs in **~6.0 s vs ~28.9 s** for Python (**~4.8×**, `make 
 - **`extract/`** — two paths to that spec: a deterministic HTML parser (cross-checked, byte-reproducible)
   and an LLM PDF extractor (docling + Claude, run through your `claude` CLI — no API key).
 - **`sim/`** — turns a clean control into labeled adapter-dimer / read-through failures, reproducibly.
-- **`qc/`** — Step 3: deterministic checks derived from the spec (R1 length, whitelist rate, TSO-at-R2-start,
-  adapter read-through, poly-G tail), then Claude ranks + diagnoses them with an evidence chain.
-- **`rust/seqcolyte-qc/`** — the same profiling + checks + eval as a streaming Rust CLI (`--engine rust`),
-  a behavior-preserving optimization guarded by a differential parity test.
+- **`qc/`** — Step 3. The compute core is `qc/core/` — a streaming Rust CLI (`qc-core`) that profiles the
+  FASTQ and runs the spec-derived checks (R1 length, whitelist rate, TSO-at-R2-start, adapter read-through,
+  poly-G tail) plus the label eval in one pass. The Python around it shells out to that binary, then
+  Claude ranks + diagnoses the findings with a spec-linked evidence chain and (given labels) scores itself.
 
 ```
-extract/  spec/  sim/  qc/  rust/  seqcolyte/(core)  protocols/  tests/
+extract/  spec/  sim/  qc/(+ core/ rust compute)  seqcolyte/(core)  protocols/  tests/
 ```
 
 ---

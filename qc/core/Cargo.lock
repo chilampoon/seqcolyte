@@ -332,6 +332,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "qc-core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "flate2",
+ "memchr",
+ "needletail",
+ "rayon",
+ "rustc-hash",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.46"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -371,21 +386,6 @@ name = "rustc-hash"
 version = "2.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6b1e7f9a428571be2dc5bc0505c13fb6bf936822b894ec87abf8a08a4e51742d"
-
-[[package]]
-name = "seqcolyte-qc"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "clap",
- "flate2",
- "memchr",
- "needletail",
- "rayon",
- "rustc-hash",
- "serde",
- "serde_json",
-]
 
 [[package]]
 name = "serde"

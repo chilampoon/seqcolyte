@@ -1,4 +1,4 @@
-//! `seqcolyte-qc` — parity-preserving Rust port of the Seqcolyte QC compute core
+//! `qc-core` — the Seqcolyte QC compute core (parity-preserving port of the reference Python)
 //! (`qc/profile.py` + `qc/checks.py` + `qc/eval.py`). Reads a FASTQ pair once and prints
 //! `{ "profile": {…}, "findings": […], "eval": {…}|null }` to stdout.
 

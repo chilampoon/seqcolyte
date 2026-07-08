@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from qc.engine import run_qc
+from qc.rust_engine import RustEngineUnavailable
 
 _ICON = {"pass": "PASS", "warn": "WARN", "fail": "FAIL"}
 
@@ -55,15 +57,15 @@ def main(argv: list[str] | None = None) -> int:
     rp.add_argument("--no-llm", action="store_true", dest="no_llm", help="skip Claude ranking; deterministic only")
     rp.add_argument("--model", default="claude-opus-4-8")
     rp.add_argument("--max-reads", type=int, default=None, dest="max_reads")
-    rp.add_argument("--engine", choices=["python", "rust"], default="rust",
-                    help="compute engine for profile+checks+eval (default rust = seqcolyte-qc "
-                         "binary; falls back to python if unbuilt)")
     rp.add_argument("--json-out", default=None, dest="json_out")
     args = ap.parse_args(argv)
 
-    report = run_qc(args.spec, args.r1, args.r2, whitelist=args.whitelist, labels=args.labels,
-                    use_llm=not args.no_llm, model=args.model, max_reads=args.max_reads,
-                    engine=args.engine)
+    try:
+        report = run_qc(args.spec, args.r1, args.r2, whitelist=args.whitelist, labels=args.labels,
+                        use_llm=not args.no_llm, model=args.model, max_reads=args.max_reads)
+    except RustEngineUnavailable as exc:
+        print(f"error: {exc}\nbuild the compute core first:  make rust", file=sys.stderr)
+        return 2
     _print_report(report)
     if args.json_out:
         Path(args.json_out).write_text(json.dumps(report, indent=2) + "\n")

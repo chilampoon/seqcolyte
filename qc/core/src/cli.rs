@@ -3,7 +3,7 @@ use clap::Parser;
 /// Seqcolyte QC compute core. Streams a FASTQ pair and emits `{profile, findings, eval}` JSON
 /// on stdout (matching `python -m qc` field-for-field). Logs/errors go to stderr.
 #[derive(Parser)]
-#[command(name = "seqcolyte-qc", version, about)]
+#[command(name = "qc-core", version, about)]
 pub struct Args {
     /// Consolidated spec JSON (e.g. spec/tenx_3p_v3.json)
     #[arg(long)]

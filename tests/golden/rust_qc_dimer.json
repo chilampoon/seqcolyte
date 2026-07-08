@@ -1,0 +1,320 @@
+{
+  "full": {
+    "eval": {
+      "confusion": {
+        "fn": 0,
+        "fp": 1134,
+        "tn": 26926,
+        "tp": 11940
+      },
+      "f1": 0.9547,
+      "n": 40000,
+      "precision": 0.9133,
+      "predicted_affected": 13074,
+      "recall": 1.0,
+      "true_affected": 11940
+    },
+    "findings": [
+      {
+        "affected_fraction": null,
+        "check_id": "r1_length",
+        "detail": "R1 lengths span 28\u201328 bp",
+        "evidence": [
+          {
+            "note": "R1 should be exactly 28 bp (16 bp cell barcode + 12 bp UMI)",
+            "spec_ref": "read_structure.R1"
+          }
+        ],
+        "severity": 0.0,
+        "threshold": "== 28",
+        "title": "R1 length matches barcode + UMI",
+        "unit": "bp",
+        "value": 28.0,
+        "verdict": "pass"
+      },
+      {
+        "affected_fraction": null,
+        "check_id": "whitelist_hit_rate",
+        "detail": "94.9% of cell barcodes are on the whitelist",
+        "evidence": [
+          {
+            "note": "R1[0:16] should match the 3M-february-2018 gel-bead barcode whitelist",
+            "spec_ref": "whitelists.cell_barcode_3M_feb2018"
+          }
+        ],
+        "severity": 0.0,
+        "threshold": ">= 0.85",
+        "title": "Cell barcodes on the 10x whitelist",
+        "unit": "fraction",
+        "value": 0.9489,
+        "verdict": "pass"
+      },
+      {
+        "affected_fraction": 0.3258,
+        "check_id": "tso_at_r2_start",
+        "detail": "32.6% of R2 start with the TSO",
+        "evidence": [
+          {
+            "note": "R2 should start with cDNA; a leading TSO is the hallmark of empty/short-insert products",
+            "spec_ref": "read_structure.R2.readthrough_chain[tso_5prime]"
+          }
+        ],
+        "severity": 0.6516,
+        "threshold": "< 0.05",
+        "title": "R2 reads beginning with the TSO (adapter-dimer / short insert)",
+        "unit": "fraction",
+        "value": 0.3258,
+        "verdict": "fail"
+      },
+      {
+        "affected_fraction": 0.0545,
+        "check_id": "r2_adapter_readthrough",
+        "detail": "5.5% of R2 contain the adapter stem AGATCGGAAGAGC",
+        "evidence": [
+          {
+            "note": "the AGATCGGAAGAGC adapter stem in R2 means the insert was shorter than the read length",
+            "spec_ref": "oligos.oligo_r1_readinto_adapter"
+          }
+        ],
+        "severity": 0.109,
+        "threshold": "< 0.02",
+        "title": "R2 read-through into the Illumina adapter",
+        "unit": "fraction",
+        "value": 0.0545,
+        "verdict": "warn"
+      },
+      {
+        "affected_fraction": 0.098275,
+        "check_id": "r2_polyg_tail",
+        "detail": "9.8% of R2 have a poly-G tail",
+        "evidence": [
+          {
+            "note": "a poly-G 3' tail on two-color instruments is 'no signal' \u2014 typical of empty/short fragments",
+            "spec_ref": "platform_params.dark_base"
+          }
+        ],
+        "severity": 0.2948,
+        "threshold": "< 0.01",
+        "title": "R2 with a poly-G no-signal tail",
+        "unit": "fraction",
+        "value": 0.0983,
+        "verdict": "fail"
+      }
+    ],
+    "profile": {
+      "n_pairs": 40000,
+      "r1_len": {
+        "max": 28,
+        "min": 28,
+        "modal": 28
+      },
+      "r2_len": {
+        "max": 91,
+        "min": 91,
+        "modal": 91
+      }
+    }
+  },
+  "max_reads_5000": {
+    "eval": {
+      "confusion": {
+        "fn": 0,
+        "fp": 139,
+        "tn": 3354,
+        "tp": 1507
+      },
+      "f1": 0.9559,
+      "n": 5000,
+      "precision": 0.9156,
+      "predicted_affected": 1646,
+      "recall": 1.0,
+      "true_affected": 1507
+    },
+    "findings": [
+      {
+        "affected_fraction": null,
+        "check_id": "r1_length",
+        "detail": "R1 lengths span 28\u201328 bp",
+        "evidence": [
+          {
+            "note": "R1 should be exactly 28 bp (16 bp cell barcode + 12 bp UMI)",
+            "spec_ref": "read_structure.R1"
+          }
+        ],
+        "severity": 0.0,
+        "threshold": "== 28",
+        "title": "R1 length matches barcode + UMI",
+        "unit": "bp",
+        "value": 28.0,
+        "verdict": "pass"
+      },
+      {
+        "affected_fraction": null,
+        "check_id": "whitelist_hit_rate",
+        "detail": "94.3% of cell barcodes are on the whitelist",
+        "evidence": [
+          {
+            "note": "R1[0:16] should match the 3M-february-2018 gel-bead barcode whitelist",
+            "spec_ref": "whitelists.cell_barcode_3M_feb2018"
+          }
+        ],
+        "severity": 0.0,
+        "threshold": ">= 0.85",
+        "title": "Cell barcodes on the 10x whitelist",
+        "unit": "fraction",
+        "value": 0.9434,
+        "verdict": "pass"
+      },
+      {
+        "affected_fraction": 0.3282,
+        "check_id": "tso_at_r2_start",
+        "detail": "32.8% of R2 start with the TSO",
+        "evidence": [
+          {
+            "note": "R2 should start with cDNA; a leading TSO is the hallmark of empty/short-insert products",
+            "spec_ref": "read_structure.R2.readthrough_chain[tso_5prime]"
+          }
+        ],
+        "severity": 0.6564,
+        "threshold": "< 0.05",
+        "title": "R2 reads beginning with the TSO (adapter-dimer / short insert)",
+        "unit": "fraction",
+        "value": 0.3282,
+        "verdict": "fail"
+      },
+      {
+        "affected_fraction": 0.0602,
+        "check_id": "r2_adapter_readthrough",
+        "detail": "6.0% of R2 contain the adapter stem AGATCGGAAGAGC",
+        "evidence": [
+          {
+            "note": "the AGATCGGAAGAGC adapter stem in R2 means the insert was shorter than the read length",
+            "spec_ref": "oligos.oligo_r1_readinto_adapter"
+          }
+        ],
+        "severity": 0.1204,
+        "threshold": "< 0.02",
+        "title": "R2 read-through into the Illumina adapter",
+        "unit": "fraction",
+        "value": 0.0602,
+        "verdict": "warn"
+      },
+      {
+        "affected_fraction": 0.097,
+        "check_id": "r2_polyg_tail",
+        "detail": "9.7% of R2 have a poly-G tail",
+        "evidence": [
+          {
+            "note": "a poly-G 3' tail on two-color instruments is 'no signal' \u2014 typical of empty/short fragments",
+            "spec_ref": "platform_params.dark_base"
+          }
+        ],
+        "severity": 0.291,
+        "threshold": "< 0.01",
+        "title": "R2 with a poly-G no-signal tail",
+        "unit": "fraction",
+        "value": 0.097,
+        "verdict": "fail"
+      }
+    ],
+    "profile": {
+      "n_pairs": 5000,
+      "r1_len": {
+        "max": 28,
+        "min": 28,
+        "modal": 28
+      },
+      "r2_len": {
+        "max": 91,
+        "min": 91,
+        "modal": 91
+      }
+    }
+  },
+  "no_whitelist": {
+    "eval": null,
+    "findings": [
+      {
+        "affected_fraction": null,
+        "check_id": "r1_length",
+        "detail": "R1 lengths span 28\u201328 bp",
+        "evidence": [
+          {
+            "note": "R1 should be exactly 28 bp (16 bp cell barcode + 12 bp UMI)",
+            "spec_ref": "read_structure.R1"
+          }
+        ],
+        "severity": 0.0,
+        "threshold": "== 28",
+        "title": "R1 length matches barcode + UMI",
+        "unit": "bp",
+        "value": 28.0,
+        "verdict": "pass"
+      },
+      {
+        "affected_fraction": 0.3258,
+        "check_id": "tso_at_r2_start",
+        "detail": "32.6% of R2 start with the TSO",
+        "evidence": [
+          {
+            "note": "R2 should start with cDNA; a leading TSO is the hallmark of empty/short-insert products",
+            "spec_ref": "read_structure.R2.readthrough_chain[tso_5prime]"
+          }
+        ],
+        "severity": 0.6516,
+        "threshold": "< 0.05",
+        "title": "R2 reads beginning with the TSO (adapter-dimer / short insert)",
+        "unit": "fraction",
+        "value": 0.3258,
+        "verdict": "fail"
+      },
+      {
+        "affected_fraction": 0.0545,
+        "check_id": "r2_adapter_readthrough",
+        "detail": "5.5% of R2 contain the adapter stem AGATCGGAAGAGC",
+        "evidence": [
+          {
+            "note": "the AGATCGGAAGAGC adapter stem in R2 means the insert was shorter than the read length",
+            "spec_ref": "oligos.oligo_r1_readinto_adapter"
+          }
+        ],
+        "severity": 0.109,
+        "threshold": "< 0.02",
+        "title": "R2 read-through into the Illumina adapter",
+        "unit": "fraction",
+        "value": 0.0545,
+        "verdict": "warn"
+      },
+      {
+        "affected_fraction": 0.098275,
+        "check_id": "r2_polyg_tail",
+        "detail": "9.8% of R2 have a poly-G tail",
+        "evidence": [
+          {
+            "note": "a poly-G 3' tail on two-color instruments is 'no signal' \u2014 typical of empty/short fragments",
+            "spec_ref": "platform_params.dark_base"
+          }
+        ],
+        "severity": 0.2948,
+        "threshold": "< 0.01",
+        "title": "R2 with a poly-G no-signal tail",
+        "unit": "fraction",
+        "value": 0.0983,
+        "verdict": "fail"
+      }
+    ],
+    "profile": {
+      "n_pairs": 40000,
+      "r1_len": {
+        "max": 28,
+        "min": 28,
+        "modal": 28
+      },
+      "r2_len": {
+        "max": 91,
+        "min": 91,
+        "modal": 91
+      }
+    }
+  }
+}

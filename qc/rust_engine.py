@@ -1,4 +1,4 @@
-"""Invoke the `seqcolyte-qc` Rust binary for the QC compute core (profiling + checks + eval).
+"""Invoke the `qc-core` Rust binary for the QC compute core (profiling + checks + eval).
 
 This mirrors how ``extract/doc_extract.py`` shells out to the ``claude`` CLI: build an argv,
 run it, parse JSON from stdout. The binary streams the FASTQ pair in one pass and returns
@@ -19,13 +19,13 @@ from pathlib import Path
 __all__ = ["run_rust_qc", "rust_binary", "RustEngineUnavailable"]
 
 _DEFAULT_BIN = (
-    Path(__file__).resolve().parent.parent
-    / "rust" / "seqcolyte-qc" / "target" / "release" / "seqcolyte-qc"
+    Path(__file__).resolve().parent
+    / "core" / "target" / "release" / "qc-core"
 )
 
 
 class RustEngineUnavailable(RuntimeError):
-    """The seqcolyte-qc binary could not be found (build it with `make rust`)."""
+    """The qc-core binary could not be found (build it with `make rust`)."""
 
 
 def rust_binary() -> Path:
@@ -37,7 +37,7 @@ def run_rust_qc(spec_path: str, r1: str, r2: str, *, whitelist: str | None = Non
                 labels: str | None = None, max_reads: int | None = None) -> dict:
     binary = rust_binary()
     if not binary.exists():
-        raise RustEngineUnavailable(f"seqcolyte-qc binary not found at {binary}")
+        raise RustEngineUnavailable(f"qc-core binary not found at {binary}")
 
     cmd = [str(binary), "--spec", spec_path, "--r1", r1, "--r2", r2]
     if whitelist:
@@ -49,5 +49,5 @@ def run_rust_qc(spec_path: str, r1: str, r2: str, *, whitelist: str | None = Non
 
     proc = subprocess.run(cmd, capture_output=True, text=True)
     if proc.returncode != 0:
-        raise RuntimeError(f"seqcolyte-qc failed ({proc.returncode}): {proc.stderr.strip()[:500]}")
+        raise RuntimeError(f"qc-core failed ({proc.returncode}): {proc.stderr.strip()[:500]}")
     return json.loads(proc.stdout)

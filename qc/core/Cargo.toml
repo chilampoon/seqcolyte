@@ -1,12 +1,12 @@
 [package]
-name = "seqcolyte-qc"
+name = "qc-core"
 version = "0.1.0"
 edition = "2021"
-description = "Seqcolyte QC compute core — parity-preserving Rust port of qc/{profile,checks,eval}.py"
+description = "Seqcolyte QC compute core — streaming FASTQ profile + deterministic checks + label eval"
 license = "MIT"
 
 [[bin]]
-name = "seqcolyte-qc"
+name = "qc-core"
 path = "src/main.rs"
 
 [dependencies]
