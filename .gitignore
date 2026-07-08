@@ -18,6 +18,9 @@ sim/labels/*.tsv
 .env
 .env.*
 
+# Rust (seqcolyte-qc compute core) — build artifacts only; src + Cargo.lock are committed
+rust/seqcolyte-qc/target/
+
 # Python
 __pycache__/
 *.py[cod]

@@ -46,11 +46,19 @@ python -m qc run --spec spec/tenx_3p_v3.json \
   --r1 R1.fastq.gz --r2 R2.fastq.gz \
   --whitelist whitelists/3M-february-2018.txt.gz \
   --labels labels.tsv        # optional: enables the self-scoring eval
-                             # --no-llm: fast, offline, deterministic report
+                             # --no-llm:        fast, offline, deterministic report
+                             # --engine rust:   run the compute core as the seqcolyte-qc binary
 ```
 
-`make pipeline` runs that whole chain in one go; `make test` runs the 47 unit tests. Make is just a
-shortcut — everything is a plain `python -m …` command.
+`make pipeline` runs that whole chain in one go; `make test` runs the unit tests (incl. the
+Rust/Python parity gate). Make is just a shortcut — everything is a plain `python -m …` command.
+
+The per-read compute (FASTQ profiling + the checks + the eval) has two interchangeable engines:
+the pure-Python path and `seqcolyte-qc` — a parity-preserving **Rust** port that streams the FASTQ
+in one pass. It's the **default** (`make rust` to build; `--engine python` to force the pure-Python
+path; the Rust path falls back to Python automatically if the binary isn't built).
+`tests/test_rust_parity.py` asserts the two produce field-for-field-identical output. On 4M read
+pairs the Rust core runs in **~6.0 s vs ~28.9 s** for Python (**~4.8×**, `make bench`).
 
 ---
 
@@ -63,9 +71,11 @@ shortcut — everything is a plain `python -m …` command.
 - **`sim/`** — turns a clean control into labeled adapter-dimer / read-through failures, reproducibly.
 - **`qc/`** — Step 3: deterministic checks derived from the spec (R1 length, whitelist rate, TSO-at-R2-start,
   adapter read-through, poly-G tail), then Claude ranks + diagnoses them with an evidence chain.
+- **`rust/seqcolyte-qc/`** — the same profiling + checks + eval as a streaming Rust CLI (`--engine rust`),
+  a behavior-preserving optimization guarded by a differential parity test.
 
 ```
-extract/  spec/  sim/  qc/  seqcolyte/(core)  protocols/  tests/
+extract/  spec/  sim/  qc/  rust/  seqcolyte/(core)  protocols/  tests/
 ```
 
 ---
