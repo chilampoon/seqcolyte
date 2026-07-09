@@ -49,15 +49,16 @@ const hl = (id: string, hot: string | null) =>
   );
 
 export function SpecPanel({
-  projectId,
-  runId,
+  specUrl,
   highlight,
   highlightToken = 0,
+  reloadToken = 0,
 }: {
-  projectId: string;
-  runId: string | null;
+  /** URL that returns the spec JSON (project active spec, or a run snapshot). */
+  specUrl: string | null;
   highlight: string | null;
   highlightToken?: number;
+  reloadToken?: number;
 }) {
   const [spec, setSpec] = useState<SpecDoc | null>(null);
   const [state, setState] = useState<"loading" | "idle" | "empty">("loading");
@@ -65,19 +66,19 @@ export function SpecPanel({
   const hot = useHighlight(highlight, highlightToken, state === "idle");
 
   useEffect(() => {
-    if (!runId) {
+    if (!specUrl) {
       setState("empty");
       return;
     }
     setState("loading");
-    fetch(`/api/projects/${projectId}/runs/${runId}/spec`, { cache: "no-store" })
+    fetch(specUrl, { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((d: SpecDoc) => {
         setSpec(d);
         setState("idle");
       })
       .catch(() => setState("empty"));
-  }, [projectId, runId]);
+  }, [specUrl, reloadToken]);
 
   if (state === "loading") {
     return (
@@ -90,7 +91,8 @@ export function SpecPanel({
     return (
       <Card className="border-dashed">
         <CardContent className="text-muted-foreground py-16 text-center text-sm">
-          The expected-structure spec appears once a run has snapshotted it.
+          Upload a protocol in the chat to extract the expected read/library structure — it
+          appears here for review.
         </CardContent>
       </Card>
     );

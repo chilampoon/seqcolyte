@@ -3,7 +3,7 @@ import Image from "next/image";
 import { runPreflight } from "@/lib/preflight";
 import { listProjects } from "@/lib/store";
 import { PreflightPanel } from "@/components/preflight-panel";
-import { NewProjectDialog } from "@/components/new-project-dialog";
+import { NewProjectButton } from "@/components/new-project-button";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
   Card,
@@ -55,34 +55,37 @@ export default async function Home() {
   const [preflight, projects] = await Promise.all([runPreflight(), listProjects()]);
 
   return (
-    <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
-      <header className="mb-8 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="ring-border/60 relative size-9 shrink-0 overflow-hidden rounded-lg ring-1">
-            <Image
-              src="/seqcolyte-logo.png"
-              alt="Seqcolyte"
-              width={36}
-              height={36}
-              className="size-full object-cover"
-              priority
-            />
+    <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      <header className="border-border/60 shrink-0 border-b">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="ring-border/60 relative size-9 shrink-0 overflow-hidden rounded-lg ring-1">
+              <Image
+                src="/seqcolyte-logo.png"
+                alt="Seqcolyte"
+                width={36}
+                height={36}
+                className="size-full object-cover"
+                priority
+              />
+            </div>
+            <div>
+              <h1 className="text-lg font-semibold tracking-tight">Seqcolyte Studio</h1>
+              <p className="text-muted-foreground text-sm">
+                Protocol-aware sequencing QC — inputs, pipeline, results, and a grounded assistant.
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-lg font-semibold tracking-tight">Seqcolyte Studio</h1>
-            <p className="text-muted-foreground text-sm">
-              Protocol-aware sequencing QC — inputs, pipeline, results, and a grounded assistant.
-            </p>
+          <div className="flex items-center gap-1">
+            <ModeToggle />
+            <NewProjectButton />
           </div>
-        </div>
-        <div className="flex items-center gap-1">
-          <ModeToggle />
-          <NewProjectDialog />
         </div>
       </header>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
-        <section>
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="mx-auto grid w-full max-w-6xl gap-6 px-6 py-8 lg:grid-cols-[1fr_20rem]">
+          <section>
           <h2 className="text-muted-foreground mb-3 text-xs font-medium uppercase tracking-wide">
             Projects
           </h2>
@@ -95,7 +98,7 @@ export default async function Home() {
                   the assistant about the results.
                 </CardDescription>
                 <div className="pt-3">
-                  <NewProjectDialog />
+                  <NewProjectButton />
                 </div>
               </CardHeader>
             </Card>
@@ -114,6 +117,7 @@ export default async function Home() {
           </h2>
           <PreflightPanel preflight={preflight} />
         </aside>
+        </div>
       </div>
     </main>
   );

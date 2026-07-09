@@ -80,6 +80,8 @@ export interface ProjectManifest {
   inputs: {
     protocolDoc: string | null;
     notesPath: string | null;
+    /** project-relative paths of uploaded design/oligo tables (csv/tsv/xlsx) */
+    tables?: string[];
     fastq: {
       source: "control" | "sim" | "upload";
       r1: string | null;

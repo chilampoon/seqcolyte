@@ -5,6 +5,7 @@ import { CLAUDE_BIN, DEFAULT_MODEL } from "@/lib/config";
 import { inProject, projectDir } from "@/lib/paths";
 import { getProject } from "@/lib/store";
 import {
+  ONBOARDING_MESSAGE,
   appendConversation,
   buildContext,
   getLatestReport,
@@ -36,6 +37,14 @@ function lastUserText(messages: UIMessage[]): string {
 export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
   const conv = await readConversation(id);
+  // Fallback onboarding seed for conversations that predate seeding-at-creation.
+  if (conv.length === 0) {
+    return Response.json({
+      messages: [
+        { id: "seed", role: "assistant", parts: [{ type: "text", text: ONBOARDING_MESSAGE }] },
+      ],
+    });
+  }
   const messages = conv.map((e, i) => ({
     id: `h${i}`,
     role: e.role,

@@ -6,6 +6,15 @@ import type { ProjectManifest, QcReport } from "./types";
 
 const CHAT_ID = "main"; // one conversation per project (v1)
 
+/** First assistant message, seeded on an empty conversation to onboard the user. */
+export const ONBOARDING_MESSAGE =
+  "Welcome — let's set up this project. Tell me about your experiment so I can QC it:\n\n" +
+  "- **Protocol / methods** — attach the PDF, text, or Markdown (📎 below)\n" +
+  "- **Lab notes** — anything about the prep, batch, or reagents\n" +
+  "- **Oligo / design tables** — CSV, TSV, or Excel\n\n" +
+  "You can also just **type a free-text description** of the assay, chemistry, and read structure. " +
+  "Once you share a protocol, I'll extract the expected read/library structure for you to review.";
+
 const convDir = (projectId: string) => path.join(projectDir(projectId), "conversation");
 const sessionPath = (projectId: string) => path.join(convDir(projectId), `${CHAT_ID}.session.json`);
 const conversationPath = (projectId: string) => path.join(convDir(projectId), `${CHAT_ID}.jsonl`);
