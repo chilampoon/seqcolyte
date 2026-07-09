@@ -1,0 +1,31 @@
+# Build context is the repo root; keep it lean. COPY in the Dockerfile is
+# selective, so this only affects context-transfer speed + image hygiene.
+
+.git
+.DS_Store
+
+# Node / Next
+**/node_modules
+studio/.next
+studio/projects
+
+# Rust build artifacts (qc-core is rebuilt for Linux inside the image)
+**/target
+
+# Python caches / envs
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+.venv
+venv
+
+# Large raw data not used by the deployed demo (only the pbmc control + the
+# adapter-dimer sim set + the whitelist are baked in).
+data/raw/RNA-seq_*.fastq.gz
+
+# Secrets — never bake into the image
+**/.env
+**/.env.local
+
+# Scratch / local
+*.log

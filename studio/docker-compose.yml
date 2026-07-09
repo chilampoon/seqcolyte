@@ -1,0 +1,30 @@
+# Seqcolyte Studio — container deployment.
+# Build context is the repo root (..) so the image can bundle the sibling pipeline.
+#   cd studio && cp .env.example .env   # then set ANTHROPIC_API_KEY
+#   docker compose up -d --build        # → http://localhost:3000
+
+services:
+  studio:
+    build:
+      context: ..
+      dockerfile: studio/Dockerfile
+    image: seqcolyte-studio
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      # Required: the Claude CLI authenticates with this in-container (per-token billing).
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:?set ANTHROPIC_API_KEY in studio/.env}
+      # Optional model override (defaults to claude-opus-4-8).
+      SEQCOLYTE_MODEL: ${SEQCOLYTE_MODEL:-claude-opus-4-8}
+      # Optional basic-auth gate — SET BOTH when exposing this publicly.
+      STUDIO_AUTH_USER: ${STUDIO_AUTH_USER:-}
+      STUDIO_AUTH_PASS: ${STUDIO_AUTH_PASS:-}
+    volumes:
+      # Persistent project store (projects, runs, logs, conversations, conclusions).
+      - studio-data:/data
+    restart: unless-stopped
+
+volumes:
+  studio-data:

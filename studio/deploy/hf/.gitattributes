@@ -1,0 +1,9 @@
+# Store the demo binary data via LFS/Xet (HF rejects binaries committed as plain
+# git blobs). Text files (e.g. labels .tsv) stay as regular files.
+*.gz filter=lfs diff=lfs merge=lfs -text
+*.fastq.gz filter=lfs diff=lfs merge=lfs -text
+*.txt.gz filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.ico filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text

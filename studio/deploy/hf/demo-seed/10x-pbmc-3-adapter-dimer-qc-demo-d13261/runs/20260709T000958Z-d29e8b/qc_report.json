@@ -1,0 +1,153 @@
+{
+  "qc_version": "0.1.0",
+  "spec_id": "10x_3p_v3",
+  "assay": "10x Chromium Single Cell 3' Gene Expression",
+  "platform": "illumina",
+  "profile": {
+    "n_pairs": 40000,
+    "r1_len": {
+      "min": 28,
+      "max": 28,
+      "modal": 28
+    },
+    "r2_len": {
+      "min": 91,
+      "max": 91,
+      "modal": 91
+    }
+  },
+  "findings": [
+    {
+      "check_id": "r1_length",
+      "title": "R1 length matches barcode + UMI",
+      "verdict": "pass",
+      "value": 28.0,
+      "unit": "bp",
+      "threshold": "== 28",
+      "affected_fraction": null,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "read_structure.R1",
+          "note": "R1 should be exactly 28 bp (16 bp cell barcode + 12 bp UMI)"
+        }
+      ],
+      "detail": "R1 lengths span 28\u201328 bp"
+    },
+    {
+      "check_id": "whitelist_hit_rate",
+      "title": "Cell barcodes on the 10x whitelist",
+      "verdict": "pass",
+      "value": 0.9489,
+      "unit": "fraction",
+      "threshold": ">= 0.85",
+      "affected_fraction": null,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "whitelists.cell_barcode_3M_feb2018",
+          "note": "R1[0:16] should match the 3M-february-2018 gel-bead barcode whitelist"
+        }
+      ],
+      "detail": "94.9% of cell barcodes are on the whitelist"
+    },
+    {
+      "check_id": "tso_at_r2_start",
+      "title": "R2 reads beginning with the TSO (adapter-dimer / short insert)",
+      "verdict": "fail",
+      "value": 0.3258,
+      "unit": "fraction",
+      "threshold": "< 0.05",
+      "affected_fraction": 0.3258,
+      "severity": 0.6516,
+      "evidence": [
+        {
+          "spec_ref": "read_structure.R2.readthrough_chain[tso_5prime]",
+          "note": "R2 should start with cDNA; a leading TSO is the hallmark of empty/short-insert products"
+        }
+      ],
+      "detail": "32.6% of R2 start with the TSO"
+    },
+    {
+      "check_id": "r2_adapter_readthrough",
+      "title": "R2 read-through into the Illumina adapter",
+      "verdict": "warn",
+      "value": 0.0545,
+      "unit": "fraction",
+      "threshold": "< 0.02",
+      "affected_fraction": 0.0545,
+      "severity": 0.109,
+      "evidence": [
+        {
+          "spec_ref": "oligos.oligo_r1_readinto_adapter",
+          "note": "the AGATCGGAAGAGC adapter stem in R2 means the insert was shorter than the read length"
+        }
+      ],
+      "detail": "5.5% of R2 contain the adapter stem AGATCGGAAGAGC"
+    },
+    {
+      "check_id": "r2_polyg_tail",
+      "title": "R2 with a poly-G no-signal tail",
+      "verdict": "fail",
+      "value": 0.0983,
+      "unit": "fraction",
+      "threshold": "< 0.01",
+      "affected_fraction": 0.098275,
+      "severity": 0.2948,
+      "evidence": [
+        {
+          "spec_ref": "platform_params.dark_base",
+          "note": "a poly-G 3' tail on two-color instruments is 'no signal' \u2014 typical of empty/short fragments"
+        }
+      ],
+      "detail": "9.8% of R2 have a poly-G tail"
+    }
+  ],
+  "plan": {
+    "ranked": [
+      {
+        "check_id": "tso_at_r2_start",
+        "severity": "high",
+        "why": "32.6% of R2 start with the TSO"
+      },
+      {
+        "check_id": "r2_polyg_tail",
+        "severity": "medium",
+        "why": "9.8% of R2 have a poly-G tail"
+      },
+      {
+        "check_id": "r2_adapter_readthrough",
+        "severity": "low",
+        "why": "5.5% of R2 contain the adapter stem AGATCGGAAGAGC"
+      },
+      {
+        "check_id": "r1_length",
+        "severity": "none",
+        "why": "R1 lengths span 28\u201328 bp"
+      },
+      {
+        "check_id": "whitelist_hit_rate",
+        "severity": "none",
+        "why": "94.9% of cell barcodes are on the whitelist"
+      }
+    ],
+    "root_cause": "R2 reads beginning with the TSO (adapter-dimer / short insert)",
+    "diagnosis": "r2 reads beginning with the tso (adapter-dimer / short insert) (32.6% of R2 start with the TSO); r2 with a poly-g no-signal tail (9.8% of R2 have a poly-G tail).",
+    "method": "deterministic"
+  },
+  "overall": "fail",
+  "eval": {
+    "n": 40000,
+    "predicted_affected": 13074,
+    "true_affected": 11940,
+    "precision": 0.9133,
+    "recall": 1.0,
+    "f1": 0.9547,
+    "confusion": {
+      "tp": 11940,
+      "fp": 1134,
+      "fn": 0,
+      "tn": 26926
+    }
+  }
+}

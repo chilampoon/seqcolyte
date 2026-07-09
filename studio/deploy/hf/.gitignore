@@ -1,0 +1,14 @@
+# Build outputs / deps (rebuilt inside the Docker Space)
+**/node_modules
+studio/.next
+**/target
+**/__pycache__
+**/*.pyc
+
+# Runtime state + secrets
+studio/projects
+**/.env
+**/.env.local
+
+# Large raw data not used by the deployed demo
+data/raw/RNA-seq_*.fastq.gz
