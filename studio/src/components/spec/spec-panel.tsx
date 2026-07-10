@@ -142,20 +142,37 @@ function describe(spec: SpecDoc): string {
   const bits: string[] = [
     `${spec.assay ?? "Sequencing assay"}${spec.chemistry_version ? ` (${spec.chemistry_version})` : ""}.`,
   ];
+  const nano = spec.platform === "nanopore";
   if (bc || umi) {
-    const r1 = [bc && `a ${bc} bp cell barcode`, umi && `a ${umi} bp UMI`]
+    const carries = [bc && `a ${bc} nt cell barcode`, umi && `a ${umi} nt UMI`]
       .filter(Boolean)
       .join(" and ");
-    bits.push(`Read 1 carries ${r1}; Read 2 reads the cDNA insert.`);
+    bits.push(
+      nano
+        ? `After orientation normalization to the R1-handle-first direction, a raw long read carries ${carries} near its 5' end, then the cDNA insert; reads may occur in either orientation and are not guaranteed full-length.`
+        : `Read 1 carries ${carries}; Read 2 reads the cDNA insert.`,
+    );
   }
   const platform = spec.platform
     ? spec.platform.charAt(0).toUpperCase() + spec.platform.slice(1)
     : "";
-  bits.push(
-    `${spec.oligos?.length ?? 0} oligos across ${spec.library_generation?.length ?? 0} library-prep steps${
-      platform ? `, sequenced on ${platform}` : ""
-    }.`,
-  );
+  if (nano) {
+    const steps = (spec.library_generation ?? []) as Array<{ phase?: string }>;
+    const byPhase = (p: string) => steps.filter((s) => s.phase === p).length;
+    bits.push(
+      `${spec.oligos?.length ?? 0} sequence-defined 10x oligos across ${byPhase(
+        "cdna_construction",
+      )} cDNA-construction stages, ${byPhase("ont_library_prep")} ONT library-prep stages, and ${byPhase(
+        "sequencing",
+      )} sequencing stage${platform ? ` on ${platform}` : ""}.`,
+    );
+  } else {
+    bits.push(
+      `${spec.oligos?.length ?? 0} oligos across ${spec.library_generation?.length ?? 0} library-prep steps${
+        platform ? `, sequenced on ${platform}` : ""
+      }.`,
+    );
+  }
   return bits.join(" ");
 }
 

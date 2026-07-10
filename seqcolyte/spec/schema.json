@@ -4,58 +4,150 @@
   "title": "Seqcolyte consolidated read-structure spec",
   "type": "object",
   "required": [
-    "schema_version", "spec_id", "assay", "chemistry_version", "platform",
-    "platform_params", "source_docs", "oligos", "final_library", "read_structure",
-    "whitelists", "build"
+    "schema_version",
+    "spec_id",
+    "assay",
+    "chemistry_version",
+    "platform",
+    "platform_params",
+    "source_docs",
+    "oligos",
+    "final_library",
+    "read_structure",
+    "whitelists",
+    "build"
   ],
   "properties": {
-    "schema_version": { "type": "string" },
-    "spec_id": { "type": "string" },
-    "assay": { "type": "string" },
-    "chemistry_version": { "type": "string" },
-    "platform": { "type": "string", "enum": ["illumina", "nanopore"] },
-    "platform_params": { "type": "object" },
+    "schema_version": {
+      "type": "string"
+    },
+    "spec_id": {
+      "type": "string"
+    },
+    "assay": {
+      "type": "string"
+    },
+    "chemistry_version": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "illumina",
+        "nanopore"
+      ]
+    },
+    "platform_params": {
+      "type": "object"
+    },
     "source_docs": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["doc_id", "title"],
+        "required": [
+          "doc_id",
+          "title"
+        ],
         "properties": {
-          "doc_id": { "type": "string" },
-          "title": { "type": "string" },
-          "url": { "type": ["string", "null"] },
-          "path": { "type": ["string", "null"] },
-          "retrieved_date": { "type": ["string", "null"] }
+          "doc_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "retrieved_date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
         }
       }
     },
-    "oligos": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/oligo" } },
+    "oligos": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/oligo"
+      }
+    },
     "final_library": {
       "type": "object",
-      "required": ["annotated_library_sequence", "strands"],
+      "required": [
+        "annotated_library_sequence",
+        "strands"
+      ],
       "properties": {
-        "annotated_library_sequence": { "type": "string" },
-        "library_sequence": { "type": "string" },
-        "strands": { "type": "array" },
-        "annotation_lines": { "type": "array" },
-        "evidence": { "type": "array" }
+        "annotated_library_sequence": {
+          "type": "string"
+        },
+        "library_sequence": {
+          "type": "string"
+        },
+        "strands": {
+          "type": "array"
+        },
+        "annotation_lines": {
+          "type": "array"
+        },
+        "evidence": {
+          "type": "array"
+        }
       }
     },
     "read_structure": {
       "type": "object",
-      "required": ["reads"],
-      "properties": { "reads": { "type": "array", "items": { "$ref": "#/$defs/read" } } }
+      "required": [
+        "reads"
+      ],
+      "properties": {
+        "reads": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/read"
+          }
+        }
+      }
     },
     "library_generation": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["step", "title"],
+        "required": [
+          "step",
+          "title"
+        ],
         "properties": {
-          "step": { "type": "integer" },
-          "title": { "type": "string" },
-          "note": { "type": ["string", "null"] },
-          "product": { "type": ["string", "null"] }
+          "step": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "product": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
         }
       }
     },
@@ -63,89 +155,321 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["read"],
+        "required": [
+          "read"
+        ],
         "properties": {
-          "read": { "type": "string" },
-          "primer": { "type": ["string", "null"] },
-          "template": { "type": ["string", "null"] },
-          "cycles": { "type": ["integer", "null"] },
-          "note": { "type": ["string", "null"] },
-          "diagram": { "type": ["string", "null"] }
+          "read": {
+            "type": "string"
+          },
+          "primer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "template": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "cycles": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "diagram": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
         }
       }
     },
-    "whitelists": { "type": "object", "additionalProperties": { "$ref": "#/$defs/whitelist" } },
+    "whitelists": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/whitelist"
+      }
+    },
     "build": {
       "type": "object",
-      "required": ["builder_version", "deterministic"],
+      "required": [
+        "builder_version",
+        "deterministic"
+      ],
       "properties": {
-        "builder_version": { "type": "string" },
-        "deterministic": { "type": "boolean" },
-        "source_html_sha256": { "type": ["string", "null"] }
+        "builder_version": {
+          "type": "string"
+        },
+        "deterministic": {
+          "type": "boolean"
+        },
+        "source_html_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     }
   },
   "$defs": {
     "oligo": {
       "type": "object",
-      "required": ["oligo_id", "name", "role", "kind", "sequence", "direction", "provenance", "sequence_source", "evidence"],
+      "required": [
+        "oligo_id",
+        "name",
+        "role",
+        "kind",
+        "sequence",
+        "direction",
+        "provenance",
+        "sequence_source",
+        "evidence"
+      ],
       "properties": {
-        "oligo_id": { "type": "string" },
-        "name": { "type": "string" },
-        "aliases": { "type": "array", "items": { "type": "string" } },
-        "role": { "type": "string" },
-        "kind": { "type": "string", "enum": ["single", "assembled", "double_stranded"] },
-        "sequence": { "type": ["string", "null"] },
-        "direction": { "type": "string" },
-        "components": { "type": "array" },
-        "provenance": { "type": "string", "enum": ["document", "reagent"] },
-        "derivation": { "type": ["string", "null"] },
-        "sequence_source": { "type": "string" },
-        "evidence": { "type": "array", "items": { "type": "object" } },
-        "notes": { "type": ["string", "null"] }
+        "oligo_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "role": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "single",
+            "assembled",
+            "double_stranded"
+          ]
+        },
+        "sequence": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "direction": {
+          "type": "string"
+        },
+        "components": {
+          "type": "array"
+        },
+        "provenance": {
+          "type": "string",
+          "enum": [
+            "document",
+            "reagent"
+          ]
+        },
+        "derivation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sequence_source": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "read": {
       "type": "object",
-      "required": ["read", "segments"],
+      "required": [
+        "read",
+        "segments"
+      ],
       "properties": {
-        "read": { "type": "string", "enum": ["R1", "R2", "I1", "I2", "L1"] },
-        "primer": { "type": ["string", "null"] },
-        "template": { "type": ["string", "null"] },
-        "cycles": { "type": ["integer", "null"] },
-        "segments": { "type": "array", "items": { "$ref": "#/$defs/segment" } },
-        "readthrough_chain": { "type": "array" }
+        "read": {
+          "type": "string",
+          "enum": [
+            "R1",
+            "R2",
+            "I1",
+            "I2",
+            "L1"
+          ]
+        },
+        "primer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "template": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cycles": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/segment"
+          }
+        },
+        "readthrough_chain": {
+          "type": "array"
+        }
       }
     },
     "segment": {
       "type": "object",
-      "required": ["name", "type", "order", "scored"],
+      "required": [
+        "name",
+        "type",
+        "order",
+        "scored"
+      ],
       "properties": {
-        "name": { "type": "string" },
-        "type": { "type": "string", "enum": ["barcode", "umi", "constant", "insert", "polyA", "index"] },
-        "order": { "type": "integer" },
-        "length": { "type": "integer" },
-        "length_range": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
-        "scored": { "type": "boolean" },
-        "provenance": { "type": ["string", "null"] },
-        "whitelist_ref": { "type": ["string", "null"] },
-        "constant_ref": { "type": ["string", "null"] },
-        "notes": { "type": ["string", "null"] }
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "barcode",
+            "umi",
+            "constant",
+            "insert",
+            "polyA",
+            "index",
+            "homopolymer",
+            "anchor"
+          ]
+        },
+        "order": {
+          "type": "integer"
+        },
+        "length": {
+          "type": "integer"
+        },
+        "length_range": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "scored": {
+          "type": "boolean"
+        },
+        "provenance": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "whitelist_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "constant_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "whitelist": {
       "type": "object",
-      "required": ["path", "count", "length"],
+      "required": [
+        "path",
+        "count",
+        "length"
+      ],
       "properties": {
-        "path": { "type": "string" },
-        "md5": { "type": ["string", "null"] },
-        "md5_provenance": { "type": ["string", "null"] },
-        "source_url": { "type": ["string", "null"] },
-        "source_note": { "type": ["string", "null"] },
-        "size_bytes_gz": { "type": ["integer", "null"] },
-        "count": { "type": "integer" },
-        "length": { "type": "integer" },
-        "retrieved_date": { "type": ["string", "null"] }
+        "path": {
+          "type": "string"
+        },
+        "md5": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "md5_provenance": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "size_bytes_gz": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "count": {
+          "type": "integer"
+        },
+        "length": {
+          "type": "integer"
+        },
+        "retrieved_date": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     }
   }
