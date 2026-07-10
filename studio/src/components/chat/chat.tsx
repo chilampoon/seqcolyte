@@ -15,7 +15,9 @@ import {
   Wrench,
 } from "lucide-react";
 import { toast } from "sonner";
+import type { StepStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { AnalysisTrace } from "@/components/trace/analysis-trace";
 
 const UPLOAD_ACCEPT = ".pdf,.txt,.md,.csv,.tsv,.xlsx,.xls";
 
@@ -76,12 +78,15 @@ function MessageBubble({ message }: { message: UIMessage }) {
       >
         {parts.map((part, i) => {
           if (part.type === "text") {
-            return isUser ? (
-              <p key={i} className="whitespace-pre-wrap">
-                {part.text}
-              </p>
-            ) : (
-              <div key={i} className="prose-chat text-sm">
+            // Both roles render markdown; the user bubble inherits its own color.
+            return (
+              <div
+                key={i}
+                className={cn(
+                  "prose-chat text-sm",
+                  isUser && "[&_*]:!text-primary-foreground [&_p]:!my-0",
+                )}
+              >
                 <Streamdown>{part.text ?? ""}</Streamdown>
               </div>
             );
@@ -105,12 +110,18 @@ export function Chat({
   railOpen,
   onToggleRail,
   onExtractDone,
+  traceRunId,
+  onRunDone,
 }: {
   projectId: string;
   railOpen: boolean;
   onToggleRail: () => void;
-  /** Called after an uploaded protocol finishes extraction (opens the Spec tab). */
+  /** Called after an uploaded protocol finishes extraction (opens the Spec viewer). */
   onExtractDone?: () => void;
+  /** When set, the QC run's workflow trace renders in the chat stream. */
+  traceRunId?: string | null;
+  /** Fires when the traced run reaches a terminal status (`live` = finished while watching). */
+  onRunDone?: (status: StepStatus, live: boolean) => void;
 }) {
   const [input, setInput] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -143,10 +154,15 @@ export function Chat({
     void hydrate();
   }, [hydrate]);
 
+  // A newly-started run appends an out-of-band "Spec confirmed" message — re-pull it.
+  useEffect(() => {
+    if (traceRunId) void hydrate();
+  }, [traceRunId, hydrate]);
+
   useEffect(() => {
     const el = scrollRef.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [messages, status, extract]);
+  }, [messages, status, extract, traceRunId]);
 
   useEffect(() => () => esRef.current?.close(), []);
 
@@ -257,6 +273,14 @@ export function Chat({
                 )}
               </div>
             </div>
+          )}
+          {traceRunId && (
+            <AnalysisTrace
+              key={traceRunId}
+              projectId={projectId}
+              runId={traceRunId}
+              onRunDone={onRunDone}
+            />
           )}
         </div>
       </div>

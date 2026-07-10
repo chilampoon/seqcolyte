@@ -10,16 +10,17 @@ import {
   StickyNote,
 } from "lucide-react";
 import type { ProjectManifest, RunRecord } from "@/lib/types";
+import type { OpenFile } from "@/components/viewer/file-viewer";
 
 type Row = {
   icon: typeof FileText;
   label: string;
   sub?: string;
-  viewHref?: string;
+  open?: OpenFile;
   downloadHref?: string;
 };
 
-function FileRow({ row }: { row: Row }) {
+function FileRow({ row, onOpen }: { row: Row; onOpen: (f: OpenFile) => void }) {
   const Icon = row.icon;
   return (
     <div className="border-border/60 flex items-center gap-2 border-b py-2 last:border-b-0">
@@ -28,16 +29,14 @@ function FileRow({ row }: { row: Row }) {
         <div className="truncate text-sm">{row.label}</div>
         {row.sub && <div className="text-muted-foreground truncate font-mono text-[11px]">{row.sub}</div>}
       </div>
-      {row.viewHref && (
-        <a
-          href={row.viewHref}
-          target="_blank"
-          rel="noreferrer"
+      {row.open && (
+        <button
+          onClick={() => onOpen(row.open!)}
           className="text-muted-foreground hover:text-foreground rounded p-1"
-          title="View"
+          title="Open in viewer"
         >
           <Eye className="size-3.5" />
-        </a>
+        </button>
       )}
       {row.downloadHref && (
         <a
@@ -53,17 +52,36 @@ function FileRow({ row }: { row: Row }) {
   );
 }
 
-export function FilesPanel({ project, runs }: { project: ProjectManifest; runs: RunRecord[] }) {
+/** Map an input file's extension to a viewer kind. */
+function docKind(rel: string): OpenFile["kind"] {
+  const l = rel.toLowerCase();
+  if (l.endsWith(".pdf")) return "pdf";
+  return "markdown"; // .md / .txt render as markdown/text
+}
+
+export function FilesPanel({
+  project,
+  runs,
+  hasNotes,
+  onOpen,
+}: {
+  project: ProjectManifest;
+  runs: RunRecord[];
+  /** whether inputs/notes.md has any content — an empty notes file is hidden */
+  hasNotes: boolean;
+  onOpen: (f: OpenFile) => void;
+}) {
   const fileHref = (rel: string) => `/api/projects/${project.id}/files/${rel}`;
 
   const rows: Row[] = [];
   if (project.inputs.protocolDoc) {
+    const rel = project.inputs.protocolDoc;
     rows.push({
       icon: FileText,
       label: "Protocol document",
-      sub: project.inputs.protocolDoc.split("/").pop(),
-      viewHref: fileHref(project.inputs.protocolDoc),
-      downloadHref: `${fileHref(project.inputs.protocolDoc)}?download`,
+      sub: rel.split("/").pop(),
+      open: { kind: docKind(rel), path: rel, title: rel.split("/").pop() ?? "Protocol" },
+      downloadHref: `${fileHref(rel)}?download`,
     });
   }
   for (const t of project.inputs.tables ?? []) {
@@ -71,17 +89,18 @@ export function FilesPanel({ project, runs }: { project: ProjectManifest; runs: 
       icon: FileSpreadsheet,
       label: "Design table",
       sub: t.split("/").pop(),
-      viewHref: fileHref(t),
+      open: { kind: "table", path: t, title: t.split("/").pop() ?? "Table" },
       downloadHref: `${fileHref(t)}?download`,
     });
   }
-  if (project.inputs.notesPath) {
+  if (project.inputs.notesPath && hasNotes) {
+    const rel = project.inputs.notesPath;
     rows.push({
       icon: StickyNote,
       label: "Lab notes",
-      sub: project.inputs.notesPath.split("/").pop(),
-      viewHref: fileHref(project.inputs.notesPath),
-      downloadHref: `${fileHref(project.inputs.notesPath)}?download`,
+      sub: rel.split("/").pop(),
+      open: { kind: "markdown", path: rel, title: "Lab notes" },
+      downloadHref: `${fileHref(rel)}?download`,
     });
   }
   if (project.activeSpecPath) {
@@ -89,7 +108,7 @@ export function FilesPanel({ project, runs }: { project: ProjectManifest; runs: 
       icon: ScrollText,
       label: "Extracted spec",
       sub: "expected read/library structure",
-      viewHref: `/api/projects/${project.id}/spec`,
+      open: { kind: "spec", title: "Extracted spec" },
       downloadHref: `${fileHref(project.activeSpecPath)}?download`,
     });
   }
@@ -99,8 +118,12 @@ export function FilesPanel({ project, runs }: { project: ProjectManifest; runs: 
         icon: FileJson,
         label: "QC report",
         sub: `${run.id}${run.overall ? ` · ${run.overall.toUpperCase()}` : ""}`,
-        viewHref: `/api/projects/${project.id}/runs/${run.id}/report`,
-        downloadHref: `/api/projects/${project.id}/runs/${run.id}/report`,
+        open: {
+          kind: "html",
+          url: `/api/projects/${project.id}/runs/${run.id}/report?format=html`,
+          title: `QC report · ${run.id}`,
+        },
+        downloadHref: `/api/projects/${project.id}/runs/${run.id}/report?format=html&download`,
       });
     }
   }
@@ -116,7 +139,7 @@ export function FilesPanel({ project, runs }: { project: ProjectManifest; runs: 
   return (
     <div className="border-border/60 rounded-lg border px-3">
       {rows.map((r, i) => (
-        <FileRow key={i} row={r} />
+        <FileRow key={i} row={r} onOpen={onOpen} />
       ))}
     </div>
   );

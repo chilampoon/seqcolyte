@@ -91,6 +91,23 @@ EXTRACTION_SCHEMA: dict = {
                     "step": {"type": "integer"},
                     "title": {"type": "string"},
                     "note": {"type": "string"},
+                    "product": {"type": "string"},
+                },
+            },
+        },
+        "library_sequencing": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["read", "diagram"],
+                "properties": {
+                    "read": {"type": "string"},
+                    "primer": {"type": "string"},
+                    "template": {"type": "string"},
+                    "cycles": {"type": "integer"},
+                    "note": {"type": "string"},
+                    "diagram": {"type": "string"},
                 },
             },
         },
@@ -100,7 +117,7 @@ EXTRACTION_SCHEMA: dict = {
 _PROMPT = """You are an expert at reading single-cell sequencing library-prep protocols and \
 extracting their exact oligonucleotide sequences and final library structure.
 
-Below is the extracted text of one protocol document ({protocol_name}). Extract TWO things into \
+Below is the extracted text of one protocol document ({protocol_name}). Extract the following into \
 the required JSON schema:
 
 1. `oligos`: one entry per named oligo in the protocol's oligonucleotide-sequence section.
@@ -114,8 +131,31 @@ the required JSON schema:
 3. `library_generation`: the ordered step-by-step library-build workflow, if the document
    describes it (e.g. mRNA capture / reverse transcription -> template switching -> cDNA
    amplification -> fragmentation + A-tailing -> adapter ligation -> sample-index PCR -> final
-   library). One entry per step: `{step: <1-based int>, title: <short step name>, note: <optional>}`.
+   library). One entry per step:
+   `{step: <1-based int>, title: <short step name>, note: <optional plain-English biology>, product: <ASCII diagram>}`.
+   For EACH step, `product` is a monospace ASCII diagram of the molecular product AFTER that step
+   (scg_lib_structs style). Diagram conventions (follow EXACTLY, spaces only — never tabs):
+     `5'- SEQ -3'` sense strand · `3'- SEQ -5'` antisense · `-------->` / `<--------` polymerase
+     extension · `|--5'-` bead-attached 5' end · `[CELL_BARCODE:16]` / `[UMI:12]` / `[SAMPLE_INDEX:8]`
+     variable regions · `[CDNA]` the cDNA insert · `(T)30VN` poly-dT anchor · `*A`/`A*` A-tail overhang.
+   Write out adapter/primer sequences in full (do NOT truncate). When a primer anneals, put it on its
+   own line and align its binding site directly above/below the construct by counting character offsets.
+   Example product (10x 3', "Adding TSO for second-strand synthesis"):
+     |--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]------->
+                                                       TACATGAGACGCAACTATGGTGACGAA -5'
+   The final step's product MUST equal the assembled `final_library.annotated_library_sequence`.
    Omit or leave empty if the document does not describe the build steps.
+4. `library_sequencing`: how the FINAL library is sequenced on the instrument — one entry per read
+   in sequencing order (Read 1, Index 1 (i7), Index 2 (i5) if dual-indexed, Read 2). Each entry:
+   `{read: <"Read 1"|"Index 1 (i7)"|"Read 2">, primer: <sequencing primer name>, template: <"top"|"bottom">,
+   cycles: <int bp>, note: <what is read, e.g. "16 bp cell barcode + 12 bp UMI">, diagram: <ASCII>}`.
+   `diagram` shows the sequencing primer annealing to the full final-library construct (BOTH strands,
+   sequences written out) with a `------->` / `<-------` arrow for the read direction. Use `N` for each
+   unknown barcode/index position and `X` for the cDNA insert. Same alignment rules as the step products
+   (spaces only, count offsets so the primer sits directly above/below its binding site).
+   Example (Read 1 sequencing the cell barcode + UMI off the bottom strand):
+                              5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT------------------------->
+     3'- ...GATGTGCTGCGAGAAGGCTAGANNNNNNNNNNNNNNNNNNNNNNNNNN(pA)BXXX...XXXTCTAGCCTTCTCG... -5'
 
 CONVENTIONS (follow EXACTLY — these determine correctness):
 - All sequences 5'->3', uppercase ACGTN only. Transcribe the exact characters from the document.
@@ -232,8 +272,19 @@ def assemble_spec(extraction: dict, *, spec_id: str, assay: str, chemistry_versi
             "notes": o.get("notes"),
         })
 
-    # Derived read-through adapters (revcomp of the extracted Read 1 primer + P5), if we can find them.
-    r1_primer = next((o["sequence"] for o in oligos if "read 1" in o["name"].lower() and o.get("sequence")), None)
+    # Derived read-through adapters (revcomp of the CONSTANT Read 1 sequencing primer + P5).
+    # Pick the constant TruSeq/Nextera Read 1 *sequencing* primer — one whose sequence has NO
+    # placeholder tokens; the barcode/UMI belong to the read, not the adapter. Fall back to the
+    # verified constant so we never revcomp a barcode/UMI-bearing capture primer.
+    def _constant_only(seq: str | None) -> str:
+        return re.sub(r"\[[^\]]*\]", "", seq or "")
+
+    r1_primer = next(
+        (o["sequence"] for o in oligos
+         if "read 1" in o["name"].lower() and "primer" in o["name"].lower()
+         and o.get("sequence") and "[" not in o["sequence"]),
+        VERIFIED.get("truseq_read1_primer"),
+    )
     p5 = next((o["sequence"] for o in oligos if o["name"].lower().strip().endswith("p5 adapter") and o.get("sequence")), None)
     chain = [{"name": "tso_5prime", "type": "constant",
               "constant_ref": _match_oligo_seq(oligos, VERIFIED["tso"]) or "", "notes": "adapter-dimer leads with the TSO"},
@@ -241,13 +292,18 @@ def assemble_spec(extraction: dict, *, spec_id: str, assay: str, chemistry_versi
              {"name": "polyA", "type": "polyA", "base": "A"},
              {"name": "umi_rc", "type": "umi", "derivation": "revcomp(umi)"},
              {"name": "cbc_rc", "type": "barcode", "derivation": "revcomp(cell_barcode)"}]
+    names = {
+        "oligo_r1_readinto_adapter": "R1 read-into adapter (revcomp of Read 1 primer)",
+        "oligo_p5_rc": "P5 reverse complement",
+    }
     for label, seq in (("oligo_r1_readinto_adapter", r1_primer), ("oligo_p5_rc", p5)):
-        if seq:
+        const = _constant_only(seq)
+        if const:
             oligos.append({
-                "oligo_id": label, "name": label.replace("oligo_", "").replace("_", " "),
+                "oligo_id": label, "name": names[label],
                 "aliases": [], "role": "read_through_adapter", "kind": "single",
-                "sequence": revcomp(seq), "direction": "5_to_3", "components": [],
-                "provenance": "document", "derivation": f"revcomp({seq})",
+                "sequence": revcomp(const), "direction": "5_to_3", "components": [],
+                "provenance": "document", "derivation": f"revcomp({const})",
                 "sequence_source": "derived_revcomp",
                 "evidence": [{"source_doc": "protocol_pdf", "locator": "derived", "method": "revcomp"}],
                 "notes": None,
@@ -292,6 +348,7 @@ def assemble_spec(extraction: dict, *, spec_id: str, assay: str, chemistry_versi
         },
         "read_structure": read_structure,
         "library_generation": extraction.get("library_generation", []),
+        "library_sequencing": extraction.get("library_sequencing", []),
         "whitelists": whitelist_block,
         "build": {"builder_version": "llm-1.0", "deterministic": False,
                   "source_html_sha256": None, "extraction_method": "claude_llm", "model": model},

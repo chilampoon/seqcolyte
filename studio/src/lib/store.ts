@@ -87,9 +87,12 @@ export async function createProject(input: { name: string }): Promise<ProjectMan
     createdAt: now,
     updatedAt: now,
     activeSpecPath: null,
+    phase: "awaiting_inputs",
+    specConfirmed: false,
     inputs: {
       protocolDoc: null,
       notesPath: "inputs/notes.md",
+      reads: null,
       fastq: { source: "sim", r1: null, r2: null },
     },
     latestRunId: null,

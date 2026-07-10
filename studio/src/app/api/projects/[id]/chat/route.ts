@@ -8,6 +8,7 @@ import {
   ONBOARDING_MESSAGE,
   appendConversation,
   buildContext,
+  buildGatingPreamble,
   getLatestReport,
   readConversation,
   readSession,
@@ -82,6 +83,9 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     const latest = await getLatestReport(id);
     prompt = buildContext(project, notes, latest) + "\n" + userText;
   }
+  // Gating is behavioral and re-evaluated EVERY turn (phase/inputs change between turns).
+  const gate = buildGatingPreamble(project);
+  if (gate) prompt = `${gate}\n\n---\n\n${prompt}`;
 
   const args = [
     "-p",

@@ -1,13 +1,24 @@
+import { promises as fs } from "node:fs";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getProject, listRuns, projectExists } from "@/lib/store";
+import { inProject } from "@/lib/paths";
 import { Badge } from "@/components/ui/badge";
 import { Workspace } from "@/components/workspace";
 import { ModeToggle } from "@/components/mode-toggle";
 import { EditableTitle } from "@/components/editable-title";
 
 export const dynamic = "force-dynamic";
+
+async function readHasNotes(id: string, notesPath: string | null): Promise<boolean> {
+  if (!notesPath) return false;
+  try {
+    return (await fs.readFile(inProject(id, notesPath), "utf8")).trim().length > 0;
+  } catch {
+    return false;
+  }
+}
 
 export default async function ProjectPage({
   params,
@@ -17,6 +28,7 @@ export default async function ProjectPage({
   const { id } = await params;
   if (!(await projectExists(id))) notFound();
   const [project, runs] = await Promise.all([getProject(id), listRuns(id)]);
+  const hasNotes = await readHasNotes(id, project.inputs.notesPath);
 
   return (
     <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -42,7 +54,12 @@ export default async function ProjectPage({
         </div>
       </header>
 
-      <Workspace project={project} initialRuns={runs} className="min-h-0 flex-1" />
+      <Workspace
+        project={project}
+        initialRuns={runs}
+        hasNotes={hasNotes}
+        className="min-h-0 flex-1"
+      />
     </main>
   );
 }

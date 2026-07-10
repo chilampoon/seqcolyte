@@ -67,6 +67,15 @@ export interface RunRecord {
   overall?: Verdict | null;
 }
 
+/** Onboarding → analysis lifecycle. Drives the assistant's gating prompts. */
+export type ProjectPhase =
+  | "awaiting_inputs"
+  | "extracting"
+  | "awaiting_spec_review"
+  | "spec_confirmed"
+  | "analyzing"
+  | "complete";
+
 export interface ProjectManifest {
   schemaVersion: "studio.project.v1";
   id: string;
@@ -77,11 +86,17 @@ export interface ProjectManifest {
   updatedAt: string;
   /** relative-to-project path of the active spec (extract output or reference copy) */
   activeSpecPath: string | null;
+  /** Current lifecycle phase (defaults to awaiting_inputs when absent). */
+  phase?: ProjectPhase;
+  /** The user reviewed and confirmed the extracted spec. */
+  specConfirmed?: boolean;
   inputs: {
     protocolDoc: string | null;
     notesPath: string | null;
     /** project-relative paths of uploaded design/oligo tables (csv/tsv/xlsx) */
     tables?: string[];
+    /** which reads back the analysis: user-uploaded FASTQ vs. the built-in demo dataset */
+    reads?: "uploaded" | "demo" | null;
     fastq: {
       source: "control" | "sim" | "upload";
       r1: string | null;
@@ -150,12 +165,19 @@ export interface QcReport {
 
 // ---- Spec (expected read/library structure) ----
 
+export interface SpecOligoComponent {
+  name: string;
+  sequence: string;
+  role?: string;
+}
 export interface SpecOligo {
   oligo_id: string;
   name?: string;
   role?: string;
   kind?: string;
   sequence?: string;
+  /** named sub-parts (e.g. TruSeq Read 1, 10x Barcode, UMI, poly(dT)) with their sequences */
+  components?: SpecOligoComponent[];
   notes?: string;
 }
 export interface SpecSegment {
@@ -185,6 +207,17 @@ export interface SpecLibStep {
   step: number;
   title: string;
   note?: string | null;
+  /** monospace ASCII diagram of the molecular product after this step (scg_lib_structs style) */
+  product?: string | null;
+}
+export interface SpecSequencingRead {
+  read: string;
+  primer?: string | null;
+  template?: string | null;
+  cycles?: number | null;
+  note?: string | null;
+  /** ASCII diagram of the sequencing primer annealing to the final library + read direction */
+  diagram?: string | null;
 }
 export interface SpecWhitelist {
   name?: string;
@@ -201,10 +234,13 @@ export interface SpecDoc {
   oligos?: SpecOligo[];
   read_structure?: { reads?: SpecRead[] };
   library_generation?: SpecLibStep[];
+  library_sequencing?: SpecSequencingRead[];
   final_library?: {
     source_label?: string;
     annotated_library_sequence?: string;
     library_sequence?: string;
+    /** human-readable "<sequence-or-token> = <label>" breakdown, in 5'→3' order */
+    annotation_lines?: string[];
   };
   whitelists?: Record<string, SpecWhitelist>;
 }

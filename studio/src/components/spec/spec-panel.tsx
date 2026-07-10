@@ -1,69 +1,218 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Loader2 } from "lucide-react";
-import type { SpecDoc } from "@/lib/types";
-import { anchor } from "@/lib/resolveSpecRef";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useMemo, useState } from "react";
+import { ChevronRight, Loader2 } from "lucide-react";
+import type { SpecDoc, SpecOligo } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import {
+  OLIGO_COLORS,
+  OLIGO_LABELS,
+  buildSeqIndex,
+  colorizeDiagram,
+  isToken,
+  oligoType,
+  splitSequence,
+  tokenType,
+  type OligoType,
+} from "@/lib/oligoColors";
 
-function Section({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
+// ---------- colored sequence rendering ----------
+
+function Pill({ type, label }: { type: OligoType; label: string }) {
+  const c = OLIGO_COLORS[type];
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm">
-          {title}
-          {subtitle && <span className="text-muted-foreground ml-2 font-normal">{subtitle}</span>}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-2 pt-0">{children}</CardContent>
-    </Card>
+    <span
+      className="mx-0.5 inline-block rounded px-1 align-middle text-[10px] font-medium"
+      style={{ color: c, backgroundColor: `${c}22` }}
+    >
+      {label}
+    </span>
   );
 }
 
-function useHighlight(target: string | null, token: number, ready: boolean) {
-  const [hot, setHot] = useState<string | null>(null);
-  useEffect(() => {
-    if (!target || !ready) return;
-    const el = document.getElementById(target);
-    if (!el) return;
-    // let the DOM paint the freshly-rendered spec before scrolling
-    const raf = requestAnimationFrame(() => {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-      setHot(target);
-    });
-    const t = setTimeout(() => setHot(null), 2200);
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(t);
-    };
-  }, [target, token, ready]);
-  return hot;
+/** A sequence colored per scg_lib_structs — from named components, else token split. */
+function OligoSequence({ oligo }: { oligo: SpecOligo }) {
+  const comps = oligo.components ?? [];
+  if (comps.length) {
+    return (
+      <span className="font-mono text-[11px] leading-relaxed break-all">
+        {comps.map((c, i) => {
+          const t = oligoType(c.name);
+          return isToken(c.sequence) ? (
+            <Pill key={i} type={t} label={OLIGO_LABELS[t]} />
+          ) : (
+            <span key={i} style={{ color: OLIGO_COLORS[t] }} title={c.name}>
+              {c.sequence}
+            </span>
+          );
+        })}
+      </span>
+    );
+  }
+  const whole = oligoType(oligo.name || oligo.oligo_id || oligo.role || "");
+  return (
+    <span className="font-mono text-[11px] leading-relaxed break-all">
+      {splitSequence(oligo.sequence ?? "").map((p, i) =>
+        p.token ? (
+          <Pill key={i} type={tokenType(p.text)} label={OLIGO_LABELS[tokenType(p.text)]} />
+        ) : (
+          <span key={i} style={{ color: OLIGO_COLORS[whole] }}>
+            {p.text}
+          </span>
+        ),
+      )}
+    </span>
+  );
 }
 
-const hl = (id: string, hot: string | null) =>
-  cn(
-    "scroll-mt-4 rounded-md transition-colors",
-    hot === id && "ring-2 ring-primary bg-primary/5",
+/** Color an ASCII step-product diagram — span-only, so strand alignment is untouched. */
+function ProductDiagram({ text, index }: { text: string; index: [string, OligoType][] }) {
+  return (
+    <>
+      {colorizeDiagram(text, index).map((seg, i) =>
+        seg.type ? (
+          <span key={i} style={{ color: OLIGO_COLORS[seg.type] }}>
+            {seg.text}
+          </span>
+        ) : (
+          <span key={i}>{seg.text}</span>
+        ),
+      )}
+    </>
   );
+}
+
+/** The final-library molecule, colored from its `annotation_lines` breakdown. */
+function FinalLibrarySequence({ lines }: { lines: string[] }) {
+  return (
+    <span className="font-mono text-[11px] leading-relaxed whitespace-nowrap">
+      {lines.map((line, i) => {
+        const eq = line.lastIndexOf(" = ");
+        const seqPart = (eq >= 0 ? line.slice(0, eq) : line).trim();
+        const label = eq >= 0 ? line.slice(eq + 3).trim() : seqPart;
+        const t = oligoType(label);
+        return isToken(seqPart) ? (
+          <Pill key={i} type={t} label={OLIGO_LABELS[t]} />
+        ) : (
+          <span key={i} style={{ color: OLIGO_COLORS[t] }} title={label}>
+            {seqPart.replace(/\s*\+\s*/g, "")}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
+// ---------- derived text + legend ----------
+
+const LEGEND_ORDER: OligoType[] = [
+  "p5",
+  "read1",
+  "cell_barcode",
+  "umi",
+  "poly_dt",
+  "tso",
+  "cdna",
+  "read2",
+  "sample_index",
+  "p7",
+  "capture",
+  "me",
+];
+
+function typesInSpec(spec: SpecDoc): OligoType[] {
+  const set = new Set<OligoType>();
+  for (const o of spec.oligos ?? []) {
+    if (o.components?.length) o.components.forEach((c) => set.add(oligoType(c.name)));
+    else splitSequence(o.sequence ?? "").forEach((p) => p.token && set.add(tokenType(p.text)));
+  }
+  for (const line of spec.final_library?.annotation_lines ?? []) {
+    const eq = line.lastIndexOf(" = ");
+    if (eq >= 0) set.add(oligoType(line.slice(eq + 3)));
+  }
+  set.delete("other");
+  return LEGEND_ORDER.filter((t) => set.has(t));
+}
+
+function describe(spec: SpecDoc): string {
+  const full = JSON.stringify(spec);
+  const bc = full.match(/\[CELL_BARCODE:(\d+)\]/)?.[1];
+  const umi = full.match(/\[UMI:(\d+)\]/)?.[1];
+  const bits: string[] = [
+    `${spec.assay ?? "Sequencing assay"}${spec.chemistry_version ? ` (${spec.chemistry_version})` : ""}.`,
+  ];
+  if (bc || umi) {
+    const r1 = [bc && `a ${bc} bp cell barcode`, umi && `a ${umi} bp UMI`]
+      .filter(Boolean)
+      .join(" and ");
+    bits.push(`Read 1 carries ${r1}; Read 2 reads the cDNA insert.`);
+  }
+  const platform = spec.platform
+    ? spec.platform.charAt(0).toUpperCase() + spec.platform.slice(1)
+    : "";
+  bits.push(
+    `${spec.oligos?.length ?? 0} oligos across ${spec.library_generation?.length ?? 0} library-prep steps${
+      platform ? `, sequenced on ${platform}` : ""
+    }.`,
+  );
+  return bits.join(" ");
+}
+
+function Section({
+  title,
+  sub,
+  children,
+}: {
+  title: string;
+  sub?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="space-y-2.5">
+      <h2 className="text-foreground border-border/60 flex items-baseline gap-2 border-b pb-1.5 text-sm font-semibold tracking-wide uppercase">
+        {title}
+        {sub && (
+          <span className="text-muted-foreground text-xs font-normal tracking-normal normal-case">
+            {sub}
+          </span>
+        )}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
+// ---------- panel ----------
 
 export function SpecPanel({
   specUrl,
-  highlight,
-  highlightToken = 0,
   reloadToken = 0,
 }: {
-  /** URL that returns the spec JSON (project active spec, or a run snapshot). */
   specUrl: string | null;
-  highlight: string | null;
-  highlightToken?: number;
   reloadToken?: number;
 }) {
   const [spec, setSpec] = useState<SpecDoc | null>(null);
   const [state, setState] = useState<"loading" | "idle" | "empty">("loading");
-  const containerRef = useRef<HTMLDivElement>(null);
-  const hot = useHighlight(highlight, highlightToken, state === "idle");
+  const [oligosOpen, setOligosOpen] = useState(false);
+
+  // Constant sequences (10x/Illumina defaults + this spec's own oligo components) for
+  // coloring the step-product diagrams. Built once per spec.
+  const seqIndex = useMemo(() => {
+    const extra: [string, OligoType][] = [];
+    for (const o of spec?.oligos ?? []) {
+      for (const c of o.components ?? []) {
+        if (
+          !c.sequence.includes("[") &&
+          /^[ACGTNUVBDHKMRSWY]+$/i.test(c.sequence) &&
+          c.sequence.length >= 8
+        ) {
+          extra.push([c.sequence, oligoType(c.name)]);
+        }
+      }
+    }
+    return buildSeqIndex(extra);
+  }, [spec]);
 
   useEffect(() => {
     if (!specUrl) {
@@ -89,121 +238,214 @@ export function SpecPanel({
   }
   if (state === "empty" || !spec) {
     return (
-      <Card className="border-dashed">
-        <CardContent className="text-muted-foreground py-16 text-center text-sm">
-          Upload a protocol in the chat to extract the expected read/library structure — it
-          appears here for review.
-        </CardContent>
-      </Card>
+      <div className="text-muted-foreground py-16 text-center text-sm">
+        Upload a protocol in the chat to extract the expected read/library structure — it appears
+        here for review.
+      </div>
     );
   }
 
+  const oligos = spec.oligos ?? [];
+  const steps = spec.library_generation ?? [];
+  const seqReads = spec.library_sequencing ?? [];
   const reads = spec.read_structure?.reads ?? [];
-  const r2 = reads.find((r) => r.read === "R2");
+  const fl = spec.final_library;
+  const legend = typesInSpec(spec);
 
   return (
-    <div ref={containerRef} className="space-y-4">
-      <Section title="Read structure" subtitle="expected layout per read">
-        <div className="space-y-2">
-          {reads.map((rd) => (
-            <div key={rd.read} id={anchor.read(rd.read)} className={cn("border-border/60 border p-2", hl(anchor.read(rd.read), hot))}>
-              <div className="flex items-center gap-2">
-                <Badge variant="secondary" className="font-mono text-[10px]">
-                  {rd.read}
-                </Badge>
-                <span className="text-muted-foreground text-xs">
-                  {rd.cycles ? `${rd.cycles} cycles · ` : ""}
-                  {(rd.segments ?? []).map((s) => s.name).join(" + ") || "—"}
-                </span>
-              </div>
-            </div>
+    <div className="space-y-6">
+      {/* 1. Title */}
+      <div className="space-y-1.5">
+        <h1 className="text-lg leading-tight font-semibold">{spec.assay ?? "Extracted spec"}</h1>
+        <div className="flex flex-wrap gap-1.5">
+          {spec.chemistry_version && (
+            <Badge variant="secondary" className="text-[10px]">
+              {spec.chemistry_version}
+            </Badge>
+          )}
+          {spec.platform && (
+            <Badge variant="outline" className="text-[10px]">
+              {spec.platform}
+            </Badge>
+          )}
+          {spec.spec_id && (
+            <Badge variant="outline" className="font-mono text-[10px]">
+              {spec.spec_id}
+            </Badge>
+          )}
+        </div>
+      </div>
+
+      {/* 2. Description */}
+      <p className="text-muted-foreground text-sm leading-relaxed">{describe(spec)}</p>
+
+      {/* color legend */}
+      {legend.length > 0 && (
+        <div className="flex flex-wrap gap-x-3 gap-y-1">
+          {legend.map((t) => (
+            <span key={t} className="inline-flex items-center gap-1 text-[11px]">
+              <span className="size-2.5 rounded-sm" style={{ backgroundColor: OLIGO_COLORS[t] }} />
+              <span className="text-muted-foreground">{OLIGO_LABELS[t]}</span>
+            </span>
           ))}
         </div>
-      </Section>
-
-      {r2?.readthrough_chain && r2.readthrough_chain.length > 0 && (
-        <Section title="R2 read-through chain" subtitle="what a short-insert R2 looks like">
-          {r2.readthrough_chain.map((c) => (
-            <div key={c.name} id={anchor.chain("R2", c.name)} className={cn("p-2", hl(anchor.chain("R2", c.name), hot))}>
-              <div className="flex items-center gap-2">
-                <code className="bg-muted rounded px-1.5 py-0.5 text-xs">{c.name}</code>
-                {c.type && <span className="text-muted-foreground text-[11px]">{c.type}</span>}
-              </div>
-              {c.notes && <p className="text-muted-foreground mt-0.5 text-xs">{c.notes}</p>}
-            </div>
-          ))}
-        </Section>
       )}
 
-      <Section title="Oligos" subtitle={`${spec.oligos?.length ?? 0} parts`}>
-        {(spec.oligos ?? []).map((o) => (
-          <div key={o.oligo_id} id={anchor.oligo(o.oligo_id)} className={cn("border-border/60 border-b py-2 last:border-b-0", hl(anchor.oligo(o.oligo_id), hot))}>
-            <div className="flex items-center gap-2">
-              <code className="text-xs font-medium">{o.oligo_id}</code>
-              {o.role && (
-                <Badge variant="outline" className="text-[10px]">
-                  {o.role}
-                </Badge>
+      {/* 3. Oligo table (foldable) */}
+      {oligos.length > 0 && (
+        <section className="space-y-2.5">
+          <button
+            onClick={() => setOligosOpen((o) => !o)}
+            className="text-foreground hover:text-primary border-border/60 flex w-full items-baseline gap-1.5 border-b pb-1.5 text-sm font-semibold tracking-wide uppercase"
+          >
+            <ChevronRight
+              className={cn(
+                "size-4 shrink-0 self-center transition-transform",
+                oligosOpen && "rotate-90",
               )}
+            />
+            Oligos
+            <span className="text-muted-foreground text-xs font-normal tracking-normal normal-case">
+              {oligos.length}
+            </span>
+          </button>
+          {oligosOpen && (
+            <div className="border-border/60 divide-border/60 divide-y rounded-lg border">
+              {oligos.map((o) => (
+                <div key={o.oligo_id} className="space-y-1 p-2.5">
+                  <div className="text-sm leading-snug font-medium">{o.name ?? o.oligo_id}</div>
+                  {o.role && (
+                    <div className="text-muted-foreground text-[11px] leading-snug">{o.role}</div>
+                  )}
+                  <OligoSequence oligo={o} />
+                </div>
+              ))}
             </div>
-            {o.sequence && (
-              <p className="text-muted-foreground mt-1 font-mono text-[11px] break-all">{o.sequence}</p>
-            )}
-          </div>
-        ))}
-      </Section>
+          )}
+        </section>
+      )}
 
-      {spec.library_generation && spec.library_generation.length > 0 && (
-        <Section title="Library generation" subtitle="wet-lab build steps">
-          <ol className="space-y-1.5">
-            {spec.library_generation.map((s) => (
-              <li key={s.step} id={anchor.libStep(s.step)} className={cn("flex gap-2 p-1", hl(anchor.libStep(s.step), hot))}>
+      {/* 4. Library generation — final library structure is the last step */}
+      {(steps.length > 0 || fl) && (
+        <Section title="Library generation" sub="step-by-step build">
+          <ol className="space-y-2.5">
+            {steps.map((s) => (
+              <li key={s.step} className="flex gap-2.5">
                 <span className="bg-muted text-muted-foreground flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-medium">
                   {s.step}
                 </span>
-                <div>
-                  <p className="text-sm">{s.title}</p>
-                  {s.note && <p className="text-muted-foreground text-xs">{s.note}</p>}
+                <div className="min-w-0 space-y-1">
+                  <div className="text-sm leading-snug font-medium">{s.title}</div>
+                  {s.note && (
+                    <div className="text-muted-foreground text-[11px] leading-snug">{s.note}</div>
+                  )}
+                  {s.product && (
+                    <pre className="bg-muted/40 overflow-x-auto rounded-md p-2 font-mono text-[10px] leading-relaxed">
+                      <ProductDiagram text={s.product} index={seqIndex} />
+                    </pre>
+                  )}
                 </div>
               </li>
             ))}
+            {fl && (
+              <li className="flex gap-2.5">
+                <span className="bg-primary/15 text-primary flex size-5 shrink-0 items-center justify-center rounded-full text-[10px]">
+                  ★
+                </span>
+                <div className="min-w-0 space-y-1.5">
+                  <div className="text-sm leading-snug font-medium">Final library</div>
+                  {fl.source_label && (
+                    <div className="text-muted-foreground text-[11px] leading-snug">
+                      {fl.source_label}
+                    </div>
+                  )}
+                  <div className="bg-muted/40 overflow-x-auto rounded-md p-2">
+                    {fl.annotation_lines?.length ? (
+                      <FinalLibrarySequence lines={fl.annotation_lines} />
+                    ) : (
+                      <span className="font-mono text-[11px] whitespace-nowrap">
+                        {fl.annotated_library_sequence ?? fl.library_sequence}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </li>
+            )}
           </ol>
         </Section>
       )}
 
-      {spec.whitelists && Object.keys(spec.whitelists).length > 0 && (
-        <Section title="Whitelists">
-          {Object.entries(spec.whitelists).map(([key, wl]) => (
-            <div key={key} id={anchor.whitelist(key)} className={cn("p-1", hl(anchor.whitelist(key), hot))}>
-              <code className="text-xs font-medium">{key}</code>
-              <p className="text-muted-foreground text-xs">
-                {wl.name} · {wl.count?.toLocaleString()} barcodes × {wl.length} nt
-              </p>
-            </div>
-          ))}
-        </Section>
-      )}
-
-      {spec.platform_params && (
-        <Section title="Platform parameters">
-          <div className="grid grid-cols-2 gap-2">
-            {Object.entries(spec.platform_params).map(([field, val]) => (
-              <div key={field} id={anchor.platformParam(field)} className={cn("bg-muted/30 rounded p-2", hl(anchor.platformParam(field), hot))}>
-                <div className="text-muted-foreground text-[10px] uppercase tracking-wide">{field}</div>
-                <div className="font-mono text-xs break-all">
-                  {typeof val === "object" ? JSON.stringify(val) : String(val)}
+      {/* 5. Library sequencing — how each read comes off the instrument */}
+      {seqReads.length > 0 && (
+        <Section title="Library sequencing" sub="how each read is sequenced">
+          <div className="space-y-3">
+            {seqReads.map((r, i) => (
+              <div key={i} className="space-y-1">
+                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                  <Badge variant="secondary" className="font-mono text-[10px]">
+                    {r.read}
+                  </Badge>
+                  {r.cycles != null && (
+                    <span className="text-muted-foreground text-[11px]">{r.cycles} bp</span>
+                  )}
+                  {r.primer && (
+                    <span className="text-muted-foreground text-[11px]">· {r.primer}</span>
+                  )}
+                  {r.template && (
+                    <span className="text-muted-foreground text-[11px]">· {r.template} strand</span>
+                  )}
                 </div>
+                {r.note && (
+                  <div className="text-muted-foreground text-[11px] leading-snug">{r.note}</div>
+                )}
+                {r.diagram && (
+                  <pre className="bg-muted/40 overflow-x-auto rounded-md p-2 font-mono text-[10px] leading-relaxed">
+                    <ProductDiagram text={r.diagram} index={seqIndex} />
+                  </pre>
+                )}
               </div>
             ))}
           </div>
         </Section>
       )}
 
-      {spec.final_library?.annotated_library_sequence && (
-        <Section title="Final library" subtitle={spec.final_library.source_label}>
-          <pre className="bg-muted/40 overflow-x-auto rounded p-2 font-mono text-[11px] whitespace-pre-wrap break-all">
-            {spec.final_library.annotated_library_sequence}
-          </pre>
+      {/* 6. Read structure (last) */}
+      {reads.length > 0 && (
+        <Section title="Read structure" sub="what each read sequences">
+          <div className="space-y-1.5">
+            {reads.map((rd) => (
+              <div key={rd.read} className="flex flex-wrap items-center gap-2">
+                <Badge variant="secondary" className="font-mono text-[10px]">
+                  {rd.read}
+                </Badge>
+                {rd.cycles != null && (
+                  <span className="text-muted-foreground text-[11px]">{rd.cycles} bp</span>
+                )}
+                <span className="flex flex-wrap items-center gap-1.5">
+                  {(rd.segments ?? []).length > 0 ? (
+                    rd.segments!.map((sg, i) => {
+                      const bp =
+                        sg.length != null
+                          ? `${sg.length}`
+                          : sg.length_range
+                            ? `${sg.length_range[0]}–${sg.length_range[1]}`
+                            : null;
+                      return (
+                        <span key={i} className="inline-flex items-center gap-1">
+                          <Pill type={oligoType(sg.name)} label={sg.name} />
+                          {bp != null && (
+                            <span className="text-muted-foreground text-[10px]">{bp} bp</span>
+                          )}
+                        </span>
+                      );
+                    })
+                  ) : (
+                    <span className="text-muted-foreground text-[11px]">—</span>
+                  )}
+                </span>
+              </div>
+            ))}
+          </div>
         </Section>
       )}
     </div>

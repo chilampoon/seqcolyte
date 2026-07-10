@@ -54,7 +54,23 @@
         "properties": {
           "step": { "type": "integer" },
           "title": { "type": "string" },
-          "note": { "type": ["string", "null"] }
+          "note": { "type": ["string", "null"] },
+          "product": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "library_sequencing": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["read"],
+        "properties": {
+          "read": { "type": "string" },
+          "primer": { "type": ["string", "null"] },
+          "template": { "type": ["string", "null"] },
+          "cycles": { "type": ["integer", "null"] },
+          "note": { "type": ["string", "null"] },
+          "diagram": { "type": ["string", "null"] }
         }
       }
     },

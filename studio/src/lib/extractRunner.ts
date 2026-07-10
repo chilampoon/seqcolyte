@@ -173,6 +173,7 @@ export async function startExtract(projectId: string, docRel: string): Promise<v
   await fs.mkdir(inProject(projectId, "spec"), { recursive: true });
   await fs.writeFile(logFile, ""); // truncate previous log
   await writeExtractState(projectId, { status: "running", doc: docRel, startedAt });
+  await updateProject(projectId, { phase: "extracting" });
 
   const args = [
     "-m",
@@ -214,6 +215,7 @@ async function fail(
     finishedAt,
     error: reason,
   });
+  await updateProject(projectId, { phase: "awaiting_inputs" });
   await appendConversation(projectId, [
     {
       role: "assistant",
@@ -254,7 +256,11 @@ async function driveExtract(
     return;
   }
 
-  const patch: Partial<ProjectManifest> = { activeSpecPath: specRel };
+  const patch: Partial<ProjectManifest> = {
+    activeSpecPath: specRel,
+    phase: "awaiting_spec_review",
+    specConfirmed: false,
+  };
   if (spec.assay) patch.assay = spec.assay;
   if (spec.spec_id) patch.specId = spec.spec_id;
 

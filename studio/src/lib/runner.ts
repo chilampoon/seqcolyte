@@ -1,10 +1,73 @@
 import path from "node:path";
 import { promises as fs } from "node:fs";
-import { DEFAULT_MODEL, PYTHON, REPO_ROOT } from "./config";
-import { runDir } from "./paths";
-import { getRun, updateRun } from "./store";
+import { assets, DEFAULT_MODEL, PYTHON, REPO_ROOT } from "./config";
+import { inProject, runDir } from "./paths";
+import { allocateRun, getProject, getRun, updateRun } from "./store";
 import { killGroup, spawnLogged } from "./spawn";
 import type { QcReport, RunRecord, StepName, StepStatus } from "./types";
+
+async function fileExists(p: string): Promise<boolean> {
+  try {
+    await fs.access(p);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Allocate + launch a QC run against the project's confirmed spec and reads.
+ * Shared by POST /runs and POST /confirm-spec. Returns the new runId, or an error.
+ */
+export async function startQcRun(
+  projectId: string,
+  opts: { useLlm?: boolean; fastqSource?: "control" | "sim"; maxReads?: number | null } = {},
+): Promise<{ runId: string } | { error: string }> {
+  let project;
+  try {
+    project = await getProject(projectId);
+  } catch {
+    return { error: "project not found" };
+  }
+  const useLlm = opts.useLlm !== false;
+  const fastqSource: "control" | "sim" = opts.fastqSource === "control" ? "control" : "sim";
+  const maxReads =
+    typeof opts.maxReads === "number" && opts.maxReads > 0 ? Math.floor(opts.maxReads) : null;
+
+  // Spec: the project's extracted spec if present, else the packaged reference.
+  const specSource =
+    project.activeSpecPath && (await fileExists(inProject(projectId, project.activeSpecPath)))
+      ? inProject(projectId, project.activeSpecPath)
+      : assets.referenceSpec;
+  const r1 = fastqSource === "control" ? assets.control.r1 : assets.sim.r1;
+  const r2 = fastqSource === "control" ? assets.control.r2 : assets.sim.r2;
+  const whitelist = (await fileExists(assets.whitelist)) ? assets.whitelist : null;
+  // Ground-truth labels only exist for the simulated dataset (enables the eval panel).
+  const labels =
+    fastqSource === "sim" && (await fileExists(assets.sim.labels)) ? assets.sim.labels : null;
+  if (!(await fileExists(r1)) || !(await fileExists(r2))) {
+    return { error: `reads not found for source "${fastqSource}"` };
+  }
+
+  const run = await allocateRun(projectId, {
+    pipeline: ["qc"],
+    options: { useLlm, maxReads, withLabels: !!labels, withWhitelist: !!whitelist, fastqSource },
+    inputsSnapshot: { specPath: "", r1, r2, whitelist, labels },
+    steps: { qc: { name: "qc", status: "queued", log: "logs/qc.log" } },
+    overallStatus: "queued",
+  });
+
+  // Snapshot the spec into the run dir for immutable provenance, then record its path.
+  const snapshot = path.join(runDir(projectId, run.id), "spec.json");
+  await fs.copyFile(specSource, snapshot);
+  await updateRun(projectId, run.id, (r) => ({
+    ...r,
+    inputsSnapshot: { ...r.inputsSnapshot, specPath: snapshot },
+  }));
+
+  launchRun(projectId, run.id);
+  return { runId: run.id };
+}
 
 /** In-memory live-process registry (for cancel) — run.json remains the durable truth. */
 const livePids = new Map<string, number>(); // `${projectId}:${runId}:${step}` -> pid
