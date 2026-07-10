@@ -11,6 +11,16 @@ const base = (p?: string | null) => (p ? p.split("/").pop() : undefined);
 /** The real qc invocation, reconstructed from the run's snapshot for display. */
 function buildCommand(run: RunRecord | null): string {
   const s = run?.inputsSnapshot;
+  if (run?.options.platform === "nanopore") {
+    const parts = [
+      "python -m qc.nanopore",
+      `  --spec ${base(s?.specPath) ?? "spec.json"}`,
+      `  --reads ${base(s?.r1) ?? "reads.fastq.gz"}`,
+    ];
+    if (s?.labels) parts.push(`  --labels ${base(s.labels)}`);
+    if (run?.options.useLlm === false) parts.push("  --no-llm");
+    return parts.join(" \\\n");
+  }
   const parts = [
     "python -m qc run",
     `  --spec ${base(s?.specPath) ?? "spec.json"}`,

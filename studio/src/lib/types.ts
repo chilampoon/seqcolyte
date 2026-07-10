@@ -42,6 +42,8 @@ export interface RunOptions {
   failureMode?: string;
   seed?: number;
   fastqSource?: "control" | "sim" | "upload";
+  /** modality: "nanopore" runs use the long-read QC path */
+  platform?: string;
 }
 
 export interface RunRecord {
@@ -90,6 +92,10 @@ export interface ProjectManifest {
   phase?: ProjectPhase;
   /** The user reviewed and confirmed the extracted spec. */
   specConfirmed?: boolean;
+  /** Featured demo project (surfaced in the landing "Demos" section). */
+  demo?: boolean;
+  /** One-line description shown on the demo card (falls back to a verdict-based default). */
+  demoBlurb?: string;
   inputs: {
     protocolDoc: string | null;
     notesPath: string | null;

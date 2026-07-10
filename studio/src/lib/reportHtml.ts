@@ -129,6 +129,7 @@ export function renderQcReportHtml(
   const oc = verdictColor(overall);
   const profile = report.profile;
   const findings = report.findings ?? [];
+  const nano = report.platform === "nanopore";
 
   const body = `
   <header class="topbar">
@@ -145,7 +146,13 @@ export function renderQcReportHtml(
   </header>
   ${
     profile
-      ? `<div class="profile">
+      ? nano
+        ? `<div class="profile">
+      <div><div class="mono strong">${profile.n_pairs.toLocaleString()}</div><div class="muted xsmall">reads</div></div>
+      <div><div class="mono strong">${profile.r1_len.modal} bp</div><div class="muted xsmall">modal read length</div></div>
+      <div><div class="mono strong">${profile.r1_len.max.toLocaleString()} bp</div><div class="muted xsmall">longest read</div></div>
+    </div>`
+        : `<div class="profile">
       <div><div class="mono strong">${profile.n_pairs.toLocaleString()}</div><div class="muted xsmall">read pairs</div></div>
       <div><div class="mono strong">${profile.r1_len.modal} bp</div><div class="muted xsmall">R1 modal</div></div>
       <div><div class="mono strong">${profile.r2_len.modal} bp</div><div class="muted xsmall">R2 modal</div></div>
