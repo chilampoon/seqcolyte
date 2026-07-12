@@ -34,8 +34,52 @@
       "type": "string",
       "enum": [
         "illumina",
-        "nanopore"
+        "nanopore",
+        "pacbio"
       ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "modality": {
+      "type": "string",
+      "description": "what the assay measures — RNA, ATAC, RNA+ATAC (multiome), DNA methylation, gDNA, CRISPR, protein+RNA, …"
+    },
+    "method_type": {
+      "type": "string",
+      "description": "cell-isolation / barcoding format — droplet, plate-based, microwell, combinatorial-indexing, nanowell, microfluidic"
+    },
+    "data_processing": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "statistical_model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
     },
     "platform_params": {
       "type": "object"
@@ -72,6 +116,165 @@
               "string",
               "null"
             ]
+          }
+        }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "label": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "doi": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "publication": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "original_publication": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "title": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "journal": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "doi": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "url": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "corresponding": {
+                "type": "boolean"
+              },
+              "email": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "affiliation": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "throughput": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "summary": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "cells": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "rna": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "dna": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "statistical_model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "other": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            }
           }
         }
       }
@@ -135,6 +338,12 @@
           },
           "title": {
             "type": "string"
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "note": {
             "type": [
@@ -312,13 +521,7 @@
       "properties": {
         "read": {
           "type": "string",
-          "enum": [
-            "R1",
-            "R2",
-            "I1",
-            "I2",
-            "L1"
-          ]
+          "description": "read label — commonly R1/R2/I1/I2/L1, but assays vary (e.g. 'R2N (ATAC)', 'gRNA')"
         },
         "primer": {
           "type": [

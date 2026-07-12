@@ -1,0 +1,26 @@
+{
+  "folder": "plate_scatac_seq",
+  "title": "Plate scATAC-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "plate_and_piATAC-seq.html",
+    "oligo_seq_recall": 0.273,
+    "oligo_seqs_matched": 3,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "Illumina P5 adapter",
+      "Illumina P7 adapter",
+      "Nextera Index 2 sequencing primer (i5)",
+      "Nextera N7xx primer entry point (s7)",
+      "Nextera N/S5xx primer entry point (s5)",
+      "Nextera Tn5 binding site (19-bp Mosaic End (ME))",
+      "Nextera (XT) N7xx Index primer",
+      "Nextera (XT) N/S5xx Index primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- AATGATACGGCGACCACCGAGATCTACAC | [i5 SAMPLE_INDEX:8] | TCGTCGGCAGCGTC AGATGTGTATAAGAGACAG | [CDNA genomic insert] | CTGTCTCTTATACACATCT CCGAGCCCACGAGAC | [i7 SAMPLE_INDEX:8] | ATCTCGTATGCCGTCTTCTGCTTG -3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

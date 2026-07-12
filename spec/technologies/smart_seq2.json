@@ -1,0 +1,618 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "smart_seq2",
+  "assay": "SMART-seq2",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "SMART-seq2_detailed_protocol.pdf",
+      "title": "Full-length RNA-seq from single cells using Smart-seq2",
+      "url": "https://doi.org/10.1038/nprot.2014.006",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/smart_seq2/SMART-seq2_detailed_protocol.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SMART-seq2_supplement.pdf",
+      "title": "Smart-seq2 Supplementary Text and Figures",
+      "url": "https://doi.org/10.1038/nmeth.2639",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/smart_seq2/SMART-seq2_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SMART-seq2_protocol_variants_table.xlsx",
+      "title": "Smart-seq2 Supplementary Table 4: protocol variants",
+      "url": "https://doi.org/10.1038/nmeth.2639",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/smart_seq2/SMART-seq2_protocol_variants_table.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SMART-seq2_TSO_table.xlsx",
+      "title": "Smart-seq2 Supplementary Table 2: TSO sequences",
+      "url": "https://doi.org/10.1038/nmeth.2639",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/smart_seq2/SMART-seq2_TSO_table.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SMART-seq2.pdf",
+      "title": "SMART-seq2.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/smart_seq2/SMART-seq2.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_dt30vn",
+      "name": "Oligo-dT30VN RT primer",
+      "aliases": [],
+      "role": "reverse-transcription priming on poly(A) RNA; 25-nt universal 5' anchor + 30-nt poly-dT + anchoring VN",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-AAGCAGTGGTATCAACGCAGAGTAC (25-nt anchor) + T30 + VN, where V = A/C/G and N = any base. The VN anchors the primer to the start of the poly(A) tail. Used at 10 uM (1 ul per reaction)."
+    },
+    {
+      "oligo_id": "tso",
+      "name": "Template-switching oligo (LNA, rGrG+G)",
+      "aliases": [],
+      "role": "template switching; adds a common 5' anchor sequence to the cDNA 3' end",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Written 5'-AAGCAGTGGTATCAACGCAGAGTACATrGrG+G-3'; the 3' end carries two riboguanosines (rG rG) and one LNA-modified guanosine (+G), folded here to GGG. This is the Smart-seq2 TSO variant; other tested TSOs (rGrGrG, rGrG+N, +G+G+G, etc.) are listed in Supplementary Table 2. Used at 100 uM stock / 1 uM final."
+    },
+    {
+      "oligo_id": "ispcr_primer",
+      "name": "ISPCR primer (IS PCR)",
+      "aliases": [],
+      "role": "single-primer PCR preamplification of full-length cDNA (matches the common anchor on both cDNA ends)",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-AAGCAGTGGTATCAACGCAGAGT-3' (first 23 nt of the shared anchor). Both the oligo-dT and TSO carry this sequence, so a single primer amplifies full-length cDNA. Used at 0.1 uM final."
+    },
+    {
+      "oligo_id": "nextera_me",
+      "name": "Nextera Tn5 mosaic end (ME) duplex",
+      "aliases": [],
+      "role": "Tn5 transposase recognition/mosaic-end; inserted into cDNA during tagmentation",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "ME top",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "transferred-strand mosaic end"
+        },
+        {
+          "name": "ME bottom",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "non-transferred mosaic-end complement"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina/Nextera 19-bp mosaic end from the Nextera XT DNA sample prep kit (not printed in the protocol text; canonical Nextera sequence)."
+    },
+    {
+      "oligo_id": "nextera_read1_oligo",
+      "name": "Nextera transposome Read 1 oligo (i5 side)",
+      "aliases": [],
+      "role": "adapter added by Tn5; provides Read 1 sequencing-primer binding site + ME",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Read 1 primer region (TCGTCGGCAGCGTC) + mosaic end (AGATGTGTATAAGAGACAG). Standard Nextera XT adapter; extended to full P5/i5 by the N5xx enrichment primer."
+    },
+    {
+      "oligo_id": "nextera_read2_oligo",
+      "name": "Nextera transposome Read 2 oligo (i7 side)",
+      "aliases": [],
+      "role": "adapter added by Tn5; provides Read 2 sequencing-primer binding site + ME",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Read 2 primer region (GTCTCGTGGGCTCGG) + mosaic end (AGATGTGTATAAGAGACAG). Standard Nextera XT adapter; extended to full P7/i7 by the N7xx enrichment primer."
+    },
+    {
+      "oligo_id": "n5xx_i5_primer",
+      "name": "Nextera XT Index 2 primer (N5xx, i5)",
+      "aliases": [],
+      "role": "enrichment-PCR primer adding the P5 flow-cell adapter and the i5 sample index",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "flow-cell P5 adapter"
+        },
+        {
+          "name": "i5 index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-bp i5 sample index (Nextera XT)"
+        },
+        {
+          "name": "Read 1 handle",
+          "sequence": "TCGTCGGCAGCGTC",
+          "role": "anneals to Nextera Read 1 adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Nextera XT 24-index kit (FC-131-1001). Exact index barcodes not printed in the documents; represented as a placeholder."
+    },
+    {
+      "oligo_id": "n7xx_i7_primer",
+      "name": "Nextera XT Index 1 primer (N7xx, i7)",
+      "aliases": [],
+      "role": "enrichment-PCR primer adding the P7 flow-cell adapter and the i7 sample index",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "flow-cell P7 adapter"
+        },
+        {
+          "name": "i7 index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-bp i7 sample index (Nextera XT)"
+        },
+        {
+          "name": "Read 2 handle",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "anneals to Nextera Read 2 adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Nextera XT 24-index kit (FC-131-1001). Exact index barcodes not printed in the documents; represented as a placeholder."
+    }
+  ],
+  "final_library": {
+    "source_label": "SMART-seq2 (Nextera XT dual-index) final library",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC (P5) [SAMPLE_INDEX:8] (i5) TCGTCGGCAGCGTC (Read1) AGATGTGTATAAGAGACAG (ME) [CDNA] CTGTCTCTTATACACATCT (ME') CCGAGCCCACGAGAC (Read2rc) [SAMPLE_INDEX:8] (i7) ATCTCGTATGCCGTCTTCTGCTTG (P7')",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "top_5to3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "P5 flow-cell adapter: AATGATACGGCGACCACCGAGATCTACAC",
+      "i5 sample index: [SAMPLE_INDEX:8]",
+      "Read 1 primer site (Nextera): TCGTCGGCAGCGTC",
+      "Mosaic end (Tn5 ME): AGATGTGTATAAGAGACAG",
+      "cDNA insert (random fragment of full-length cDNA): [CDNA]",
+      "Mosaic end complement (ME'): CTGTCTCTTATACACATCT",
+      "Read 2 primer site (rev-comp): CCGAGCCCACGAGAC",
+      "i7 sample index: [SAMPLE_INDEX:8]",
+      "P7 flow-cell adapter (rev-comp): ATCTCGTATGCCGTCTTCTGCTTG"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "SMART-seq2 (Nextera XT dual-index) final library",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Nextera Read 1 (TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG)",
+        "template": "bottom",
+        "cycles": 43,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Nextera Index 1 (i7)",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "Nextera Index 2 (i5)",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Nextera Read 2 (GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG)",
+        "template": "top",
+        "cycles": 43,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Cell lysis & oligo-dT annealing",
+      "summary": "A single cell is lysed and the tailed oligo-dT30VN primer hybridizes to the poly(A) tail of each mRNA.",
+      "note": "Cells are picked into hypotonic Triton X-100 lysis buffer with RNase inhibitor, dNTPs and oligo-dT30VN, then heated to 72 C for 3 min to denature RNA secondary structure and anneal the primer.",
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC-TTTT...TTVN -3'\n                              ||||||||\n3'- [transcript] AAAA...AAAA -5'  (mRNA poly(A) tail)"
+    },
+    {
+      "step": 2,
+      "title": "Reverse transcription (first strand)",
+      "summary": "Superscript II extends the oligo-dT primer to make full-length first-strand cDNA and adds 2-5 untemplated C's at the 3' end.",
+      "note": "RT at 42 C for 90 min with betaine and elevated MgCl2, cycling 50 C/42 C to melt secondary structure. M-MLV terminal-transferase activity adds a few untemplated cytosines when it reaches the 5' cap.",
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC-TTT...VN --------> [cDNA] CCC -3'\n3'- [mRNA template] .......................... AAA...A     -5'"
+    },
+    {
+      "step": 3,
+      "title": "Template switching",
+      "summary": "The TSO base-pairs with the untemplated C's and the RT switches template, copying the TSO to append the common anchor to the cDNA 3' end.",
+      "note": "The LNA (+G) TSO anneals strongly to the 3' C-overhang; the polymerase reads through it, so both ends of the cDNA now carry the AAGCAGTGGTATCAACGCAGAGT... anchor.",
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC-TTT...VN [cDNA] CCC ATGTACTCTGCGTTGATACCACTGCTT -3'\n                                              GGG-TSO(anneals): 3'-...CATGTACTCTGCGTTGATACCACTGCTT-5' copied"
+    },
+    {
+      "step": 4,
+      "title": "PCR preamplification",
+      "summary": "A single ISPCR primer amplifies the full-length cDNA because both ends carry the shared anchor sequence.",
+      "note": "KAPA HiFi HotStart, 18 cycles for single cells (no bead purification of first strand). Yields ~1-30 ng of cDNA with a ~1.5-2 kb size peak.",
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC...[full-length cDNA]...ACTCTGCGTTGATACCACTGCTT -3'\n3'- TTCGTCACCATAGTTGCGTCTCA...[full-length cDNA]...TGAGACGCAACTATGGTGACGAA -5'\n        <-------- ISPCR primer amplifies both ends -------->"
+    },
+    {
+      "step": 5,
+      "title": "Tagmentation (Nextera XT Tn5)",
+      "summary": "Tn5 transposase simultaneously fragments the amplified cDNA and inserts Nextera Read1/Read2 mosaic-end adapters.",
+      "note": "55 C, 5 min; Tn5 then stripped with NT buffer. Fragments average ~200-600 bp and carry a mosaic end on each side.",
+      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [cDNA fragment] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'\n3'- AGCAGCCGTCGCAGTCTACACATATTCTCTGTC [cDNA fragment] GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG -5'"
+    },
+    {
+      "step": 6,
+      "title": "Enrichment PCR (dual index)",
+      "summary": "N5xx (i5/P5) and N7xx (i7/P7) primers add flow-cell adapters and sample indices, gap-filling the ME and completing the sequenceable library.",
+      "note": "Limited-cycle PCR (e.g. 12 cycles for ~100 pg input), AMPure XP cleanup, pooled so no two samples share the same N5xx+N7xx combination (up to 96-plex).",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [cDNA] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "R1",
+      "primer": "Nextera Read 1 sequencing primer (TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG)",
+      "template": "bottom",
+      "cycles": 43,
+      "note": "Reads into the random cDNA fragment. Paper used 43-bp reads on HiSeq 2000; protocol also runs 50-bp single-end. No UMI, not strand-specific.",
+      "diagram": "   Read 1 primer 5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG--------->  (reads cDNA)\n                    |||||||||||||||||||||||||||||||||\n5'- ...TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[cDNA insert]CTGTCTCTTATACACATCT... -3'  (top)\n                                        |||||||||||||          |||||||||||||||||||\n3'- ...AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[cDNA insert]GACAGAGAATATGTGTAGA... -5'  (bottom, template)"
+    },
+    {
+      "read": "I1 (i7 index)",
+      "primer": "Nextera Index 1 primer (CTGTCTCTTATACACATCTCCGAGCCCACGAGAC)",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "i7 sample index read (Nextera XT, 8 bp). Reads from the mosaic-end/Read2 handle into the i7 index.",
+      "diagram": "Index1 (i7) primer 5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-->  (reads i7)\n                      ||||||||||||||||||||||||||||||||||\n5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]ATCTCGTATGCCGTCTTCTGCTTG -3'  (top)\n                                              |||||||\n3'- ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]TAGAGCATACGGCAGAAGACGAAC -5'  (bottom, template)"
+    },
+    {
+      "read": "I2 (i5 index)",
+      "primer": "Nextera Index 2 primer (anneals to the Read 1 handle, TCGTCGGCAGCGTC)",
+      "template": "top",
+      "cycles": 8,
+      "note": "i5 sample index read (Nextera XT, 8 bp). Reads from the Read 1 handle back into the i5 index; used with i7 for dual-index demultiplexing.",
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5:8]TCGTCGGCAGCGTC... -3'  (top, template)\n                                       ||||||||||||||\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]AGCAGCCGTCGCAG... -5'  (bottom)\n         (reads i5)  <--[i5:8]AGCAGCCGTCGCAG-5'  Index 2 (i5) primer"
+    },
+    {
+      "read": "R2",
+      "primer": "Nextera Read 2 sequencing primer (GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG)",
+      "template": "top",
+      "cycles": 43,
+      "note": "Optional paired-end read into the cDNA fragment from the opposite end.",
+      "diagram": "5'- ...[cDNA insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC... -3'  (top, template)\n                    ||||||||||||||||||||||||||||||||||\n3'- ...[cDNA insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG... -5'  (bottom)\n   (reads cDNA) <---GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  Read 2 primer"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "SMART-seq2",
+  "description": "SMART-seq2 is a plate-based, full-length single-cell RNA-seq method for polyadenylated transcripts. A tailed oligo-dT primer reverse-transcribes mRNA with Superscript II; template switching via an LNA-containing TSO appends a common 5' anchor to the cDNA 3' end, so a single ISPCR primer PCR-preamplifies full-length cDNA. Amplified cDNA is fragmented and adapter-tagged in one step by the Nextera XT Tn5 transposase, then dual-index (i5/i7) enrichment PCR builds the sequenceable library. Reads cover the entire transcript body (no UMIs, not strand-specific); index reads assign each fragment to its cell of origin.",
+  "reference": {
+    "kind": "paper",
+    "label": "Full-length RNA-seq from single cells using Smart-seq2",
+    "path": null,
+    "url": "https://doi.org/10.1038/nmeth.2639",
+    "doi": "10.1038/nprot.2014.006"
+  },
+  "publication": {
+    "year": 2013,
+    "original_publication": {
+      "title": "Smart-seq2 for sensitive full-length transcriptome profiling in single cells",
+      "journal": "Nature Methods",
+      "doi": "10.1038/nmeth.2639",
+      "url": "https://doi.org/10.1038/nmeth.2639"
+    },
+    "authors": [
+      {
+        "name": "Simone Picelli",
+        "affiliation": "Ludwig Institute for Cancer Research, Stockholm, Sweden"
+      },
+      {
+        "name": "\u00c5sa K Bj\u00f6rklund",
+        "affiliation": "Ludwig Institute for Cancer Research, Stockholm; Department of Cell and Molecular Biology, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Omid R Faridani",
+        "affiliation": "Ludwig Institute for Cancer Research, Stockholm, Sweden"
+      },
+      {
+        "name": "Sven Sagasser",
+        "affiliation": "Ludwig Institute for Cancer Research, Stockholm; Department of Cell and Molecular Biology, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "G\u00f6sta Winberg",
+        "affiliation": "Ludwig Institute for Cancer Research, Stockholm; Department of Cell and Molecular Biology, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Rickard Sandberg",
+        "corresponding": true,
+        "email": "rickard.sandberg@ki.se",
+        "affiliation": "Ludwig Institute for Cancer Research, Stockholm; Department of Cell and Molecular Biology, Karolinska Institutet, Stockholm, Sweden"
+      }
+    ],
+    "throughput": {
+      "summary": "Plate-based, one cell per reaction; up to 96 dual-indexed libraries pooled per Illumina lane. 262 single cells profiled in the study.",
+      "cells": "Single cells (159 HEK293T, 34 DG-75, 30 C2C12, 39 MEF); RNA content <10-16 pg/cell; 1-20 million reads per cell",
+      "rna": "Poly(A)+ mRNA only; ~1-30 ng amplified full-length cDNA per single cell",
+      "dna": "Final tagmented library ~300-800 bp; loaded at 2 nM"
+    },
+    "statistical_model": "Expression quantified as RPKM (full-length, no UMIs); gene-expression values treated as log-normally distributed across single cells, with Student's t-test and Wilcoxon rank-sum tests for significance and adjusted-Wald confidence intervals for detection rates.",
+    "other": [
+      {
+        "label": "Companion protocol",
+        "value": "Picelli et al., Full-length RNA-seq from single cells using Smart-seq2, Nature Protocols 9, 171-181 (2014), doi:10.1038/nprot.2014.006"
+      },
+      {
+        "label": "Key innovation",
+        "value": "Single LNA guanylate (+G) at the TSO 3' end (rGrG+G) roughly doubles cDNA yield vs SMARTer IIA; betaine + 9-12 mM Mg2+ adds further 2-4x"
+      },
+      {
+        "label": "Bead-free preamplification",
+        "value": "KAPA HiFi HotStart amplifies first-strand cDNA directly (no bead cleanup), increasing average cDNA length by ~450 nt"
+      },
+      {
+        "label": "Limitations",
+        "value": "Poly(A)+ RNA only; not strand-specific; no UMIs/molecule counting; late pooling after enrichment PCR"
+      },
+      {
+        "label": "Data availability",
+        "value": "Gene Expression Omnibus GSE49321"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "plate-based",
+  "data_processing": {
+    "summary": "The protocol prescribes a standard full-length scRNA-seq pipeline: raw base-calls are exported to FastQ with CASAVA, reads are demultiplexed to their cell of origin using the dual index reads, then aligned to genome and transcriptome with an RNA-seq aligner and quantified per gene/transcript (the paper points to the TopHat/Cufflinks protocol as the dedicated example). No UMI collapsing is possible (no UMIs) and reads are not strand-specific.",
+    "stages": [
+      {
+        "id": "s_reads",
+        "label": "Read Generation"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment"
+      },
+      {
+        "id": "s_quant",
+        "label": "Quantification"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "n_fastq",
+        "label": "Export base-calls to FastQ",
+        "tool": "CASAVA",
+        "stage": "s_reads",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_demux",
+        "label": "Demultiplex reads to cells",
+        "tool": "CASAVA",
+        "stage": "s_reads",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_align",
+        "label": "Align reads to genome",
+        "tool": "TopHat",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_quant",
+        "label": "Quantify gene/transcript expression",
+        "tool": "Cufflinks",
+        "stage": "s_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_matrix",
+        "label": "Assemble expression matrix",
+        "tool": "",
+        "stage": "s_quant",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_fastq",
+        "to": "n_demux",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_demux",
+        "to": "n_align",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_align",
+        "to": "n_quant",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_quant",
+        "to": "n_matrix",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": "null"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "folder": "scdnase_seq",
+  "title": "scDNase-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "scDNase_scMNase.html",
+    "oligo_seq_recall": 0.75,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 8,
+    "missed_oligos": [
+      "Illumina adaptor top",
+      "Illumina Multiplexing PCR Primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[GDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[I7_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

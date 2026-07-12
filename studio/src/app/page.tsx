@@ -133,6 +133,12 @@ export default async function Home() {
             </div>
           </div>
           <div className="flex items-center gap-1">
+            <Link
+              href="/technologies"
+              className="text-muted-foreground hover:text-foreground px-2 text-sm font-medium"
+            >
+              Technologies
+            </Link>
             <ModeToggle />
             <NewProjectButton />
           </div>

@@ -15,11 +15,12 @@ from pathlib import Path
 
 from seqcolyte.dna import revcomp
 from seqcolyte.spec.loader import validate_spec
-from extract.pdf_text import extract_text
+from extract.pdf_text import extract_text, extract_texts
 from extract.verified_constants import VERIFIED
 from extract.builder import to_canonical_json
 
-__all__ = ["extract_document", "assemble_spec", "cross_check", "evaluate", "EXTRACTION_SCHEMA"]
+__all__ = ["extract_document", "extract_documents", "assemble_spec", "assemble_generic_spec",
+           "cross_check", "evaluate", "EXTRACTION_SCHEMA"]
 
 DEFAULT_MODEL = "claude-opus-4-8"
 
@@ -90,6 +91,7 @@ EXTRACTION_SCHEMA: dict = {
                 "properties": {
                     "step": {"type": "integer"},
                     "title": {"type": "string"},
+                    "summary": {"type": "string"},
                     "note": {"type": "string"},
                     "product": {"type": "string"},
                 },
@@ -108,6 +110,95 @@ EXTRACTION_SCHEMA: dict = {
                     "cycles": {"type": "integer"},
                     "note": {"type": "string"},
                     "diagram": {"type": "string"},
+                },
+            },
+        },
+        "platform": {"type": "string"},
+        "read_structure": {
+            "type": "object",
+            "additionalProperties": False,
+            "properties": {
+                "reads": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": False,
+                        "required": ["read"],
+                        "properties": {
+                            "read": {"type": "string"},
+                            "primer": {"type": "string"},
+                            "template": {"type": "string"},
+                            "cycles": {"type": "integer"},
+                            "segments": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "additionalProperties": False,
+                                    "required": ["name", "type"],
+                                    "properties": {
+                                        "name": {"type": "string"},
+                                        "type": {"type": "string"},
+                                        "length": {"type": "integer"},
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        "title": {"type": "string"},
+        "description": {"type": "string"},
+        "publication": {
+            "type": "object",
+            "additionalProperties": False,
+            "properties": {
+                "year": {"type": "integer"},
+                "original_publication": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "properties": {
+                        "title": {"type": "string"},
+                        "journal": {"type": "string"},
+                        "doi": {"type": "string"},
+                        "url": {"type": "string"},
+                    },
+                },
+                "authors": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": False,
+                        "required": ["name"],
+                        "properties": {
+                            "name": {"type": "string"},
+                            "corresponding": {"type": "boolean"},
+                            "email": {"type": "string"},
+                            "affiliation": {"type": "string"},
+                        },
+                    },
+                },
+                "throughput": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "properties": {
+                        "summary": {"type": "string"},
+                        "cells": {"type": "string"},
+                        "rna": {"type": "string"},
+                        "dna": {"type": "string"},
+                    },
+                },
+                "statistical_model": {"type": "string"},
+                "other": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": False,
+                        "properties": {
+                            "label": {"type": "string"},
+                            "value": {"type": "string"},
+                        },
+                    },
                 },
             },
         },
@@ -132,7 +223,7 @@ the required JSON schema:
    describes it (e.g. mRNA capture / reverse transcription -> template switching -> cDNA
    amplification -> fragmentation + A-tailing -> adapter ligation -> sample-index PCR -> final
    library). One entry per step:
-   `{step: <1-based int>, title: <short step name>, note: <optional plain-English biology>, product: <ASCII diagram>}`.
+   `{step: <1-based int>, title: <short step name>, summary: <ONE concise sentence gist of the step>, note: <optional longer plain-English biology>, product: <ASCII diagram>}`.
    For EACH step, `product` is a monospace ASCII diagram of the molecular product AFTER that step
    (scg_lib_structs style). Diagram conventions (follow EXACTLY, spaces only — never tabs):
      `5'- SEQ -3'` sense strand · `3'- SEQ -5'` antisense · `-------->` / `<--------` polymerase
@@ -156,6 +247,17 @@ the required JSON schema:
    Example (Read 1 sequencing the cell barcode + UMI off the bottom strand):
                               5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT------------------------->
      3'- ...GATGTGCTGCGAGAAGGCTAGANNNNNNNNNNNNNNNNNNNNNNNNNN(pA)BXXX...XXXTCTAGCCTTCTCG... -5'
+5. `title`: a CONCISE display title for the assay/protocol, shorter than a full formal name
+   (e.g. "10x 3' scRNA-seq (v3.1)" or "sc-Nanopore 10x 3' cDNA"). `description`: 2-4 sentences on
+   what the protocol does and the experiment it enables (chemistry + purpose).
+6. `publication`: fill ONLY from what the document actually states; otherwise omit the field or leave
+   parts empty. Capture: `year` (publication year, int); `original_publication` (`title`, `journal`,
+   `doi`, `url` of the source paper); `authors` (each `{name, corresponding: true only for the
+   corresponding author(s), email, affiliation}` — include `email` ONLY if the document prints it);
+   `throughput` (cell/RNA/DNA yield, e.g. `{summary, cells, rna, dna}`); `statistical_model` (the
+   statistical method the authors use to model the assay data — e.g. "Poisson" or "negative binomial"
+   for droplet UMI counts); `other` (a few neat extra facts as `{label, value}`). DO NOT fabricate
+   authors, emails, DOIs, or numbers — if it is not in the text, leave it out.
 
 CONVENTIONS (follow EXACTLY — these determine correctness):
 - All sequences 5'->3', uppercase ACGTN only. Transcribe the exact characters from the document.
@@ -180,6 +282,63 @@ Output ONLY the structured JSON. Do not include commentary.
 === PROTOCOL TEXT START ===
 {doc_text}
 === PROTOCOL TEXT END ===
+"""
+
+
+# Technology-agnostic prompt for building the "wiki" spec of ANY single-cell / sequencing assay from its
+# paper + protocol + supplementary documents. No 10x-specific oligo checklist or P5/P7 assembly recipe.
+_PROMPT_GENERIC = """You are an expert at reading single-cell / sequencing library-prep papers and \
+protocols and extracting, exactly, their oligonucleotide sequences, step-by-step library construction, \
+final library structure, read structure, and publication metadata.
+
+Below are the concatenated documents for ONE technology ({protocol_name}) — typically the original paper, \
+a detailed/vendor protocol, and supplementary PDFs/tables, each delimited by `=== DOCUMENT: <name> ===`. \
+Treat the PAPER and PROTOCOL as primary sources; use the SUPPLEMENTARY TABLES for exact barcode / index / \
+primer sequences (they are often only listed there). Extract into the required JSON schema:
+
+1. `oligos`: one entry per NAMED oligo in the protocol — every bead/capture oligo, RT primer, template-\
+   switch oligo, PCR/library primer, adapter (Tn5/ME, TruSeq, Nextera, custom), sequencing primer, and \
+   index/barcode oligo you can find. Be COMPLETE; do not stop early. For each: `oligo_id` \
+   (lowercase_snake_case), `name`, `role`, `kind` ("single" | "assembled" -> fill `components` | \
+   "double_stranded" -> sequence:"" and put both strands in `components`), `sequence`, optional `notes`.
+2. `final_library`: the FINAL sequenceable library structure — its full 5'->3' top strand with placeholder \
+   tokens, plus the raw strand text in `strands` and a human-readable `annotation_lines` breakdown.
+3. `library_generation`: the ordered wet-lab build steps. One entry per step: \
+   `{step: <1-based int>, title: <short step name>, summary: <ONE concise sentence gist>, \
+   note: <optional longer plain-English biology>, product: <ASCII diagram of the molecule AFTER this step>}`.
+   Diagram conventions (spaces only, never tabs): `5'- SEQ -3'` sense strand · `3'- SEQ -5'` antisense · \
+   `-------->`/`<--------` polymerase extension · align an annealing primer directly above/below its \
+   binding site by counting character offsets. Write adapter/primer sequences out in full.
+4. `library_sequencing`: how the final library is sequenced — one entry per read in sequencing order \
+   (`read`, `primer`, `template` "top"/"bottom", `cycles`, `note`, `diagram`).
+5. `platform`: the sequencing platform — one of "illumina", "nanopore", "pacbio" (most short-read \
+   single-cell assays are "illumina"; infer from the protocol).
+6. `read_structure`: `{reads: [{read: <e.g. "R1"|"R2"|"I1"|"L1">, primer, template, cycles, \
+   segments: [{name, type, length}]}]}`. `type` should be one of barcode / umi / index / insert / cdna / \
+   constant / polyA / spacer — the normalizer maps the rest. Best-effort; omit lengths you cannot determine.
+7. `title`: a CONCISE display title (e.g. "Drop-seq", "SMART-seq2", "sci-ATAC-seq"). `description`: 2-4 \
+   sentences on what the assay measures and how (chemistry + purpose + what the reads capture).
+8. `publication`: fill ONLY from the documents. `year`; `original_publication` (`title`, `journal`, `doi`, \
+   `url`); `authors` (each `{name, corresponding: true only for the corresponding author(s), email, \
+   affiliation}` — email ONLY if printed); `throughput` (cell/RNA/DNA yield as `{summary, cells, rna, \
+   dna}`); `statistical_model` (the statistical method the authors use to model the assay data, e.g. \
+   "Poisson"/"negative binomial" for droplet UMI counts); `other` (a few neat facts as `{label, value}`).
+
+CONVENTIONS (follow EXACTLY):
+- All sequences 5'->3', uppercase ACGTN only; transcribe the exact characters shown. Fold ribonucleotide \
+  notation (rG rG rG -> GGG).
+- Replace variable regions with placeholder tokens keeping their bp count: cell barcode -> \
+  [CELL_BARCODE:N]; UMI -> [UMI:M]; sample/i7/i5 index -> [SAMPLE_INDEX:K] (or [INDEX:K]); the cDNA/genomic \
+  insert -> [CDNA]; a fixed-length spacer/linker -> [SPACER:N]. Combinatorial-index assays (SPLiT-seq, \
+  sci-*, SHARE-seq) have MULTIPLE barcode rounds — emit one token per round (e.g. [CELL_BARCODE:8] x3).
+- DO NOT fabricate any sequence, author, email, DOI, or number. If it is not in the documents, leave it \
+  out (null / omit). Prefer what the paper and protocol state over any single supplementary snippet.
+
+Output ONLY the structured JSON. Do not include commentary.
+
+=== DOCUMENTS START ===
+{doc_text}
+=== DOCUMENTS END ===
 """
 
 
@@ -210,6 +369,18 @@ def extract_document(pdf_path: str | Path, protocol_name: str, *, model: str = D
     prompt = _PROMPT.replace("{protocol_name}", protocol_name).replace("{doc_text}", text)
     result = _run_claude(prompt, EXTRACTION_SCHEMA, model=model)
     result["source_chars"] = len(text)
+    return result
+
+
+def extract_documents(paths, protocol_name: str, *, model: str = DEFAULT_MODEL,
+                      char_budget: int = 1_800_000) -> dict:
+    """Extract one spec from MANY concatenated documents (paper + protocol + supplements) via Claude,
+    using the technology-agnostic prompt. Returns the extraction plus a per-doc text budget log."""
+    combined, text_log = extract_texts(paths, char_budget=char_budget)
+    prompt = _PROMPT_GENERIC.replace("{protocol_name}", protocol_name).replace("{doc_text}", combined)
+    result = _run_claude(prompt, EXTRACTION_SCHEMA, model=model)
+    result["source_chars"] = len(combined)
+    result["text_log"] = text_log
     return result
 
 
@@ -353,6 +524,316 @@ def assemble_spec(extraction: dict, *, spec_id: str, assay: str, chemistry_versi
         "build": {"builder_version": "llm-1.0", "deterministic": False,
                   "source_html_sha256": None, "extraction_method": "claude_llm", "model": model},
     }
+
+    # Optional metadata extracted from the document (title/description/publication) + the reference
+    # pointer to the source. Only set string fields when present so nullable-string schema stays happy.
+    if extraction.get("title"):
+        spec["title"] = extraction["title"]
+    if extraction.get("description"):
+        spec["description"] = extraction["description"]
+    pub = extraction.get("publication") or {}
+    orig = pub.get("original_publication") or {}
+    spec["reference"] = {
+        "kind": "uploaded_file",
+        "label": str(source_doc_path).rsplit("/", 1)[-1],
+        "path": str(source_doc_path),
+        "url": orig.get("url"),
+        "doi": orig.get("doi"),
+    }
+    if pub:
+        spec["publication"] = pub
+
+    validate_spec(spec)
+    return spec
+
+
+# ---- enrichment: add modality / method_type / data_processing to an EXISTING wiki spec -----------
+
+ENRICH_SCHEMA: dict = {
+    "type": "object", "additionalProperties": False,
+    "required": ["modality", "method_type"],
+    "properties": {
+        "modality": {"type": "string"},
+        "method_type": {"type": "string"},
+        "data_processing": {
+            "type": "object", "additionalProperties": False,
+            "properties": {
+                "summary": {"type": "string"},
+                "steps": {"type": "array", "items": {"type": "string"}},
+                "tools": {"type": "array", "items": {"type": "string"}},
+                "statistical_model": {"type": "string"},
+            },
+        },
+        "library_sequencing": {
+            "type": "array",
+            "items": {
+                "type": "object", "additionalProperties": False, "required": ["read"],
+                "properties": {
+                    "read": {"type": "string"}, "primer": {"type": "string"},
+                    "template": {"type": "string"}, "cycles": {"type": "integer"},
+                    "note": {"type": "string"}, "diagram": {"type": "string"},
+                },
+            },
+        },
+        "drop_other_labels": {"type": "array", "items": {"type": "string"}},
+    },
+}
+
+_ENRICH_PROMPT = """You are refining the wiki entry for ONE sequencing assay ({protocol_name}). Below is \
+its CURRENT extracted spec (JSON) and the assay's paper/protocol text. Produce ONLY these refinements as \
+JSON — do not re-extract oligos or the library build.
+
+1. `modality`: what the assay measures, in the Teichlab scg_lib_structs style — one of "RNA", "ATAC", \
+   "RNA+ATAC (multiome)", "DNA methylation", "gDNA (WGS/CNV)", "CRISPR/gRNA", "protein+RNA (CITE)", \
+   "DNA (other)", or a short precise phrase.
+2. `method_type`: the cell-isolation / barcoding format — one of "droplet", "plate-based", \
+   "microwell/picowell", "combinatorial indexing", "nanowell", "microfluidic (C1)", "FACS", or a short \
+   phrase (e.g. "droplet + split-pool").
+3. `data_processing`: the COMPUTATIONAL pipeline, only if the paper describes it: \
+   `{summary: <1-2 sentences>, steps: [ordered stages, e.g. "demultiplex barcodes", "align (STAR)", \
+   "collapse UMIs", "count matrix", "cluster"], tools: [named software], statistical_model: <e.g. \
+   "Poisson", "negative binomial", or omit>}`. If the paper gives no pipeline, provide just a brief \
+   `summary` and leave steps/tools empty. DO NOT fabricate tools or steps.
+4. `library_sequencing`: REGENERATE each sequencing read with a DOUBLE-STRANDED aligned ASCII `diagram` — \
+   BOTH strands written out with complementary bases A-T / C-G aligned vertically, `5'- … -3'` over \
+   `3'- … -5'`, the sequencing primer on its own line directly above/below its binding site (count \
+   character offsets), and a `------->` / `<-------` read-direction arrow — exactly the conventions used \
+   in the step-by-step library-generation products. One entry per read: \
+   `{read, primer, template: "top"|"bottom", cycles: <read length in bp>, note, diagram}`. `cycles` IS \
+   the read length in bp — do NOT also embed the cycle count in the `read` name.
+5. `drop_other_labels`: labels from the current `publication.other` that merely REPEAT information already \
+   shown in the description / read structure (e.g. "Cell barcode", "UMI", "UMI length", "Barcode design", \
+   "Barcode pool", "Assay type", "Bead barcode structure", "Tn5 barcodes", "Chemistry", "Cell Label", \
+   "Molecular Index") — list them for removal. KEEP data-availability / GEO accessions and genuinely novel facts.
+
+Output ONLY the structured JSON.
+
+=== CURRENT SPEC (JSON) ===
+{spec_json}
+=== PAPER / PROTOCOL TEXT ===
+{doc_text}
+"""
+
+# publication.other labels that always duplicate other sections — dropped regardless of the model's list.
+_REDUNDANT_OTHER = {
+    "cell barcode", "umi", "umi length", "barcode design", "barcode pool", "assay type",
+    "bead barcode structure", "tn5 barcodes", "chemistry", "cell label", "molecular index",
+    "indexing", "barcode structure", "cell barcode structure", "cell label (barcode)",
+}
+
+
+def enrich_extraction(spec: dict, doc_paths, protocol_name: str, *, model: str = DEFAULT_MODEL,
+                      char_budget: int = 1_200_000) -> dict:
+    """Run the enrichment prompt over an existing spec + its papers (returns the enrichment object)."""
+    combined, _log = extract_texts(doc_paths, char_budget=char_budget)
+    spec_view = json.dumps({k: spec.get(k) for k in
+                            ("title", "description", "assay", "platform", "oligos", "final_library",
+                             "library_sequencing", "read_structure", "publication")}, indent=1)[:120_000]
+    prompt = (_ENRICH_PROMPT.replace("{protocol_name}", protocol_name)
+              .replace("{spec_json}", spec_view).replace("{doc_text}", combined))
+    return _run_claude(prompt, ENRICH_SCHEMA, model=model)
+
+
+def merge_enrichment(spec: dict, enr: dict) -> dict:
+    """Merge an enrichment object into a spec (keeps oligos/library_generation), then re-validate."""
+    if enr.get("modality"):
+        spec["modality"] = enr["modality"]
+    if enr.get("method_type"):
+        spec["method_type"] = enr["method_type"]
+    dp = enr.get("data_processing") or {}
+    if dp.get("summary") or dp.get("steps") or dp.get("statistical_model"):
+        spec["data_processing"] = dp
+    if enr.get("library_sequencing"):
+        spec["library_sequencing"] = enr["library_sequencing"]
+    drop = {l.lower() for l in enr.get("drop_other_labels", [])} | _REDUNDANT_OTHER
+    pub = spec.get("publication")
+    if pub and pub.get("other"):
+        pub["other"] = [o for o in pub["other"] if (o.get("label") or "").lower() not in drop]
+    validate_spec(spec)
+    return spec
+
+
+# ---- data-processing DAG (graph, not a flat chain) -----------------------------------------------
+
+DAG_SCHEMA: dict = {
+    "type": "object", "additionalProperties": False, "required": ["nodes", "edges"],
+    "properties": {
+        "stages": {"type": "array", "items": {
+            "type": "object", "additionalProperties": False, "required": ["id", "label"],
+            "properties": {"id": {"type": "string"}, "label": {"type": "string"}}}},
+        "nodes": {"type": "array", "items": {
+            "type": "object", "additionalProperties": False, "required": ["id", "label"],
+            "properties": {"id": {"type": "string"}, "label": {"type": "string"},
+                           "tool": {"type": "string"}, "stage": {"type": "string"},
+                           "scope": {"type": "string", "enum": ["per_cell", "bulk"]},
+                           "terminal": {"type": "boolean"}, "viz_only": {"type": "boolean"}}}},
+        "edges": {"type": "array", "items": {
+            "type": "object", "additionalProperties": False, "required": ["from", "to"],
+            "properties": {"from": {"type": "string"}, "to": {"type": "string"},
+                           "kind": {"type": "string", "enum": ["sequential", "fan_in", "branch"]}}}},
+        "statistical_model": {"type": "string"},
+    },
+}
+
+_DAG_PROMPT = """You convert a computational-methods description into a data-processing DAG. Return JSON \
+only, matching the required schema: `stages` (ordered phases {id,label}), `nodes` \
+({id,label,tool,stage,scope,terminal,viz_only}), `edges` ({from,to,kind}). `scope` in per_cell|bulk; \
+`kind` in sequential|fan_in|branch.
+
+RULES:
+1. Dependencies are EDGES, never order. Connect two nodes iff one's output is the other's input. The order \
+   of the `nodes` array is meaningless.
+2. ONE primitive operation per node. Never bundle tools/actions in a label (no "TF-IDF + SVD"; split into \
+   separate nodes joined by an edge).
+3. Labels: imperative verb + object, <= 6 words. Put the software in `tool`, not the label. Include a \
+   parameter only when it IS the point (e.g. "call peaks (q<0.01)").
+4. Scope + fan-in: `scope:"per_cell"` for per-cell steps, `"bulk"` for merged/aggregated steps. The first \
+   bulk node consuming per-cell outputs gets `fan_in` edges from them.
+5. Branches + terminals: if one node feeds two independent downstream paths, emit an edge to each with \
+   `kind:"branch"`. Mark visualization-only endpoints `viz_only:true` and `terminal:true`. NEVER place a \
+   `viz_only` node on the path to an analytical step (a t-SNE/UMAP embedding does NOT feed clustering — \
+   clustering consumes the LSI/PCA reduction).
+6. Stages: assign every node to exactly one stage; stages are ordered phases.
+
+SELF-CHECK before emitting: did I linearize a branch? is any viz_only node on the analysis path? are \
+per-cell steps marked and does the first bulk step fan_in from them? did I bundle operations in one node? \
+does every edge reflect a real data dependency (not narrative sequence)?
+
+Base the DAG on the pipeline below; expand bundled steps into separate nodes, infer per_cell/bulk scope \
+and the fan-in point, and split any branch (e.g. a reduction feeding both a viz embedding and clustering). \
+Do NOT fabricate tools not implied by the description — leave `tool` empty if unknown.
+
+=== ASSAY + EXTRACTED PIPELINE (JSON) ===
+{context}
+"""
+
+
+def graphify_data_processing(spec: dict, *, model: str = DEFAULT_MODEL) -> dict:
+    """Turn a spec's flat data_processing (summary/steps/tools) into a proper DAG (stages/nodes/edges)."""
+    dp = spec.get("data_processing") or {}
+    context = {
+        "assay": spec.get("title") or spec.get("assay"), "modality": spec.get("modality"),
+        "description": spec.get("description"),
+        "pipeline_summary": dp.get("summary"), "pipeline_steps": dp.get("steps"),
+        "tools": dp.get("tools"), "statistical_model": dp.get("statistical_model"),
+    }
+    prompt = _DAG_PROMPT.replace("{context}", json.dumps(context, indent=1))
+    return _run_claude(prompt, DAG_SCHEMA, model=model)
+
+
+# ---- generic (technology-agnostic) assembly ------------------------------------------------------
+
+_SEG_TYPE_ALLOWED = {"barcode", "umi", "constant", "insert", "polyA", "index", "homopolymer", "anchor"}
+_SEG_TYPE_ALIASES = {
+    "cell_barcode": "barcode", "cbc": "barcode", "cb": "barcode",
+    "cdna": "insert", "genomic": "insert", "dna": "insert", "rna": "insert",
+    "poly_a": "polyA", "polya": "polyA", "poly_t": "homopolymer", "polyt": "homopolymer",
+    "sample_index": "index", "i7": "index", "i5": "index",
+    "spacer": "constant", "linker": "constant", "primer": "constant", "adapter": "constant",
+    "me": "constant", "mosaic_end": "constant", "other": "constant",
+}
+
+
+def _norm_seg_type(t: str | None) -> str:
+    t = (t or "").strip().lower()
+    return t if t in _SEG_TYPE_ALLOWED else _SEG_TYPE_ALIASES.get(t, "constant")
+
+
+def _oligo_slug(name: str) -> str:
+    return "oligo_" + (re.sub(r"[^a-z0-9]+", "_", (name or "").lower()).strip("_") or "unnamed")
+
+
+def _generic_read_structure(extraction: dict) -> dict:
+    """Build a schema-valid read_structure from the LLM's best-effort reads (normalize segment types,
+    add the schema-required order/scored, drop non-integer lengths). Falls back to a single-read stub."""
+    reads_out = []
+    for r in (extraction.get("read_structure") or {}).get("reads") or []:
+        segs = []
+        for i, s in enumerate(r.get("segments") or []):
+            st = _norm_seg_type(s.get("type"))
+            seg = {"name": s.get("name") or f"seg{i}", "type": st, "order": i,
+                   "scored": st in ("barcode", "umi", "insert"),
+                   "provenance": None, "whitelist_ref": None, "constant_ref": None, "notes": None}
+            if isinstance(s.get("length"), int):
+                seg["length"] = s["length"]
+            segs.append(seg)
+        reads_out.append({"read": r.get("read") or f"R{len(reads_out) + 1}",
+                          "primer": r.get("primer"), "template": r.get("template"),
+                          "cycles": r.get("cycles") if isinstance(r.get("cycles"), int) else None,
+                          "segments": segs})
+    if not reads_out:
+        reads_out = [{"read": "R1", "primer": None, "template": None, "cycles": None,
+                      "segments": [{"name": "insert", "type": "insert", "order": 0, "scored": True,
+                                    "provenance": None, "whitelist_ref": None, "constant_ref": None,
+                                    "notes": None}]}]
+    return {"reads": reads_out}
+
+
+def assemble_generic_spec(extraction: dict, *, spec_id: str, assay: str, chemistry_version: str,
+                          source_docs: list[dict], reference: dict | None = None,
+                          model: str = DEFAULT_MODEL) -> dict:
+    """Wrap a technology-agnostic LLM extraction into a schema-valid spec — no 10x/Illumina hardcoding.
+    Uses the LLM's platform + read_structure, an empty whitelist, and generic platform_params."""
+    oligos = []
+    for o in extraction.get("oligos", []):
+        oligos.append({
+            "oligo_id": o.get("oligo_id") or _oligo_slug(o.get("name", "")),
+            "name": o.get("name", ""), "aliases": [], "role": o.get("role", "oligo"),
+            "kind": o.get("kind", "single"),
+            "sequence": (o.get("sequence") or None) if o.get("kind") != "double_stranded" else None,
+            "direction": "5_to_3", "components": o.get("components", []),
+            "provenance": _provenance_for(o.get("name", "")), "derivation": None,
+            "sequence_source": "llm_extracted_from_docs",
+            "evidence": [{"source_doc": "protocol_docs", "locator": "oligo / final library",
+                          "method": "claude_llm_extraction"}],
+            "notes": o.get("notes"),
+        })
+    if not oligos:  # schema requires oligos minItems 1
+        oligos = [{"oligo_id": "oligo_none_extracted", "name": "(none extracted)", "aliases": [],
+                   "role": "oligo", "kind": "single", "sequence": None, "direction": "5_to_3",
+                   "components": [], "provenance": "document", "derivation": None,
+                   "sequence_source": "llm_extracted_from_docs",
+                   "evidence": [{"source_doc": "protocol_docs", "locator": "", "method": "claude_llm_extraction"}],
+                   "notes": None}]
+
+    platform = (extraction.get("platform") or "illumina").strip().lower()
+    if platform not in ("illumina", "nanopore", "pacbio"):
+        platform = "illumina"
+    fl = extraction.get("final_library") or {}
+
+    spec = {
+        "schema_version": "seqcolyte.spec.v1", "spec_id": spec_id, "assay": assay,
+        "chemistry_version": chemistry_version or "", "platform": platform,
+        "platform_params": {"read_type": "long" if platform in ("nanopore", "pacbio") else "short"},
+        "source_docs": source_docs or [{"doc_id": "protocol_docs", "title": assay, "url": None,
+                                        "path": None, "retrieved_date": None}],
+        "oligos": oligos,
+        "final_library": {
+            "source_label": fl.get("source_label", "Final library structure"),
+            "annotated_library_sequence": fl.get("annotated_library_sequence", ""),
+            "library_sequence": fl.get("library_sequence", ""),
+            "strands": [{"direction": s.get("direction", "5_to_3"), "source_html": s.get("source_sequence", ""),
+                         "source_sequence": s.get("source_sequence", "")} for s in fl.get("strands", [])],
+            "annotation_lines": fl.get("annotation_lines", []),
+            "evidence": [{"source_doc": "protocol_docs", "locator": fl.get("source_label", ""),
+                          "method": "claude_llm_extraction"}],
+        },
+        "read_structure": _generic_read_structure(extraction),
+        "library_generation": extraction.get("library_generation", []),
+        "library_sequencing": extraction.get("library_sequencing", []),
+        "whitelists": {},
+        "build": {"builder_version": "llm-generic-1.0", "deterministic": False,
+                  "source_html_sha256": None, "extraction_method": "claude_llm_generic", "model": model},
+    }
+    if extraction.get("title"):
+        spec["title"] = extraction["title"]
+    if extraction.get("description"):
+        spec["description"] = extraction["description"]
+    if reference:
+        spec["reference"] = reference
+    if extraction.get("publication"):
+        spec["publication"] = extraction["publication"]
+
     validate_spec(spec)
     return spec
 
@@ -362,9 +843,12 @@ def assemble_spec(extraction: dict, *, spec_id: str, assay: str, chemistry_versi
 # --------------------------------------------------------------------------------------
 
 def _norm(seq: str) -> str:
-    # Fold ribonucleotide notation (rG rG rG -> GGG) before comparing — a notation equivalence,
-    # not a content change; groundtruth writes the TSO 3' end as rGrGrG.
-    s = re.sub(r"r([ACGTacgt])", r"\1", seq or "")
+    # Fold notation-only chemistry annotations so the SAME DNA compares equal regardless of how it was
+    # written: strip IDT-style modifications (/5Biosg/, /5Phos/, /iSp18/, …), phosphorothioate bond marks
+    # (`*`), and fold ribonucleotides (rG rG rG -> GGG). None of these change the base sequence.
+    s = re.sub(r"/[^/]*/", "", seq or "")           # /5Biosg/ /5Phos/ /3Bio/ /iSpXX/ …
+    s = re.sub(r"r([ACGTacgt])", r"\1", s)          # rG -> G
+    s = s.replace("*", "")                          # phosphorothioate bond marks
     return re.sub(r"\s+", "", s).upper()
 
 

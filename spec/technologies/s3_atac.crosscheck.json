@@ -1,0 +1,24 @@
+{
+  "folder": "s3_atac",
+  "title": "s3-ATAC",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "s3-ATAC.html",
+    "oligo_seq_recall": 0.333,
+    "oligo_seqs_matched": 3,
+    "oligo_seqs_total": 9,
+    "missed_oligos": [
+      "A14_ME_LNA (Nextera_R1_A14 + U-ME)",
+      "Nextera Index 2 sequencing primer (i5)",
+      "PCR_i5_primer",
+      "TruSeq i7 PCR primer",
+      "SBS12_18_UME_sci indexed Tn5 adapter",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "P7[CAAGCAGAAGACGGCATACGAGAT]-i7idx[SAMPLE_INDEX:8]-R2/SBS12[GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT]-Tn5cellBC[CELL_BARCODE:8]-ME[AGATGTGTATAAGAGACAG]-genomicInsert[CDNA]-ME'[CTGTCTCTTATACACATCT]-A14rc[GACGCTGCCGACGA]-i5idx-rc[SAMPLE_INDEX:8]-P5rc[GTGTAGATCTCGGTGGTCGCCGTATCATT]",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTA[TN5_INDEX:8]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

@@ -1,0 +1,926 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "10x_chromium_5_immune_profiling_feature_barcoding_v1_1",
+  "assay": "10x Chromium 5\u2032 Feature Barcoding (Cell Surface Protein)",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "CITE-seq_foundational_paper.pdf",
+      "title": "Simultaneous epitope and transcriptome measurement in single cells",
+      "url": "https://doi.org/10.1038/nmeth.4380",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_5_immune_profiling_feature_barcoding_v1_1/CITE-seq_foundational_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "CITE-seq_author_protocol.pdf",
+      "title": "CITE-seq author protocol",
+      "url": "https://doi.org/10.1038/nmeth.4380",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_5_immune_profiling_feature_barcoding_v1_1/CITE-seq_author_protocol.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "CG000149_cell_surface_labeling_protocol.pdf",
+      "title": "Cell Surface Protein Labeling for Single Cell RNA Sequencing Protocols (CG000149 Rev D)",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_5_immune_profiling_feature_barcoding_v1_1/CG000149_cell_surface_labeling_protocol.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "CG000208_feature_barcoding_protocol.pdf",
+      "title": "Chromium 5-prime v1.1 Feature Barcoding User Guide (CG000208 Rev G)",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_5_immune_profiling_feature_barcoding_v1_1/CG000208_feature_barcoding_protocol.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "CITE-seq_supplement.pdf",
+      "title": "CITE-seq Supplementary Text and Figures",
+      "url": "https://doi.org/10.1038/nmeth.4380",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_5_immune_profiling_feature_barcoding_v1_1/CITE-seq_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "10xChromium5v1.1.pdf",
+      "title": "10xChromium5v1.1.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_5_immune_profiling_feature_barcoding_v1_1/10xChromium5v1.1.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_single_cell_5p_gel_bead_primer",
+      "name": "Single Cell 5\u2032 Gel Bead primer",
+      "aliases": [],
+      "role": "Barcoded gel-bead capture/TSO primer that templates the 10x cell barcode + UMI onto captured molecules",
+      "kind": "assembled",
+      "sequence": "CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "read 1 sequencing handle"
+        },
+        {
+          "name": "10x Barcode",
+          "sequence": "[CELL_BARCODE:16]",
+          "role": "16 nt cell barcode"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:10]",
+          "role": "10 nt unique molecular identifier"
+        },
+        {
+          "name": "TSO",
+          "sequence": "TTTCTTATATGGG",
+          "role": "template switch / capture region (rGrGrG folded to GGG)"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Released from the Single Cell 5\u2032 Gel Bead (PN-2000209). Doc form: 5'-CTACACGACGCTCTTCCGATCT-N16-N10-TTTCTTATATrGrGrG-3'. The TTTCTTATATGGG TSO doubles as the capture sequence for the antibody Feature Barcode oligo in the 5\u2032 assay."
+    },
+    {
+      "oligo_id": "oligo_poly_dt_rt_primer",
+      "name": "Poly-dT RT Primer",
+      "aliases": [],
+      "role": "Reverse-transcription primer that primes polyadenylated mRNA (5\u2032 GEX arm)",
+      "kind": "assembled",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "cDNA handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "3\u2032 cDNA PCR handle"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "30 nt poly(dT)"
+        },
+        {
+          "name": "Anchor",
+          "sequence": "VN",
+          "role": "anchored VN at the poly(dT) 3\u2032 end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "PN-2000007. Not directly part of the Feature Barcode library, but co-loaded in the GEM to capture mRNA for the paired 5\u2032 GEX library."
+    },
+    {
+      "oligo_id": "oligo_feature_barcode_antibody_oligo",
+      "name": "Feature Barcode antibody-oligonucleotide (TotalSeq-C, 5\u2032 v1.1)",
+      "aliases": [],
+      "role": "Antibody-conjugated oligo whose 15 nt Feature Barcode identifies the target cell-surface protein (ADT)",
+      "kind": "assembled",
+      "sequence": "/5AmMC12/CGGAGATGTGTATAAGAGACAG[SPACER:10][FEATURE_BARCODE:15][SPACER:9]CCCATATAAGAAA",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5\u2032 Amine (C12)",
+          "sequence": "/5AmMC12/",
+          "role": "amine linker for antibody conjugation"
+        },
+        {
+          "name": "Nextera partial Read 2",
+          "sequence": "CGGAGATGTGTATAAGAGACAG",
+          "role": "Read 2N sequencing handle"
+        },
+        {
+          "name": "Spacer",
+          "sequence": "[SPACER:10]",
+          "role": "10 nt spacer"
+        },
+        {
+          "name": "Feature Barcode",
+          "sequence": "[FEATURE_BARCODE:15]",
+          "role": "15 nt antibody-identifying barcode"
+        },
+        {
+          "name": "Spacer",
+          "sequence": "[SPACER:9]",
+          "role": "9 nt spacer"
+        },
+        {
+          "name": "Capture Sequence",
+          "sequence": "CCCATATAAGAAA",
+          "role": "anneals to gel-bead TSO (TTTCTTATATGGG) for capture"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "From CG000149 Table 1 (Single Cell 5\u2032 v1, v1.1 & v2 \u2013 Cell Surface Protein). CCCATATAAGAAA is the reverse complement of the gel-bead TSO TTTCTTATATGGG, enabling template-switch capture. Conjugated to a purified antibody (BioLegend TotalSeq-C or Abcam ab218260 custom conjugation)."
+    },
+    {
+      "oligo_id": "oligo_sc5p_feature_cdna_primer_forward",
+      "name": "SC5\u2032 Feature cDNA Primer \u2013 Forward",
+      "aliases": [],
+      "role": "Forward amplification primer (partial TruSeq Read 1) for barcoded cDNA and Feature Barcode DNA",
+      "kind": "single",
+      "sequence": "CTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "forward PCR handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "PN-2000119 (SC5\u2032 Feature cDNA Primers)."
+    },
+    {
+      "oligo_id": "oligo_cdna_reverse_primer",
+      "name": "cDNA Amplification Reverse Primer",
+      "aliases": [],
+      "role": "Reverse amplification primer against the poly-dT RT handle (amplifies mRNA-derived cDNA)",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "cDNA handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAG",
+          "role": "reverse PCR handle for cDNA"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Part of SC5\u2032 Feature cDNA Primers PN-2000119; amplifies the paired 5\u2032 GEX cDNA."
+    },
+    {
+      "oligo_id": "oligo_feature_cdna_reverse_primer",
+      "name": "SC5\u2032 Feature cDNA Primer \u2013 Reverse (Feature)",
+      "aliases": [],
+      "role": "Reverse amplification primer against the Feature Barcode Nextera Read 2N handle",
+      "kind": "single",
+      "sequence": "CTCGTGGGCTCGGAGATGTGTATAAGAGAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera Read 2N handle",
+          "sequence": "CTCGTGGGCTCGGAGATGTGTATAAGAGAC",
+          "role": "reverse PCR handle for Feature Barcode DNA"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Part of SC5\u2032 Feature cDNA Primers PN-2000119; amplifies antibody-derived Feature Barcode DNA."
+    },
+    {
+      "oligo_id": "oligo_si_primer_forward_p5",
+      "name": "SI Primer \u2013 Forward (P5)",
+      "aliases": [],
+      "role": "Sample Index PCR forward primer adding P5 + TruSeq Read 1",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 flow-cell adapter"
+        },
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "TCTTTCCCTACACGACGCTC",
+          "role": "read 1 handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "PN-2000095 (SI Primer). Doc form: 5'-AATGATACGGCGACCACCGAGA-TCTACACTCTTTCCCTACACGACGCTC-3'."
+    },
+    {
+      "oligo_id": "oligo_si_primer_reverse_i7",
+      "name": "Sample Index PCR Reverse Primer (Single Index Plate N Set A, i7)",
+      "aliases": [],
+      "role": "Sample Index PCR reverse primer adding the i7 sample index + P7 to the Cell Surface Protein library",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 Sample Index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8 nt sample index (mix of 4 per well)"
+        },
+        {
+          "name": "Partial Nextera Read 2",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "Read 2N handle"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Single Index Plate N Set A, PN-3000427 (used ONLY for Cell Surface Protein libraries; distinct from Plate T used for GEX/VDJ). Each well is a mix of 4 base-balanced index sequences."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "P5 flow-cell binding sequence",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 flow-cell adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "P7 flow-cell binding sequence",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter (final-library 3\u2032 end is the reverse complement ATCTCGTATGCCGTCTTCTGCTTG)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_truseq_read1_sequencing_primer",
+      "name": "TruSeq Read 1 sequencing primer",
+      "aliases": [],
+      "role": "Read 1 sequencing primer (reads 10x Barcode + UMI)",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 1",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "read 1 sequencing primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_nextera_read2_sequencing_primer",
+      "name": "Nextera Read 2 (Read 2N) sequencing primer",
+      "aliases": [],
+      "role": "Read 2 sequencing primer for the Cell Surface Protein library (reads the Feature Barcode)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera Read 2N",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "Read 2 sequencing primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "TruSeq Read 2 (GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT) is used for GEX/VDJ; the Feature Barcode library instead uses Nextera Read 2N."
+    }
+  ],
+  "final_library": {
+    "source_label": "10x Chromium Single Cell 5\u2032 v1.1 Cell Surface Protein (Feature Barcode) library",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[SPACER:9][FEATURE_BARCODE:15][SPACER:10]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[SPACER:9][FEATURE_BARCODE:15][SPACER:10]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[SPACER:9][FEATURE_BARCODE:15][SPACER:10]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[SPACER:9][FEATURE_BARCODE:15][SPACER:10]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[SPACER:9][FEATURE_BARCODE:15][SPACER:10]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[SPACER:9][FEATURE_BARCODE:15][SPACER:10]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "TCTTTCCCTACACGACGCTCTTCCGATCT = TruSeq Read 1",
+      "[CELL_BARCODE:16] = 10x Barcode (cell barcode)",
+      "[UMI:10] = UMI",
+      "TTTCTTATATGGG = TSO / capture region",
+      "[SPACER:9] = Spacer",
+      "[FEATURE_BARCODE:15] = Feature Barcode",
+      "[SPACER:10] = Spacer",
+      "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC = Nextera Read 2 (Read 2N)",
+      "[SAMPLE_INDEX:8] = i7 Sample Index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "10x Chromium Single Cell 5\u2032 v1.1 Cell Surface Protein (Feature Barcode) library",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TruSeq Read 1",
+        "template": "bottom",
+        "cycles": 26,
+        "segments": [
+          {
+            "name": "10x Barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 16
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Nextera Read 2N",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 Sample Index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Nextera Read 2 (Read 2N)",
+        "template": "top",
+        "cycles": 91,
+        "segments": [
+          {
+            "name": "Spacer",
+            "type": "constant",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "Feature Barcode",
+            "type": "barcode",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 15
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Cell surface protein labeling",
+      "summary": "Cells are stained with antibodies conjugated to Feature Barcode oligonucleotides.",
+      "note": "Live cells are incubated with TotalSeq-C antibody\u2013oligo conjugates (after Fc block), then washed. Each bound antibody carries an oligo encoding a 15 nt Feature Barcode plus a 3\u2032 capture sequence and a Nextera Read 2N handle.",
+      "product": "  Ab~/5AmMC12/-5'- CGGAGATGTGTATAAGAGACAG[SPACER:10][FEATURE_BARCODE:15][SPACER:9]CCCATATAAGAAA -3'"
+    },
+    {
+      "step": 2,
+      "title": "GEM capture (TSO \u27f7 capture-sequence annealing)",
+      "summary": "Inside a GEM, the antibody oligo's capture sequence anneals to the gel-bead TSO.",
+      "note": "The gel bead is dissolved; its primer presents the TSO TTTCTTATATGGG, whose sequence is complementary to the antibody oligo capture sequence CCCATATAAGAAA. The two 3\u2032 ends hybridize, priming extension.",
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG -3'\n                                                     |||||||||||||\n              Ab~/5AmMC12/-3'- AAAGAATATACCC[SPACER:9][FEATURE_BARCODE:15][SPACER:10]GACAGAGAATATGTGTAGAGGC -5'"
+    },
+    {
+      "step": 3,
+      "title": "Extension / reverse transcription (GEM)",
+      "summary": "Polymerase extends the gel-bead primer along the antibody oligo, appending cell barcode + UMI.",
+      "note": "The MMLV RT extends the barcoded primer using the antibody oligo as template, producing 10x-Barcoded Feature Barcode DNA that copies through to the Nextera Read 2N handle.",
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[SPACER:9][FEATURE_BARCODE:15][SPACER:10]CTGTCTCTTATACACATCTCCG -3'"
+    },
+    {
+      "step": 4,
+      "title": "cDNA / Feature Barcode amplification",
+      "summary": "Bulk PCR with SC5\u2032 Feature cDNA Primers amplifies the barcoded Feature Barcode DNA.",
+      "note": "Forward primer CTACACGACGCTCTTCCGATCT and the Feature reverse primer CTCGTGGGCTCGGAGATGTGTATAAGAGAC amplify ADT DNA (mRNA-derived cDNA is amplified in the same tube by the poly-dT-handle reverse primer).",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[SPACER:9][FEATURE_BARCODE:15][SPACER:10]CTGTCTCTTATACACATCTCCGAGCCCACGAG -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[SPACER:9][FEATURE_BARCODE:15][SPACER:10]GACAGAGAATATGTGTAGAGGCTCGGGTGCTC -5'"
+    },
+    {
+      "step": 5,
+      "title": "Size selection (separate ADT from cDNA)",
+      "summary": "0.6X SPRI separates short Feature Barcode DNA (supernatant) from full-length cDNA (pellet).",
+      "note": "The transferred supernatant (Feature Barcode DNA) is cleaned with 2.0X SPRI and carried forward to Sample Index PCR; the pellet cDNA goes to GEX/VDJ construction.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[SPACER:9][FEATURE_BARCODE:15][SPACER:10]CTGTCTCTTATACACATCTCCGAGCCCACGAG -3'"
+    },
+    {
+      "step": 6,
+      "title": "Sample Index PCR (Cell Surface Protein library)",
+      "summary": "SI Primer (P5) + Single Index Plate N (i7) add P5, the sample index and P7, completing the library.",
+      "note": "Forward primer AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTC adds P5; reverse primer CAAGCAGAAGACGGCATACGAGAT-[i7]-GTCTCGTGGGCTCGG adds the i7 index and P7 and completes the Nextera Read 2N region.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[SPACER:9][FEATURE_BARCODE:15][SPACER:10]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[SPACER:9][FEATURE_BARCODE:15][SPACER:10]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "TruSeq Read 1 (ACACTCTTTCCCTACACGACGCTCTTCCGATCT)",
+      "template": "bottom",
+      "cycles": 26,
+      "note": "Reads the 16 nt 10x cell barcode + 10 nt UMI. Primer sequence matches the top strand and anneals to the bottom (template) strand, extending into the barcode+UMI region.",
+      "diagram": "                       5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------->\n5'- ...GAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNNNNNNNNNNNNNNNNNTTTCTTATATGGG...-3'  top\n3'- ...CTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNNNNNNNNNNNNNNNNNAAAGAATATACCC...-5'  bottom (template)\n                                             |----- 26 nt read -----|\n                                             [16 nt 10x cell barcode][10 nt UMI]"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "Index-1 read primer / top-strand Read 2N handle (CTGTCTCTTATACACATCTCCGAGCCCACGAGAC)",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "Reads the 8 nt i7 sample index (Single Index Plate N Set A, used only for Cell Surface Protein libraries). Primer 3' end abuts the index and extends into it.",
+      "diagram": "                                          5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC---------->\n5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'  top\n3'- ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'  bottom (template)\n                                        |8 nt i7|"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Nextera Read 2N (GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG)",
+      "template": "top",
+      "cycles": 91,
+      "note": "Reads the 15 nt antibody Feature Barcode (ADT identity), flanked by spacers. Read 2N primer is complementary to the top-strand Nextera handle; its 3' end sits at the FB-proximal end and extends leftward. Minimum required Read 2 length is 25 bp; typically 91 bp when co-sequenced with GEX/VDJ.",
+      "diagram": "                                                 3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n                                          <-------\n5'- ...TTTCTTATATGGGNNNNNNNNNFFFFFFFFFFFFFFFNNNNNNNNNNCTGTCTCTTATACACATCTCCGAGCCCACGAGAC...-3'  top (template)\n3'- ...AAAGAATATACCCNNNNNNNNNFFFFFFFFFFFFFFFNNNNNNNNNNGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG...-5'  bottom\n                            |15 nt Feature Barcode|"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "10x Chromium 5\u2032 Feature Barcoding (Cell Surface Protein)",
+  "description": "A droplet single-cell assay that measures cell-surface protein abundance alongside 5\u2032 gene expression and V(D)J. Cells are stained with antibodies conjugated to a Feature Barcode oligonucleotide (TotalSeq-C); inside each GEM the oligo's 3\u2032 capture sequence anneals to the gel-bead template-switch oligo (TSO) and is extended, appending a shared 16 nt 10x cell barcode and 10 nt UMI. The resulting antibody-derived tag (ADT) DNA is amplified, size-separated from cDNA, and finished into an Illumina library by Sample Index PCR. Read 1 reads the cell barcode + UMI, the i7 read gives the sample index, and Read 2 (Nextera Read 2N) reads the 15 nt antibody Feature Barcode.",
+  "reference": {
+    "kind": "paper",
+    "label": "Simultaneous epitope and transcriptome measurement in single cells",
+    "path": null,
+    "url": "https://www.10xgenomics.com/support/universal-five-prime-gene-expression/documentation/steps/sample-prep/cell-surface-protein-labeling-for-single-cell-rna-sequencing-protocols",
+    "doi": "10.1038/nmeth.4380"
+  },
+  "publication": {
+    "year": 2017,
+    "original_publication": {
+      "title": "Simultaneous epitope and transcriptome measurement in single cells",
+      "journal": "Nature Methods",
+      "doi": "10.1038/nmeth.4380",
+      "url": "https://doi.org/10.1038/nmeth.4380"
+    },
+    "authors": [
+      {
+        "name": "Marlon Stoeckius",
+        "corresponding": true,
+        "email": "mstoeckius@nygenome.org",
+        "affiliation": "New York Genome Center, New York, NY, USA"
+      },
+      {
+        "name": "Christoph Hafemeister",
+        "affiliation": "New York Genome Center, New York, NY, USA"
+      },
+      {
+        "name": "William Stephenson",
+        "affiliation": "New York Genome Center, New York, NY, USA"
+      },
+      {
+        "name": "Brian Houck-Loomis",
+        "affiliation": "New York Genome Center, New York, NY, USA"
+      },
+      {
+        "name": "Pratip K. Chattopadhyay",
+        "affiliation": "New York University Medical Center, New York, NY, USA"
+      },
+      {
+        "name": "Harold Swerdlow",
+        "affiliation": "New York Genome Center, New York, NY, USA"
+      },
+      {
+        "name": "Rahul Satija",
+        "affiliation": "New York Genome Center and New York University Center for Genomics and Systems Biology, New York, NY, USA"
+      },
+      {
+        "name": "Peter Smibert",
+        "affiliation": "New York Genome Center, New York, NY, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "Droplet-based; ~1,000 cells recovered per reaction at ~0.8% multiplet rate, scalable to ~10,000 cells recovered (~17,400 loaded) per reaction.",
+      "cells": "~500\u201310,000 recovered per reaction (~1,700 loaded \u2192 ~1,000 recovered)",
+      "rna": "Paired 5\u2032 gene-expression profile per cell (>4,000 transcripts detectable)",
+      "dna": "Antibody-derived tag (ADT) counts per cell; ~100 molecules per ADT per cell targeted"
+    },
+    "statistical_model": "Poisson (droplet cell-capture / doublet-rate modeling); ADT counts are centered-log-ratio (CLR) normalized",
+    "other": [
+      {
+        "label": "Commercial kit",
+        "value": "10x Genomics Chromium Next GEM Single Cell V(D)J v1.1 with Feature Barcode technology for Cell Surface Protein (CG000208); antibody labeling per CG000149"
+      },
+      {
+        "label": "Antibody conjugate",
+        "value": "BioLegend TotalSeq-C (5\u2032 v1/v1.1/v2) or Abcam Oligonucleotide Conjugation Kit ab218260"
+      },
+      {
+        "label": "Sample index",
+        "value": "Cell Surface Protein libraries use Single Index Plate N Set A (PN-3000427); GEX/VDJ use Plate T"
+      },
+      {
+        "label": "Sequencing depth",
+        "value": "Minimum 5,000 read pairs per cell for the Cell Surface Protein library"
+      },
+      {
+        "label": "Data availability",
+        "value": "Original CITE-seq data: GEO GSE100866"
+      }
+    ]
+  },
+  "modality": "protein + RNA",
+  "method_type": "droplet",
+  "data_processing": {
+    "summary": "CITE-seq splits into two computational readouts from one cell barcode: mRNA reads are aligned and UMI-collapsed into a gene\u00d7cell matrix, while antibody-derived tag (ADT) reads are demultiplexed by shared cell barcode + antibody Feature Barcode and collapsed by UMI into a protein\u00d7cell matrix. The two modalities are normalized separately (RNA log-normalized; ADT centered-log-ratio) and then jointly used for graph-based clustering and 2D visualization.",
+    "stages": [
+      {
+        "id": "ingest",
+        "label": "Ingest & Demultiplex"
+      },
+      {
+        "id": "quantify",
+        "label": "Quantification"
+      },
+      {
+        "id": "qc",
+        "label": "QC & Filtering"
+      },
+      {
+        "id": "normalize",
+        "label": "Normalization"
+      },
+      {
+        "id": "reduce_cluster",
+        "label": "Reduction & Clustering"
+      },
+      {
+        "id": "visualize",
+        "label": "Visualization"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "extract_bc",
+        "label": "Extract cell + antibody barcodes",
+        "tool": "Cell Ranger",
+        "stage": "ingest",
+        "scope": "bulk"
+      },
+      {
+        "id": "align_rna",
+        "label": "Align mRNA to genome",
+        "tool": "Cell Ranger",
+        "stage": "quantify",
+        "scope": "per_cell"
+      },
+      {
+        "id": "rna_matrix",
+        "label": "Collapse UMIs to gene\u00d7cell matrix",
+        "tool": "Cell Ranger",
+        "stage": "quantify",
+        "scope": "per_cell"
+      },
+      {
+        "id": "collapse_adt_bc",
+        "label": "Collapse antibody barcodes (Hamming<4)",
+        "tool": "Drop-seq tools",
+        "stage": "quantify",
+        "scope": "per_cell"
+      },
+      {
+        "id": "dedup_adt",
+        "label": "Deduplicate ADT by UMI",
+        "tool": "Drop-seq tools",
+        "stage": "quantify",
+        "scope": "per_cell"
+      },
+      {
+        "id": "adt_matrix",
+        "label": "Build protein\u00d7cell matrix",
+        "tool": "Drop-seq tools",
+        "stage": "quantify",
+        "scope": "per_cell"
+      },
+      {
+        "id": "filter_cells",
+        "label": "Filter low-quality cells",
+        "tool": "",
+        "stage": "qc",
+        "scope": "bulk"
+      },
+      {
+        "id": "lognorm_rna",
+        "label": "Log-normalize RNA",
+        "tool": "",
+        "stage": "normalize",
+        "scope": "bulk"
+      },
+      {
+        "id": "clr_adt",
+        "label": "CLR-normalize ADT",
+        "tool": "",
+        "stage": "normalize",
+        "scope": "bulk"
+      },
+      {
+        "id": "pca",
+        "label": "Run PCA on variable genes",
+        "tool": "",
+        "stage": "reduce_cluster",
+        "scope": "bulk"
+      },
+      {
+        "id": "snn",
+        "label": "Build shared-nearest-neighbor graph",
+        "tool": "igraph",
+        "stage": "reduce_cluster",
+        "scope": "bulk"
+      },
+      {
+        "id": "louvain",
+        "label": "Cluster cells (Louvain)",
+        "tool": "igraph",
+        "stage": "reduce_cluster",
+        "scope": "bulk",
+        "terminal": true
+      },
+      {
+        "id": "tsne",
+        "label": "Embed cells with t-SNE",
+        "tool": "t-SNE",
+        "stage": "visualize",
+        "scope": "bulk",
+        "viz_only": true,
+        "terminal": true
+      }
+    ],
+    "edges": [
+      {
+        "from": "extract_bc",
+        "to": "align_rna",
+        "kind": "branch"
+      },
+      {
+        "from": "extract_bc",
+        "to": "collapse_adt_bc",
+        "kind": "branch"
+      },
+      {
+        "from": "align_rna",
+        "to": "rna_matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse_adt_bc",
+        "to": "dedup_adt",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup_adt",
+        "to": "adt_matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "rna_matrix",
+        "to": "filter_cells",
+        "kind": "fan_in"
+      },
+      {
+        "from": "adt_matrix",
+        "to": "filter_cells",
+        "kind": "fan_in"
+      },
+      {
+        "from": "filter_cells",
+        "to": "lognorm_rna",
+        "kind": "branch"
+      },
+      {
+        "from": "filter_cells",
+        "to": "clr_adt",
+        "kind": "branch"
+      },
+      {
+        "from": "lognorm_rna",
+        "to": "pca",
+        "kind": "sequential"
+      },
+      {
+        "from": "pca",
+        "to": "snn",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "tsne",
+        "kind": "branch"
+      },
+      {
+        "from": "clr_adt",
+        "to": "snn",
+        "kind": "sequential"
+      },
+      {
+        "from": "snn",
+        "to": "louvain",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "ADT counts centered-log-ratio (CLR) normalized (compositional data); droplet cell-capture / doublet rate modeled as Poisson."
+  }
+}

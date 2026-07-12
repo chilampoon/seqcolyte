@@ -1,0 +1,723 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "strt_seq_c1",
+  "assay": "STRT-seq-C1",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "STRT-seq-C1_supplement.pdf",
+      "title": "C1-STRT Supplementary Text and Figures",
+      "url": "https://doi.org/10.1038/nmeth.2772",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/strt_seq_c1/STRT-seq-C1_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "STRT-seq-C1.xlsx",
+      "title": "STRT-seq-C1.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/strt_seq_c1/STRT-seq-C1.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "STRT-seq-C1.pdf",
+      "title": "STRT-seq-C1.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/strt_seq_c1/STRT-seq-C1.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "c1_p1_t31",
+      "name": "C1-P1-T31",
+      "aliases": [],
+      "role": "Reverse-transcription primer (anchored oligo-dT) carrying the Illumina P1/read-1 (P5) sequence and a PvuI site",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGATCGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-biotinylated (Bio-). P1/P5 sequence (AATGATACGGCGACCACCGAT) + CG + 31-nt oligo(dT). The ...CCGATCG... embeds a PvuI recognition site (CGATCG) so that oligo-dT-derived 3' fragments can be cleaved and removed during library isolation. Used at 4 uM in the lysis buffer."
+    },
+    {
+      "oligo_id": "c1_p1_rna_tso",
+      "name": "C1-P1-RNA-TSO",
+      "aliases": [],
+      "role": "Template-switching oligo carrying the Illumina P1/read-1 adapter + 5 bp UMI + rGrGrG",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAT[UMI:5]GGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-biotinylated all-RNA oligo (rNTPs; raw form Bio-AAUGAUACGGCGACCACCGAUNNNNNGGG, folded to DNA letters here). 29 nt total = P1 adapter (21) + 5 bp random UMI (NNNNN) + terminal GGG that pairs with the 3' dCdCdC overhang added by the reverse transcriptase at the transcript 5' cap. Being all-RNA, it hydrolyses during the hot-start step so it cannot act as a PCR primer. Used at 1.8 uM."
+    },
+    {
+      "oligo_id": "c1_p1_pcr_2",
+      "name": "C1-P1-PCR-2",
+      "aliases": [],
+      "role": "PCR amplification primer and Read-1 sequencing primer",
+      "kind": "single",
+      "sequence": "GAATGATACGGCGACCACCGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-biotinylated (Bio-). Anneals to the shared P1 sequence present at both ends of the cDNA after RT; used at 530 nM for the 21-cycle PCR and also as the read-1 sequencing primer on the HiSeq 2000."
+    },
+    {
+      "oligo_id": "c1_tn5_u",
+      "name": "C1-TN5-U",
+      "aliases": [],
+      "role": "Universal Tn5 mosaic-end (ME) transposon strand and index-read sequencing primer",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCTGACGC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-phosphorylated (PHO-). This is the non-transferred mosaic-end strand; it is annealed with each barcoded C1-TN5-x strand to assemble the transposome. Also used as the index-read (barcode) sequencing primer."
+    },
+    {
+      "oligo_id": "c1_tn5_barcoded",
+      "name": "C1-TN5-x (barcoded Tn5 adaptor, 96 variants)",
+      "aliases": [],
+      "role": "Barcoded transferred Tn5 transposon strand carrying the Illumina P2/P7 sequence + 8 bp well (cell) barcode + mosaic end",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGA[SAMPLE_INDEX:8]GCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "96 well-specific variants (C1-TN5-1 ... C1-TN5-96). Structure: P7 (CAAGCAGAAGACGGCATACGA) + 8 bp barcode + reverse-complement of the mosaic end (GCGTCAGATGTGTATAAGAGACAG, whose ME core is 5'-AGATGTGTATAAGAGACAG-3'). Example barcodes: 1=CGTCTAAT, 2=AGACTCGT, 3=GCACGTCA, 4=TCAACGAC, 5=ATTTAGCG ... 92=TAAGGTCC, 93=GAAAGGTG, 94=ACGTTGTA, 95=GCAGAGAA, 96=GCATTTGG. Each is annealed with C1-TN5-U and loaded with 6.25 uM Tn5 to make a well-specific transposome."
+    },
+    {
+      "oligo_id": "c1_tn5_transposome_adaptor",
+      "name": "C1-TN5 barcoded transposome adaptor (annealed)",
+      "aliases": [],
+      "role": "Double-stranded Tn5 adaptor loaded onto Tn5 transposase for tagmentation",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "C1-TN5-x (transferred strand)",
+          "sequence": "CAAGCAGAAGACGGCATACGA[SAMPLE_INDEX:8]GCGTCAGATGTGTATAAGAGACAG",
+          "role": "Transferred strand: P7 + 8 bp well barcode + mosaic end; its 3'-OH ME end is joined to target DNA"
+        },
+        {
+          "name": "C1-TN5-U (non-transferred strand)",
+          "sequence": "CTGTCTCTTATACACATCTGACGC",
+          "role": "5'-phosphorylated non-transferred mosaic-end strand; anneals to the ME portion of C1-TN5-x"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "The 19 bp mosaic-end duplex (AGATGTGTATAAGAGACAG / CTGTCTCTTATACACATCT) forms between the 3' end of C1-TN5-x and C1-TN5-U. 96 barcode-specific transposomes were prepared, one per well."
+    }
+  ],
+  "final_library": {
+    "source_label": "STRT-seq-C1 final Illumina library (5'-most fragment; top strand 5'->3')",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAT [UMI:5] GGG [CDNA] CTGTCTCTTATACACATCTGACGC [SAMPLE_INDEX:8] TCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAT[UMI:5]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[SAMPLE_INDEX:8]TCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "top",
+        "source_html": "AATGATACGGCGACCACCGAT[UMI:5]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[SAMPLE_INDEX:8]TCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAT[UMI:5]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[SAMPLE_INDEX:8]TCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "bottom",
+        "source_html": "CAAGCAGAAGACGGCATACGA[SAMPLE_INDEX:8]GCGTCAGATGTGTATAAGAGACAG[CDNA]CCC[UMI:5]ATCGGTGGTCGCCGTATCATT",
+        "source_sequence": "CAAGCAGAAGACGGCATACGA[SAMPLE_INDEX:8]GCGTCAGATGTGTATAAGAGACAG[CDNA]CCC[UMI:5]ATCGGTGGTCGCCGTATCATT"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAT  = P1 / Illumina read-1 adapter (P5), contributed by the template-switching oligo (5'-biotin end)",
+      "[UMI:5]                = 5 bp random unique molecular identifier (from the TSO)",
+      "GGG                    = template-switch triple-G junction",
+      "[CDNA]                 = 5' end of the transcript (sense), retained 5'-most fragment",
+      "CTGTCTCTTATACACATCTGACGC = reverse complement of the Tn5 mosaic end (added by tagmentation)",
+      "[SAMPLE_INDEX:8]       = well-specific cell barcode (top strand shows reverse complement of the printed barcode)",
+      "TCGTATGCCGTCTTCTGCTTG  = reverse complement of P2/P7 (CAAGCAGAAGACGGCATACGA)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "STRT-seq-C1 final Illumina library (5'-most fragment; top strand 5'->3')",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "C1-P1-PCR-2",
+        "template": "bottom",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 5
+          },
+          {
+            "name": "template-switch GGG",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 3
+          },
+          {
+            "name": "transcript 5' end",
+            "type": "insert",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "C1-TN5-U",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "well/cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Single-cell capture (Fluidigm C1)",
+      "summary": "One cell is captured in each of up to 96 microfluidic chambers on a C1 AutoPrep IFC chip and imaged.",
+      "note": "A ~12,000-cell suspension is loaded; the 'mRNA Seq: Cell Load' script isolates single cells (10-17 um chip) and each site is imaged for QC.",
+      "product": "[ C1 chamber: 1 single cell ]  x up to 96 wells"
+    },
+    {
+      "step": 2,
+      "title": "Lysis, RT + template switching",
+      "summary": "Cells are lysed and reverse-transcribed with oligo(dT) primer C1-P1-T31 while the all-RNA TSO C1-P1-RNA-TSO adds P1+UMI+GGG to the transcript 5' end.",
+      "note": "SuperScript II extends from the oligo(dT), reaches the 5' cap, adds a CCC overhang, and template-switches onto the GGG of the TSO, tagging each molecule with a 5 bp UMI and the Illumina read-1 adapter.",
+      "product": "mRNA        5'- [cap] XXXXXXXXXXXX AAAA...A -3'\n                           |||||||||||| ||||||||\n1st cDNA 3'- GGG NNNNN TAGCCACCAGCGGCATAGTAA ... TTTT...T GCTAGCC... -5'\n\nfull-length cDNA (sense, after switching):\n5'- AATGATACGGCGACCACCGAT NNNNN GGG [CDNA] AAAA...A CGATCGGTGGTCGCCGTATCATT -3'"
+    },
+    {
+      "step": 3,
+      "title": "PCR amplification (21 cycles)",
+      "summary": "Diluted (1:10) cDNA is amplified with a single primer C1-P1-PCR-2 that binds the shared P1 end at both termini.",
+      "note": "Because both ends carry the P1 sequence, one primer suffices; 21 cycles give ~1 ng/uL amplified cDNA. The all-RNA TSO has hydrolysed and cannot prime.",
+      "product": "5'- AATGATACGGCGACCACCGAT NNNNN GGG [CDNA] AAAA...A CGATCGGTGGTCGCCGTATCATT -3'\n3'- TTACTATGCCGCTGGTGGCTA NNNNN CCC [CDNA] TTTT...T GCTAGCCACCAGCGGCATAGTAA -5'"
+    },
+    {
+      "step": 4,
+      "title": "Tagmentation with barcoded Tn5",
+      "summary": "Amplified cDNA is fragmented and tagged in one step by well-specific Tn5 transposomes carrying P7 + 8 bp barcode + mosaic end.",
+      "note": "Each of 96 wells uses a distinct barcoded transposome (C1-TN5-x annealed to C1-TN5-U); the mosaic end is inserted internally, adding the read-2/P7 adapter and cell barcode.",
+      "product": "5'- AATGA...CCGAT NNNNN GGG [CDNA] CTGTCTCTTATACACATCTGACGC [BC-rc] TCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACT...GGCTA NNNNN CCC [CDNA] GACAGAGAATATGTGTAGACTGCG [BC]    AGCATACGGCAGAAGACGGAAC -5'"
+    },
+    {
+      "step": 5,
+      "title": "Streptavidin capture of terminal fragments",
+      "summary": "Biotinylated P1 ends are captured on MyOne streptavidin beads, discarding all internal (non-biotin) fragments.",
+      "note": "Only the 5'-most and 3'-most fragments carry the biotinylated P1 adapter and are retained on the beads; internal fragments are washed away.",
+      "product": "[bead]~Bio-AATGATACGGCGACCACCGAT NNNNN GGG [CDNA] ...ME...[BC]...P7   (5' fragment)\n[bead]~Bio-AATGATACGGCGACCACCGATCG TTTT...A [CDNA] ...ME...[BC]...P7   (3' fragment, oligo-dT end)"
+    },
+    {
+      "step": 6,
+      "title": "PvuI digestion (remove 3' fragments)",
+      "summary": "PvuI-HF cleaves the CGATCG site present only in the oligo(dT)-derived 3' fragments, releasing them.",
+      "note": "The T31 primer end contains ...CCGATCG... (PvuI); the TSO 5' end does not, so only the desired 5'-most fragments remain on the beads.",
+      "product": "retained 5' fragment:\n[bead]~Bio-AATGATACGGCGACCACCGAT NNNNN GGG [CDNA] CTGTCTCTTATACACATCTGACGC [BC-rc] TCGTATGCCGTCTTCTGCTTG"
+    },
+    {
+      "step": 7,
+      "title": "Alkaline elution of single-stranded library",
+      "summary": "The single-stranded 5' library is eluted from the beads with NaOH and neutralised, ready for sequencing.",
+      "note": "Yield ~1-5 nM ssDNA library, pooled across the 96 wells and quantified by qPCR (KAPA Library Quant).",
+      "product": "5'- AATGATACGGCGACCACCGAT NNNNN GGG [CDNA] CTGTCTCTTATACACATCTGACGC [BC-rc] TCGTATGCCGTCTTCTGCTTG -3'"
+    },
+    {
+      "step": 8,
+      "title": "Optional 9-cycle library PCR (187ds only)",
+      "summary": "The pooled ss library may optionally be amplified nine additional cycles (used only for the 187ds sample; not recommended).",
+      "note": "Most samples (187ss) were sequenced directly without further amplification; this step is optional.",
+      "product": "double-stranded amplified pooled library (same structure as step 7)"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "C1-P1-PCR-2 (5'-GAATGATACGGCGACCACCGAT-3')",
+      "template": "bottom",
+      "cycles": 50,
+      "note": "Primes on the P1/read-1 region and reads the 5 bp UMI, the template-switch GGG, and extends into the 5' end of the transcript. Only reads with a valid barcode, a 5 bp UMI, and >=3 Gs at the template-switch site are kept.",
+      "diagram": "Read 1 primer C1-P1-PCR-2 anneals to the bottom strand and reads UMI + GGG + transcript 5' end\nprimer  5'- GAATGATACGGCGACCACCGAT---------------------->\ntop     5'-  AATGATACGGCGACCACCGAT NNNNN GGG [cDNA]... -3'\n             |||||||||||||||||||||\nbottom  3'-  TTACTATGCCGCTGGTGGCTA NNNNN CCC [cDNA]... -5'\nread                               NNNNN GGG [cDNA]  (50 bp)"
+    },
+    {
+      "read": "Index read",
+      "primer": "C1-TN5-U (5'-CTGTCTCTTATACACATCTGACGC-3')",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "Separate index read; the mosaic-end primer anneals adjacent to the tagmentation-added barcode and reads the well-specific 8 bp cell barcode.",
+      "diagram": "Index-read primer C1-TN5-U anneals to the bottom strand and reads the 8 bp well barcode\nprimer  5'- CTGTCTCTTATACACATCTGACGC-------->\ntop     5'- CTGTCTCTTATACACATCTGACGC NNNNNNNN TCGTATGCCGTCTTCTGCTTG -3'\n            ||||||||||||||||||||||||          |||||||||||||||||||||\nbottom  3'- GACAGAGAATATGTGTAGACTGCG NNNNNNNN AGCATACGGCAGAAGACGAAC -5'\nread                                 NNNNNNNN  (8 bp barcode)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "STRT-seq-C1",
+  "description": "STRT-seq-C1 is a Fluidigm C1 microfluidic single-cell RNA-seq method that quantifies transcripts by their 5' ends using unique molecular identifiers (UMIs). During reverse transcription an oligo(dT) primer and an all-RNA template-switching oligo carrying a 5 bp random UMI append the Illumina read-1 adapter to the transcript 5' end; the cDNA is PCR-amplified and then tagmented with well-barcoded Tn5 transposomes that add the read-2/P7 adapter and an 8 bp well (cell) barcode. Streptavidin capture plus PvuI digestion retain only the 5'-most fragment. Read 1 (50 bp) reads the UMI, the template-switch GGG and the 5' end of the transcript, and a separate 8 bp index read reads the well barcode, enabling absolute molecule counting per cell.",
+  "reference": {
+    "kind": "paper",
+    "label": "C1-STRT Supplementary Text and Figures",
+    "path": null,
+    "url": "https://doi.org/10.1038/nmeth.2772",
+    "doi": "10.1038/nmeth.2772"
+  },
+  "publication": {
+    "year": 2014,
+    "original_publication": {
+      "title": "Quantitative single-cell RNA-seq with unique molecular identifiers",
+      "journal": "Nature Methods",
+      "doi": "10.1038/nmeth.2772",
+      "url": "https://doi.org/10.1038/nmeth.2772"
+    },
+    "authors": [
+      {
+        "name": "Saiful Islam",
+        "affiliation": "Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Amit Zeisel",
+        "affiliation": "Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Simon Joost",
+        "affiliation": "Department of Biosciences and Nutrition, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Gioele La Manno",
+        "affiliation": "Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Pawel Zajac",
+        "affiliation": "Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Maria Kasper",
+        "affiliation": "Department of Biosciences and Nutrition, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Peter L\u00f6nnerberg",
+        "affiliation": "Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Sten Linnarsson",
+        "corresponding": true,
+        "email": "sten.linnarsson@ki.se",
+        "affiliation": "Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      }
+    ],
+    "throughput": {
+      "summary": "Up to 96 single cells captured and barcoded per Fluidigm C1 run; 48% mRNA capture efficiency; average estimated total mRNA content 200,739 molecules per ES cell.",
+      "cells": "Up to 96 single cells per C1 run (one cell per capture chamber)",
+      "rna": "48 \u00b1 5% RNA capture efficiency (from ERCC spike-ins); ~1.54 million mapped reads/cell; average 9 reads per molecule",
+      "dna": "~1 ng/uL amplified cDNA per cell; 1-5 nM single-stranded library after isolation"
+    },
+    "statistical_model": "Poisson (molecule counts modeled as Poisson; a lossy Poisson with loss factor f=0.20 fit to ERCC controls for noise detection; UMI counts corrected for UMI collision probability)",
+    "other": [
+      {
+        "label": "PCR cycles",
+        "value": "21 cycles (down from 33 in original STRT); no separate library PCR"
+      },
+      {
+        "label": "TSO change",
+        "value": "Shortened to 29 bp all-RNA TSO with no well barcode, containing the Illumina read-1 adapter"
+      },
+      {
+        "label": "Sequencer",
+        "value": "Illumina HiSeq 2000; 50 bp read 1 + 8 bp index read"
+      },
+      {
+        "label": "Capture efficiency improvement",
+        "value": "~5-fold over the original STRT protocol"
+      },
+      {
+        "label": "Data availability",
+        "value": "Gene Expression Omnibus accession GSE46980"
+      },
+      {
+        "label": "Reagent cost",
+        "value": "~$8/cell reagents + ~$14/cell sequencing"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "microfluidic (C1)",
+  "data_processing": {
+    "summary": "Reads are quality-filtered, the well barcode and 5 bp UMI are extracted, template-switch Gs and poly(A) tails trimmed, then aligned with Bowtie to the genome plus an ERCC/splice-junction artificial chromosome; reads are assigned to UCSC transcript models and molecules counted as distinct UMIs per position (with collision correction) to yield an absolute per-cell expression matrix.",
+    "stages": [
+      {
+        "id": "preprocess",
+        "label": "Read preprocessing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "assign",
+        "label": "Transcript assignment"
+      },
+      {
+        "id": "quantify",
+        "label": "Molecule quantification"
+      },
+      {
+        "id": "analysis",
+        "label": "QC & downstream analysis"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "trim_qual",
+        "label": "trim low-quality 3' bases",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "extract_bc",
+        "label": "extract well barcode",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "extract_umi",
+        "label": "extract 5 bp UMI",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_umi_qual",
+        "label": "discard low-quality UMIs (Q<17)",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim_ts_g",
+        "label": "trim template-switch Gs",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_polya",
+        "label": "filter poly(A)/low-complexity reads",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_genome",
+        "label": "align to genome",
+        "tool": "Bowtie",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "realign_junctions",
+        "label": "realign unmapped to junctions",
+        "tool": "Bowtie",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "map_to_genomic",
+        "label": "map junctions to genomic positions",
+        "tool": "",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "assign_transcripts",
+        "label": "assign reads to transcript models",
+        "tool": "UCSC transcript models",
+        "stage": "assign",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_umi",
+        "label": "count distinct UMIs per position",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_umi_count",
+        "label": "drop low-count UMIs",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "correct_collision",
+        "label": "correct UMI collision",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "sum_molecules",
+        "label": "sum molecules per transcript",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "build_matrix",
+        "label": "assemble expression matrix",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "qc_cells",
+        "label": "filter damaged cells",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "detect_noisy",
+        "label": "detect noisy genes",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "david_enrich",
+        "label": "run gene-set enrichment",
+        "tool": "DAVID",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "trim_qual",
+        "to": "extract_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "extract_umi",
+        "to": "filter_umi_qual",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_umi_qual",
+        "to": "trim_ts_g",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim_ts_g",
+        "to": "filter_polya",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_polya",
+        "to": "align_genome",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_genome",
+        "to": "assign_transcripts",
+        "kind": "branch"
+      },
+      {
+        "from": "align_genome",
+        "to": "realign_junctions",
+        "kind": "branch"
+      },
+      {
+        "from": "realign_junctions",
+        "to": "map_to_genomic",
+        "kind": "sequential"
+      },
+      {
+        "from": "map_to_genomic",
+        "to": "assign_transcripts",
+        "kind": "sequential"
+      },
+      {
+        "from": "assign_transcripts",
+        "to": "count_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "extract_bc",
+        "to": "count_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "count_umi",
+        "to": "filter_umi_count",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_umi_count",
+        "to": "correct_collision",
+        "kind": "sequential"
+      },
+      {
+        "from": "correct_collision",
+        "to": "sum_molecules",
+        "kind": "sequential"
+      },
+      {
+        "from": "sum_molecules",
+        "to": "build_matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "build_matrix",
+        "to": "qc_cells",
+        "kind": "sequential"
+      },
+      {
+        "from": "qc_cells",
+        "to": "detect_noisy",
+        "kind": "branch"
+      },
+      {
+        "from": "qc_cells",
+        "to": "david_enrich",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "Poisson (lossy Poisson with loss factor f=0.20 fit to ERCC spike-in controls; UMI counts corrected for collision probability)"
+  }
+}

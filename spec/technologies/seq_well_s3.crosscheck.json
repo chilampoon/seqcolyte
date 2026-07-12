@@ -1,0 +1,21 @@
+{
+  "folder": "seq_well_s3",
+  "title": "Seq-Well S3",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "SeqWell_S3.html",
+    "oligo_seq_recall": 0.667,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 9,
+    "missed_oligos": [
+      "Illumina Nextera Read 2 primer",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera (XT) N7xx Index primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC GCCTGTCCGCGG AAGCAGTGGTATCAACGCAGAGTAC [CELL_BARCODE:12] [UMI:8] TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT [CDNA] CTGTCTCTTATACACATCT CCGAGCCCACGAGAC [SAMPLE_INDEX:8] ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

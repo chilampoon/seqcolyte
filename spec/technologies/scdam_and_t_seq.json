@@ -1,0 +1,1077 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "scdam_and_t_seq",
+  "assay": "scDam&T-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "scDamT-seq_original_paper.pdf",
+      "title": "Simultaneous quantification of protein-DNA contacts and transcriptomes in single cells",
+      "url": "https://doi.org/10.1038/s41587-019-0150-y",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdam_and_t_seq/scDamT-seq_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_EMS83236-supplement-2.pdf",
+      "title": "scDam&T-seq combines DNA adenine methyltransferase-based labeling of protein-DNA contact sites with transcriptome sequencing to analyze regulatory programs in single cells",
+      "url": "https://doi.org/10.1038/s41587-019-0150-y",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdam_and_t_seq/supplementary_EMS83236-supplement-2.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "scDamT-seq_protocol_supplement.pdf",
+      "title": "scDam&T-seq protocol Supplementary Information",
+      "url": "https://doi.org/10.1038/s41596-020-0314-8",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdam_and_t_seq/scDamT-seq_protocol_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "scDamT-seq_original_supplement.pdf",
+      "title": "scDam&T-seq original-paper Supplementary Information",
+      "url": "https://doi.org/10.1038/s41587-019-0150-y",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdam_and_t_seq/scDamT-seq_original_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_EMS83236-supplement-1.doc",
+      "title": "scDam&T-seq combines DNA adenine methyltransferase-based labeling of protein-DNA contact sites with transcriptome sequencing to analyze regulatory programs in single cells",
+      "url": "https://doi.org/10.1038/s41587-019-0150-y",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdam_and_t_seq/supplementary_EMS83236-supplement-1.doc",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "scDam&T-seq.pdf",
+      "title": "scDam&T-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdam_and_t_seq/scDam&T-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_cel_seq2_primer",
+      "name": "CEL-Seq2 primer (barcoded RT primer)",
+      "aliases": [],
+      "role": "Reverse-transcription primer that captures polyadenylated mRNA and adds a cell/sample barcode, UMI, Illumina small-RNA adapter and T7 promoter to the transcriptome product.",
+      "kind": "assembled",
+      "sequence": "GCCGGTAATACGACTCACTATAGGGAGTTCTACAGTCCGACGATC[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4](T)25V",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' handle",
+          "sequence": "GCCG",
+          "role": "5' handle"
+        },
+        {
+          "name": "T7 promoter",
+          "sequence": "GTAATACGACTCACTATAGGG",
+          "role": "T7 promoter (IVT amplification)"
+        },
+        {
+          "name": "Partial Illumina small RNA adapter (RA5)",
+          "sequence": "AGTTCTACAGTCCGACGATC",
+          "role": "Read 1 primer binding site / P5 handle"
+        },
+        {
+          "name": "UMI (part 1)",
+          "sequence": "[UMI:3]",
+          "role": "umi"
+        },
+        {
+          "name": "Sample barcode (part 1)",
+          "sequence": "[CELL_BARCODE:4]",
+          "role": "cell/sample barcode"
+        },
+        {
+          "name": "UMI (part 2)",
+          "sequence": "[UMI:3]",
+          "role": "umi"
+        },
+        {
+          "name": "Sample barcode (part 2)",
+          "sequence": "[CELL_BARCODE:4]",
+          "role": "cell/sample barcode"
+        },
+        {
+          "name": "Anchored poly(dT)",
+          "sequence": "(T)25",
+          "role": "poly(dT) mRNA capture"
+        },
+        {
+          "name": "V anchor",
+          "sequence": "V",
+          "role": "3' anchor base (G/C/A) locking primer at the poly-A boundary"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Protocol design: split 8-nt sample barcode (2x4 nt) alternating with a split 6-nt UMI (2x3 nt); example barcode #1 literal is ...GACGATCNNNGATGNNNTCAT(T)25V. In the original 2019 paper the UMI is a contiguous 6-nt run 5' of a contiguous 8-nt barcode (\u2026CGATCNNNNNN[8-nt barcode](T)25V). 384 barcoded primers provided (Supplementary Table 1/3). Ordered as standard desalted."
+    },
+    {
+      "oligo_id": "oligo_damid2_adapter",
+      "name": "DamID2 adapter (double-stranded, barcoded)",
+      "aliases": [],
+      "role": "Forked double-stranded adapter ligated to DpnI-digested (m6A-GATC) genomic DNA; adds a sample barcode, UMI, Illumina small-RNA adapter and T7 promoter to the protein\u2013DNA (DamID) product.",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Top oligo",
+          "sequence": "GGTGATCCGGTAATACGACTCACTATAGGGGTTCAGAGTTCTACAGTCCGACGATCNNNTGCANNNTATGGA",
+          "role": "Top strand (fork \u2013 T7 promoter \u2013 RA5 small-RNA adapter \u2013 split UMI/barcode \u2013 GA of reconstituted GATC)"
+        },
+        {
+          "name": "Bottom oligo (5'-phosphorylated)",
+          "sequence": "/5Phos/TCCATANNNTGCANNNGATCGTCGGACTGTAGAACTCTGAACCCCTATAGTGAGTCGTATTACCGGGAGCTT",
+          "role": "Bottom strand; 5' phosphate enables ligation to the blunt DpnI end"
+        },
+        {
+          "name": "6-nt fork",
+          "sequence": "GGTGAT",
+          "role": "non-complementary fork (prevents adapter concatemerization)"
+        },
+        {
+          "name": "T7 promoter",
+          "sequence": "TAATACGACTCACTATAGGG",
+          "role": "T7 promoter (IVT amplification)"
+        },
+        {
+          "name": "Partial Illumina small RNA adapter (RA5)",
+          "sequence": "GTTCAGAGTTCTACAGTCCGACGATC",
+          "role": "Read 1 primer binding site / P5 handle"
+        },
+        {
+          "name": "Split UMI + sample barcode",
+          "sequence": "[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4]",
+          "role": "6-nt UMI (2x3) alternating with 8-nt sample barcode (2x4)"
+        },
+        {
+          "name": "GATC junction",
+          "sequence": "GA",
+          "role": "reconstituted half of the GATC motif at the ligation junction to gDNA"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Top and bottom oligos are annealed 1:1. Protocol version (Supplementary Table 2): 8-nt split barcode + 6-nt split UMI. Original 2019 KBM7 version: 4-nt fork, 3-nt UMI, 8-nt barcode followed by CA (e.g. top TGATCCGGTAATACGACTCACTATAGGGGTTCAGAGTTCTACAGTCCGACGATCNNN[8-nt barcode]CA). Dam-RING1B mESC version: 6-nt fork, 6-nt barcode followed by GA. Barcodes have Hamming distance >=2 and are non-overlapping with CEL-Seq2 barcodes."
+    },
+    {
+      "oligo_id": "oligo_randomhex_rt_primer",
+      "name": "randomhexRT primer",
+      "aliases": [],
+      "role": "Random-hexamer reverse-transcription primer used during library preparation on fragmented aRNA; installs the Illumina TruSeq small-RNA 3' (RA3)/P7 priming handle at the insert 3' end.",
+      "kind": "assembled",
+      "sequence": "GCCTTGGCACCCGAGAATTCCANNNNNN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "RA3 / P7 priming handle",
+          "sequence": "GCCTTGGCACCCGAGAATTCCA",
+          "role": "Illumina TruSeq small-RNA RA3 handle (annealed by RPi index primer to add i7 + P7)"
+        },
+        {
+          "name": "Random hexamer",
+          "sequence": "NNNNNN",
+          "role": "random hexamer priming on fragmented aRNA"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "N bases ordered hand-mixed. Replaces the barcoded poly-dT approach when unbiased whole-RNA sampling is desired."
+    },
+    {
+      "oligo_id": "oligo_rna_pcr_primer_1",
+      "name": "RNA PCR Primer 1 (RP1)",
+      "aliases": [],
+      "role": "Library PCR primer that adds the Illumina P5 adapter; overlaps the small-RNA (RA5) adapter carried by the DamID adapter / CEL-Seq2 primer.",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGA",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 flow-cell adapter"
+        },
+        {
+          "name": "RA5 overlap",
+          "sequence": "GTTCAGAGTTCTACAGTCCGA",
+          "role": "overlap with Illumina small-RNA 5' adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Illumina TruSeq small-RNA RNA PCR Primer 1. 3'-terminal phosphorothioate bond (\u2026GTCCG*A)."
+    },
+    {
+      "oligo_id": "oligo_rna_pcr_index_primer_rpi",
+      "name": "RNA PCR Index Primer (RPi)",
+      "aliases": [],
+      "role": "Library PCR primer that adds the i7 library/sample index and the Illumina P7 adapter; overlaps the RA3/hexRT handle.",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:6]GTGACTGGAGTTCCTTGGCACCCGAGAATTCCA",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 index",
+          "sequence": "[SAMPLE_INDEX:6]",
+          "role": "i7 library/sample index (one per pooled library)"
+        },
+        {
+          "name": "RA3 / hexRT handle overlap",
+          "sequence": "GTGACTGGAGTTCCTTGGCACCCGAGAATTCCA",
+          "role": "overlap with the RA3 / randomhexRT handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Illumina TruSeq small-RNA RNA PCR index primer (RPiN). Example with index CGTGAT: CAAGCAGAAGACGGCATACGAGATCGTGATGTGACTGGAGTTCCTTGGCACCCGAGAATTCC*A. 3'-terminal phosphorothioate bond."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "P5 flow-cell binding sequence (added by RP1).",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "P7 flow-cell binding sequence (added by RPi). In the final-library top strand it appears as its reverse complement ATCTCGTATGCCGTCTTCTGCTTG.",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_truseq_small_rna_read1_primer",
+      "name": "Illumina TruSeq small RNA Read 1 primer (RA5)",
+      "aliases": [],
+      "role": "Read 1 sequencing primer; anneals to the RA5 small-RNA adapter and reads UMI + barcode + junction + insert start.",
+      "kind": "single",
+      "sequence": "GTTCAGAGTTCTACAGTCCGACGATC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Small-RNA 5' adapter (RA5) region shared by the DamID adapter and CEL-Seq2 primer; primes Read 1."
+    },
+    {
+      "oligo_id": "oligo_truseq_small_rna_read2_primer",
+      "name": "Illumina TruSeq small RNA Read 2 primer (RA3)",
+      "aliases": [],
+      "role": "Read 2 sequencing primer; anneals to the RA3 small-RNA 3' adapter and reads the cDNA (transcriptome) or gDNA (DamID) insert.",
+      "kind": "single",
+      "sequence": "TGGAATTCTCGGGTGCCAAGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Illumina TruSeq small-RNA 3' adapter (RA3) region; introduced via the randomhexRT primer handle."
+    },
+    {
+      "oligo_id": "oligo_t7_promoter",
+      "name": "T7 promoter",
+      "aliases": [],
+      "role": "T7 RNA polymerase promoter present in both the DamID adapter and the CEL-Seq2 primer; drives linear in-vitro-transcription amplification of gDNA and cDNA in a single reaction.",
+      "kind": "single",
+      "sequence": "TAATACGACTCACTATAGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    }
+  ],
+  "final_library": {
+    "source_label": "scDam&T-seq DamID (protein-DNA) library \u2014 Illumina TruSeq small-RNA architecture (the transcriptome library is identical except the GA-gDNA insert is replaced by poly(dT) + cDNA)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4]GA[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4]GA[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4]GA[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4]GA[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTGCAAGTCTCAAGATGTCAGGCTGCTAG[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4]CT[CDNA]ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTGCAAGTCTCAAGATGTCAGGCTGCTAG[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4]CT[CDNA]ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "GTTCAGAGTTCTACAGTCCGACGATC = Illumina TruSeq small RNA 5' adapter (RA5) / Read 1 primer site",
+      "[UMI:3] = UMI (part 1)",
+      "[CELL_BARCODE:4] = sample/cell barcode (part 1)",
+      "[UMI:3] = UMI (part 2)",
+      "[CELL_BARCODE:4] = sample/cell barcode (part 2)",
+      "GA = reconstituted GATC junction (DpnI ligation half)",
+      "[CDNA] = genomic DNA fragment (protein-DNA / m6A-marked insert)",
+      "TGGAATTCTCGGGTGCCAAGG = Illumina TruSeq small RNA 3' adapter (RA3) / Read 2 primer site",
+      "AACTCCAGTCAC = linker (from RPi index primer)",
+      "[SAMPLE_INDEX:6] = i7 library/sample index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "scDam&T-seq DamID (protein-DNA) library \u2014 Illumina TruSeq small-RNA architecture (the transcriptome library is identical except the GA-gDNA insert is replaced by poly(dT) + cDNA)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq small RNA Read 1 primer (RA5)",
+        "template": "bottom",
+        "cycles": 75,
+        "segments": [
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          },
+          {
+            "name": "Sample/cell barcode",
+            "type": "barcode",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "GATC junction",
+            "type": "constant",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 2
+          },
+          {
+            "name": "Insert (gDNA or cDNA start)",
+            "type": "insert",
+            "order": 3,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Illumina i7 index sequencing primer",
+        "template": "top",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "i7 library/sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina TruSeq small RNA Read 2 primer (RA3)",
+        "template": "top",
+        "cycles": 75,
+        "segments": [
+          {
+            "name": "cDNA / gDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Single-cell sort into barcoded CEL-Seq2 primer",
+      "note": "After in vivo Dam/Dam-POI induction, single cells are Hoechst/PI-stained and FACS-sorted into 384-well plates, each well pre-loaded with mineral oil and one unique CEL-Seq2 RT primer.",
+      "product": "well n:\n  |-- mineral oil\n  |-- CEL-Seq2 primer:\n      5'- GCCGGTAATACGACTCACTATAGGGAGTTCTACAGTCCGACGATC[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4](T)25V -3'\n  |-- 1 sorted single cell (Dam/Dam-POI-methylated m6A-GATC genome + polyadenylated mRNA)"
+    },
+    {
+      "step": 2,
+      "title": "Cell lysis",
+      "note": "Igepal-based lysis at 65 C releases mRNA and genomic DNA into the well; RNase inhibitor and ERCC spike-ins are present.",
+      "product": "in-well contents:\n  mRNA:   5'- XXXXXXXX...XXXXXXXX-AAAAAAAAAAAAAAA -3'\n  gDNA:   5'- ...Gm6ATC......Gm6ATC... -3'  (protein-DNA proximal GATC methylated in vivo)\n  primer: 5'- ...T7...RA5...[UMI][BARCODE](T)25V -3'"
+    },
+    {
+      "step": 3,
+      "title": "mRNA reverse transcription (CEL-Seq2)",
+      "note": "SuperScript II reverse-transcribes polyadenylated mRNA primed by the poly(dT) CEL-Seq2 primer, adding the barcode/UMI/RA5/T7 to the cDNA 3' end.",
+      "product": "mRNA:cDNA hybrid (CEL-Seq2 branch):\n5'- XXXXXXXX...XXXXXXXXXXXXX-AAAAAAAAAAA        -3'  (mRNA)\n3'- XXXXXXXX...cDNA-XXXXXXX-V(T)25[BC][UMI][BC][UMI]CTAGCAGCCTGACATCTTGAGGGATATCACTCAGCATAATGGCCG -5'\n                                                    (RA5 -- T7 promoter, from CEL-Seq2 primer)"
+    },
+    {
+      "step": 4,
+      "title": "Second-strand synthesis (ds cDNA)",
+      "note": "E. coli DNA ligase + DNA polymerase I + RNase H convert the mRNA:cDNA hybrid into double-stranded cDNA bearing a functional T7 promoter.",
+      "product": "double-stranded cDNA (T7-competent, CEL-Seq2 branch):\n5'- ...cDNA...(A)n ATGA[BC]CATC[UMI]GATCGTCGGACTGTAGAACTCC CTATAGTGAGTCGTATTACCGGC -3'\n3'- ...cDNA...(T)n TACT[BC]GTAG[UMI]CTAGCAGCCTGACATCTTGAGG GATATCACTCAGCATAATGGCCG -5'\n                                                        (T7 promoter double-stranded)"
+    },
+    {
+      "step": 5,
+      "title": "Proteinase K treatment",
+      "note": "Proteinase K removes chromatin-associated proteins and nucleases from the genomic DNA, exposing methylated GATC sites for restriction.",
+      "product": "gDNA (DamID branch), protein-free:\n5'- ...XXXXX Gm6A T C XXXXX...XXXXX Gm6A T C XXXXX... -3'\n3'- ...XXXXX C T Am6G XXXXX...XXXXX C T Am6G XXXXX... -5'"
+    },
+    {
+      "step": 6,
+      "title": "DpnI digestion of methylated GATC",
+      "note": "DpnI cleaves only fully methylated (m6A) GATC motifs, producing blunt ends specifically at Dam/Dam-POI-marked sites; unmethylated GATC is left intact.",
+      "product": "blunt-ended gDNA fragment at a methylated GATC (DamID branch):\n5'- ...XXXXX G A        T C XXXXX... -3'\n3'- ...XXXXX C T        A G XXXXX... -5'\n                (blunt cut GA | TC)"
+    },
+    {
+      "step": 7,
+      "title": "DamID adapter ligation",
+      "note": "T4 DNA ligase ligates the 5'-phosphorylated, forked, barcoded double-stranded DamID adapter to the blunt DpnI ends, adding the barcode/UMI/RA5/T7 and reconstituting the GATC junction.",
+      "product": "adapter-ligated gDNA (DamID branch):\n5'- GGTGATCCGG TAATACGACTCACTATAGGG GTTCAGAGTTCTACAGTCCGACGATC NNN TGCA NNN TATG GA TCXXXXX...gDNA -3'\n3'-      AGCTT ...CCGGGATTATGCTGAGTGATAT CAAGTCTCAAGATGTCAGGCTGCTAG NNN ACGT NNN ATACCT   AGXXXXX...gDNA -5'\n     (fork)      (T7 promoter)              (RA5 adapter)                (UMI/barcode)   (GATC)"
+    },
+    {
+      "step": 8,
+      "title": "Pool cells and bead purify",
+      "note": "Because DamID and CEL-Seq2 barcodes are unique and non-overlapping per cell, all wells are pooled and the barcoded gDNA + cDNA molecules are cleaned with magnetic beads before amplification.",
+      "product": "pooled, purified barcoded molecules (both branches):\n  DamID: 5'- T7 - RA5 - [UMI][BARCODE] - GA[gDNA] -3'\n  cDNA:  5'- T7 - RA5 - [UMI][BARCODE] - (dT)[cDNA] -3'"
+    },
+    {
+      "step": 9,
+      "title": "In-vitro-transcription (T7) linear amplification",
+      "note": "MEGAscript T7 transcribes every T7-tagged molecule, linearly amplifying both cDNA and gDNA into antisense amplified RNA (aRNA) in one reaction (no separation of DNA and RNA).",
+      "product": "aRNA (antisense copies, both branches), e.g. DamID:\n5'- G GGGUUCAGAGUUCUACAGUCCGACGAUC NNN UGCA NNN UAUGGA - [gDNA] -3'   (aRNA)\n     (T7 start)  (RA5)                (UMI/barcode)      (insert)"
+    },
+    {
+      "step": 10,
+      "title": "aRNA fragmentation",
+      "note": "aRNA is chemically fragmented in salt buffer at 94 C to a size suitable for Illumina sequencing, then bead-purified.",
+      "product": "fragmented aRNA (300-700 nt), e.g.:\n5'- ...RA5-[UMI][BARCODE]-[insert fragment] -3'\n5'- ...[insert fragment] -3'"
+    },
+    {
+      "step": 11,
+      "title": "Library-prep reverse transcription (randomhexRT)",
+      "note": "Fragmented aRNA is reverse-transcribed with the randomhexRT primer, which installs the Illumina TruSeq small-RNA 3' (RA3)/P7 priming handle at the insert 3' end.",
+      "product": "first-strand library cDNA:\n5'- [insert fragment] ... -3'\n3'- [insert fragment complement] NNNNNN ACCTTAAGAGCCCACGGTTCCG -5'\n                                (random hexamer)  (RA3 / P7 handle, from randomhexRT primer)"
+    },
+    {
+      "step": 12,
+      "title": "PCR indexing (add P5, i7, P7)",
+      "note": "NEBNext PCR with RNA PCR Primer 1 (adds P5 via the RA5 overlap) and an RNA PCR index primer (adds the i7 library index + P7 via the RA3 overlap) completes the Illumina library; 8-12 cycles.",
+      "product": "final DamID (protein-DNA) library, top strand 5'->3':\nAATGATACGGCGACCACCGAGATCTACAC GTTCAGAGTTCTACAGTCCGACGATC [UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4] GA [CDNA] TGGAATTCTCGGGTGCCAAGG AACTCCAGTCAC [SAMPLE_INDEX:6] ATCTCGTATGCCGTCTTCTGCTTG\n P5                            RA5 (Read1)                 UMI/barcode                            GATC gDNA  RA3 (Read2)          linker       i7 index         revcomp(P7)"
+    },
+    {
+      "step": 13,
+      "title": "Sequencing",
+      "note": "Libraries are quantified and sequenced paired-end (75x75) on an Illumina NextSeq 500 with 20% PhiX spike-in.",
+      "product": "sequenced final library (see library_sequencing / read_structure)."
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "Illumina TruSeq small-RNA Read 1 primer (RA5): 5'-GTTCAGAGTTCTACAGTCCGACGATC-3'",
+      "template": "bottom",
+      "cycles": 75,
+      "note": "Reads the split 6-nt UMI + split 8-nt sample/cell barcode + reconstituted GATC 'GA' junction, then into the insert start. The same R1 layout carries the barcode for both the DamID (gDNA) and CEL-Seq2 (mRNA) molecules. Paper preprocessing layout: 5'-[UMI][barcode]GA[gDNA]-3' for DamID (AG for AluI) or 5'-[UMI][barcode][mRNA]-3' for transcriptome.",
+      "diagram": "                          Read 1 primer (RA5), template = bottom, read \u2192\n         5'- GTTCAGAGTTCTACAGTCCGACGATC----------------------------->\ntop  5'- ...GTTCAGAGTTCTACAGTCCGACGATCNNNNNNNNNNNNNNGA[insert]... -3'\nbot  3'- ...CAAGTCTCAAGATGTCAGGCTGCTAGNNNNNNNNNNNNNNCT[insert]... -5'\n                                    \u2514UMI+barcode(14)\u2518GATC"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "Illumina TruSeq small-RNA i7 index primer (anneals to the RA3 / linker handle)",
+      "template": "top",
+      "cycles": 6,
+      "note": "Reads the 6-nt i7 library/sample index (RPi) that identifies the pooled 384-well library.",
+      "diagram": "                        i7 index primer, read \u2192\n         5'- ...GCCAAGGAACTCCAGTCAC------>\ntop  5'- ...GCCAAGGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\nbot  3'- ...CGGTTCCTTGAGGTCAGTGNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                              \u2514i7(6)\u2518            (P7)"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Illumina TruSeq small-RNA Read 2 primer (RA3): 5'-TGGAATTCTCGGGTGCCAAGG-3'",
+      "template": "top",
+      "cycles": 75,
+      "note": "Reads the insert from the opposite (3') end \u2014 the cDNA for the transcriptome product or the gDNA mate for the DamID product. Only R2 carries the mRNA sequence for transcriptomic read pairs.",
+      "diagram": "          Read 2 primer (RA3), template = top, read \u2190\ntop  5'- ...[insert]CCTTGGCACCCGAGAATTCCAAACTCCAGTCAC... -3'\nbot  3'- ...[insert]GGAACCGTGGGCTCTTAAGGTTTGAGGTCAGTG... -5'\n              <----------GGAACCGTGGGCTCTTAAGGT   (RA3, 3'\u21925')"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "scDam&T-seq",
+  "description": "scDam&T-seq is a single-cell multi-omics method that simultaneously quantifies protein\u2013DNA contacts (via DamID) and the transcriptome (via CEL-Seq2) from the same cell. A protein of interest is fused to E. coli Dam adenine methyltransferase, which deposits m6A at GATC motifs near its DNA-binding sites in vivo. In sorted single cells, polyadenylated mRNA is reverse-transcribed with a barcoded CEL-Seq2 primer and made double-stranded; genomic DNA is stripped of protein, the m6A-marked GATC sites are cut with DpnI, and a barcoded double-stranded DamID adapter is ligated to the blunt ends. Both the DamID adapter and the CEL-Seq2 primer carry a T7 promoter, so pooled cDNA and gDNA are co-amplified linearly by in vitro transcription, then converted into an Illumina TruSeq small-RNA library. Read 1 reads the cell/sample barcode + UMI + insert start, Read 2 reads the cDNA or gDNA insert, and the i7 read identifies the library pool. DamID contacts are scored as observed-over-expected (OE) UMI counts per genomic bin.",
+  "reference": {
+    "kind": "paper",
+    "label": "Simultaneous quantification of protein-DNA contacts and transcriptomes in single cells",
+    "path": null,
+    "url": "https://doi.org/10.1038/s41587-019-0150-y",
+    "doi": "10.1038/s41587-019-0150-y"
+  },
+  "publication": {
+    "year": 2019,
+    "original_publication": {
+      "title": "Simultaneous quantification of protein\u2013DNA contacts and transcriptomes in single cells",
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/s41587-019-0150-y",
+      "url": "https://doi.org/10.1038/s41587-019-0150-y"
+    },
+    "authors": [
+      {
+        "name": "Koos Rooijers",
+        "affiliation": "Oncode Institute, Hubrecht Institute\u2013KNAW and University Medical Center Utrecht, Utrecht, the Netherlands"
+      },
+      {
+        "name": "Corina M. Markodimitraki",
+        "affiliation": "Oncode Institute, Hubrecht Institute\u2013KNAW and University Medical Center Utrecht, Utrecht, the Netherlands"
+      },
+      {
+        "name": "Franka J. Rang",
+        "affiliation": "Oncode Institute, Hubrecht Institute\u2013KNAW and University Medical Center Utrecht, Utrecht, the Netherlands"
+      },
+      {
+        "name": "Sandra S. de Vries",
+        "affiliation": "Oncode Institute, Hubrecht Institute\u2013KNAW and University Medical Center Utrecht, Utrecht, the Netherlands"
+      },
+      {
+        "name": "Alex Chialastri",
+        "affiliation": "Department of Chemical Engineering and Center for Bioengineering, University of California Santa Barbara, Santa Barbara, CA, USA"
+      },
+      {
+        "name": "Kim L. de Luca",
+        "affiliation": "Oncode Institute, Hubrecht Institute\u2013KNAW and University Medical Center Utrecht, Utrecht, the Netherlands"
+      },
+      {
+        "name": "Dylan Mooijman",
+        "affiliation": "Oncode Institute, Hubrecht Institute\u2013KNAW and University Medical Center Utrecht, Utrecht, the Netherlands (present: Developmental Biology Unit, EMBL, Heidelberg, Germany)"
+      },
+      {
+        "name": "Siddharth S. Dey",
+        "corresponding": true,
+        "email": "sdey@ucsb.edu",
+        "affiliation": "Department of Chemical Engineering and Center for Bioengineering, University of California Santa Barbara, Santa Barbara, CA, USA"
+      },
+      {
+        "name": "Jop Kind",
+        "corresponding": true,
+        "email": "j.kind@hubrecht.eu",
+        "affiliation": "Oncode Institute, Hubrecht Institute\u2013KNAW and University Medical Center Utrecht, Utrecht, the Netherlands"
+      }
+    ],
+    "throughput": {
+      "summary": "Plate-based single-cell method: cells FACS-sorted one per well into 384-well plates; hundreds to thousands of cells per experiment. >100-fold throughput increase over the original scDamID via pooled T7/IVT amplification.",
+      "cells": "Single cells per 384-well plate; libraries typically 96\u2013384 barcoded cells; KBM7 and hybrid 129/Sv:CAST/EiJ mESC lines (Dam, Dam-LMNB1, Dam-RING1B).",
+      "rna": "Transcriptome (CEL-Seq2): median ~11,000\u201312,000 unique transcripts and ~3,700\u20133,900 genes per cell (protocol); ~4,010 unique transcripts / ~2,282 genes per cell in the original KBM7 comparison.",
+      "dna": "DamID (protein-DNA): median ~42,192 unique DamID reads per cell (KBM7); ~125,000\u2013175,000 unique GATC counts per sample in the protocol; typical analysis resolution 50\u2013100 kb bins."
+    },
+    "statistical_model": "UMI-based unique-event counting with observed-over-expected (OE) scoring per genomic bin; contacts binarized at OE >= 1 and summarized as contact frequency (CF). Expression counts modeled relative to Poisson with negative-binomial-like overdispersion (variance-to-mean ratio de-trended); differential contact/expression tested with t-tests, edgeR exact tests, and Spearman/Pearson correlations.",
+    "other": [
+      {
+        "label": "Untethered Dam",
+        "value": "an untethered-Dam control doubles as a chromatin-accessibility readout; substituting DpnI with AluI yields reduced-representation whole-genome (CNV) data"
+      },
+      {
+        "label": "Sequencing",
+        "value": "Illumina NextSeq 500, 75 bp paired-end, 20% PhiX spike-in"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO GSE108639; analysis pipeline at https://github.com/KindLab/scDamAndTools"
+      },
+      {
+        "label": "Protocol reference",
+        "value": "Markodimitraki et al., Nature Protocols 15, 1922\u20131953 (2020), doi:10.1038/s41596-020-0314-8"
+      }
+    ]
+  },
+  "modality": "DamID + RNA",
+  "method_type": "plate-based",
+  "data_processing": {
+    "summary": "Paired-end reads are demultiplexed simultaneously on the DamID and CEL-Seq2 cell/sample barcodes (no mismatches) with UMIs extracted from R1; gDNA reads (R1) have the restriction-motif dinucleotide 'GA' (GATC/DpnI) or 'AG' (AGCT/AluI) prepended and are aligned with bowtie2, while transcriptome reads (R2) are aligned with tophat2; alignments are UMI-deduplicated per motif/strand(/allele), counted as unique methylation events (DamID) or unique transcripts (RNA), binned in 100-kb windows and scored as observed-over-expected (OE), with expression normalized in scran and differential analysis in edgeR.",
+    "stages": [
+      {
+        "id": "s_demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment"
+      },
+      {
+        "id": "s_filter",
+        "label": "Filtering & allele assignment"
+      },
+      {
+        "id": "s_dedup",
+        "label": "Deduplication & counting"
+      },
+      {
+        "id": "s_qc",
+        "label": "Cell QC"
+      },
+      {
+        "id": "s_quant",
+        "label": "Quantification & scoring"
+      },
+      {
+        "id": "s_analysis",
+        "label": "Downstream analysis"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex cell barcodes",
+        "tool": "scDamAndTools",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "extract_umi",
+        "label": "Extract UMIs from R1",
+        "tool": "scDamAndTools",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "prepend_motif",
+        "label": "Prepend restriction motif",
+        "tool": "scDamAndTools",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_gdna",
+        "label": "Align gDNA reads",
+        "tool": "bowtie2",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_rna",
+        "label": "Align transcriptome reads",
+        "tool": "tophat2",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_gdna",
+        "label": "Filter low-quality alignments",
+        "tool": "",
+        "stage": "s_filter",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_offmotif",
+        "label": "Remove off-motif reads",
+        "tool": "",
+        "stage": "s_filter",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_rna",
+        "label": "Filter low-quality alignments",
+        "tool": "",
+        "stage": "s_filter",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_exonic",
+        "label": "Keep exonic reads",
+        "tool": "",
+        "stage": "s_filter",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "allele_dam",
+        "label": "Assign allele of origin",
+        "tool": "",
+        "stage": "s_filter",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "allele_rna",
+        "label": "Assign allele of origin",
+        "tool": "",
+        "stage": "s_filter",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup_dam",
+        "label": "Collapse PCR duplicates",
+        "tool": "scDamAndTools",
+        "stage": "s_dedup",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup_rna",
+        "label": "Collapse PCR duplicates",
+        "tool": "scDamAndTools",
+        "stage": "s_dedup",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_dam",
+        "label": "Count methylation events",
+        "tool": "scDamAndTools",
+        "stage": "s_dedup",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_rna",
+        "label": "Count unique transcripts",
+        "tool": "scDamAndTools",
+        "stage": "s_dedup",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_cells",
+        "label": "Filter cells by counts",
+        "tool": "",
+        "stage": "s_qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "size_factors",
+        "label": "Compute size factors",
+        "tool": "scran",
+        "stage": "s_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "logcpm",
+        "label": "Log-CPM normalize",
+        "tool": "scran",
+        "stage": "s_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "bin_genome",
+        "label": "Bin genome (100 kb)",
+        "tool": "scDamAndTools",
+        "stage": "s_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "compute_oe",
+        "label": "Compute observed/expected",
+        "tool": "scDamAndTools",
+        "stage": "s_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "binarize",
+        "label": "Binarize contacts (OE\u22651)",
+        "tool": "",
+        "stage": "s_quant",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "de",
+        "label": "Test differential expression",
+        "tool": "edgeR",
+        "stage": "s_analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells (ICA)",
+        "tool": "",
+        "stage": "s_analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "extract_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "extract_umi",
+        "to": "prepend_motif",
+        "kind": "branch"
+      },
+      {
+        "from": "extract_umi",
+        "to": "align_rna",
+        "kind": "branch"
+      },
+      {
+        "from": "prepend_motif",
+        "to": "align_gdna",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_gdna",
+        "to": "filter_gdna",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_gdna",
+        "to": "filter_offmotif",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_offmotif",
+        "to": "allele_dam",
+        "kind": "sequential"
+      },
+      {
+        "from": "allele_dam",
+        "to": "dedup_dam",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup_dam",
+        "to": "count_dam",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_rna",
+        "to": "filter_rna",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_rna",
+        "to": "filter_exonic",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_exonic",
+        "to": "allele_rna",
+        "kind": "sequential"
+      },
+      {
+        "from": "allele_rna",
+        "to": "dedup_rna",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup_rna",
+        "to": "count_rna",
+        "kind": "sequential"
+      },
+      {
+        "from": "count_dam",
+        "to": "filter_cells",
+        "kind": "fan_in"
+      },
+      {
+        "from": "count_rna",
+        "to": "filter_cells",
+        "kind": "fan_in"
+      },
+      {
+        "from": "filter_cells",
+        "to": "bin_genome",
+        "kind": "branch"
+      },
+      {
+        "from": "filter_cells",
+        "to": "size_factors",
+        "kind": "branch"
+      },
+      {
+        "from": "bin_genome",
+        "to": "compute_oe",
+        "kind": "sequential"
+      },
+      {
+        "from": "compute_oe",
+        "to": "binarize",
+        "kind": "sequential"
+      },
+      {
+        "from": "size_factors",
+        "to": "logcpm",
+        "kind": "branch"
+      },
+      {
+        "from": "size_factors",
+        "to": "de",
+        "kind": "branch"
+      },
+      {
+        "from": "logcpm",
+        "to": "cluster",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "Observed-over-expected (OE) unique-event scoring per 100-kb genomic bin, contacts binarized at OE\u22651 to contact frequency (CF); UMI-based unique-molecule counting; expression counts modeled as overdispersed (negative-binomial-like), differential expression via edgeR exact test."
+  }
+}

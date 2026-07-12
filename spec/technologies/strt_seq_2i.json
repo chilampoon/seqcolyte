@@ -1,0 +1,852 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "strt_seq_2i",
+  "assay": "STRT-seq-2i",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "STRT-seq-2i_supplement.pdf",
+      "title": "STRT-seq-2i Electronic Supplementary Material",
+      "url": "https://doi.org/10.1038/s41598-017-16546-4",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/strt_seq_2i/STRT-seq-2i_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "STRT-seq-2i.pdf",
+      "title": "STRT-seq-2i.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/strt_seq_2i/STRT-seq-2i.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "strt_p1_t31",
+      "name": "STRT-P1-T31",
+      "aliases": [],
+      "role": "Biotinylated oligo-dT reverse-transcription / mRNA capture primer (P1/P5 tail + poly-dT)",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGATCGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5 (partial)",
+          "sequence": "AATGATACGGCGACCACCGA",
+          "role": "P5 / Illumina P1 adapter portion"
+        },
+        {
+          "name": "linker",
+          "sequence": "TCG",
+          "role": "spacer/linker"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "poly(dT) anneals to mRNA poly(A) and primes reverse transcription (T31)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' Biotin. Used in lysis/RT mix. Anneals to poly(A) tail; RT extends toward transcript 5' end."
+    },
+    {
+      "oligo_id": "p1b_umi_rna_tso",
+      "name": "P1B-UMI-RNA-TSO",
+      "aliases": [],
+      "role": "RNA template-switch oligo carrying the 6-nt UMI and partial TruSeq Read 1 adapter (added at transcript 5' end)",
+      "kind": "assembled",
+      "sequence": "CTACACGACGCTCTTCCGATCT[UMI:6]GGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "partial TruSeq Read 1 primer binding site (P1B)"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:6]",
+          "role": "6-nt unique molecular identifier (rNrNrNrNrNrN)"
+        },
+        {
+          "name": "TSO G's",
+          "sequence": "GGG",
+          "role": "template-switch riboguanosines (rGrGrG) that pair the untemplated C's on cDNA"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' Biotin. Fully ribonucleotide oligo (all bases written rN in Table 1); rGrGrG folded to GGG, rNrNrNrNrNrN = UMI:6. Present in RT/Lysis-RT mix (5.1\u201310.5 \u00b5M)."
+    },
+    {
+      "oligo_id": "di_pcr_p1a",
+      "name": "DI-PCR-P1A",
+      "aliases": [],
+      "role": "First (indexed) PCR amplification primer binding the P1/P5 tail",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGA",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5 (partial)",
+          "sequence": "AATGATACGGCGACCACCGA",
+          "role": "P5 / Illumina P1 adapter portion"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' Biotin. 100 nM in PCR 1 mix."
+    },
+    {
+      "oligo_id": "di_p1a_idx_p1b",
+      "name": "DI-P1A-idx[1-32]-P1B",
+      "aliases": [],
+      "role": "First-PCR indexed forward primer adding the 5-bp well barcode (Index 2) and full P5",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:5]CTACACGACGCTCTTCCGATC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 / Illumina P1 flow-cell adapter"
+        },
+        {
+          "name": "Well index (Index 2)",
+          "sequence": "[SAMPLE_INDEX:5]",
+          "role": "5-bp well barcode (XXXXX); 32 designed barcodes"
+        },
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATC",
+          "role": "anneals to the P1B/partial TruSeq Read 1 region introduced by the TSO"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' Biotin. 32 index primers, one per candidate well of a 10x10 subarray; 200 nM final."
+    },
+    {
+      "oligo_id": "strt_tn5_idx",
+      "name": "STRT-Tn5-Idx[1-96]",
+      "aliases": [],
+      "role": "Tn5-loaded barcoded (subarray, Index 1) tagmentation adapter: partial P7 + 8-bp index + mosaic end",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGA[SAMPLE_INDEX:8]GCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7 (partial)",
+          "sequence": "CAAGCAGAAGACGGCATACGA",
+          "role": "P7 / Illumina P2 adapter portion"
+        },
+        {
+          "name": "Subarray index (Index 1)",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-bp subarray barcode (YYYYYYYY); 96 indices, one per subarray"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "GCGTCAGATGTGTATAAGAGACAG",
+          "role": "Tn5 transferred-strand mosaic end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "6.25 \u00b5M in transposome assembly with Tn5 transposase; one distinct index per subarray to target that subarray's cDNA."
+    },
+    {
+      "oligo_id": "strt_tn5_u",
+      "name": "STRT-Tn5-U",
+      "aliases": [],
+      "role": "Tn5 non-transferred (universal) mosaic-end strand; also the Index 1 sequencing primer",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCTGACGC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Mosaic End (reverse)",
+          "sequence": "CTGTCTCTTATACACATCTGACGC",
+          "role": "reverse complement of the ME; non-transferred Tn5 strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' Phosphate. Reverse complement of the ME in STRT-Tn5-Idx. Doubles as the Index 1 (subarray, 8 bp) sequencing primer."
+    },
+    {
+      "oligo_id": "p1_2nd_pcr",
+      "name": "P1_2nd_PCR",
+      "aliases": [],
+      "role": "Second (final) PCR primer completing the P5 adapter",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5 (partial)",
+          "sequence": "AATGATACGGCGACCACCGAGATC",
+          "role": "P5 / Illumina P1 adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Also referred to as 4K-P1_2ndPCR in the Methods. 200 nM in second PCR."
+    },
+    {
+      "oligo_id": "p2_2nd_pcr",
+      "name": "P2_2nd_PCR",
+      "aliases": [],
+      "role": "Second (final) PCR primer completing the P7 adapter",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 / Illumina P2 flow-cell adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Also referred to as P2_4K_2ndPCR in the Methods. 200 nM in second PCR."
+    },
+    {
+      "oligo_id": "di_read1_seq",
+      "name": "DI-Read1-Seq",
+      "aliases": [],
+      "role": "Read 1 sequencing primer (reads UMI + GGG + 5' transcript)",
+      "kind": "assembled",
+      "sequence": "ATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:5]CTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5 region",
+          "sequence": "ATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 / P1A binding region"
+        },
+        {
+          "name": "Well index region",
+          "sequence": "[SAMPLE_INDEX:5]",
+          "role": "spans the variable 5-bp well index (written NNNNNN in Table 1)"
+        },
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "3' end abuts the UMI so Read 1 begins with the 6-bp UMI"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table 1 writes the variable index region as NNNNNN; Read 1 begins with the 6-bp UMI, then 3 G's, then the 5' transcript."
+    },
+    {
+      "oligo_id": "di_idxp1a_seq",
+      "name": "DI-idxP1A-Seq",
+      "aliases": [],
+      "role": "Index 2 (well barcode, 5 bp) sequencing primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 / P1A region; 3' end abuts the 5-bp well index"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reads Index 2 = well barcode (5 bp)."
+    }
+  ],
+  "final_library": {
+    "source_label": "STRT-seq-2i final single-end dual-index library (P5 / TSO-5' end \u2026 Tn5-ME / P7 end)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:5]CTACACGACGCTCTTCCGATCT[UMI:6]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:5]CTACACGACGCTCTTCCGATCT[UMI:6]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:5]CTACACGACGCTCTTCCGATCT[UMI:6]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:5]CTACACGACGCTCTTCCGATCT[UMI:6]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:5]GATGTGCTGCGAGAAGGCTAGA[UMI:6]CCC[CDNA]GACAGAGAATATGTGTAGACTGCG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:5]GATGTGCTGCGAGAAGGCTAGA[UMI:6]CCC[CDNA]GACAGAGAATATGTGTAGACTGCG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[SAMPLE_INDEX:5] = well index (Index 2, 5 bp)",
+      "CTACACGACGCTCTTCCGATCT = Partial TruSeq Read 1",
+      "[UMI:6] = UMI (6 bp)",
+      "GGG = template-switch G's (5' transcript start)",
+      "[CDNA] = 5' cDNA insert",
+      "CTGTCTCTTATACACATCTGACGC = Tn5 mosaic end (Read 2 / ME)",
+      "[SAMPLE_INDEX:8] = subarray index (Index 1, 8 bp)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "STRT-seq-2i final single-end dual-index library (P5 / TSO-5' end \u2026 Tn5-ME / P7 end)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "DI-Read1-Seq",
+        "template": "bottom",
+        "cycles": 45,
+        "segments": [
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          },
+          {
+            "name": "Template-switch G's",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 3
+          },
+          {
+            "name": "5' cDNA",
+            "type": "insert",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "STRT-Tn5-U",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "Subarray index (Index 1)",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "DI-idxP1A-Seq",
+        "template": "bottom",
+        "cycles": 5,
+        "segments": [
+          {
+            "name": "Well index (Index 2)",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 5
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "In-well lysis & oligo-dT capture",
+      "summary": "Cells/nuclei are lysed in-well and the biotinylated oligo-dT primer STRT-P1-T31 anneals to the mRNA poly(A) tail.",
+      "note": "50 nl lysis mix with 500 nM STRT-P1-T31 (Bio-P5tail-poly(dT)), 3 min at 72 \u00b0C (up to 95 \u00b0C in optimized conditions), captures polyadenylated RNA.",
+      "product": "5'- [5'CAP transcript]XXXXX...XXXXX A A A A A A                            -3'   mRNA\n                                    | | | | | |\n                              3'- T T T T T T ...GCTAGCCACCAGCGGCATAGTAA -Bio-5'   STRT-P1-T31\n                              <----------- RT extends from 3' end"
+    },
+    {
+      "step": 2,
+      "title": "Reverse transcription (SuperScript II)",
+      "summary": "SuperScript II extends the oligo-dT primer into first-strand cDNA and adds untemplated C's at the transcript 5' cap.",
+      "note": "85 nl RT mix (SuperScript II, betaine, MgCl2) at 42 \u00b0C for 90 min; MMLV terminal transferase adds 2\u20135 C's at the cDNA 3' end (opposite the mRNA 5' cap).",
+      "product": "5'- [5'CAP transcript]XXXXX...XXXXX AAAAAAAA                         -3'   mRNA\n3'- CCC[========= first-strand cDNA =========]TTTTTTTT GCTAGCCACCAGCGGCATAGTAA -Bio-5'"
+    },
+    {
+      "step": 3,
+      "title": "Template switching (UMI + adapter at 5' end)",
+      "summary": "The RNA TSO P1B-UMI-RNA-TSO pairs its GGG to the C's and templates addition of the 6-nt UMI and partial TruSeq Read 1 to the cDNA 5' end.",
+      "note": "Template switching installs UMI:6 + partial TruSeq Read 1 (P1B) at the transcript 5' end; the sense strand emerging after PCR is shown.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[UMI:6]GGG[CDNA]AAAA...AAAACGATCGGTGGTCGCCGTATCATT -3'\n       (partial TruSeq R1)          (5' transcript)      (revcomp of RT primer P1 tail)"
+    },
+    {
+      "step": 4,
+      "title": "Indexed PCR 1 (well barcode + P5)",
+      "summary": "DI-P1A-idx-P1B adds the 5-bp well barcode (Index 2) and completes P5 while DI-PCR-P1A primes the other P1 end, amplifying full-length cDNA.",
+      "note": "KAPA HiFi PCR (5 + 15 cycles). Both ends carry P1/P5-like sequence at this stage; the amplicon is pooled per subarray.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:5]CTACACGACGCTCTTCCGATCT[UMI:6]GGG[CDNA](A)n CGATCGGTGGTCGCCGTATCATT -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:5]GATGTGCTGCGAGAAGGCTAGA[UMI:6]CCC[CDNA](T)n GCTAGCCACCAGCGGCATAGTAA -5'"
+    },
+    {
+      "step": 5,
+      "title": "Tn5 tagmentation & streptavidin 5'-fragment capture",
+      "summary": "Barcoded transposomes (STRT-Tn5-Idx, one index per subarray) fragment the cDNA and add the 8-bp subarray index (Index 1) + P7; streptavidin beads retain the biotinylated 5' fragment.",
+      "note": "55 \u00b0C 20 min tagmentation; MyOne Streptavidin C1 beads capture the biotinylated TSO/5' end so only the 5'-most fragment carries both P5 (biotin) and P7 (Tn5).",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:5]CTACACGACGCTCTTCCGATCT[UMI:6]GGG[CDNA]CTGTCTCTTATACACATCTGACGC -3'\n                                                                                       (Tn5 ME) --> P7 adapter added\n3'-Bio (streptavidin-captured 5' end)                                              [SAMPLE_INDEX:8] GCGTCAGATGTGTATAAGAGACAG..."
+    },
+    {
+      "step": 6,
+      "title": "Second PCR (final adapters)",
+      "summary": "P1_2nd_PCR and P2_2nd_PCR fill in and amplify the captured fragment to the final P5\u2026P7 dual-index single-end library.",
+      "note": "KAPA HiFi, 8 cycles, followed by AMPure size selection; yields the sequenceable library.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:5]CTACACGACGCTCTTCCGATCT[UMI:6]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:5]GATGTGCTGCGAGAAGGCTAGA[UMI:6]CCC[CDNA]GACAGAGAATATGTGTAGACTGCG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "DI-Read1-Seq",
+      "template": "bottom",
+      "cycles": 45,
+      "note": "Single-end read (45 bp generated; ~48 bp designed). Reads the 6-bp UMI, then 3 template-switch G's, then the 5\u2032 transcript. Extra template-switch G's (up to 9 total) are trimmed downstream.",
+      "diagram": "        5'-ATGATACGGCGACCACCGAGATCTACACNNNNNCTACACGACGCTCTTCCGATCT---------------->  (DI-Read1-Seq)\n                                                                        reads NNNNNN\u00b7GGG\u00b75'cDNA\n5'- AATGATACGGCGACCACCGAGATCTACACNNNNNCTACACGACGCTCTTCCGATCTNNNNNNGGG[CDNA]... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNGATGTGCTGCGAGAAGGCTAGANNNNNNCCC[CDNA]... -5'\n         (well idx = NNNNN, 5 bp;  UMI = NNNNNN, 6 bp)"
+    },
+    {
+      "read": "Index 1",
+      "primer": "STRT-Tn5-U",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "8-bp subarray barcode (Index 1), added by barcoded Tn5. Sequenced with the phosphorylated mosaic-end strand STRT-Tn5-U.",
+      "diagram": "                    5'-CTGTCTCTTATACACATCTGACGC-------->  (STRT-Tn5-U)\n                                                    reads NNNNNNNN (subarray idx, 8 bp)\n5'- ...[CDNA]CTGTCTCTTATACACATCTGACGCNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[CDNA]GACAGAGAATATGTGTAGACTGCGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'"
+    },
+    {
+      "read": "Index 2",
+      "primer": "DI-idxP1A-Seq",
+      "template": "bottom",
+      "cycles": 5,
+      "note": "5-bp well barcode (Index 2), added by the first indexed PCR. Sequenced with the P5/P1A-region primer DI-idxP1A-Seq, whose 3\u2032 end abuts the well index.",
+      "diagram": "5'-AATGATACGGCGACCACCGAGATCTACAC-------->  (DI-idxP1A-Seq)\n                                 reads NNNNN (well idx, 5 bp)\n5'- AATGATACGGCGACCACCGAGATCTACACNNNNNCTACACGACGCTCTTCCGATCT... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNGATGTGCTGCGAGAAGGCTAGA... -5'"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "STRT-seq-2i",
+  "description": "STRT-seq-2i is a dual-index 5\u2032-end single-cell/single-nucleus RNA-seq method run on an addressable 9,600-microwell aluminum array (96 subarrays \u00d7 100 wells). Cells or nuclei are deposited by nanodispenser or FACS, lysed in-well, and reverse transcribed with a biotinylated oligo-dT primer; a 6-nt UMI and partial Illumina adapter are added at the transcript 5\u2032 end by template switching. A first indexed PCR adds a 5-bp well barcode (Index 2), then Tn5 tagmentation isolates the biotinylated 5\u2032 fragment and adds an 8-bp subarray barcode (Index 1) plus the P7 adapter. Libraries are sequenced single-end on Illumina: Read 1 (~45\u201348 bp) captures the UMI + GGG + 5\u2032 transcript, with two index reads (8 bp subarray, 5 bp well).",
+  "reference": {
+    "kind": "paper",
+    "label": "STRT-seq-2i Electronic Supplementary Material",
+    "path": null,
+    "url": "https://doi.org/10.1038/s41598-017-16546-4",
+    "doi": "10.1038/s41598-017-16546-4"
+  },
+  "publication": {
+    "year": 2017,
+    "original_publication": {
+      "title": "STRT-seq-2i: dual-index 5\u2032 single cell and nucleus RNA-seq on an addressable microwell array",
+      "journal": "Scientific Reports",
+      "doi": "10.1038/s41598-017-16546-4",
+      "url": "https://doi.org/10.1038/s41598-017-16546-4"
+    },
+    "authors": [
+      {
+        "name": "Hannah Hochgerner",
+        "affiliation": "Division of Molecular Neurobiology, Dept. of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden; Science for Life Laboratory, Solna, Sweden"
+      },
+      {
+        "name": "Peter L\u00f6nnerberg",
+        "affiliation": "Karolinska Institutet, Stockholm, Sweden; Science for Life Laboratory, Solna, Sweden"
+      },
+      {
+        "name": "Rebecca Hodge",
+        "affiliation": "Allen Institute for Brain Science, Seattle, Washington, USA"
+      },
+      {
+        "name": "Jaromir Mikes",
+        "affiliation": "Science for Life Laboratory, Solna, Sweden"
+      },
+      {
+        "name": "Abeer Heskol",
+        "affiliation": "Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Hermann Hubschle",
+        "affiliation": "WaferGen Biosystems Inc., Fremont, California, USA"
+      },
+      {
+        "name": "Philip Lin",
+        "affiliation": "WaferGen Biosystems Inc., Fremont, California, USA"
+      },
+      {
+        "name": "Simone Picelli",
+        "affiliation": "Karolinska Institutet, Stockholm, Sweden; Science for Life Laboratory, Solna, Sweden"
+      },
+      {
+        "name": "Gioele La Manno",
+        "affiliation": "Karolinska Institutet, Stockholm, Sweden; Science for Life Laboratory, Solna, Sweden"
+      },
+      {
+        "name": "Michael Ratz",
+        "affiliation": "Dept. of Cell and Molecular Biology, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Jude Dunne",
+        "affiliation": "WaferGen Biosystems Inc., Fremont, California, USA"
+      },
+      {
+        "name": "Syed Husain",
+        "affiliation": "WaferGen Biosystems Inc., Fremont, California, USA"
+      },
+      {
+        "name": "Ed Lein",
+        "affiliation": "Allen Institute for Brain Science, Seattle, Washington, USA"
+      },
+      {
+        "name": "Maithreyan Srinivasan",
+        "affiliation": "WaferGen Biosystems Inc., Fremont, California, USA"
+      },
+      {
+        "name": "Amit Zeisel",
+        "corresponding": true,
+        "email": "amit.zeisel@ki.se",
+        "affiliation": "Division of Molecular Neurobiology, Dept. of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden; Science for Life Laboratory, Solna, Sweden"
+      },
+      {
+        "name": "Sten Linnarsson",
+        "corresponding": true,
+        "email": "sten.linnarsson@ki.se",
+        "affiliation": "Division of Molecular Neurobiology, Dept. of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden; Science for Life Laboratory, Solna, Sweden"
+      }
+    ],
+    "throughput": {
+      "summary": "9,600-well addressable array (96 subarrays \u00d7 100 wells); up to ~3,000 single cells/plate by limiting dilution or ~7,500\u20138,000 by FACS; ~$1/cell including 100,000 raw reads.",
+      "cells": "~2,500 avg fill by limiting dilution to >8,000 by FACS per plate; ~2,200 mouse cortex cells and 2,028 human nuclei analyzed",
+      "rna": "Mouse cortical cell average ~8,706 mRNA molecules and 3,686 genes per cell at ~41,000 mapped reads/cell; human nuclei mean 1,828 molecules / 1,192 genes at <62,000 reads/cell",
+      "dna": ""
+    },
+    "statistical_model": "Overdispersed (offset) Poisson for molecule-count noise; UMI (unique molecular identifier) counting with single-read UMI exclusion and collision-probability correction",
+    "other": [
+      {
+        "label": "Array format",
+        "value": "9,600 wells in 96 subarrays of 100 wells each; 35 nL minimum dispense, \u22641 \u00b5L well volume"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO accession GSE101601"
+      },
+      {
+        "label": "Predecessor",
+        "value": "Adapted from 5' STRT-seq / C1-STRT chemistry (Islam et al.; Zeisel et al. 2015)"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "microwell/picowell",
+  "data_processing": {
+    "summary": "Single-end reads are quality-trimmed, the 6-nt UMI is cut and validated (Phred \u226517), the mandatory template-switch G's (up to 9) are removed, and low-complexity/poly(A) reads are discarded; reads are demultiplexed by the combined Index 1 (subarray) + Index 2 (well) barcodes, aligned with Bowtie against transcript models with a splice-junction realignment pass, then molecules are counted per genomic position as distinct UMIs (single-read UMIs excluded, corrected for UMI collision) and cells are clustered with BackSPINv2.",
+    "stages": [
+      {
+        "id": "s_qc",
+        "label": "Read QC & trimming"
+      },
+      {
+        "id": "s_demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment"
+      },
+      {
+        "id": "s_quant",
+        "label": "Molecule quantification"
+      },
+      {
+        "id": "s_cluster",
+        "label": "Clustering & visualization"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "trim",
+        "label": "Trim low-quality 3\u2032 bases",
+        "tool": "",
+        "stage": "s_qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umi_extract",
+        "label": "Extract 6-nt UMI",
+        "tool": "",
+        "stage": "s_qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umi_qc",
+        "label": "Validate UMI quality (Phred\u226517)",
+        "tool": "",
+        "stage": "s_qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim_g",
+        "label": "Trim template-switch G's",
+        "tool": "",
+        "stage": "s_qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_lc",
+        "label": "Discard poly(A)/low-complexity reads",
+        "tool": "",
+        "stage": "s_qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "demux",
+        "label": "Demultiplex by well barcode",
+        "tool": "",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads (\u22643 mismatches)",
+        "tool": "Bowtie",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "realign",
+        "label": "Realign unmapped to junctions",
+        "tool": "Bowtie",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse",
+        "label": "Collapse UMIs per position",
+        "tool": "",
+        "stage": "s_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collision",
+        "label": "Correct UMI collision probability",
+        "tool": "",
+        "stage": "s_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells",
+        "tool": "BackSPINv2",
+        "stage": "s_cluster",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tsne",
+        "label": "Embed cells (t-SNE)",
+        "tool": "t-SNE",
+        "stage": "s_cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      }
+    ],
+    "edges": [
+      {
+        "from": "trim",
+        "to": "umi_extract",
+        "kind": "sequential"
+      },
+      {
+        "from": "umi_extract",
+        "to": "umi_qc",
+        "kind": "sequential"
+      },
+      {
+        "from": "umi_qc",
+        "to": "trim_g",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim_g",
+        "to": "filter_lc",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_lc",
+        "to": "demux",
+        "kind": "sequential"
+      },
+      {
+        "from": "demux",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "realign",
+        "kind": "branch"
+      },
+      {
+        "from": "align",
+        "to": "collapse",
+        "kind": "branch"
+      },
+      {
+        "from": "realign",
+        "to": "collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse",
+        "to": "collision",
+        "kind": "sequential"
+      },
+      {
+        "from": "collision",
+        "to": "cluster",
+        "kind": "fan_in"
+      },
+      {
+        "from": "cluster",
+        "to": "tsne",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "Overdispersed (offset) Poisson for molecule-count noise; UMI collision-probability correction"
+  }
+}

@@ -1,0 +1,647 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "scrrbs",
+  "assay": "scRRBS",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "scRRBS.pdf",
+      "title": "scRRBS.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scrrbs/scRRBS.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "paper.pdf",
+      "title": "paper.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scrrbs/paper.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "truseq_universal_adapter",
+      "name": "TruSeq universal adapter",
+      "aliases": [],
+      "role": "P5 forked-adapter oligo (top/universal strand of the Y-shaped adapter); contributes the Read 1 sequencing primer binding site and P5 flow-cell sequence",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Printed as AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATC*T; the * marks a phosphorothioate linkage between the last two bases (C*T) to protect the terminal T overhang from nuclease cleavage. Cytosines are methyl-modified (premethylated) to survive bisulfite conversion. Anneals to the indexed adapter over the 12-bp AGATCGGAAGAGC stem, leaving a single 3'-T overhang for TA ligation."
+    },
+    {
+      "oligo_id": "truseq_indexed_adapter",
+      "name": "TruSeq indexed adapter (index 1\u201312)",
+      "aliases": [],
+      "role": "P7 forked-adapter oligo (bottom/index strand of the Y-shaped adapter); carries the 6-nt i7 sample index and the P7 flow-cell sequence",
+      "kind": "single",
+      "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-terminal phosphorylated for ligation; cytosines premethylated for bisulfite protection. 6-nt index sits between ...CCAGTCAC and ATCTCGTAT... The 12 index sequences from Table 1 (5'->3'): idx1 ATCACG, idx2 CGATGT, idx3 TTAGGC, idx4 TGACCA, idx5 ACAGTG, idx6 GCCAAT, idx7 CAGATC, idx8 ACTTGA, idx9 GATCAG, idx10 TAGCTT, idx11 GGCTAC, idx12 CTTGTA. Example (index 1): GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG."
+    },
+    {
+      "oligo_id": "truseq_y_adapter",
+      "name": "TruSeq Y-shaped (forked) sequencing adapter",
+      "aliases": [],
+      "role": "Double-oligo forked adapter ligated to dA-tailed MspI fragments",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq universal adapter (top strand)",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "P5 arm; 3'-T overhang for ligation"
+        },
+        {
+          "name": "TruSeq indexed adapter (bottom strand)",
+          "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+          "role": "P7/index arm; 5'-phosphorylated"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "The two oligos are complementary over the 12-bp AGATCGGAAGAGC stem and diverge into the P5 and P7 arms, forming a Y. Used at 1:20 dilution in the ligation. All cytosines premethylated so the adapter is not bisulfite-converted."
+    },
+    {
+      "oligo_id": "qp1_primer",
+      "name": "QP1 (P5 PCR primer)",
+      "aliases": [],
+      "role": "Forward library-amplification primer for both PCR rounds (P5)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "IDT-synthesized, HPLC-purified; used at 300 nM (round 1) and 500 nM (round 2). Matches the 5' end of the TruSeq universal adapter."
+    },
+    {
+      "oligo_id": "qp2_primer",
+      "name": "QP2 (P7 PCR primer)",
+      "aliases": [],
+      "role": "Reverse library-amplification primer for both PCR rounds (P7)",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "IDT-synthesized, HPLC-purified; used at 300 nM (round 1) and 500 nM (round 2). Its reverse complement (TCGTATGCCGTCTTCTGCTTG) is the 3' end of the indexed adapter."
+    },
+    {
+      "oligo_id": "read1_sequencing_primer",
+      "name": "Read 1 sequencing primer (standard TruSeq)",
+      "aliases": [],
+      "role": "Primes Read 1 into the bisulfite-converted MspI genomic insert",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Not printed separately; this is the standard Illumina TruSeq Read 1 primer sequence, which is embedded verbatim within the TruSeq universal adapter."
+    },
+    {
+      "oligo_id": "index_sequencing_primer",
+      "name": "Index (i7) sequencing primer (standard TruSeq)",
+      "aliases": [],
+      "role": "Primes the i7 index read",
+      "kind": "single",
+      "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard TruSeq index-read primer, embedded verbatim within the indexed adapter (region immediately 5' of the 6-nt index)."
+    },
+    {
+      "oligo_id": "read2_sequencing_primer",
+      "name": "Read 2 sequencing primer (standard TruSeq)",
+      "aliases": [],
+      "role": "Primes Read 2 (paired end) into the insert from the P7 side",
+      "kind": "single",
+      "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq Read 2 primer; the reverse complement of the indexed-adapter stem region (GATCGGAAGAGCACACGTCTGAACTCCAGTCAC). Paired-end 100-bp reads are described in the protocol."
+    }
+  ],
+  "final_library": {
+    "source_label": "scRRBS final library (TruSeq single-index, bisulfite-converted MspI insert)",
+    "annotated_library_sequence": "5'- AATGATACGGCGACCACCGA(P5) GATCTACAC TCTTTCCCTACACGACGCTCTTCCGATCT(Rd1 primer / MspI-CG start) [CDNA = bisulfite-converted MspI genomic fragment] AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC(Rd2/index primer site) [SAMPLE_INDEX:6](i7) ATCTCGTATGCCGTCTTCTGCTTG(P7) -3'",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "top",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "bottom",
+        "source_html": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX_RC:6]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CDNA_RC]AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT",
+        "source_sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX_RC:6]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CDNA_RC]AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGA  = P5 flow-cell sequence (QP1 primer binding site)",
+      "GATCTACAC             = TruSeq universal spacer",
+      "TCTTTCCCTACACGACGCTCTTCCGATCT = Read 1 sequencing primer binding site (ends at the ligation junction / MspI CG remnant)",
+      "[CDNA]                = bisulfite-converted MspI genomic insert (begins with filled-in CGG MspI remnant; C->T where unmethylated)",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = adapter stem + Read 2 / index sequencing primer binding site",
+      "[SAMPLE_INDEX:6]      = 6-nt i7 sample index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = P7 flow-cell sequence (reverse complement of QP2 primer)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "scRRBS final library (TruSeq single-index, bisulfite-converted MspI insert)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+        "template": "bottom",
+        "cycles": 100,
+        "segments": [
+          {
+            "name": "bisulfite-converted MspI genomic insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+        "template": "top",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+        "template": "top",
+        "cycles": 100,
+        "segments": [
+          {
+            "name": "bisulfite-converted MspI genomic insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Single-cell lysis",
+      "summary": "One picked cell is lysed with protease in one tube, releasing naked double-stranded genomic DNA.",
+      "note": "Lysis 3 h at 50 C then 75 C 30 min to inactivate protease; ~60 fg unmethylated lambda-DNA (~1% mass) is spiked in as a bisulfite non-conversion control. No purification is performed after this point until after bisulfite conversion.",
+      "product": "5'- ...NNNNCCGGNNNN...NNNNCCGGNNNN... -3'\n3'- ...NNNNGGCCNNNN...NNNNGGCCNNNN... -5'   (intact genomic dsDNA + lambda spike-in)"
+    },
+    {
+      "step": 2,
+      "title": "MspI digestion",
+      "summary": "MspI cuts C^CGG, fragmenting the genome and enriching CpG-dense regions, leaving 5'-CG overhangs.",
+      "note": "9 U MspI, 37 C 3 h, 80 C 20 min inactivation. Methylation-insensitive, so all CCGG sites are cut regardless of 5mC.",
+      "product": "5'-  CG XXXXXXXXXXXX    -3'\n3'-     XXXXXXXXXXXX GC -5'\n(each fragment carries 5'-CG overhangs at both ends)"
+    },
+    {
+      "step": 3,
+      "title": "End-repair / dA-tailing",
+      "summary": "Klenow (exo-) fills in the CG overhangs and adds a single 3'-dA overhang to each end.",
+      "note": "dNTP mix skewed to dATP (40 uM dATP, 4 uM dCTP, 4 uM dGTP): the recessed 3' ends are filled to the CG then a non-templated A is added for TA ligation. 37 C 40 min, 75 C 15 min.",
+      "product": "5'-  CGXXXXXXXXXXXXCG A -3'\n3'- A GCXXXXXXXXXXXXGC   -5'\n(blunt filled ends + 3'-A overhang)"
+    },
+    {
+      "step": 4,
+      "title": "TruSeq adapter ligation",
+      "summary": "Premethylated Y-shaped TruSeq indexed adapters are ligated to the dA-tailed fragments via their T overhang.",
+      "note": "30 Weiss U T4 DNA ligase, 1:20 diluted adapter, 16 C 30 min then 4 C overnight; 65 C 20 min inactivation. Adapter cytosines are methylated so they resist bisulfite conversion.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT-[insert]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- (complementary bottom strand) -5'\n(adapter-insert-adapter, forked ends open)"
+    },
+    {
+      "step": 5,
+      "title": "Bisulfite conversion",
+      "summary": "Sodium bisulfite converts unmethylated cytosines in the insert to uracil; methylated Cs and the premethylated adapters are preserved.",
+      "note": "MethylCode kit: 98 C 10 min then 64 C 2.5 h. Converted DNA purified on Zymo spin columns with 10 ng tRNA carrier, eluted in 30 uL.",
+      "product": "5'- [adapter, unchanged]-[insert with unmethylated C -> U]-[adapter, unchanged] -3'\n(single-stranded, uracil-containing insert)"
+    },
+    {
+      "step": 6,
+      "title": "First-round PCR (Pfu Cx)",
+      "summary": "25 cycles with QP1/QP2 and uracil-tolerant PfuTurbo Cx polymerase copy uracil as thymine and complete the P5/P7 ends.",
+      "note": "95 C 2 min; 25x (95 C 20 s, 60 C 30 s, 72 C 1 min); 72 C 5 min. Twice AMPure XP purified. PfuTurbo Cx is resistant to uracil stalling.",
+      "product": "5'- AATGATACGGCGACCACCGA...CCGATCT-[converted insert, C->T]-AGATCGGAAGAGC...CCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\n(double-stranded, fully-formed library molecule)"
+    },
+    {
+      "step": 7,
+      "title": "Second-round PCR (Phusion/KAPA)",
+      "summary": "A further 25 cycles with QP1/QP2 enrich the library to sufficient quantity.",
+      "note": "98 C 2 min; 25x (98 C 10 s, 60 C 30 s, 72 C 1 min); 72 C 5 min. One AMPure XP purification. KAPA HiFi HotStart is an accepted alternative.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    },
+    {
+      "step": 8,
+      "title": "Size selection (200\u2013700 bp)",
+      "summary": "The amplified library is resolved on a 12% native polyacrylamide TBE gel and 200\u2013700 bp fragments are excised, crush-and-soak recovered, and AMPure-cleaned to remove primer dimers (~120 bp).",
+      "note": "Gel-based selection removes the abundant scRRBS adapter/primer dimers. Final library size distribution typically 160\u2013350 bp; yield ~20\u201330 ng.",
+      "product": "5'- P5-Rd1-[insert 200-700 bp]-index-adapter-P7 -3'  (purified sequenceable library)"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (insert)",
+      "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "template": "bottom",
+      "cycles": 100,
+      "note": "Standard TruSeq Read 1 primer (embedded in the P5/universal adapter). Its sequence is identical to the top strand, so it anneals to the bottom strand and reads rightward into the bisulfite-converted MspI genomic insert, starting at the filled-in MspI (CGG) remnant. 100-bp paired-end on HiSeq 2000/2500.",
+      "diagram": "Read 1 primer  5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3'\n                                                 --------> Read 1 (100 nt)\ntop    5'- ...ACACTCTTTCCCTACACGACGCTCTTCCGATCT[==BS-converted MspI insert==]AGATCGGAAGAGC... -3'\nbottom 3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[==   insert complement (RC)  ==]TCTAGCCTTCTCG... -5'"
+    },
+    {
+      "read": "Index read (i7)",
+      "primer": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+      "template": "bottom",
+      "cycles": 6,
+      "note": "Standard TruSeq i7 index primer; its sequence matches the top strand immediately 5' of the 6-nt index, so it anneals to the bottom strand and reads rightward across the 6-nt sample index (indexes 1-12). Read off the same (bottom) template as Read 1.",
+      "diagram": "i7 index primer  5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3'\n                                                   --------> i7 read (6 nt)\ntop    5'- ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\nbottom 3'- ...TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[ index compl. ]TAGAGCATACGGCAGAAGACGAAC -5'"
+    },
+    {
+      "read": "Read 2 (insert)",
+      "primer": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "template": "top",
+      "cycles": 100,
+      "note": "Standard TruSeq Read 2 primer; its reverse complement is the AGATCGGAAGAGC...CCAGTCAC adapter stem, so the primer anneals to the top strand at that stem and reads leftward (<---) into the bisulfite-converted insert from the P7 side. Paired-end mate of Read 1.",
+      "diagram": "top    5'- ...[==BS-converted MspI insert==]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7]... -3'\nbottom 3'- ...[==   insert complement (RC)  ==]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7c]... -5'\n              Read 2 (100 nt) <--------  3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'  (Read 2 primer, anneals to top strand)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "scRRBS",
+  "description": "Single-cell reduced-representation bisulfite sequencing (scRRBS) profiles genome-wide DNA methylation (5mC + 5hmC) at single-base resolution from a single mammalian cell or a few pooled cells. Genomic DNA is MspI-digested (C^CGG) to enrich CpG-dense regions, end-repaired/dA-tailed, ligated to premethylated Illumina TruSeq indexed adapters, and bisulfite-converted \u2014 all in one tube to minimize DNA loss \u2014 then PCR-amplified and size-selected. Paired-end reads capture the bisulfite-converted MspI genomic fragments, whose per-CpG methylation is read out digitally as fully methylated or unmethylated.",
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "scrrbs",
+    "path": null,
+    "url": null,
+    "doi": null
+  },
+  "publication": {
+    "year": 2015,
+    "original_publication": {
+      "title": "Profiling DNA methylome landscapes of mammalian cells with single-cell reduced-representation bisulfite sequencing",
+      "journal": "Nature Protocols",
+      "doi": "10.1038/nprot.2015.039",
+      "url": "https://doi.org/10.1038/nprot.2015.039"
+    },
+    "authors": [
+      {
+        "name": "Hongshan Guo",
+        "affiliation": "Biodynamic Optical Imaging Center, College of Life Sciences, Peking University, Beijing, China"
+      },
+      {
+        "name": "Ping Zhu",
+        "affiliation": "Biodynamic Optical Imaging Center, College of Life Sciences, Peking University; Peking-Tsinghua Center for Life Sciences, Peking University, Beijing, China"
+      },
+      {
+        "name": "Fan Guo",
+        "affiliation": "Biodynamic Optical Imaging Center, College of Life Sciences, Peking University, Beijing, China"
+      },
+      {
+        "name": "Xianlong Li",
+        "affiliation": "Biodynamic Optical Imaging Center, College of Life Sciences, Peking University, Beijing, China"
+      },
+      {
+        "name": "Xinglong Wu",
+        "affiliation": "Biodynamic Optical Imaging Center, College of Life Sciences, Peking University; Peking-Tsinghua Center for Life Sciences, Peking University, Beijing, China"
+      },
+      {
+        "name": "Xiaoying Fan",
+        "affiliation": "Biodynamic Optical Imaging Center, College of Life Sciences, Peking University, Beijing, China"
+      },
+      {
+        "name": "Lu Wen",
+        "corresponding": true,
+        "email": "wenlu.wl@gmail.com",
+        "affiliation": "Biodynamic Optical Imaging Center; Ministry of Education Key Laboratory of Cell Proliferation and Differentiation; Center for Molecular and Translational Medicine, Peking University, Beijing, China"
+      },
+      {
+        "name": "Fuchou Tang",
+        "corresponding": true,
+        "email": "tangfuchou@pku.edu.cn",
+        "affiliation": "Biodynamic Optical Imaging Center; Ministry of Education Key Laboratory of Cell Proliferation and Differentiation; Center for Molecular and Translational Medicine, Peking University, Beijing, China"
+      }
+    ],
+    "throughput": {
+      "summary": "Single cell (down to 1 diploid or haploid cell; also 5\u2013100 pooled cells). ~40% of bulk-RRBS CpG sites recovered from one diploid cell (~1 million CpGs; range 0.2\u20131.5 million). Final library yield ~20\u201330 ng.",
+      "cells": "1 cell (single-cell); optionally 5\u2013100 pooled cells",
+      "rna": "not applicable (DNA methylation assay)",
+      "dna": "~1 million CpG sites/diploid cell (0.2\u20131.5 million range); ~20\u201330 ng final library; sequenced to ~10 million 100-bp paired-end reads"
+    },
+    "statistical_model": "Per-CpG methylation level = reported C / (reported C + T) at each genomic position. In single cells (>=3x coverage) each CpG is called digitally as fully methylated (>=90% -> 100%) or unmethylated (<=10% -> 0%); intermediate 10\u201390% values are discarded. Bisulfite non-conversion rate estimated from non-CG cytosines of the unmethylated lambda-DNA spike-in.",
+    "other": [
+      {
+        "label": "Original method paper",
+        "value": "Guo et al., Genome Research 23:2126\u20132135 (2013), doi:10.1101/gr.161679.113 (GEO GSE47343)"
+      },
+      {
+        "label": "Restriction enzyme",
+        "value": "MspI (C^CGG); methylation-insensitive, enriches CpG islands/promoters"
+      },
+      {
+        "label": "Key innovation",
+        "value": "Single-tube reaction integrating lysis, MspI digestion, end-repair/dA-tailing, adapter ligation and bisulfite conversion with no purification until after conversion"
+      },
+      {
+        "label": "Bisulfite conversion rate",
+        "value": "99.2% average (97.7\u201399.9%); only samples >98% used"
+      },
+      {
+        "label": "Mapping efficiency",
+        "value": "~25% for single cells (plateaus ~50% with more cells)"
+      },
+      {
+        "label": "Digitized calls",
+        "value": "91.6% of CpGs in a haploid sperm cell and 86.9% in a diploid mESC are called fully methylated or unmethylated"
+      },
+      {
+        "label": "Sequencer",
+        "value": "Illumina HiSeq 2000 / HiSeq 2500, 100-bp paired-end, cluster density 75\u201385% of normal"
+      }
+    ]
+  },
+  "modality": "DNA methylation",
+  "method_type": "manual/tube",
+  "data_processing": {
+    "summary": "Paired-end bisulfite reads are quality/adapter-trimmed with RRBS-aware settings, aligned to an in-silico bisulfite-converted reference with Bismark/Bowtie1, and per-cytosine methylation is called as reported-C / (reported-C + reported-T); in single cells each CpG (>=3x) is digitized to fully methylated (>=90%->100%) or unmethylated (<=10%->0%), with non-conversion estimated from the unmethylated lambda-DNA spike-in.",
+    "stages": [
+      {
+        "id": "s_prep",
+        "label": "Reference preparation"
+      },
+      {
+        "id": "s_qc",
+        "label": "Read trimming & QC"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment"
+      },
+      {
+        "id": "s_meth",
+        "label": "Methylation calling"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "n_convert_ref",
+        "label": "Bisulfite-convert reference",
+        "tool": "Bismark",
+        "stage": "s_prep",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_index_ref",
+        "label": "Index converted genome",
+        "tool": "Bowtie1",
+        "stage": "s_prep",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_trim",
+        "label": "Quality/adapter-trim reads",
+        "tool": "Trim Galore",
+        "stage": "s_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_trim1",
+        "label": "Remove end-repair base",
+        "tool": "Trim Galore",
+        "stage": "s_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_align",
+        "label": "Align bisulfite reads",
+        "tool": "Bismark",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_sort",
+        "label": "Coordinate-sort alignment",
+        "tool": "Picard SortSam",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_pileup",
+        "label": "Generate per-locus pileup",
+        "tool": "SAMtools",
+        "stage": "s_meth",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_methlevel",
+        "label": "Compute per-CpG methylation",
+        "tool": "SingleC_MetLevel.pl",
+        "stage": "s_meth",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_digitize",
+        "label": "Digitize CpG calls",
+        "tool": "SingleC_MetLevel.pl",
+        "stage": "s_meth",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "n_nonconv",
+        "label": "Estimate non-conversion rate",
+        "tool": "",
+        "stage": "s_meth",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_convert_ref",
+        "to": "n_index_ref",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_trim",
+        "to": "n_trim1",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_index_ref",
+        "to": "n_align",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_trim1",
+        "to": "n_align",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_align",
+        "to": "n_sort",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_sort",
+        "to": "n_pileup",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_pileup",
+        "to": "n_methlevel",
+        "kind": "branch"
+      },
+      {
+        "from": "n_pileup",
+        "to": "n_nonconv",
+        "kind": "branch"
+      },
+      {
+        "from": "n_methlevel",
+        "to": "n_digitize",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "per-CpG methylation fraction = reported C / (reported C + T); single-cell calls digitized to 0% (<=10%) or 100% (>=90%), intermediate 10-90% discarded; non-conversion rate estimated from unmethylated lambda-DNA spike-in"
+  }
+}

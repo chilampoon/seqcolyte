@@ -1,0 +1,24 @@
+{
+  "folder": "snare_seq",
+  "title": "SNARE-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "SNARE-seq.html",
+    "oligo_seq_recall": 0.667,
+    "oligo_seqs_matched": 12,
+    "oligo_seqs_total": 18,
+    "missed_oligos": [
+      "Beads-oligo-dT-seqB",
+      "i5 index sequencing primer",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera N/S5xx primer entry point (s5)",
+      "Nextera (XT) N7xx Index primer",
+      "P5xx-TSO"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC [SAMPLE_INDEX:8] GCCTGTCCGCGG AAGCAGTGGTATCAACGCAGAGTAC [CELL_BARCODE:12] [UMI:8] TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [CDNA] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC [SAMPLE_INDEX:8] ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

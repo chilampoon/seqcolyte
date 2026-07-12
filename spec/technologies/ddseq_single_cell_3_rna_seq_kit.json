@@ -1,0 +1,633 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "ddseq_single_cell_3_rna_seq_kit",
+  "assay": "ddSEQ Single-Cell 3\u2032 RNA-Seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "ddSEQ_3pRNA.pdf",
+      "title": "ddSEQ_3pRNA.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/ddseq_single_cell_3_rna_seq_kit/ddSEQ_3pRNA.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_bead_polyt_capture",
+      "name": "Barcoded Bead Poly(T) Capture Oligo",
+      "aliases": [],
+      "role": "mRNA capture / reverse-transcription primer immobilized on the gel bead; carries the bead barcode and UMI",
+      "kind": "assembled",
+      "sequence": "[CELL_BARCODE][UMI](T)n",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Bead Barcode (cell barcode)",
+          "sequence": "[CELL_BARCODE]",
+          "role": "identifies the gel bead; identical across all oligos on one bead"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI]",
+          "role": "unique molecular identifier; differs between oligos on the same bead"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "(T)n",
+          "role": "anneals to mRNA poly(A) tail to prime capture and RT"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Bead-immobilized. Per Fig. 4 text, every oligo on a bead shares the same bead barcode and each carries a UMI; the poly(T) tail captures mRNA. Exact bead-barcode length, UMI length, poly(dT) length, and the constant Read-1 primer-binding region are NOT disclosed in this user guide. Read 1 (54 cycles) reads the bead barcode + UMI region."
+    },
+    {
+      "oligo_id": "oligo_deconvolution_oligo_do",
+      "name": "Deconvolution Oligo (DO)",
+      "aliases": [],
+      "role": "bead-immobilized oligo that hybridizes with DOs from co-encapsulated beads and is extended into a DO dimer to record droplet co-occupancy",
+      "kind": "assembled",
+      "sequence": "[CELL_BARCODE][UMI][DO_REGION]",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Bead Barcode (cell barcode)",
+          "sequence": "[CELL_BARCODE]",
+          "role": "same bead barcode as the poly(T) capture oligos on this bead"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI]",
+          "role": "unique molecular identifier"
+        },
+        {
+          "name": "DO region",
+          "sequence": "[DO_REGION]",
+          "role": "complementary/priming region enabling DO-DO hybridization and extension into a dimer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Bead-immobilized. DOs in a droplet hybridize with DOs from other beads to form dimers; Omnition Analysis Software connects beads within the same droplet from the DO sequencing library. The DO-region sequence is proprietary and NOT disclosed in this document."
+    },
+    {
+      "oligo_id": "oligo_cdna_tagmentation_adapter",
+      "name": "cDNA Tagmentation Adapter (Tn5)",
+      "aliases": [],
+      "role": "transposome-loaded adapter inserted into double-stranded cDNA during tagmentation to add the Read 2 / P7-side sequencing handle",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "The cDNA fraction is tagmented ('cDNA is tagmented to incorporate adapters', Fig. 6/7) to add adapters that are completed by index PCR. The DO fraction is NOT tagmented (index PCR only). The tagmentation-enzyme mosaic-end/adapter sequence is proprietary and NOT printed in this user guide; left blank rather than fabricated."
+    },
+    {
+      "oligo_id": "oligo_index_pcr_primer_i5_p5",
+      "name": "Index PCR Primer 1 (P5 + i5, Index 2)",
+      "aliases": [],
+      "role": "index PCR primer that appends the P5 adapter and the 8-bp i5 sample index during cDNA/DO library amplification (CLA/DLA)",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell adapter (inferred standard; not printed in this guide)"
+        },
+        {
+          "name": "i5 sample index (Index 2)",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-bp i5 index of the unique dual index (UDI)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "24 UDI i5 (Index 2) sequences, 5'->3' as read for i5, from Table 34: UDI_001 AGCGCTAG, 002 GATATCGA, 003 CGCAGACG, 004 TATGAGTA, 005 AGGTGCGT, 006 GAACATAC, 007 ACATAGCG, 008 GTGCGATA, 009 CCAACAGA, 010 TTGGTGAG, 011 CGCGGTTC, 012 TATAACCT, 013 AAGGATGA, 014 GGAAGCAG, 015 TGACGAAT, 016 CAGTAGGC, 017 ATATTCAC, 018 GCGCCTGT, 019 ACTCTATG, 020 GTCTCGCA, 021 AAGACGTC, 022 GGAGTACT, 023 ACCGGCCA, 024 GTTAATTG. The P5 sequence and the primer's template-annealing region are not printed; P5 shown is the standard Illumina adapter."
+    },
+    {
+      "oligo_id": "oligo_index_pcr_primer_i7_p7",
+      "name": "Index PCR Primer 2 (P7 + i7, Index 1)",
+      "aliases": [],
+      "role": "index PCR primer that appends the P7 adapter and the 8-bp i7 sample index during cDNA/DO library amplification (CLA/DLA)",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adapter (inferred standard; not printed in this guide)"
+        },
+        {
+          "name": "i7 sample index (Index 1)",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-bp i7 index of the unique dual index (UDI)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "24 UDI i7 (Index 1) sequences from Table 34: UDI_001 CCGCGGTT, 002 TTATAACC, 003 GGACTTGG, 004 AAGTCCAA, 005 ATCCACTG, 006 GCTTGTCA, 007 CAAGCTAG, 008 TGGATCGA, 009 AGTTCAGG, 010 GACCTGAA, 011 TCTCTACT, 012 CTCTCGTC, 013 CCAAGTCT, 014 TTGGACTC, 015 CAGTAGGC, 016 TGACGAAT, 017 TAATACAG, 018 CGGCGTGA, 019 ATGTAAGT, 020 GCACGGAC, 021 GGTACCTT, 022 AACGTTCC, 023 GCAGAATT, 024 ATGAGGCC. cDNA and DO libraries of a sample MUST use the SAME UDI (matched by well position) for bioinformatic deconvolution. The P7 sequence and the primer's template-annealing region are not printed; P7 shown is the standard Illumina adapter."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "P5 flow-cell binding adapter at the 5\u2032 end of the final library",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Not printed in this user guide; included as the standard Illumina P5 sequence required by the stated dual-index Illumina (NextSeq2000) library format."
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "P7 flow-cell binding adapter at the 3\u2032 end of the final library (appears reverse-complemented on the top strand)",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Not printed in this user guide; included as the standard Illumina P7 sequence required by the stated dual-index Illumina (NextSeq2000) library format. Reverse complement on the top strand: ATCTCGTATGCCGTCTTCTGCTTG."
+    }
+  ],
+  "final_library": {
+    "source_label": "ddSEQ Single-Cell 3\u2032 RNA-Seq cDNA library (Fig. 8). NOTE: constant regions between the sample index and the barcode/insert (the custom Read-1 primer site and the Tn5/Read-2 handle) and the bead-barcode/UMI/poly(dT) lengths are NOT disclosed in this Bio-Rad user guide; shown as labeled placeholder tokens. A parallel DO library (Fig. 9, index PCR only, no tagmentation) has the same P5/index/P7 flanks but carries the DO dimer [CELL_BARCODE][UMI][DO_REGION][UMI][CELL_BARCODE] in place of the poly(T)/cDNA body.",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8][READ1_PRIMER_SITE][CELL_BARCODE][UMI](T)n[CDNA][TN5_READ2_HANDLE][SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8][READ1_PRIMER_SITE][CELL_BARCODE][UMI](T)n[CDNA][TN5_READ2_HANDLE][SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8][READ1_PRIMER_SITE][CELL_BARCODE][UMI](T)n[CDNA][TN5_READ2_HANDLE][SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8][READ1_PRIMER_SITE][CELL_BARCODE][UMI](T)n[CDNA][TN5_READ2_HANDLE][SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5 (Illumina P5 adapter; inferred standard, not printed)",
+      "[SAMPLE_INDEX:8] = i5 sample index (Index 2, 8 bp UDI)",
+      "[READ1_PRIMER_SITE] = Read 1 primer-binding constant region on the bead oligo (sequence not disclosed)",
+      "[CELL_BARCODE] = bead barcode / cell barcode (length not disclosed)",
+      "[UMI] = unique molecular identifier (length not disclosed)",
+      "(T)n = poly(dT) capture tail",
+      "[CDNA] = cDNA insert (3\u2032 end of transcript)",
+      "[TN5_READ2_HANDLE] = Tn5-added Read 2 / P7-side sequencing handle (sequence not disclosed)",
+      "[SAMPLE_INDEX:8] = i7 sample index (Index 1, 8 bp UDI)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7 (Illumina P7 adapter; inferred standard, not printed)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "ddSEQ Single-Cell 3\u2032 RNA-Seq cDNA library (Fig. 8). NOTE: constant regions between the sample index and the barcode/insert (the custom Read-1 primer site and the Tn5/Read-2 handle) and the bead-barcode/UMI/poly(dT) lengths are NOT disclosed in this Bio-Rad user guide; shown as labeled placeholder tokens. A parallel DO library (Fig. 9, index PCR only, no tagmentation) has the same P5/index/P7 flanks but carries the DO dimer [CELL_BARCODE][UMI][DO_REGION][UMI][CELL_BARCODE] in place of the poly(T)/cDNA body.",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "ddSEQ Read 1 sequencing primer (not disclosed)",
+        "template": "bottom",
+        "cycles": 54,
+        "segments": [
+          {
+            "name": "Bead/cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          },
+          {
+            "name": "Poly(dT)",
+            "type": "polyA",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Illumina i7 index primer",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index (Index 1)",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "Illumina i5 index primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 sample index (Index 2)",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Read 2 sequencing primer (Tn5 handle; not disclosed)",
+        "template": "top",
+        "cycles": 68,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 68
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Single-cell encapsulation with barcoded gel beads",
+      "summary": "The ddSEQ Single-Cell Isolator co-partitions single cells and overloaded barcoded gel beads into droplets with lysis/RT reagents.",
+      "note": "Limiting-dilution cell partitioning with bead overloading ensures each droplet has \u22651 bead. Each bead carries poly(T) capture oligos and deconvolution oligos (DOs), all sharing one bead barcode, each with a UMI.",
+      "product": "Droplet contents (per gel bead):\n|--5'- [CELL_BARCODE][UMI](T)n -3'                     (poly(T) capture oligo)\n|--5'- [CELL_BARCODE][UMI][DO_REGION] -3'             (deconvolution oligo)\n   + single-cell mRNA:  5'- XXXX...XXX(A)n -3'"
+    },
+    {
+      "step": 2,
+      "title": "In-droplet lysis, mRNA capture, RT, and DO-dimer formation",
+      "summary": "Cells lyse; mRNA is captured on poly(T) and reverse-transcribed to first-strand cDNA, while DOs from co-encapsulated beads hybridize and extend into DO dimers.",
+      "note": "RT enzyme extends the poly(T) capture oligo along the mRNA template. In parallel, DOs form and extend dimers that encode which beads shared a droplet.",
+      "product": "Captured / reverse-transcribed cDNA:\n|--5'- [CELL_BARCODE][UMI](T)n------------------------------>\n                            3'- (A)n XXXX...XXX mRNA -5'\n\nDO dimer (two beads' DOs hybridize + extend):\n|--5'- [CELL_BARCODE_a][UMI_a][DO_REGION]====[DO_REGION'][UMI_b][CELL_BARCODE_b] -3'"
+    },
+    {
+      "step": 3,
+      "title": "Droplet disruption and cDNA / DO-dimer fraction separation",
+      "summary": "Droplets are broken and SPRI size selection splits the sample into a bead-bound cDNA fraction and a supernatant DO-dimer fraction.",
+      "note": "Droplet Disruptor + water release contents; purification beads bind cDNA while DO dimers stay in the supernatant. Both fractions are carried forward independently.",
+      "product": "cDNA fraction (double-stranded):\n5'- [CELL_BARCODE][UMI](T)n[CDNA] -3'\n3'- [CELL_BARCODE'][UMI'](A)n[CDNA'] -5'\n\nDO-dimer fraction:\n5'- [CELL_BARCODE_a][UMI_a][DO_REGION][UMI_b][CELL_BARCODE_b] -3'"
+    },
+    {
+      "step": 4,
+      "title": "cDNA tagmentation (Tn5)",
+      "summary": "The cDNA fraction is tagmented to insert the Read 2 / P7-side adapter handle into the double-stranded cDNA.",
+      "note": "Performed on cDNA only (DO dimers skip tagmentation). Tn5 fragments the cDNA and adds an adapter that index PCR completes.",
+      "product": "5'- [CELL_BARCODE][UMI](T)n[CDNA][TN5_READ2_HANDLE] -3'\n     (bead-oligo end preserved; Tn5 handle added at the cDNA end)"
+    },
+    {
+      "step": 5,
+      "title": "cDNA index PCR (CLA) \u2014 final cDNA library",
+      "summary": "Index PCR appends P5 + i5 at the bead-oligo end and P7 + i7 at the tagmented end to complete the dual-indexed cDNA library.",
+      "note": "CLA program adds full-length Illumina adapters and the 8-bp UDI. Each sample gets a unique UDI, recorded to match its partner DO library.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8][READ1_PRIMER_SITE][CELL_BARCODE][UMI](T)n[CDNA][TN5_READ2_HANDLE][SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    },
+    {
+      "step": 6,
+      "title": "DO-dimer index PCR (DLA) \u2014 final DO library",
+      "summary": "The DO-dimer fraction is dual-indexed by index PCR only (no tagmentation) using the same UDI as its matched cDNA library.",
+      "note": "DLA program appends P5/i5 and P7/i7. The DO library (~300 bp predominant peak) is sequenced shallowly (~5M reads) to deconvolve beads to droplets.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8][READ1_PRIMER_SITE][CELL_BARCODE_a][UMI_a][DO_REGION][UMI_b][CELL_BARCODE_b][DO_READ2_HANDLE][SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (cell barcode + UMI)",
+      "primer": "ddSEQ Read 1 sequencing primer (anneals to the bead-oligo Read-1 primer site; sequence not disclosed)",
+      "template": "bottom",
+      "cycles": 54,
+      "note": "Reads the bead barcode + UMI on the bead oligo; 54 cycles per Table 33. Barcode/UMI/poly(dT) lengths and the Read-1 primer-site sequence are not disclosed in the Bio-Rad user guide (shown as placeholder tokens).",
+      "diagram": "                          Read 1 primer\n                       5'-[READ1_PRIMER_SITE]------------------------------>  (reads CELL_BARCODE + UMI, 54 cyc)\n5'- ...GAGATCTACAC [i5] [READ1_PRIMER_SITE]  [CELL_BARCODE][UMI](T)n [cDNA]... -3'   (top)\n3'- ...CTCTAGATGTG [i5']-[READ1_PRIMER_SITE']-[CELL_BARCODE'][UMI'](A)n [cDNA']...-5'  (bottom, template)\n(primer copies the bottom strand, synthesizing the top-strand barcode+UMI; arrow = 5'->3' read direction)"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "Illumina i7 index sequencing primer (anneals at the 3' end of the Tn5/Read-2 handle)",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "Reads the 8-bp i7 sample index (Index 1). 24 UDIs, Table 34; cDNA and DO libraries of one sample must share the same UDI.",
+      "diagram": "                                   i7 index primer\n                    5'-[TN5_READ2_HANDLE]------------->\n5'- ...[cDNA][TN5_READ2_HANDLE] [i7]  ATCTCGTATGCCGTCTTCTGCTTG -3'   (top)\n3'- ...[cDNA'][TN5_READ2_HANDLE'][i7'] TAGAGCATACGGCAGAAGACGAAC -5'   (bottom, template)\n                                NNNNNNNN = i7 (Index 1, 8 cyc)"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "Illumina i5 index sequencing primer (anneals at the P5 side; NextSeq2000 forward-strand workflow)",
+      "template": "top",
+      "cycles": 8,
+      "note": "Reads the 8-bp i5 sample index (Index 2). 24 UDIs, Table 34.",
+      "diagram": "   i5 index primer (P5 side)\n5'-AATGATACGGCGACCACCGAGATCTACAC----------->\n5'- AATGATACGGCGACCACCGAGATCTACAC [i5]  [READ1_PRIMER_SITE]... -3'   (top, template)\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG [i5'] [READ1_PRIMER_SITE']...-5'   (bottom)\n                                  NNNNNNNN = i5 (Index 2, 8 cyc)"
+    },
+    {
+      "read": "Read 2 (cDNA insert)",
+      "primer": "ddSEQ Read 2 sequencing primer (anneals to the Tn5-added Read-2 handle; sequence not disclosed)",
+      "template": "top",
+      "cycles": 68,
+      "note": "Reads into the 3' cDNA insert from the tagmented (Read-2) end; 68 cycles per Table 33. For the parallel DO library, Read 2 reads into the DO-dimer body instead of cDNA.",
+      "diagram": "5'- ...(T)n [cDNA] [TN5_READ2_HANDLE]  [i7] ATCTCGTATGCCGTCTTCTGCTTG -3'   (top, template)\n3'- ...(A)n [cDNA'][TN5_READ2_HANDLE'] [i7'] TAGAGCATACGGCAGAAGACGAAC -5'   (bottom)\n            <---------------------[Read 2 primer]\n            reads cDNA insert (68 cyc); primer anneals to [TN5_READ2_HANDLE] on the top strand,\n            extends 5'->3' leftward into the cDNA"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "ddSEQ Single-Cell 3\u2032 RNA-Seq",
+  "description": "Bio-Rad ddSEQ Single-Cell 3\u2032 RNA-Seq is a droplet-based single-cell 3\u2032-tagged whole-transcriptome assay. Single cells are co-encapsulated with barcoded gel beads in the ddSEQ Single-Cell Isolator; each bead carries poly(T) capture oligos and deconvolution oligos (DOs), both bearing the same bead barcode plus a UMI. In-droplet lysis releases mRNA, which is captured on poly(T) and reverse-transcribed to cDNA, while DOs from co-encapsulated beads hybridize and extend into DO dimers that record which beads shared a droplet. After droplet disruption the cDNA and DO-dimer fractions are separated by SPRI size selection; cDNA is converted to an Illumina library by Tn5 tagmentation followed by index PCR, and DO dimers are converted by index PCR only. Both libraries are dual-indexed with 8-bp unique dual indexes and sequenced on Illumina (NextSeq2000): Read 1 (54 cyc) reads the bead barcode + UMI, Read 2 (68 cyc) reads the cDNA insert, and i7/i5 (8+8 cyc) read the sample indexes. Omnition Analysis Software uses the DO libraries to deconvolve multiple beads back to single-cell/droplet resolution.",
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "ddseq single cell 3 rna seq kit",
+    "path": null,
+    "url": null,
+    "doi": null
+  },
+  "publication": {
+    "year": 2024,
+    "original_publication": {
+      "title": "ddSEQ Single-Cell 3\u2032 RNA-Seq Kit User Guide, Version 1.0 (DIR No. 10000167449)",
+      "journal": "Bio-Rad Laboratories, Inc. (product user guide)",
+      "url": "https://www.bio-rad.com"
+    },
+    "authors": [],
+    "throughput": {
+      "summary": "1,000\u201310,000 viable cells loaded per sample; ~50% recovery (up to ~5,000 cells/sample). Up to 4 unique samples per cartridge (2 wells each); 2 cartridges per kit.",
+      "cells": "Up to ~5,000 recovered cells per sample (10,000 loaded \u2192 5,000 recovered; ~50% recovery)",
+      "rna": "3\u2032-tagged whole-transcriptome; \u226550,000 read pairs/cell recommended (min 20,000)",
+      "dna": "cDNA library ~700\u2013900 bp average (200\u20131,200 bp); DO library predominant peak ~300 bp (200\u2013500 bp)"
+    },
+    "other": [
+      {
+        "label": "Sequencing platform",
+        "value": "Illumina NextSeq2000; paired-end dual-index; R1=54, i7=8, i5=8, R2=68; pool 725 pM; PhiX spike-in not required"
+      },
+      {
+        "label": "Read allocation",
+        "value": "DO libraries allocated ~5M reads each for accurate bead deconvolution; cDNA/DO pools prepared separately then combined"
+      },
+      {
+        "label": "Supported genomes",
+        "value": "Human and mouse (other ENSEMBL assemblies usable but unsupported)"
+      },
+      {
+        "label": "Instrument",
+        "value": "ddSEQ Single-Cell Isolator (cat. 12004336) with ddSEQ M Cartridges (8 wells, 2 per sample)"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "droplet",
+  "data_processing": {
+    "summary": "Reads are processed by Bio-Rad's Omnition Analysis Software (3' RNA Module): the DO sequencing library links co-encapsulated beads back to a single droplet, transcripts are assigned to beads by bead barcode, aligned to the transcriptome, and 3'-gene/UMI counts are produced per single cell, then clustered. Supports human and mouse genomes (other ENSEMBL assemblies usable but unsupported).",
+    "stages": [
+      {
+        "id": "qc",
+        "label": "Read QC"
+      },
+      {
+        "id": "deconvolution",
+        "label": "Bead deconvolution"
+      },
+      {
+        "id": "alignment",
+        "label": "Alignment"
+      },
+      {
+        "id": "quantification",
+        "label": "Quantification"
+      },
+      {
+        "id": "clustering",
+        "label": "Clustering"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "n_qc_cdna",
+        "label": "QC cDNA reads",
+        "tool": "Omnition Analysis Software",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_qc_do",
+        "label": "QC DO reads",
+        "tool": "Omnition Analysis Software",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_deconv",
+        "label": "Deconvolve beads to droplets",
+        "tool": "Omnition Analysis Software",
+        "stage": "deconvolution",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_assign_bead",
+        "label": "Assign reads to beads",
+        "tool": "Omnition Analysis Software",
+        "stage": "deconvolution",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_singlecell",
+        "label": "Identify single cells",
+        "tool": "Omnition Analysis Software",
+        "stage": "deconvolution",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_align",
+        "label": "Align to transcriptome",
+        "tool": "Omnition Analysis Software",
+        "stage": "alignment",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_count",
+        "label": "Count 3' genes and UMIs",
+        "tool": "Omnition Analysis Software",
+        "stage": "quantification",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_matrix",
+        "label": "Aggregate count matrix",
+        "tool": "Omnition Analysis Software",
+        "stage": "quantification",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_cluster",
+        "label": "Cluster cells",
+        "tool": "Omnition Analysis Software",
+        "stage": "clustering",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_qc_cdna",
+        "to": "n_assign_bead",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_qc_do",
+        "to": "n_deconv",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_deconv",
+        "to": "n_singlecell",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_assign_bead",
+        "to": "n_singlecell",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_singlecell",
+        "to": "n_align",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_align",
+        "to": "n_count",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_count",
+        "to": "n_matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "n_matrix",
+        "to": "n_cluster",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "null"
+  }
+}

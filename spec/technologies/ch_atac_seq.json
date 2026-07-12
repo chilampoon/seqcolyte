@@ -1,0 +1,908 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "ch_atac_seq",
+  "assay": "CH-ATAC-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "CH-ATAC-seq.xlsx",
+      "title": "CH-ATAC-seq.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/ch_atac_seq/CH-ATAC-seq.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "CH-ATAC-seq.pdf",
+      "title": "CH-ATAC-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/ch_atac_seq/CH-ATAC-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_tn5_me_oligo",
+      "name": "Tn5 ME oligo",
+      "aliases": [],
+      "role": "Mosaic-end (ME) bottom strand of the transposase adapter; anneals to both the barcoded Tn5 primers (P5-side adaptor) and the Tn5 primer C oligo (P7-side adaptor)",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' phosphorylated. Common ME strand loaded into every transposome; complementary to the AGATGTGTATAAGAGACAG ME carried by the other adapter strands."
+    },
+    {
+      "oligo_id": "oligo_tn5_primer_c_oligo",
+      "name": "Tn5 primer C oligo",
+      "aliases": [],
+      "role": "Non-barcoded transposase P7-side adapter; anneals with Tn5 ME oligo to form the P7 arm of the transposome",
+      "kind": "assembled",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Tn5 primer C handle (P7 landing)",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "constant handle; landing site for the indexed MGI P7 primer"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "transposase mosaic end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "P7-side adaptor of the transposome dimer."
+    },
+    {
+      "oligo_id": "oligo_tn5_barcode_primer",
+      "name": "1st Tn5 Barcode primer (384-plex, first-round index)",
+      "aliases": [],
+      "role": "Barcoded transposase P5-side adapter; introduces the first round of single-nucleus indexing during tagmentation",
+      "kind": "assembled",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SMART/HY handle (constant)",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+          "role": "constant handle; hybridization target for the 2nd-round barcoded HY oligo and the block-tail primer"
+        },
+        {
+          "name": "Tn5 barcode",
+          "sequence": "[TN5_BARCODE:10]",
+          "role": "first-round cell barcode"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "transposase mosaic end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "384 distinct barcodes (Tn5_barcode_primer_1..384). 5' phosphorothioate bond (written A*A in Table S1). Example primer 1 barcode = TCCTACCAGT; barcodes are 10 bp. Annealed to the phosphorylated Tn5 ME oligo before transposome assembly."
+    },
+    {
+      "oligo_id": "oligo_hy_head_oligo",
+      "name": "HY_head_oligo",
+      "aliases": [],
+      "role": "Short oligo that anneals to the 3' end of the barcoded HY oligo; provides the P5-landing region + ME and completes the second-round hybridization primer duplex",
+      "kind": "assembled",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5 landing region",
+          "sequence": "TCGTCGGCAGCGTC",
+          "role": "landing site for the PCR P5 primer 3' end"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "mosaic end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reverse complement of the 3' constant region of the Barcoded HY oligo (CTGTCTCTTATACACATCTGACGCTGCCGACGA)."
+    },
+    {
+      "oligo_id": "oligo_barcoded_hy_oligo",
+      "name": "2nd Hybridization primer / Barcoded HY oligo (768-plex, second-round index)",
+      "aliases": [],
+      "role": "Hybridization barcode oligo; introduces the second round of indexing by hybridizing (ligase-free) to the Tn5 SMART handle on tagmented fragments",
+      "kind": "assembled",
+      "sequence": "ACTCTGCGTTGATACCACTGCTT[HY_BARCODE:10]CTGTCTCTTATACACATCTGACGCTGCCGACGA",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SMART-handle complement",
+          "sequence": "ACTCTGCGTTGATACCACTGCTT",
+          "role": "reverse complement of AAGCAGTGGTATCAACGCAGAGT; hybridizes to the Tn5 barcoded adapter handle"
+        },
+        {
+          "name": "HY barcode",
+          "sequence": "[HY_BARCODE:10]",
+          "role": "second-round cell barcode"
+        },
+        {
+          "name": "ME complement + P5-landing complement",
+          "sequence": "CTGTCTCTTATACACATCTGACGCTGCCGACGA",
+          "role": "ME (CTGTCTCTTATACACATCT) plus GACGCTGCCGACGA; templates the P5-side read structure"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "768 distinct barcodes (Barcoded_HY_oligo_1..768). Barcode length is variable (~8-11 bp; example oligo 1 = TTTCTCGCATG, oligo 2 = TCCTACCAGT). Used as a duplex with HY_head_oligo (preannealed 50 uM each)."
+    },
+    {
+      "oligo_id": "oligo_block_tail_primer_oligo",
+      "name": "Block_tail_primer_oligo",
+      "aliases": [],
+      "role": "Blocking oligo added after hybridization to sequester free/redundant hybridization primers",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Identical to the Tn5 SMART handle; competes for free barcoded HY oligos to prevent cross-hybridization."
+    },
+    {
+      "oligo_id": "oligo_pcr_p5_primer",
+      "name": "PCR P5 primer (MGI, library amplification)",
+      "aliases": [],
+      "role": "Library-amplification primer that adds the MGI P5 adapter to the HY/P5 arm",
+      "kind": "single",
+      "sequence": "GAACGACATGGCTACGATCCGACTTTCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' phosphorylated. 3' end (TCGTCGGCAGCGTC) primes on the HY_head/P5-landing region."
+    },
+    {
+      "oligo_id": "oligo_mgi_p7_index_primer",
+      "name": "3rd MGI P7 indexed primer (96-plex provided; third-round index)",
+      "aliases": [],
+      "role": "Library-amplification primer that adds the MGI P7 adapter and the i7 sample index on the Tn5-primer-C (P7) arm",
+      "kind": "assembled",
+      "sequence": "TGTGAGCCAAGGAGTTGTTGTCTTC[SAMPLE_INDEX:10]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "MGI P7 adapter (constant)",
+          "sequence": "TGTGAGCCAAGGAGTTGTTGTCTTC",
+          "role": "MGI P7 constant region"
+        },
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "third-round / sample index"
+        },
+        {
+          "name": "Tn5 primer C landing",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "primes on the Tn5 primer C handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "96 indices provided in Table S1 (MGI_P7_index_1..96); the paper describes up to 384 indexed P7 adapters for the full assay. Index length 10 bp (example index 1 = TAGGTCCGAT)."
+    }
+  ],
+  "final_library": {
+    "source_label": "CH-ATAC-seq final MGI library (5'->3' top strand)",
+    "annotated_library_sequence": "GAACGACATGGCTACGATCCGACTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[HY_BARCODE:10]AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]GAAGACAACAACTCCTTGGCTCACA",
+    "library_sequence": "GAACGACATGGCTACGATCCGACTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[HY_BARCODE:10]AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]GAAGACAACAACTCCTTGGCTCACA",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "GAACGACATGGCTACGATCCGACTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[HY_BARCODE:10]AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]GAAGACAACAACTCCTTGGCTCACA",
+        "source_sequence": "GAACGACATGGCTACGATCCGACTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[HY_BARCODE:10]AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]GAAGACAACAACTCCTTGGCTCACA"
+      }
+    ],
+    "annotation_lines": [
+      "GAACGACATGGCTACGATCCGACTTTCGTCGGCAGCGTC = MGI P5 adapter (PCR P5 primer)",
+      "AGATGTGTATAAGAGACAG = Mosaic End (ME)",
+      "[HY_BARCODE:10] = 2nd-round hybridization barcode (768-plex)",
+      "AAGCAGTGGTATCAACGCAGAGT = SMART/HY handle (constant)",
+      "[TN5_BARCODE:10] = 1st-round Tn5 barcode (384-plex)",
+      "AGATGTGTATAAGAGACAG = Mosaic End (ME)",
+      "[CDNA] = genomic (open-chromatin) insert",
+      "CTGTCTCTTATACACATCT = Mosaic End (ME, reverse)",
+      "CCGAGCCCACGAGAC = Tn5 primer C handle (reverse complement of GTCTCGTGGGCTCGG)",
+      "[SAMPLE_INDEX:10] = 3rd-round MGI i7 sample index",
+      "GAAGACAACAACTCCTTGGCTCACA = MGI P7 adapter (reverse complement of TGTGAGCCAAGGAGTTGTTGTCTTC)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "CH-ATAC-seq final MGI library (5'->3' top strand)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Custom Tn5-modified Read 1 primer",
+        "template": "bottom",
+        "cycles": 100,
+        "segments": [
+          {
+            "name": "HY barcode (2nd-round)",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "SMART/HY handle (dark cycles 11-33)",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 23
+          },
+          {
+            "name": "Tn5 barcode (1st-round)",
+            "type": "barcode",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "Mosaic End (dark cycles 44-62)",
+            "type": "constant",
+            "order": 3,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 19
+          },
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 4,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 38
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "MGI i7 index primer",
+        "template": "top",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i7 sample index (3rd-round)",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Custom Tn5-modified Read 2 primer",
+        "template": "top",
+        "cycles": 100,
+        "segments": [
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Transposome assembly (barcoded Tn5)",
+      "summary": "384 uniquely indexed Tn5 transposomes are assembled, each loaded with a barcoded P5-side adapter and a common primer C P7-side adapter.",
+      "note": "For each well the Tn5 primer C oligo, Tn5 ME oligo and a barcoded Tn5 primer are annealed (95 C -> 10 C), then loaded onto Tn5 transposase (Vazyme S111) at 30 C. The ME oligo (5' phosphorylated) is the shared bottom strand of both adapter arms.",
+      "product": "Barcoded (P5-side) adaptor:\n5'- AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG -3'\n                        3'-           TCTACACATATTCTCTGTC -5'   (Tn5 ME oligo, /5Phos/)\n\nPrimer C (P7-side) adaptor:\n5'- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG -3'\n                     3'- TCTACACATATTCTCTGTC -5'   (Tn5 ME oligo, /5Phos/)"
+    },
+    {
+      "step": 2,
+      "title": "Tagmentation (first-round index)",
+      "summary": "Nuclei split into 96-well plates are tagmented by well-specific barcoded Tn5, inserting the barcoded and primer C adapters into accessible chromatin.",
+      "note": "23 uL nuclei + 2 uL indexed Tn5 per well, 55 C for 30 min. Tn5 leaves 9-bp gaps at each insertion junction (filled later). This introduces the first of three barcodes.",
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[ genomic DNA ]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'\n3'-                        TCTACACATATTCTCTGTC[ genomic DNA ]AGATGTGTATAAGAGACAG                     -5'\n                                   (9-bp gaps at both ME/genomic junctions)"
+    },
+    {
+      "step": 3,
+      "title": "Oligo hybridization (second-round index)",
+      "summary": "A barcoded HY oligo (with HY_head oligo) hybridizes ligase-free to the Tn5 SMART handle, appending the second barcode; free primers are then blocked.",
+      "note": "Preannealed HY_head_oligo + barcoded HY oligo (25 uM) added per well, 37 C for 90 min; block-tail primer added to sequester redundant hybridization primers. The HY oligo SMART-complement (ACTCTGCGTTGATACCACTGCTT) anneals to AAGCAGTGGTATCAACGCAGAGT.",
+      "product": "second-round barcoded HY oligo docks on the P5 arm handle:\n5'- ...AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[genomic]... -3'\n3'- ...ACTCTGCGTTGATACCACTGCTT-[HY_BARCODE:10]-AGCAGCCGTCGCAGTCTACACATATTCTCTGTC -5'  (barcoded HY oligo, 3'->5')"
+    },
+    {
+      "step": 4,
+      "title": "PNK, gap-fill/ligation & nuclei lysis",
+      "summary": "T4 PNK phosphorylates ends; T4 DNA polymerase + Ampligase fill the 9-bp gaps and seal nicks; nuclei are lysed to release fully barcoded fragments.",
+      "note": "PNK 37 C 30 min; gap-fill mix (Ampligase + T4 DNA polymerase + dNTP) 37 C 60 min; proteinase K/SDS lysis 55 C 15 min, SDS quenched with Tween. Produces the intact double-stranded, dually barcoded fragment.",
+      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[HY_BARCODE:10]AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'"
+    },
+    {
+      "step": 5,
+      "title": "Library PCR (third-round index)",
+      "summary": "The MGI P5 primer and an indexed MGI P7 primer amplify the fragment, adding the P5 adapter, the i7 sample index (third barcode) and the P7 adapter.",
+      "note": "KAPA HiFi, 72 C 5 min / 98 C 3 min / 12 cycles (98 C 10 s, 65 C 15 s, 72 C 1 min) / 72 C 5 min. P5 primer primes on TCGTCGGCAGCGTC; indexed P7 primer primes on GTCTCGTGGGCTCGG. Product = the final sequenceable amplicon.",
+      "product": "5'- GAACGACATGGCTACGATCCGACTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[HY_BARCODE:10]AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]GAAGACAACAACTCCTTGGCTCACA -3'"
+    },
+    {
+      "step": 6,
+      "title": "MGI circularization & DNB sequencing",
+      "summary": "The linear library is circularized to ssDNA, rolling-circle amplified into DNA nanoballs, and sequenced on MGI DNBSEQ-T7.",
+      "note": "VAHTS Circularization Kit for MGI + DNBSEQ DNB preparation kit. DNBs sequenced with custom Tn5-modified (TM) primers using a dark-reaction model (read1 100 cycles with dark cycles 11-33 and 44-62; read2 100 cycles).",
+      "product": "single-stranded circle -> DNA nanoball (DNB) carrying the step-5 amplicon; loaded onto the MGI patterned flow cell for combinatorial-index + genomic reads."
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (combinatorial barcodes + genomic insert, dark-reaction)",
+      "primer": "Custom Tn5-modified (TM) Read 1 primer: TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "template": "bottom",
+      "cycles": 100,
+      "note": "Primer is identical to the P5-arm top strand (P5-landing + ME), so it anneals to the bottom strand and reads the top-strand sequence rightward. Imaged: HY barcode (cyc 1-10); dark reaction across the 23 nt SMART/HY handle (cyc 11-33); Tn5 barcode (cyc 34-43); dark reaction across the 19 nt ME (cyc 44-62); genomic open-chromatin insert (cyc 63-100).",
+      "diagram": "pri  5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------------------------------------------------->\ntop  5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[HY-BC x10]AAGCAGTGGTATCAACGCAGAGT[Tn5-BC x10]AGATGTGTATAAGAGACAG[==genomic==]-3'\nbtm  3'-AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[HY-BC x10]TTCGTCACCATAGTTGCGTCTCA[Tn5-BC x10]TCTACACATATTCTCTGTC[==genomic==]-5'\nread:                                  |1-10 HY | dark 11-33 (23nt) |34-43 Tn5| dark 44-62 (19nt) | 63-100 genomic |"
+    },
+    {
+      "read": "i7 sample index",
+      "primer": "MGI i7 index primer (P7 constant): 5'-TGTGAGCCAAGGAGTTGTTGTCTTC-3'",
+      "template": "top",
+      "cycles": 10,
+      "note": "Primer anneals to the top-strand P7-adapter region (GAAGACAACAACTCCTTGGCTCACA), 3' end pointing into the index, and reads leftward using the top strand as template. It reports the third-round sample index as listed in Table S1 (e.g. TAGGTCCGAT), which is the reverse complement of the SAMPLE_INDEX shown on the top strand.",
+      "diagram": "top  5'-...CCGAGCCCACGAGAC[idx x10]GAAGACAACAACTCCTTGGCTCACA-3'\nbtm  3'-...GGCTCGGGTGCTCTG[idx x10]CTTCTGTTGTTGAGGAACCGAGTGT-5'\npri              <-------3'-CTTCTGTTGTTGAGGAACCGAGTGT-5'   (reads index, 10 cyc)"
+    },
+    {
+      "read": "Read 2 (genomic insert)",
+      "primer": "Custom Tn5-modified (TM) Read 2 primer = Tn5 primer C oligo: GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "template": "top",
+      "cycles": 100,
+      "note": "Primer is the reverse complement of the P7-arm top strand (Tn5-primer-C handle + ME), so it anneals to the top strand with its 3' ME end at the genomic boundary and reads the opposite end of the open-chromatin fragment leftward.",
+      "diagram": "top  5'-[==genomic==]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[idx x10]GAAGACAACAACTCCTTGGCTCACA-3'\nbtm  3'-[==genomic==]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[idx x10]CTTCTGTTGTTGAGGAACCGAGTGT-5'\npri     <-----------3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'   (binds top, reads genomic, 100 cyc)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "CH-ATAC-seq",
+  "description": "Combinatorial-hybridization-based single-cell ATAC-seq (CH-ATAC-seq). It profiles single-nucleus chromatin accessibility (open chromatin / candidate cis-regulatory elements) by tagging open genomic DNA with a barcoded Tn5 transposase and then combinatorially indexing each nucleus in three rounds: (1) 384 barcoded Tn5 transposase adapters during tagmentation, (2) 768 ligase-free hybridization (HY) barcode oligos, and (3) 384 indexed MGI P7 PCR adapters during library amplification. Libraries are circularized and sequenced as DNA nanoballs on MGI DNBSEQ; the reads capture the two in-line combinatorial barcodes plus the genomic (accessible-chromatin) insert.",
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "ch atac seq",
+    "path": null,
+    "url": null,
+    "doi": null
+  },
+  "publication": {
+    "year": 2024,
+    "original_publication": {
+      "title": "Construction of single-cell cross-species chromatin accessibility landscapes with combinatorial-hybridization-based ATAC-seq",
+      "journal": "Developmental Cell",
+      "doi": "10.1016/j.devcel.2024.01.015",
+      "url": "https://doi.org/10.1016/j.devcel.2024.01.015"
+    },
+    "authors": [
+      {
+        "name": "Guodong Zhang",
+        "affiliation": "Bone Marrow Transplantation Center of the First Affiliated Hospital, and Center for Stem Cell and Regenerative Medicine, Zhejiang University School of Medicine, Hangzhou, China"
+      },
+      {
+        "name": "Yuting Fu",
+        "affiliation": "Zhejiang University School of Medicine, Hangzhou, China"
+      },
+      {
+        "name": "Lei Yang",
+        "affiliation": "Zhejiang University School of Medicine, Hangzhou, China"
+      },
+      {
+        "name": "Fang Ye",
+        "affiliation": "Zhejiang University School of Medicine; Liangzhu Laboratory, Zhejiang University, Hangzhou, China"
+      },
+      {
+        "name": "Peijing Zhang",
+        "affiliation": "Zhejiang University School of Medicine, Hangzhou, China"
+      },
+      {
+        "name": "Shuang Zhang",
+        "affiliation": "Zhejiang University School of Medicine, Hangzhou, China"
+      },
+      {
+        "name": "Lifeng Ma",
+        "affiliation": "Zhejiang University School of Medicine, Hangzhou, China"
+      },
+      {
+        "name": "Jiaqi Li",
+        "affiliation": "Zhejiang University School of Medicine, Hangzhou, China"
+      },
+      {
+        "name": "Hanyu Wu",
+        "affiliation": "Zhejiang University School of Medicine, Hangzhou, China"
+      },
+      {
+        "name": "Xiaoping Han",
+        "corresponding": true,
+        "email": "xhan@zju.edu.cn",
+        "affiliation": "Zhejiang University School of Medicine; Zhejiang Provincial Key Laboratory for Tissue Engineering and Regenerative Medicine, Hangzhou, China"
+      },
+      {
+        "name": "Jingjing Wang",
+        "corresponding": true,
+        "email": "jingjingw@zju.edu.cn",
+        "affiliation": "Zhejiang University School of Medicine; Liangzhu Laboratory, Zhejiang University, Hangzhou, China"
+      },
+      {
+        "name": "Guoji Guo",
+        "corresponding": true,
+        "email": "ggj@zju.edu.cn",
+        "affiliation": "Zhejiang University School of Medicine; Liangzhu Laboratory; Institute of Hematology, Zhejiang University, Hangzhou, China (Lead contact)"
+      }
+    ],
+    "throughput": {
+      "summary": "High-throughput split-pool scATAC-seq handling hundreds of thousands of nuclei per experiment at below $0.01 per cell; ~550,000 nuclei profiled across three species.",
+      "cells": "~550,000 nuclei (145,485 zebrafish; 210,634 Drosophila; 193,971 Eisenia andrei); 852,180 nuclei across six species with mammalian integration",
+      "rna": "",
+      "dna": "~1.1 million cCREs across the three focal species (union sets of 466,307 zebrafish; 117,002 Drosophila; 269,280 Eisenia andrei); ~0.8 million cell-type-specific cCREs across six species"
+    },
+    "statistical_model": "MACS2 (local-lambda Poisson model) for peak/cCRE calling; Wilcoxon rank-sum test (FDR <= 0.05) for cell-type-specific differentially accessible cCREs; phyloP (phylogenetic HMM) for conservation",
+    "other": [
+      {
+        "label": "Cost",
+        "value": "Below $0.01 per cell"
+      },
+      {
+        "label": "Sequencer",
+        "value": "MGI DNBSEQ-T7, dark-reaction model (read1 100 cyc with dark cycles 11-33 & 44-62; read2 100 cyc)"
+      },
+      {
+        "label": "Collision rate",
+        "value": "0.5% for fresh vs 1.26% for fixed nuclei (HEK293T human / NIH-3T3 mouse mixing)"
+      },
+      {
+        "label": "Key distinction vs sci-ATAC-seq3",
+        "value": "Uses barcoded transposase for round 1 and a ligase-free hybridization reaction for round 2 (vs two ligation rounds)"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO: GSE232162; portal https://bis.zju.edu.cn/chatac/"
+      }
+    ]
+  },
+  "modality": "ATAC",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Each library yields paired FASTQ files \u2014 one carrying the two in-line combinatorial indices (Tn5 384 + HY 768) at fixed base positions, the other carrying the genomic DNA read. Reads are demultiplexed by index matching, adapter-trimmed, aligned per species, Tn5-offset-corrected, deduplicated into a fragments file, then clustered and peak-called; cell-type-specific cCREs, motifs, cross-species conservation, and gene regulatory networks are derived downstream.",
+    "stages": [
+      {
+        "id": "s_demux",
+        "label": "Demultiplexing & Trimming"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment"
+      },
+      {
+        "id": "s_frag",
+        "label": "Fragment Generation"
+      },
+      {
+        "id": "s_cellqc",
+        "label": "Cell QC"
+      },
+      {
+        "id": "s_reduce",
+        "label": "Dimensionality Reduction & Clustering"
+      },
+      {
+        "id": "s_peaks",
+        "label": "Peak Calling"
+      },
+      {
+        "id": "s_downstream",
+        "label": "Downstream Analysis"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex combinatorial barcodes",
+        "tool": "",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim",
+        "label": "Trim adapters",
+        "tool": "Trimmomatic",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads to genome",
+        "tool": "BWA",
+        "stage": "s_align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "offset",
+        "label": "Apply Tn5 offset shift",
+        "tool": "deepTools",
+        "stage": "s_align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter",
+        "label": "Filter fragments (MAPQ>30)",
+        "tool": "SnapTools",
+        "stage": "s_frag",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "fragfile",
+        "label": "Build fragments file",
+        "tool": "SnapTools",
+        "stage": "s_frag",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "qc",
+        "label": "Compute per-cell QC metrics",
+        "tool": "ArchR",
+        "stage": "s_cellqc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "doubscore",
+        "label": "Score doublets",
+        "tool": "ArchR",
+        "stage": "s_cellqc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "doubfilter",
+        "label": "Remove doublets",
+        "tool": "ArchR",
+        "stage": "s_cellqc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "lsi",
+        "label": "Reduce dimensions (iterative LSI)",
+        "tool": "ArchR",
+        "stage": "s_reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umap",
+        "label": "Embed with UMAP",
+        "tool": "ArchR",
+        "stage": "s_reduce",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells (two rounds)",
+        "tool": "ArchR",
+        "stage": "s_reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "peaks",
+        "label": "Call peaks per cell type",
+        "tool": "MACS2",
+        "stage": "s_peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "ccre",
+        "label": "Identify differential cCREs",
+        "tool": "ArchR",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "motif_enrich",
+        "label": "Compute motif enrichment",
+        "tool": "HOMER",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "motif_dev",
+        "label": "Compute motif deviations",
+        "tool": "ArchR",
+        "stage": "s_downstream",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "liftover",
+        "label": "Lift over cCRE coordinates",
+        "tool": "liftOver",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "phylop",
+        "label": "Score conservation (phyloP)",
+        "tool": "phyloP",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "coembed",
+        "label": "Co-embed cross-species cells",
+        "tool": "SAMap",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "grn",
+        "label": "Infer gene regulatory networks",
+        "tool": "SCENIC+",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "trim",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "offset",
+        "kind": "sequential"
+      },
+      {
+        "from": "offset",
+        "to": "filter",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter",
+        "to": "fragfile",
+        "kind": "sequential"
+      },
+      {
+        "from": "fragfile",
+        "to": "qc",
+        "kind": "branch"
+      },
+      {
+        "from": "fragfile",
+        "to": "peaks",
+        "kind": "branch"
+      },
+      {
+        "from": "qc",
+        "to": "doubscore",
+        "kind": "sequential"
+      },
+      {
+        "from": "doubscore",
+        "to": "doubfilter",
+        "kind": "sequential"
+      },
+      {
+        "from": "doubfilter",
+        "to": "lsi",
+        "kind": "fan_in"
+      },
+      {
+        "from": "lsi",
+        "to": "umap",
+        "kind": "branch"
+      },
+      {
+        "from": "lsi",
+        "to": "cluster",
+        "kind": "branch"
+      },
+      {
+        "from": "cluster",
+        "to": "peaks",
+        "kind": "branch"
+      },
+      {
+        "from": "cluster",
+        "to": "coembed",
+        "kind": "branch"
+      },
+      {
+        "from": "peaks",
+        "to": "ccre",
+        "kind": "branch"
+      },
+      {
+        "from": "peaks",
+        "to": "motif_dev",
+        "kind": "branch"
+      },
+      {
+        "from": "ccre",
+        "to": "motif_enrich",
+        "kind": "branch"
+      },
+      {
+        "from": "ccre",
+        "to": "liftover",
+        "kind": "branch"
+      },
+      {
+        "from": "ccre",
+        "to": "grn",
+        "kind": "branch"
+      },
+      {
+        "from": "liftover",
+        "to": "phylop",
+        "kind": "sequential"
+      },
+      {
+        "from": "motif_enrich",
+        "to": "grn",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "MACS2 (Poisson local-lambda) for peak/cCRE calling; Wilcoxon rank-sum test (FDR <= 0.05) for differentially accessible cCREs; phyloP (phylogenetic HMM) for sequence conservation"
+  }
+}

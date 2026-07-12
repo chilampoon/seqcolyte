@@ -1,0 +1,26 @@
+{
+  "folder": "scths_seq",
+  "title": "scTHS-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "scTHS-seq.html",
+    "oligo_seq_recall": 0.333,
+    "oligo_seqs_matched": 4,
+    "oligo_seqs_total": 12,
+    "missed_oligos": [
+      "Illumina Nextera Read 1 primer",
+      "Illumina Nextera Read 2 primer",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera (XT) N7xx Index primer",
+      "Random hexamer for reverse transcription",
+      "scT7_r5{001..384}_i5_top",
+      "scT7_S5xx",
+      "sss_scnXTv2"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "P5 - i5 index - i5 connector/linker - r5 barcode - Read1 primer - genomic insert - ME - nXTv2_i7 adaptor - i7 index - P7",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]GGGAGATCCACGCGC[TN5_INDEX:6]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

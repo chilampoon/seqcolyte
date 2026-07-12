@@ -1,0 +1,25 @@
+{
+  "folder": "fipresci",
+  "title": "FIPRESCI",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "FIPRESCI.html",
+    "oligo_seq_recall": 0.462,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 13,
+    "missed_oligos": [
+      "Illumina P5 adapter",
+      "Illumina P7 adapter",
+      "Illumina TruSeq Read 1 primer",
+      "Illumina TruSeq Read 2 primer",
+      "S-P7-index",
+      "TN5_R2_index",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGA(P5) GATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT(TruSeq Read1) [CELL_BARCODE:16](round2 10x CB) [UMI:10] TTTCTTATATGGG(TSO) [CDNA](5'-end cDNA insert) CTGTCTCTTATACACATCT(ME) [CELL_BARCODE:6](round1 Tn5 barcode) AGATCGGAAGAGCACACGTC(partial TruSeq Read2) TGAACTCCAGTCAC [SAMPLE_INDEX:6](i7) ATCTCGTATGCCGTCTTCTGCTTG(P7)",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]CTGTCTCTTATACACATCT[CELL_BARCODE:6]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

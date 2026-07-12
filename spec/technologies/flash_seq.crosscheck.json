@@ -1,0 +1,33 @@
+{
+  "folder": "flash_seq",
+  "title": "FLASH-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "SMART-seq_family.html",
+    "oligo_seq_recall": 0.118,
+    "oligo_seqs_matched": 2,
+    "oligo_seqs_total": 17,
+    "missed_oligos": [
+      "FLASH-seq_TSO",
+      "Fwd_PCR_primer",
+      "Illumina P5 adapter",
+      "Illumina P7 adapter",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera Index 2 sequencing primer (i5)",
+      "Nextera N7xx primer entry point (s7)",
+      "Nextera N/S5xx primer entry point (s5)",
+      "Nextera Tn5 binding site (19-bp Mosaic End (ME))",
+      "Nextera (XT) N7xx Index primer",
+      "Nextera (XT) N/S5xx Index primer",
+      "Rev_PCR_primer",
+      "Smartseq3_N8_TSO",
+      "Smartseq3_OligodT30VN",
+      "Smartseq3xpress_TSO"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC | [SAMPLE_INDEX:8](i5) | TCGTCGGCAGCGTC(ME-A handle / Read1 primer) | AGATGTGTATAAGAGACAG(mosaic end) | [CDNA] | CTGTCTCTTATACACATCT(rev mosaic end) | CCGAGCCCACGAGAC(ME-B handle, rev-comp) | [SAMPLE_INDEX:8](i7 rev-comp) | ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGATTGCGCAATG[UMI:8]CTAACGGG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

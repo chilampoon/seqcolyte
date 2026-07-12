@@ -1,0 +1,857 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "10x_chromium_single_cell_multiome_atac_plus_gene_expression",
+  "assay": "10x Multiome (ATAC + Gene Expression)",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "10xChromium_multiome.pdf",
+      "title": "10xChromium_multiome.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_single_cell_multiome_atac_plus_gene_expression/10xChromium_multiome.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_gel_bead_gex",
+      "name": "Single Cell Multiome Gel Bead oligo \u2014 Gene Expression (PN-2000261)",
+      "aliases": [],
+      "role": "Barcoded RT capture primer released from the gel bead; primes reverse transcription of poly-adenylated mRNA and adds the 10x Barcode + UMI for GEX",
+      "kind": "assembled",
+      "sequence": "CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "Read 1 sequencing primer binding site (partial TruSeq Read 1)"
+        },
+        {
+          "name": "10x Barcode",
+          "sequence": "[CELL_BARCODE:16]",
+          "role": "16 nt cell (nucleus) barcode from the 736,000 pool"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:12]",
+          "role": "12 nt unique molecular identifier"
+        },
+        {
+          "name": "Poly(dT)VN",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+          "role": "30 nt poly(dT) with VN anchor for mRNA capture"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Doc: 5'-CTACACGACGCTCTTCCGATCT-N16-N12-TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN-3'"
+    },
+    {
+      "oligo_id": "oligo_gel_bead_atac",
+      "name": "Single Cell Multiome Gel Bead oligo \u2014 ATAC (PN-2000261)",
+      "aliases": [],
+      "role": "Barcoded oligo released from the gel bead; attaches the P5 sequence + 10x Barcode to transposed open-chromatin DNA via the Spacer for the ATAC library",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]CGCGTCTG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 capture sequence"
+        },
+        {
+          "name": "10x Barcode",
+          "sequence": "[CELL_BARCODE:16]",
+          "role": "16 nt cell (nucleus) barcode (same pool as GEX barcode)"
+        },
+        {
+          "name": "Spacer",
+          "sequence": "CGCGTCTG",
+          "role": "8 nt Spacer that mediates attachment to the transposed DNA mosaic end"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Doc: 5'-AATGATACGGCGACCACCGAGATCTACAC-N16-CGCGTCTG-3'"
+    },
+    {
+      "oligo_id": "oligo_template_switch_oligo_tso",
+      "name": "Template Switch Oligo (TSO) (PN-3000228)",
+      "aliases": [],
+      "role": "Template switching oligo used during reverse transcription for full-length cDNA (GEX)",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Named Template Switch Oligo (PN-3000228) in the protocol; the exact sequence is not printed in this document \u2014 shown here as the standard 10x Chromium TSO (rGrGrG folded to GGG). Treat as verified-constant, not doc-printed."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "P5 flow-cell attachment / bridge amplification sequence at the 5' end of both libraries",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Present at the 5' end of both ATAC and GEX library constructs."
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "P7 flow-cell attachment / bridge amplification sequence at the 3' end of both libraries",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "In the final library top strand P7 appears as its reverse complement ATCTCGTATGCCGTCTTCTGCTTG."
+    },
+    {
+      "oligo_id": "oligo_tn5_mosaic_end_adapter",
+      "name": "Tn5 transposome mosaic-end (ME) adapter",
+      "aliases": [],
+      "role": "Adapter added to open-chromatin DNA ends by Tn5 transposition; forms the Read 1N/Read 2N constant regions of the ATAC library",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Read 1N side (Nextera Read 1 + ME)",
+          "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+          "role": "Read 1N sequencing primer site + 19 nt mosaic end"
+        },
+        {
+          "name": "Read 2N side (ME + Nextera Read 2)",
+          "sequence": "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC",
+          "role": "Read 2N constant region (mosaic end + Read 2N primer site)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Derived from the ATAC library construct in the Sequences appendix. Mosaic end = AGATGTGTATAAGAGACAG."
+    },
+    {
+      "oligo_id": "oligo_atac_read1n_primer",
+      "name": "ATAC Read 1N sequencing primer",
+      "aliases": [],
+      "role": "Sequencing primer for ATAC Read 1N (reads the DNA insert)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Anneals to the Read 1N side of the transposed fragment; Read 1N = 50 cycles."
+    },
+    {
+      "oligo_id": "oligo_truseq_read1_primer",
+      "name": "TruSeq Read 1 primer (Gene Expression)",
+      "aliases": [],
+      "role": "Read 1 sequencing primer for the Gene Expression library (reads 16 bp 10x Barcode + 12 bp UMI)",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Full TruSeq Read 1; the gel-bead GEX oligo carries the partial (CTACACGACGCTCTTCCGATCT) form."
+    },
+    {
+      "oligo_id": "oligo_truseq_read2_adapter",
+      "name": "TruSeq Read 2 adapter / Adaptor Oligos (PN-2000094)",
+      "aliases": [],
+      "role": "Double-stranded adapter ligated to fragmented, A-tailed cDNA; provides the TruSeq Read 2 primer site for the GEX library",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 2 adapter (top strand region in library)",
+          "sequence": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+          "role": "Read 2 primer binding site added by adaptor ligation"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Named 'Adaptor Oligos' (PN-2000094) in the Library Construction Kit; sequence read from the GEX library construct."
+    },
+    {
+      "oligo_id": "oligo_sample_index_n_set_a",
+      "name": "Sample Index N, Set A (i7) \u2014 Single Index Kit N Set A (PN-3000427)",
+      "aliases": [],
+      "role": "i7 sample index added during ATAC Sample Index PCR; each well is a mix of 4 oligos balanced across all 4 nucleotides",
+      "kind": "single",
+      "sequence": "[SAMPLE_INDEX:8]",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "8 bp i7 sample index for the ATAC library; sequenced in the i7 read (8 cycles). Actual index sequences listed only in the index plate, not in this user guide."
+    },
+    {
+      "oligo_id": "oligo_dual_index_tt_set_a",
+      "name": "Dual Index TT Set A (i7 + i5) \u2014 Dual Index Plate TT Set A (PN-3000431)",
+      "aliases": [],
+      "role": "Paired i7 + i5 sample indices added during Gene Expression Sample Index PCR",
+      "kind": "assembled",
+      "sequence": "[SAMPLE_INDEX:10]+[SAMPLE_INDEX:10]",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "10 bp i7 index for the GEX library"
+        },
+        {
+          "name": "i5 sample index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "10 bp i5 index for the GEX library"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Each well is a unique i7 + unique i5; both are 10 bp for the Gene Expression library. Actual sequences listed only in the index plate."
+    },
+    {
+      "oligo_id": "oligo_si_pcr_primer_b",
+      "name": "SI-PCR Primer B (PN-2000128)",
+      "aliases": [],
+      "role": "Forward primer in ATAC Sample Index PCR; primes the P5 end of the barcoded transposed DNA",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Named reagent used with Amp Mix + Sample Index N in ATAC library construction; exact sequence not printed in this document."
+    },
+    {
+      "oligo_id": "oligo_pre_amp_primers",
+      "name": "Pre-Amp Primers (PN-2000271)",
+      "aliases": [],
+      "role": "Primer mix for pooled Pre-Amplification PCR that co-amplifies barcoded transposed DNA and barcoded cDNA",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Named reagent; exact sequences not printed in this document."
+    },
+    {
+      "oligo_id": "oligo_cdna_primers",
+      "name": "cDNA Primers (PN-2000089)",
+      "aliases": [],
+      "role": "Primer mix for cDNA Amplification of the GEX cDNA before Gene Expression library construction",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Named reagent; exact sequences not printed in this document."
+    }
+  ],
+  "final_library": {
+    "source_label": "Chromium Single Cell Multiome \u2014 Gene Expression library (primary); ATAC library construct included in strands",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC-N10-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-N16-N12-TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN-cDNA_Insert-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-N10-ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC-N10-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-N16-N12-TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN-cDNA_Insert-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-N10-ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTG-N10-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-N16-N12-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN-cDNA_Insert-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-N10-TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTG-N10-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-N16-N12-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN-cDNA_Insert-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-N10-TAGAGCATACGGCAGAAGACGAAC"
+      },
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC-N16-CGCGTCTG-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG---insert--CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-N8-ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC-N16-CGCGTCTG-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG---insert--CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-N8-ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTG-N16-GCGCAGAC-AGCAGCCGTCGCAGTCTACACATATTCTCTGTC---insert--GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-N8-TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTG-N16-GCGCAGAC-AGCAGCCGTCGCAGTCTACACATATTCTCTGTC---insert--GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-N8-TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[SAMPLE_INDEX:10] = i5 sample index",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT = TruSeq Read 1",
+      "[CELL_BARCODE:16] = 10x Barcode",
+      "[UMI:12] = UMI",
+      "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT = poly(dT)",
+      "VN = anchor (VN)",
+      "[CDNA] = cDNA insert",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = TruSeq Read 2 adapter",
+      "[SAMPLE_INDEX:10] = i7 sample index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Chromium Single Cell Multiome \u2014 Gene Expression library (primary); ATAC library construct included in strands",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+        "template": "bottom",
+        "cycles": 28,
+        "segments": [
+          {
+            "name": "10x Barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 16
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 12
+          }
+        ]
+      },
+      {
+        "read": "I1 (i7)",
+        "primer": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+        "template": "top",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "I2 (i5)",
+        "primer": "AATGATACGGCGACCACCGAGATCTACAC",
+        "template": "top",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+        "template": "top",
+        "cycles": 90,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "R1N (ATAC)",
+        "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+        "template": "top",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "DNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1 (ATAC i7)",
+        "primer": "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2 (ATAC i5)",
+        "primer": "AATGATACGGCGACCACCGAGATCTACAC",
+        "template": "top",
+        "cycles": 24,
+        "segments": [
+          {
+            "name": "10x Barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 16
+          },
+          {
+            "name": "Spacer",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2N (ATAC)",
+        "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+        "template": "bottom",
+        "cycles": 49,
+        "segments": [
+          {
+            "name": "DNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Transposition (bulk, in nuclei)",
+      "summary": "Tn5 transposase fragments open-chromatin DNA inside nuclei and adds mosaic-end adapters to the fragment ends.",
+      "note": "Nuclei are incubated with a Transposition Mix (ATAC Enzyme B). The transposase enters nuclei and preferentially cuts accessible chromatin, simultaneously tagging both ends of each fragment with the Tn5 mosaic-end adapter.",
+      "product": "Transposed open-chromatin fragment (mosaic-end adapters on both ends):\n5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'\n3'- AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG -5'"
+    },
+    {
+      "step": 2,
+      "title": "GEM generation & barcoding (RT + barcode attachment)",
+      "summary": "Nuclei are partitioned with barcoded gel beads; the GEX oligo primes RT of mRNA while the ATAC oligo attaches the 10x Barcode to transposed DNA.",
+      "note": "In each GEM the gel bead dissolves and releases two oligos. The GEX poly(dT) primer captures poly-adenylated mRNA and reverse transcriptase makes barcoded full-length cDNA; the ATAC oligo (P5 + Barcode + Spacer) attaches to the transposed DNA mosaic end so both molecules carry the same 10x Barcode.",
+      "product": "GEX \u2014 barcoded first-strand cDNA:\n|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]------->\n                                                                     3'- AAAAAAAAAA...mRNA -5'\n\nATAC \u2014 barcoded transposed DNA:\n|--5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]CGCGTCTGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'"
+    },
+    {
+      "step": 3,
+      "title": "Post-GEM cleanup & Pre-Amplification PCR",
+      "summary": "GEMs are broken, products purified on silane beads, and both barcoded transposed DNA and barcoded cDNA are co-amplified to fill gaps and add mass.",
+      "note": "A single pooled Pre-Amplification PCR (Pre-Amp Primers) fills in the gaps left by transposition and amplifies both molecule types together. The product is split downstream into ATAC and GEX workflows.",
+      "product": "Pooled, gap-filled and pre-amplified double-stranded products:\nATAC: 5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]CGCGTCTGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'\nGEX:  5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA] -3'"
+    },
+    {
+      "step": 4,
+      "title": "ATAC Sample Index PCR",
+      "summary": "P7 and an 8 bp i7 sample index are added to the barcoded transposed DNA to complete the ATAC library.",
+      "note": "Amp Mix + SI-PCR Primer B + a Sample Index N (Set A) add the P7 end and the i7 sample index. The final ATAC library begins with P5 and ends with P7.",
+      "product": "Final ATAC library:\n5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]CGCGTCTGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[CELL_BARCODE:16]GCGCAGACAGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'"
+    },
+    {
+      "step": 5,
+      "title": "cDNA Amplification (GEX)",
+      "summary": "Barcoded full-length cDNA is PCR-amplified with cDNA Primers to generate mass for Gene Expression library construction.",
+      "note": "cDNA Primers amplify the barcoded full-length cDNA (partial TruSeq Read 1 on the barcode end). 25% of the yield is carried forward into library construction.",
+      "product": "Amplified double-stranded full-length cDNA:\n5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA] -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA] -5'"
+    },
+    {
+      "step": 6,
+      "title": "Fragmentation, End Repair, A-tailing & Adaptor Ligation (GEX)",
+      "summary": "cDNA is enzymatically fragmented, end-repaired, A-tailed, and the TruSeq Read 2 adapter is ligated on.",
+      "note": "Fragmentation optimizes amplicon size; end repair and A-tailing prepare ends; Adaptor Oligos (TruSeq Read 2 adapter) are ligated to provide the Read 2 primer site.",
+      "product": "cDNA fragment with TruSeq Read 2 adapter ligated (barcode-proximal fragment shown):\n5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -3'"
+    },
+    {
+      "step": 7,
+      "title": "Gene Expression Sample Index PCR",
+      "summary": "P5, P7, and 10 bp i5/i7 dual sample indices are added by PCR to complete the Gene Expression library.",
+      "note": "Amp Mix + a Dual Index TT Set A (unique i7 + i5) add P5, P7 and both sample indices. The final GEX library begins with P5 and ends with P7 and is identical in structure to the Single Cell 3' v3.1 Dual Index library.",
+      "product": "Final Gene Expression library:\n5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:10]TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:10]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "R1 (Gene Expression)",
+      "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "template": "bottom",
+      "cycles": 28,
+      "note": "TruSeq Read 1 primes off the partial Read 1 region and reads the 16 bp 10x Barcode + 12 bp UMI (28 cycles) on the GEX library.",
+      "diagram": "                  Read 1 primer\n              5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT---------------------------->\n5'- ...N10(i5)ACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNNNNNNNNNNNNNNNNNNNTTTT...VN[cDNA] -3'\n3'- ...N10    TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNNNNNNNNNNNNNNNNNNNAAAA...BN[cDNA] -5'\n                                               |----16 bp 10x BC----||--12 bp UMI--|"
+    },
+    {
+      "read": "i7 Index (Gene Expression)",
+      "primer": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+      "template": "top",
+      "cycles": 10,
+      "note": "Reads the 10 bp i7 sample index of the GEX library.",
+      "diagram": "               i7 index primer\n           5'- AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC---------->\n5'- ...[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                                              |-i7:10-| |--- P7 rev-comp ----|"
+    },
+    {
+      "read": "i5 Index (Gene Expression)",
+      "primer": "AATGATACGGCGACCACCGAGATCTACAC",
+      "template": "top",
+      "cycles": 10,
+      "note": "Reads the 10 bp i5 sample index (paired-end, dual indexing).",
+      "diagram": "    i5 index primer\n5'- AATGATACGGCGACCACCGAGATCTACAC---------->\n5'- AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNACACTCTTTCCC... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNTGTGAGAAAGGG... -5'\n                                 |-i5:10-|"
+    },
+    {
+      "read": "R2 (Gene Expression)",
+      "primer": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "template": "top",
+      "cycles": 90,
+      "note": "TruSeq Read 2 anneals to the top strand at the Read 2 region and reads 90 cycles of the cDNA insert (reading leftward on the bottom strand).",
+      "diagram": "5'- ...[cDNA]XXXXAGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNNN... -3'\n3'- ...[cDNA]XXXXTCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNNN... -5'\n    <------------------3'- TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG -5'\n       Read 2 (90 cyc)          Read 2 primer (anneals to top strand)"
+    },
+    {
+      "read": "Read 1N (ATAC)",
+      "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "template": "top",
+      "cycles": 50,
+      "note": "Read 1N primes off the Nextera Read 1 + mosaic-end region and reads 50 cycles of the transposed open-chromatin insert.",
+      "diagram": "            Read 1N primer\n        5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG----------->\n5'- ...CGCGTCTGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAGXXXXXXXXXX[insert]... -3'\n3'- ...GCGCAGACAGCAGCCGTCGCAGTCTACACATATTCTCTGTCXXXXXXXXXX[insert]... -5'\n     |Spacer|                                  |--- DNA insert ---|"
+    },
+    {
+      "read": "i7 Index (ATAC)",
+      "primer": "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC",
+      "template": "top",
+      "cycles": 8,
+      "note": "Reads the 8 bp i7 sample index of the ATAC library.",
+      "diagram": "                i7 index primer\n            5'- CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-------->\n5'- ...[insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                                                |i7:8| |--- P7 rev-comp ----|"
+    },
+    {
+      "read": "i5 Index (ATAC)",
+      "primer": "AATGATACGGCGACCACCGAGATCTACAC",
+      "template": "top",
+      "cycles": 24,
+      "note": "Reads 24 bp on i5 to cover the 16 bp 10x Barcode + 8 bp Spacer. Sequencers that cannot run a 24 nt i5 read (e.g. NextSeq 500/550) require a custom recipe: 8 dark cycles + 16 nt.",
+      "diagram": "    i5 index primer\n5'- AATGATACGGCGACCACCGAGATCTACAC------------------------>\n5'- AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNNNNNNNCGCGTCTGTCGTCGGCAGC... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNNNNNNNGCGCAGACAGCAGCCGTCG... -5'\n                                 |--16 bp 10x BC--||Spacer|"
+    },
+    {
+      "read": "Read 2N (ATAC)",
+      "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "template": "bottom",
+      "cycles": 49,
+      "note": "Read 2N anneals at the mosaic-end / Read 2N region and reads 49 cycles of the opposite end of the transposed insert (reading leftward).",
+      "diagram": "5'- ...[insert]XXXXCTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNN... -3'\n3'- ...[insert]XXXXGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNN... -5'\n    <-----------------3'- GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG -5'\n       Read 2N (49 cyc)         Read 2N primer (anneals to top strand)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "10x Multiome (ATAC + Gene Expression)",
+  "description": "Chromium Next GEM Single Cell Multiome ATAC + Gene Expression simultaneously profiles open chromatin (ATAC) and the transcriptome (3' gene expression) from the same single nuclei. Nuclei are bulk-transposed with Tn5 (adding mosaic-end adapters to open-chromatin DNA), then partitioned into GEMs with barcoded gel beads: each bead carries two oligos \u2014 an ATAC oligo (P5 + 16 nt 10x Barcode + 8 nt Spacer) that attaches the barcode to transposed DNA, and a GEX oligo (partial TruSeq Read 1 + 16 nt 10x Barcode + 12 nt UMI + 30 nt poly(dT)VN) that primes reverse transcription of poly-adenylated mRNA. A shared 10x Barcode links ATAC reads and GEX reads back to the same nucleus. Two separate Illumina paired-end libraries (ATAC and Gene Expression) are built from a common pre-amplified pool.",
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "10x chromium single cell multiome atac plus gene expression",
+    "path": null,
+    "url": null,
+    "doi": null
+  },
+  "publication": {
+    "year": 2024,
+    "original_publication": {
+      "title": "Chromium Next GEM Single Cell Multiome ATAC + Gene Expression User Guide (CG000338 Rev G)",
+      "journal": "10x Genomics (vendor user guide)",
+      "url": "https://www.10xgenomics.com"
+    },
+    "authors": [
+      {
+        "name": "10x Genomics, Inc.",
+        "affiliation": "6230 Stoneridge Mall Road, Pleasanton, CA 94588 USA",
+        "email": "support@10xgenomics.com",
+        "corresponding": true
+      }
+    ],
+    "throughput": {
+      "summary": "Up to ~10,000 nuclei recovered per reaction (~500\u201310,000), delivered at limiting dilution so ~90\u201399% of GEMs are empty; multiplet rate scales with load (~7.7% at ~10,000 recovered).",
+      "cells": "~500 to ~10,000 nuclei recovered per channel",
+      "rna": "20,000 read pairs per nucleus (Gene Expression)",
+      "dna": "25,000 read pairs per nucleus (ATAC)"
+    },
+    "other": [
+      {
+        "label": "GEX library equivalence",
+        "value": "Identical to Chromium Single Cell 3' v3.1 Dual Index library"
+      },
+      {
+        "label": "Licensed patents",
+        "value": "US 6,159,736 and 6,294,385; EP 1115856 (Wisconsin Alumni Research Foundation)"
+      }
+    ]
+  },
+  "modality": "RNA + ATAC",
+  "method_type": "droplet",
+  "data_processing": {
+    "summary": "The user guide only describes the sequencing-to-FASTQ handoff: shared 10x Barcodes link ATAC and GEX reads to the same nucleus, and the per-library sample indices are demultiplexed to generate FASTQs with Cell Ranger. No alignment, UMI-collapsing, or counting/clustering pipeline is specified in this document.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplex"
+      },
+      {
+        "id": "fastq",
+        "label": "FASTQ Generation"
+      },
+      {
+        "id": "link",
+        "label": "Barcode Linking"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux_atac",
+        "label": "Demultiplex ATAC sample index",
+        "tool": "Cell Ranger",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "demux_gex",
+        "label": "Demultiplex GEX sample index",
+        "tool": "Cell Ranger",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "fastq_atac",
+        "label": "Generate ATAC FASTQs",
+        "tool": "Cell Ranger",
+        "stage": "fastq",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "fastq_gex",
+        "label": "Generate GEX FASTQs",
+        "tool": "Cell Ranger",
+        "stage": "fastq",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "link_nuclei",
+        "label": "Link reads to nuclei",
+        "tool": "",
+        "stage": "link",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux_atac",
+        "to": "fastq_atac",
+        "kind": "sequential"
+      },
+      {
+        "from": "demux_gex",
+        "to": "fastq_gex",
+        "kind": "sequential"
+      },
+      {
+        "from": "fastq_atac",
+        "to": "link_nuclei",
+        "kind": "fan_in"
+      },
+      {
+        "from": "fastq_gex",
+        "to": "link_nuclei",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": null
+  }
+}

@@ -1,0 +1,1044 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "malbac",
+  "assay": "MALBAC",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "MALBAC_original_paper.pdf",
+      "title": "Genome-Wide Detection of Single-Nucleotide and Copy-Number Variations of a Single Human Cell",
+      "url": "https://doi.org/10.1126/science.1229164",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/malbac/MALBAC_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "MALBAC.pdf",
+      "title": "MALBAC.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/malbac/MALBAC.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "malbac_random_primer",
+      "name": "MALBAC primer (random)",
+      "aliases": [],
+      "role": "Random-priming preamplification primer: common 27-nt sequence + 8 variable nt that hybridize genome-wide at 0\u00b0C",
+      "kind": "assembled",
+      "sequence": "GTGAGTGATGGTTGAGGTAGTGTGGAGNNNNNNNN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "common_27nt",
+          "sequence": "GTGAGTGATGGTTGAGGTAGTGTGGAG",
+          "role": "common 27-nucleotide constant sequence (shared by all MALBAC primers; also used as the PCR primer)"
+        },
+        {
+          "name": "variable_8nt",
+          "sequence": "NNNNNNNN",
+          "role": "8 variable/degenerate nucleotides that anneal randomly to single-stranded template"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Primer pool at 0.32 uM. The common 27-nt sequence is stated explicitly in the protocol as GTG AGT GAT GGT TGA GGT AGT GTG GAG. Exact composition/pooling of the 8 variable positions is not tabulated in the documents (shown here as N x8)."
+    },
+    {
+      "oligo_id": "malbac_pcr_primer",
+      "name": "MALBAC PCR primer (common 27-nt)",
+      "aliases": [],
+      "role": "Exponential PCR amplification primer after 5 preamplification cycles; identical to the constant 27-nt region of the MALBAC primer",
+      "kind": "single",
+      "sequence": "GTGAGTGATGGTTGAGGTAGTGTGGAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "18 PCR cycles used to generate ~3 ug dsDNA from a single cell. Full amplicons carry this sequence at the 5' end and its reverse complement (CTCCACACTACCTCAACCATCACTCAC) at the 3' end, which lets the ends loop at 58\u00b0C."
+    },
+    {
+      "oligo_id": "illumina_p5_adapter",
+      "name": "Illumina P5 / TruSeq Read 1 adapter (standard)",
+      "aliases": [],
+      "role": "5' flow-cell grafting sequence + Read 1 sequencing-primer binding site added during standard vendor library prep",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Not printed in the MALBAC documents. The paper states the amplified DNA was given to the vendor for STANDARD Illumina library preparation; canonical TruSeq P5 + Read1 sequence is shown for reference only."
+    },
+    {
+      "oligo_id": "illumina_p7_adapter",
+      "name": "Illumina P7 / TruSeq Read 2 + index adapter (standard)",
+      "aliases": [],
+      "role": "3' Read 2 sequencing-primer binding site, i7 sample index, and P7 flow-cell grafting sequence added during standard vendor library prep",
+      "kind": "assembled",
+      "sequence": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "truseq_read2",
+          "sequence": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+          "role": "Read 2 primer binding region"
+        },
+        {
+          "name": "i7_index",
+          "sequence": "[SAMPLE_INDEX:6]",
+          "role": "sample index (barcode)"
+        },
+        {
+          "name": "p7",
+          "sequence": "ATCTCGTATGCCGTCTTCTGCTTG",
+          "role": "P7 flow-cell grafting sequence"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Not printed in the MALBAC documents; standard TruSeq single-index adapter shown for reference. Index length/sequence not specified in the source (vendor prep)."
+    },
+    {
+      "oligo_id": "qpcr_chr1",
+      "name": "Chr1 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "Quantitative PCR primer pair to test single-cell WGA uniformity at a random chr1 locus (QC only; not part of the sequencing library)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr1_fwd",
+          "sequence": "AGGAAAGGCATACTGGAGGGACAT",
+          "role": "forward"
+        },
+        {
+          "name": "chr1_rev",
+          "sequence": "TTAGGGATGGCACCACACTCTTGA",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr2",
+      "name": "Chr2 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr2_fwd",
+          "sequence": "TCCCAGAGAAGCATCCTCCATGTT",
+          "role": "forward"
+        },
+        {
+          "name": "chr2_rev",
+          "sequence": "CACCACACTGCCTCAAATGTTGCT",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr3",
+      "name": "Chr3 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr3_fwd",
+          "sequence": "TCAAGTTGCCAGCTGTGGCTGTAT",
+          "role": "forward"
+        },
+        {
+          "name": "chr3_rev",
+          "sequence": "AGAAGGGCATTTCCTGTCAGTGGA",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr4",
+      "name": "Chr4 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr4_fwd",
+          "sequence": "ATGGGCAAATCCAGAAGAGTCCAG",
+          "role": "forward"
+        },
+        {
+          "name": "chr4_rev",
+          "sequence": "CCATTCACTTCCTTGGAAAGGTAGCC",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr5",
+      "name": "Chr5 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr5_fwd",
+          "sequence": "AATAGCGTGCAGTTCTGGGTAGCA",
+          "role": "forward"
+        },
+        {
+          "name": "chr5_rev",
+          "sequence": "TTCACATCCTGGGAGGAACAGCAT",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr6",
+      "name": "Chr6 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr6_fwd",
+          "sequence": "TGAATGCCAGGGTGAGACCTTTGA",
+          "role": "forward"
+        },
+        {
+          "name": "chr6_rev",
+          "sequence": "TGTTCATTATCCCACGCCAGGACT",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr7",
+      "name": "Chr7 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr7_fwd",
+          "sequence": "ACCAAAGGAAAGCCAGCCAGTCTA",
+          "role": "forward"
+        },
+        {
+          "name": "chr7_rev",
+          "sequence": "ACTCCACAGCTCCCAAGCATACAA",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr9",
+      "name": "Chr9 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr9_fwd",
+          "sequence": "TCCCAGCTCTCTCTCTTGCATCTT",
+          "role": "forward"
+        },
+        {
+          "name": "chr9_rev",
+          "sequence": "AGTGAAGCTGGTGTATGCAGAGGT",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr12",
+      "name": "Chr12 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr12_fwd",
+          "sequence": "AGAGGGCTGCTTTATGCAGGTG",
+          "role": "forward"
+        },
+        {
+          "name": "chr12_rev",
+          "sequence": "CTACATTTGGGTCTTTGCTGCCATG",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr13",
+      "name": "Chr13 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr13_fwd",
+          "sequence": "AGCAGCCCCAGGCAGAT",
+          "role": "forward"
+        },
+        {
+          "name": "chr13_rev",
+          "sequence": "CGGAGAGGACGGTCACGTTTAC",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Transcribed exactly as printed in Table S3; the listed chr13 reverse primer sequence is identical to the chr14 forward primer, an apparent duplication in the original table."
+    },
+    {
+      "oligo_id": "qpcr_chr14",
+      "name": "Chr14 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr14_fwd",
+          "sequence": "CGGAGAGGACGGTCACGTTTAC",
+          "role": "forward"
+        },
+        {
+          "name": "chr14_rev",
+          "sequence": "CGTGGGAGTTTTGAAATGCGATGT",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr15",
+      "name": "Chr15 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr15_fwd",
+          "sequence": "CCTGTCTCTGCTCCTGCG",
+          "role": "forward"
+        },
+        {
+          "name": "chr15_rev",
+          "sequence": "TGCACACATGCACAGTGGAG",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr16",
+      "name": "Chr16 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr16_fwd",
+          "sequence": "CTCCAAGGTTCTGCAGCCTC",
+          "role": "forward"
+        },
+        {
+          "name": "chr16_rev",
+          "sequence": "GGTATGACTACACATTCAGGCTGG",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr17",
+      "name": "Chr17 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr17_fwd",
+          "sequence": "GTGGTACATAGTGCATGGTCCG",
+          "role": "forward"
+        },
+        {
+          "name": "chr17_rev",
+          "sequence": "GGCGACATACCCCAACTTCATAAG",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr18",
+      "name": "Chr18 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr18_fwd",
+          "sequence": "CGTTCTTAGGACCAAAGGGCTG",
+          "role": "forward"
+        },
+        {
+          "name": "chr18_rev",
+          "sequence": "CCAGCATCCATGTCTCTGCAC",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "qpcr_chr19",
+      "name": "Chr19 qPCR uniformity primer pair (Table S3)",
+      "aliases": [],
+      "role": "qPCR uniformity primer pair (QC only)",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "chr19_fwd",
+          "sequence": "GCCCAGAGCGCCTGA",
+          "role": "forward"
+        },
+        {
+          "name": "chr19_rev",
+          "sequence": "CCAGCCCCTGGACCACT",
+          "role": "reverse"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    }
+  ],
+  "final_library": {
+    "source_label": "Standard Illumina (TruSeq) whole-genome library built on MALBAC full amplicons",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC ACACTCTTTCCCTACACGACGCTCTTCCGATCT | GTGAGTGATGGTTGAGGTAGTGTGGAG [SPACER:8] [CDNA] CTCCACACTACCTCAACCATCACTCAC | AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC [SAMPLE_INDEX:6] ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACACACTCTTTCCCTACACGACGCTCTTCCGATCTGTGAGTGATGGTTGAGGTAGTGTGGAG[SPACER:8][CDNA]CTCCACACTACCTCAACCATCACTCACAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' sense (top)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACACACTCTTTCCCTACACGACGCTCTTCCGATCTGTGAGTGATGGTTGAGGTAGTGTGGAG[SPACER:8][CDNA]CTCCACACTACCTCAACCATCACTCACAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACACACTCTTTCCCTACACGACGCTCTTCCGATCTGTGAGTGATGGTTGAGGTAGTGTGGAG[SPACER:8][CDNA]CTCCACACTACCTCAACCATCACTCACAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3'->5' antisense (bottom)",
+        "source_html": "reverse complement of the top strand (standard duplex Illumina library)",
+        "source_sequence": "reverse complement of the top strand (standard duplex Illumina library)"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = Illumina P5 flow-cell sequence (standard vendor prep; not printed in source)",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT = TruSeq Read 1 sequencing-primer binding site (standard; not printed in source)",
+      "GTGAGTGATGGTTGAGGTAGTGTGGAG = MALBAC common 27-nt sequence at the 5' end of the full amplicon",
+      "[SPACER:8] = 8 variable nt of the MALBAC primer (random genomic priming site)",
+      "[CDNA] = genomic DNA insert from the single cell (WGA amplicon body, ~0.5-1.5 kb before fragmentation)",
+      "CTCCACACTACCTCAACCATCACTCAC = reverse complement of the 27-nt common sequence at the 3' end (enables looping at 58\u00b0C)",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = TruSeq Read 2 primer binding site (standard; not printed in source)",
+      "[SAMPLE_INDEX:6] = i7 sample index (vendor prep; length/sequence not specified in source)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = Illumina P7 flow-cell sequence (standard; not printed in source)",
+      "NOTE: MALBAC is a WGA method; the paper hands ~3 ug amplified dsDNA to standard Illumina (HiSeq-2000) / SOLiD library prep. Adapter/index sequences are canonical placeholders. For single cells 3-5 a restriction enzyme was used to remove the MALBAC 27-nt primer before library construction, so the common sequence need not appear at read ends."
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Standard Illumina (TruSeq) whole-genome library built on MALBAC full amplicons",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TruSeq Read 1 primer",
+        "template": "top",
+        "cycles": 100,
+        "segments": [
+          {
+            "name": "genomic insert (WGA amplicon)",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "TruSeq index primer",
+        "template": "top",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "TruSeq Read 2 primer",
+        "template": "bottom",
+        "cycles": 100,
+        "segments": [
+          {
+            "name": "genomic insert (WGA amplicon)",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Single-cell isolation & lysis",
+      "summary": "A single SW480 cell is picked into a tube and lysed with QIAGEN protease to release its genomic DNA.",
+      "note": "Cells mouth-pipetted (or by microfluidics/FACS/laser dissection) into PCR tubes; lysis at 50\u00b0C 3 h, 75\u00b0C 20 min, 80\u00b0C 5 min. Picograms of ~10-100 kb genomic DNA fragments serve as template. UV decontamination is critical for SNV work.",
+      "product": "5'- ...GGGGENOMIC DNA (~10-100 kb, double-stranded)...GGG -3'\n3'- ...CCCC............................................CCC -5'"
+    },
+    {
+      "step": 2,
+      "title": "Denaturation",
+      "summary": "Genomic DNA is melted at 94\u00b0C into single strands in MALBAC amplification buffer.",
+      "note": "30 uL amplification buffer (Tris-Cl pH 8.8, (NH4)2SO4, KCl, MgSO4, Triton X-100, 0.32 uM primers); 94\u00b0C 3 min, then snap-quenched on ice to favor primer binding.",
+      "product": "5'- ...GENOMIC single-stranded DNA... -3'"
+    },
+    {
+      "step": 3,
+      "title": "Primer annealing at 0\u00b0C",
+      "summary": "MALBAC random primers (27-nt common + 8N) hybridize evenly across the single-stranded template on ice.",
+      "note": "Cold annealing gives uniform, near-random priming genome-wide.",
+      "product": "                5'- GTGAGTGATGGTTGAGGTAGTGTGGAGNNNNNNNN -3'\n                                                   |||||||| (8N anneals)\n3'- ...GENOMIC template ....................NNNNNNNN........... -5'"
+    },
+    {
+      "step": 4,
+      "title": "Extension -> semi-amplicon (65\u00b0C)",
+      "summary": "Bst large fragment (\u00b1 Pyrophage 3173 exo-) extends primers with strand displacement to make semi-amplicons.",
+      "note": "Ramped 10-50\u00b0C then 65\u00b0C 2 min; 0.5-1.5 kb products. Each semi-amplicon has the 27-nt common sequence at its 5' end.",
+      "product": "5'- GTGAGTGATGGTTGAGGTAGTGTGGAGNNNNNNNN[genomic]----------> -3'  (semi-amplicon)\n3'- ...........................................GENOMIC template........ -5'"
+    },
+    {
+      "step": 5,
+      "title": "Melt off (94\u00b0C)",
+      "summary": "Semi-amplicons are melted from the template at 94\u00b0C, then quenched on ice.",
+      "note": "Single-stranded semi-amplicons and genomic DNA both become templates in the next round.",
+      "product": "5'- GTGAGTGATGGTTGAGGTAGTGTGGAGNNNNNNNN[genomic] -3'  (free single-stranded semi-amplicon)"
+    },
+    {
+      "step": 6,
+      "title": "Full amplicon formation + looping (58\u00b0C)",
+      "summary": "New primers copy the semi-amplicons into full amplicons whose complementary 27-nt ends loop at 58\u00b0C to stop further amplification.",
+      "note": "Full amplicon 3' end = reverse complement of its 5' end, so the ends hybridize into a loop, preventing re-priming and cross-hybridization (quasi-linear preamplification). Steps 3-6 repeated for 5 cycles.",
+      "product": "5'- GTGAGTGATGGTTGAGGTAGTGTGGAG[genomic]CTCCACACTACCTCAACCATCACTCAC -3'  (full amplicon)\n     \\___ complementary 27-nt ends loop/hybridize at 58\u00b0C ___/"
+    },
+    {
+      "step": 7,
+      "title": "Exponential PCR amplification",
+      "summary": "Full amplicons are PCR-amplified (18 cycles) with the 27-nt common primer to yield ~3 ug dsDNA.",
+      "note": "94\u00b0C 20s / 59\u00b0C 20s / 65\u00b0C 1min / 72\u00b0C 2min x18. Only looped full amplicons (both ends complementary) are efficiently amplified. Products ~500-1500 bp.",
+      "product": "5'- GTGAGTGATGGTTGAGGTAGTGTGGAG[genomic]CTCCACACTACCTCAACCATCACTCAC -3'\n3'- CACTCACTACCAACTCCATCACACCTC[genomic]GAGGTGTGATGGAGTTGGTAGTGAGTG -5'  (double-stranded, micrograms)"
+    },
+    {
+      "step": 8,
+      "title": "Standard Illumina/SOLiD library construction",
+      "summary": "The ~3 ug amplified dsDNA is converted to a standard sequencing library (fragmentation, adapter ligation, index PCR).",
+      "note": "Given to vendor for standard Illumina prep (HiSeq-2000) or SOLiD 4 prep with EZ bead emPCR. For single cells 3-5, a restriction enzyme first removed the MALBAC 27-nt primer. Adapter sequences are not printed in the paper.",
+      "product": "5'- [P5][TruSeq R1]--MALBAC amplicon (genomic insert)--[TruSeq R2][i7 index][P7] -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (genomic)",
+      "primer": "TruSeq Read 1 primer (5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3')",
+      "template": "bottom",
+      "cycles": 100,
+      "note": "Sequences from the P5/Read1 constant region into the WGA amplicon body (MALBAC 27-nt tag + 8 random nt + genomic insert). No cell barcode or UMI \u2014 MALBAC is a whole-genome amplification assay; read length set by the vendor (paired-end on HiSeq-2000).",
+      "diagram": "                  Read 1 primer 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3' ------->\n5'- ...GAGATCTACAC ACACTCTTTCCCTACACGACGCTCTTCCGATCT GTGAGTGATGGTTGAGGTAGTGTGGAG NNNNNNNN[genomic insert]... -3'\n                    ||||||||||||||||||||||||||||||||| |||||||||||||||||||||||||||\n3'- ...CTCTAGATGTG TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA CACTCACTACCAACTCCATCACACCTC NNNNNNNN[genomic insert]... -5'"
+    },
+    {
+      "read": "Index read (i7)",
+      "primer": "TruSeq i7 index primer (5'-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3')",
+      "template": "bottom",
+      "cycles": 6,
+      "note": "Sample-demultiplexing index added during standard vendor library prep. Index length/sequence not specified in the source (shown here as a 6-nt placeholder).",
+      "diagram": "                          i7 index primer 5'-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3' ------->\n5'- ...CTCCACACTACCTCAACCATCACTCAC AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC NNNNNN ATCTCGTATGCCGTCTTCTGCTTG -3'\n                                  |||||||||||||||||||||||||||||||||| ||||||\n3'- ...GAGGTGTGATGGAGTTGGTAGTGAGTG TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG NNNNNN TAGAGCATACGGCAGAAGACGAAC -5'\n                                                                     (reads i7 on bottom strand)"
+    },
+    {
+      "read": "Read 2 (genomic)",
+      "primer": "TruSeq Read 2 primer (5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3')",
+      "template": "top",
+      "cycles": 100,
+      "note": "Paired-end read from the opposite end of the WGA amplicon; anneals at the Read2 constant region and reads back into the genomic insert.",
+      "diagram": "5'- ...NNNNNNNN[genomic insert] CTCCACACTACCTCAACCATCACTCAC AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC... -3'\n                               ||||||||||||||||||||||||||| ||||||||||||||||||||||||||||||||||\n3'- ...NNNNNNNN[genomic insert] GAGGTGTGATGGAGTTGGTAGTGAGTG TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG... -5'\n              <------- 3'-...GAGGTGTGATGGAGTTGGTAGTGAGTG TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5' Read 2 primer"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "MALBAC",
+  "description": "MALBAC (Multiple Annealing and Looping Based Amplification Cycles) is a single-cell whole-genome amplification (WGA) method. Random primers carrying a common 27-nucleotide sequence plus 8 variable nucleotides anneal genome-wide at 0\u00b0C and are extended by a strand-displacing polymerase to make semi-amplicons; further cycles generate full amplicons whose complementary 27-nt ends loop at 58\u00b0C, giving quasi-linear preamplification with low bias. The looped amplicons are then exponentially PCR-amplified with the 27-nt common primer and converted to a standard Illumina/SOLiD whole-genome library. Reads capture genomic DNA of a single human cell, enabling detection of copy-number variations (CNVs) and single-nucleotide variations (SNVs).",
+  "reference": {
+    "kind": "paper",
+    "label": "Genome-Wide Detection of Single-Nucleotide and Copy-Number Variations of a Single Human Cell",
+    "path": null,
+    "url": "https://doi.org/10.1126/science.1229164",
+    "doi": "10.1126/science.1229164"
+  },
+  "publication": {
+    "year": 2012,
+    "original_publication": {
+      "title": "Genome-Wide Detection of Single-Nucleotide and Copy-Number Variations of a Single Human Cell",
+      "journal": "Science",
+      "doi": "10.1126/science.1229164",
+      "url": "https://doi.org/10.1126/science.1229164"
+    },
+    "authors": [
+      {
+        "name": "Chenghang Zong",
+        "corresponding": false,
+        "affiliation": "Department of Chemistry and Chemical Biology, Harvard University, Cambridge, MA 02138, USA (co-first author)"
+      },
+      {
+        "name": "Sijia Lu",
+        "corresponding": false,
+        "affiliation": "Department of Chemistry and Chemical Biology, Harvard University, Cambridge, MA 02138, USA (co-first author; current address Yikon Genomics Inc., Taizhou, Jiangsu, China)"
+      },
+      {
+        "name": "Alec R. Chapman",
+        "corresponding": false,
+        "affiliation": "Department of Chemistry and Chemical Biology & Program in Biophysics, Harvard University, Cambridge, MA 02138, USA (co-first author)"
+      },
+      {
+        "name": "X. Sunney Xie",
+        "corresponding": true,
+        "email": "xie@chemistry.harvard.edu",
+        "affiliation": "Department of Chemistry and Chemical Biology, Harvard University, Cambridge, MA 02138, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "Single human cell per reaction; ~3 ug amplified dsDNA yields ~85% and up to 93% genome coverage at >=1x on either strand at ~25x mean depth (vs 72% for MDA).",
+      "cells": "One cell per reaction (single-cell WGA)",
+      "rna": "N/A (whole-genome DNA assay)",
+      "dna": "~10-100 kb genomic fragments (picograms) amplified to ~3 ug dsDNA; amplicon size ~500-1500 bp"
+    },
+    "statistical_model": "Hidden Markov model (Viterbi) for digitized CNV calling; GATK Gaussian mixture model (VQSR) plus one-sided binomial test for SNV calling; Poisson model for transition/transversion counts.",
+    "other": [
+      {
+        "label": "Preamplification",
+        "value": "5 quasi-linear MALBAC cycles, then 18 cycles of exponential PCR"
+      },
+      {
+        "label": "Polymerases",
+        "value": "Bst large fragment (NEB), optionally supplemented with Pyrophage 3173 exo- (Lucigen)"
+      },
+      {
+        "label": "Allele dropout rate",
+        "value": "~1% for MALBAC vs ~65% for MDA"
+      },
+      {
+        "label": "False-positive SNV rate",
+        "value": "~4x10^-5 (from single-cell); reduced to ~10^-8 with 2 kindred cells, ~10^-12 with 3"
+      },
+      {
+        "label": "GC content of products",
+        "value": "~46% (human genome ~42%)"
+      },
+      {
+        "label": "Measured mutation rate",
+        "value": "~2.5 nucleotides per cell generation in the SW480 cancer cell line (~10x germline rate)"
+      },
+      {
+        "label": "Platforms",
+        "value": "Illumina HiSeq-2000 (primary) and SOLiD 4 (EZ bead emulsion PCR)"
+      },
+      {
+        "label": "Cell line",
+        "value": "SW480 colorectal adenocarcinoma (ATCC)"
+      },
+      {
+        "label": "Data accession",
+        "value": "NCBI SRA060929"
+      }
+    ]
+  },
+  "modality": "DNA",
+  "method_type": "manual/tube",
+  "data_processing": {
+    "summary": "Sequencing reads from MALBAC-amplified single-cell gDNA are aligned to the human reference; read depth is binned genome-wide and digitized into copy-number states with a hidden Markov model, while SNV candidates are scored and then error-filtered by comparing two or three kindred cells to remove uncorrelated and correlated (systematic) false positives.",
+    "stages": [
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "cnv",
+        "label": "Copy-number analysis"
+      },
+      {
+        "id": "snv",
+        "label": "SNV calling"
+      },
+      {
+        "id": "filter",
+        "label": "Error filtering"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "align",
+        "label": "Align reads to reference",
+        "tool": "",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "bin_depth",
+        "label": "Bin read depth (200 kb)",
+        "tool": "",
+        "stage": "cnv",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "uniformity_qc",
+        "label": "Assess coverage uniformity",
+        "tool": "",
+        "stage": "cnv",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "call_cnv",
+        "label": "Call copy-number states",
+        "tool": "",
+        "stage": "cnv",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "call_snv",
+        "label": "Call SNV candidates",
+        "tool": "",
+        "stage": "snv",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_uncorrelated",
+        "label": "Filter uncorrelated errors",
+        "tool": "",
+        "stage": "filter",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_systematic",
+        "label": "Filter systematic errors",
+        "tool": "",
+        "stage": "filter",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "align",
+        "to": "bin_depth",
+        "kind": "branch"
+      },
+      {
+        "from": "align",
+        "to": "call_snv",
+        "kind": "branch"
+      },
+      {
+        "from": "bin_depth",
+        "to": "uniformity_qc",
+        "kind": "branch"
+      },
+      {
+        "from": "bin_depth",
+        "to": "call_cnv",
+        "kind": "branch"
+      },
+      {
+        "from": "call_snv",
+        "to": "filter_uncorrelated",
+        "kind": "fan_in"
+      },
+      {
+        "from": "filter_uncorrelated",
+        "to": "filter_systematic",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "Hidden Markov model for CNV state calling; one-sided binomial test for SNV candidate calling. No software named."
+  }
+}

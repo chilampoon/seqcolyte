@@ -1,0 +1,1305 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "share_seq",
+  "assay": "SHARE-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "SHARE-seq_workflow_supplement.pdf",
+      "title": "SHARE-seq Supplementary Figure 1 and workflow companion",
+      "url": "https://doi.org/10.1016/j.cell.2020.09.056",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/share_seq/SHARE-seq_workflow_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SHARE-seq.xlsx",
+      "title": "SHARE-seq.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/share_seq/SHARE-seq.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SHARE-seq.pdf",
+      "title": "SHARE-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/share_seq/SHARE-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "read1_tn5",
+      "name": "Read1 (Tn5 mosaic-end adapter A)",
+      "aliases": [],
+      "role": "Tn5 transposon adapter carrying the Nextera Read 1 sequencing primer + mosaic end; loaded onto Tn5 for ATAC (and for cDNA tagmentation of the RNA library)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "HPLC, 100 nM. Annealed to Blocked_ME_Comp before Tn5 assembly. 3' AGATGTGTATAAGAGACAG = mosaic end (ME)."
+    },
+    {
+      "oligo_id": "phosphorylated_read2_tn5",
+      "name": "Phosphorylated Read2 (Tn5 mosaic-end adapter B)",
+      "aliases": [],
+      "role": "Second Tn5 transposon adapter; its 5'-phosphate is used for downstream barcode ligation; provides the Read 2 / ligation handle on ATAC fragments",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-phosphorylated (/5Phos/), HPLC, 100 nM. Annealed to Blocked_ME_Comp. 5' GTCTCGTGGGCTCGG is the universal ligation/Read2 handle shared with the RT primer."
+    },
+    {
+      "oligo_id": "blocked_me_comp",
+      "name": "Blocked ME-complement",
+      "aliases": [],
+      "role": "Mosaic-end complement strand of the Tn5 transposon; blocks self-tagmentation and polymerase extension",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "/5Phos/ + phosphorothioate backbone (C*T*G*T*C*T*C*T*T*A*T*A*C*A) + /3ddC/. 5'Phos enables tagmentation; 3'ddC prevents polymerase extension; phosphorothioates block self-tagmentation."
+    },
+    {
+      "oligo_id": "rt_primer",
+      "name": "RT primer (biotinylated poly(dT)+UMI)",
+      "aliases": [],
+      "role": "Reverse-transcription primer priming on mRNA poly(A); adds ligation handle, UMI and biotin to first-strand cDNA",
+      "kind": "assembled",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG[UMI:10]TTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "ligation/Read2 handle + ME",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "5'-phosphorylated universal overhang for barcode ligation (same handle as phospho-Read2)"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:10]",
+          "role": "10 nt unique molecular identifier (NNNNNNNNNN)"
+        },
+        {
+          "name": "biotin-dT",
+          "sequence": "T",
+          "role": "internal biotinylated dT (/iBiodT/) for streptavidin pulldown"
+        },
+        {
+          "name": "poly-dT",
+          "sequence": "TTTTTTTTTTTTTT",
+          "role": "anneals to mRNA poly(A)"
+        },
+        {
+          "name": "anchor",
+          "sequence": "VN",
+          "role": "3' anchored base (V=A/C/G, N=A/C/G/T) \u2014 degenerate, not ACGTN-encodable"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "/5Phos/...NNNNNNNNNN/iBiodT/TTTTTTTTTTTTTTVN. HPLC, 100 nM. 5'-phosphate used for subsequent barcode ligation."
+    },
+    {
+      "oligo_id": "tso",
+      "name": "Template-switch oligo (TSO)",
+      "aliases": [],
+      "role": "Template-switch oligo captured at the 3' end of first-strand cDNA during Maxima H- template switching",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTGAATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Original AAGCAGTGGTATCAACGCAGAGTGAATrGrG+G (riboG-riboG-LNA G) folded to ...GAATGGG. HPLC, 100 nM."
+    },
+    {
+      "oligo_id": "rna_pcr_primer",
+      "name": "RNA PCR primer",
+      "aliases": [],
+      "role": "cDNA amplification primer binding the TSO handle after template switching",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "STD, 100 nM. Used with P7 primer to amplify template-switched cDNA."
+    },
+    {
+      "oligo_id": "p7_primer",
+      "name": "P7 primer",
+      "aliases": [],
+      "role": "Universal P7 PCR primer used for both ATAC and RNA library amplification",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "STD, 100 nM. Also the 5' portion of every Round 3 barcode oligo."
+    },
+    {
+      "oligo_id": "round1_linker",
+      "name": "Round 1 linker",
+      "aliases": [],
+      "role": "Splint linker strand annealed to Round 1 barcode strands to create the ligatable barcode cassette",
+      "kind": "single",
+      "sequence": "CCGAGCCCACGAGACTCGGACGATCATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "STD, 1 \u00b5M. Universal linker partially complementary to well-specific Round 1 barcodes."
+    },
+    {
+      "oligo_id": "round2_linker",
+      "name": "Round 2 linker",
+      "aliases": [],
+      "role": "Splint linker strand for Round 2 barcode ligation",
+      "kind": "single",
+      "sequence": "CAAGTATGCAGCGCGCTCAAGCACGTGGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "STD, 1 \u00b5M."
+    },
+    {
+      "oligo_id": "round3_linker",
+      "name": "Round 3 linker",
+      "aliases": [],
+      "role": "Splint linker strand for Round 3 barcode ligation",
+      "kind": "single",
+      "sequence": "AGTCGTACGCCGATGCGAAACATCGGCCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "STD, 1 \u00b5M."
+    },
+    {
+      "oligo_id": "round1_blocking",
+      "name": "Round 1 blocking strand",
+      "aliases": [],
+      "role": "Blocks the free 5' overhang of unligated Round 1 barcodes to prevent mislabeling in later rounds",
+      "kind": "single",
+      "sequence": "CCCATGATCGTCCGAGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "STD, 1 \u00b5M; added at 22 \u00b5M after round 1."
+    },
+    {
+      "oligo_id": "round2_blocking",
+      "name": "Round 2 blocking strand",
+      "aliases": [],
+      "role": "Blocks unligated Round 2 barcode overhangs",
+      "kind": "single",
+      "sequence": "ATCCACGTGCTTGAGCGCGCTGCATACTTG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "STD, 1 \u00b5M; added at 26.4 \u00b5M after round 2."
+    },
+    {
+      "oligo_id": "round3_blocking",
+      "name": "Round 3 blocking strand",
+      "aliases": [],
+      "role": "Blocks unligated Round 3 barcode overhangs",
+      "kind": "single",
+      "sequence": "GTGGCCGATGTTTCGCATCGGCGTACGACT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "STD, 1 \u00b5M; added at 23 \u00b5M after round 3."
+    },
+    {
+      "oligo_id": "round1_barcode",
+      "name": "Round 1 barcode strand (96-plex)",
+      "aliases": [],
+      "role": "First cell-barcode round; 5'-phosphorylated strand ligated onto the cDNA/chromatin ligation handle",
+      "kind": "assembled",
+      "sequence": "CGCGCTGCATACTTGA[CELL_BARCODE:8]CCCATGATCGTCCGA",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' constant (links to Round 2)",
+          "sequence": "CGCGCTGCATACTTGA",
+          "role": "constant"
+        },
+        {
+          "name": "round-1 barcode",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "8 nt well-specific barcode (96 variants Round1_01..96)"
+        },
+        {
+          "name": "3' constant (links to handle)",
+          "sequence": "CCCATGATCGTCCGA",
+          "role": "constant, abuts GTCTCGTGGGCTCGG handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "/5Phos/. Example (Round1_01, barcode ACGTGATC): CGCGCTGCATACTTGAACGTGATCCCATGATCGTCCGA. 96 barcodes per plate."
+    },
+    {
+      "oligo_id": "round2_barcode",
+      "name": "Round 2 barcode strand (96-plex)",
+      "aliases": [],
+      "role": "Second cell-barcode round; ligated 5' of Round 1",
+      "kind": "assembled",
+      "sequence": "CATCGGCGTACGACTA[CELL_BARCODE:8]ATCCACGTGCTTGAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' constant (links to Round 3)",
+          "sequence": "CATCGGCGTACGACTA",
+          "role": "constant"
+        },
+        {
+          "name": "round-2 barcode",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "8 nt well-specific barcode (96 variants Round2_01..96)"
+        },
+        {
+          "name": "3' constant (links to Round 1)",
+          "sequence": "ATCCACGTGCTTGAG",
+          "role": "constant"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "/5Phos/. Example (Round2_01, barcode ACGTGAT.): CATCGGCGTACGACTAACGTGATATCCACGTGCTTGAG."
+    },
+    {
+      "oligo_id": "round3_barcode",
+      "name": "Round 3 barcode strand / P7 index (96-plex)",
+      "aliases": [],
+      "role": "Third cell-barcode round; terminal strand carrying the P7 sequence for library capture/amplification",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[CELL_BARCODE:8]GTGGCCGATGTTTCG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "constant, Illumina P7"
+        },
+        {
+          "name": "round-3 barcode",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "8 nt well-specific barcode (96 variants Round3_01..96)"
+        },
+        {
+          "name": "3' constant (links to Round 2)",
+          "sequence": "GTGGCCGATGTTTCG",
+          "role": "constant"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "No 5' phosphate (terminal). Example (Round3_01, barcode AACGTGAT): CAAGCAGAAGACGGCATACGAGATAACGTGATGTGGCCGATGTTTCG."
+    },
+    {
+      "oligo_id": "ad1_i5",
+      "name": "Custom Ad1 adapter (i5 index), plate Ad1 (96-plex)",
+      "aliases": [],
+      "role": "Library-specific P5 + i5 index + Read1 primer added by PCR to both ATAC and tagmented-cDNA libraries",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTAT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "constant, Illumina P5"
+        },
+        {
+          "name": "i5 index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8 nt sample/library index (96 variants v2_Ad1.01..92)"
+        },
+        {
+          "name": "Read1 handle",
+          "sequence": "TCGTCGGCAGCGTCAGATGTGTAT",
+          "role": "constant, partial Nextera Read 1 (ends before AAGAGACAG)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Example (v2_Ad1.01, i5 TAGATCGC): AATGATACGGCGACCACCGAGATCTACACTAGATCGCTCGTCGGCAGCGTCAGATGTGTAT."
+    }
+  ],
+  "final_library": {
+    "source_label": "SHARE-seq RNA (cDNA) library \u2014 top strand 5'\u21923' (ATAC library shares the same barcode/P5/P7 architecture without the UMI/poly-dT)",
+    "annotated_library_sequence": "5'- AATGATACGGCGACCACCGAGATCTACAC [i5:8] TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [CDNA] [UMI:10] CTGTCTCTTATACACATCTCCGAGCCCACGAGACTCGGACGATCATGGG [B1:8] TCAAGTATGCAGCGCGCTCAAGCACGTGGAT [B2:8] TAGTCGTACGCCGATGCGAAACATCGGCCAC [B3:8] ATCTCGTATGCCGTCTTCTGCTTG -3'",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA][UMI:10]CTGTCTCTTATACACATCTCCGAGCCCACGAGACTCGGACGATCATGGG[CELL_BARCODE:8]TCAAGTATGCAGCGCGCTCAAGCACGTGGAT[CELL_BARCODE:8]TAGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' top (P5->P7), RNA/cDNA library",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA][UMI:10]CTGTCTCTTATACACATCTCCGAGCCCACGAGACTCGGACGATCATGGG[CELL_BARCODE:8]TCAAGTATGCAGCGCGCTCAAGCACGTGGAT[CELL_BARCODE:8]TAGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA][UMI:10]CTGTCTCTTATACACATCTCCGAGCCCACGAGACTCGGACGATCATGGG[CELL_BARCODE:8]TCAAGTATGCAGCGCGCTCAAGCACGTGGAT[CELL_BARCODE:8]TAGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "5'->3' bottom (P7->P5), RNA/cDNA library (barcode/UMI-reading strand)",
+        "source_html": "CAAGCAGAAGACGGCATACGAGAT[CELL_BARCODE:8]GTGGCCGATGTTTCGCATCGGCGTACGACTA[CELL_BARCODE:8]ATCCACGTGCTTGAGCGCGCTGCATACTTGA[CELL_BARCODE:8]CCCATGATCGTCCGAGTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG[UMI:10]TTTTTTTTTTTTTTT[CDNA]",
+        "source_sequence": "CAAGCAGAAGACGGCATACGAGAT[CELL_BARCODE:8]GTGGCCGATGTTTCGCATCGGCGTACGACTA[CELL_BARCODE:8]ATCCACGTGCTTGAGCGCGCTGCATACTTGA[CELL_BARCODE:8]CCCATGATCGTCCGAGTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG[UMI:10]TTTTTTTTTTTTTTT[CDNA]"
+      },
+      {
+        "direction": "5'->3' top (P5->P7), ATAC library (no UMI/poly-dT)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGACTCGGACGATCATGGG[CELL_BARCODE:8]TCAAGTATGCAGCGCGCTCAAGCACGTGGAT[CELL_BARCODE:8]TAGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGACTCGGACGATCATGGG[CELL_BARCODE:8]TCAAGTATGCAGCGCGCTCAAGCACGTGGAT[CELL_BARCODE:8]TAGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC        = P5",
+      "[SAMPLE_INDEX:8]                     = i5 sample/library index (read in Index 2)",
+      "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG   = Nextera Read 1 primer + mosaic end (Read 1 start)",
+      "[CDNA]                               = cDNA insert (RNA library) / genomic insert (ATAC library)",
+      "[UMI:10]                             = 10 nt UMI (RNA only; read at start of Read 2 as reverse complement)",
+      "CTGTCTCTTATACACATCT                  = mosaic-end complement",
+      "CCGAGCCCACGAGACTCGGACGATCATGGG       = Read 2 / ligation handle (rev-comp of GTCTCGTGGGCTCGG...) + Round1 junction",
+      "[CELL_BARCODE:8] x3                  = three split-pool ligation barcodes B1, B2, B3 (read in Index 1, 99 cyc)",
+      "TCAAGTATGCAGCGCGCTCAAGCACGTGGAT      = B1<->B2 linker/constant",
+      "TAGTCGTACGCCGATGCGAAACATCGGCCAC      = B2<->B3 linker/constant",
+      "ATCTCGTATGCCGTCTTCTGCTTG             = P7 (reverse complement on top strand)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "SHARE-seq RNA (cDNA) library \u2014 top strand 5'\u21923' (ATAC library shares the same barcode/P5/P7 architecture without the UMI/poly-dT)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+        "template": "top",
+        "cycles": 30,
+        "segments": [
+          {
+            "name": "insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 30
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "i7 index read (from P7 end into the barcode cassette)",
+        "template": "bottom",
+        "cycles": 99,
+        "segments": [
+          {
+            "name": "B3 (round 3)",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "B3-B2 linker",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 15
+          },
+          {
+            "name": "B2 (round 2)",
+            "type": "barcode",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "B2-B1 linker",
+            "type": "constant",
+            "order": 3,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 15
+          },
+          {
+            "name": "B1 (round 1)",
+            "type": "barcode",
+            "order": 4,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "i5 index read",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+        "template": "bottom",
+        "cycles": 30,
+        "segments": [
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "poly-dT",
+            "type": "polyA",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 15
+          },
+          {
+            "name": "cDNA (RNA) / genomic (ATAC)",
+            "type": "insert",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Assemble Tn5 transposomes",
+      "summary": "Anneal Read1 and phosphorylated-Read2 adapters to Blocked ME-complement and load onto in-house Tn5.",
+      "note": "Two transposomes are formed sharing the mosaic end: one carrying the Nextera Read1 handle, one carrying the 5'-phosphorylated Read2/ligation handle (GTCTCGTGGGCTCGG...). ME-comp is 3'-ddC/phosphorothioate to prevent self-tagmentation.",
+      "product": "Read1 adapter:          5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG -3'\n                             3'-        CACATATTCTCTGTC -5' (ddC)\n\nPhospho-Read2 adapter: 5'p- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG -3'\n                             3'-        CACATATTCTCTGTC -5' (ddC)"
+    },
+    {
+      "step": 2,
+      "title": "Transposition (ATAC)",
+      "summary": "Tagment fixed, permeabilized cells/nuclei so Tn5 inserts Read1 and Read2 handles into open chromatin.",
+      "note": "Marks accessible genomic DNA; leaves 9 bp gaps filled later. Chromatin fragments now carry the universal Read2/ligation handle for barcoding.",
+      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic DNA] CTGTCTCTTATACAC...      -3'\n         ...       p- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG [genomic DNA] ...   -3'"
+    },
+    {
+      "step": 3,
+      "title": "Reverse transcription (RNA)",
+      "summary": "Reverse-transcribe mRNA with the biotinylated poly(dT)+UMI RT primer, adding the ligation handle and UMI to cDNA.",
+      "note": "The RT primer's 5' end carries the same GTCTCGTGGGCTCGG ligation handle plus a 10 nt UMI and internal biotin, so cDNA and chromatin become barcode-compatible in the same tube.",
+      "product": "mRNA:  5'- [.....transcript.....] AAAAAAAAAAAA -3'\ncDNA: 3'-...[cDNA]...VN TTTTTTTTTTTTTT(bio)[UMI] GACAGAAATATGTGTAGAGGCTCGGGTGCTCTG -p5'\n                                          (handle: GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG)"
+    },
+    {
+      "step": 4,
+      "title": "Round 1 split-pool barcoding",
+      "summary": "Distribute cells into a 96-well plate, hybridize Round 1 barcodes, then add Round 1 blocking strands.",
+      "note": "Well-specific Round 1 barcode (annealed to Round 1 linker) hybridizes to the ligation handle on both cDNA and chromatin; blocking strands cap unligated overhangs before pooling.",
+      "product": "handle 5'p- GTCTCGTGGGCTCGG... -3'\n            ligate <-- Round1: -CCCATGATCGTCCGA-[B1:8]-CGCGCTGCATACTTGA-p5'"
+    },
+    {
+      "step": 5,
+      "title": "Round 2 split-pool barcoding",
+      "summary": "Pool, re-split into a second 96-well plate, hybridize Round 2 barcodes, then block.",
+      "note": "Round 2 barcode ligates 5' of Round 1 via its constant junction (ATCCACGTGCTTGAG / CGCGCTGCATACTTGA).",
+      "product": "...-[B1:8]-CGCGCTGCATACTTGA-p5'\n  ligate <-- Round2: -ATCCACGTGCTTGAG-[B2:8]-CATCGGCGTACGACTA-p5'"
+    },
+    {
+      "step": 6,
+      "title": "Round 3 barcoding + simultaneous ligation",
+      "summary": "Re-split into a third plate, hybridize Round 3 (P7-bearing) barcodes and block, then T4-ligate all barcodes onto cDNA and chromatin at once.",
+      "note": "Round 3 barcode carries the terminal P7. After hybridization, T4 DNA ligase seals the full B1-B2-B3 cassette onto both molecule types, yielding ~96^3 = 884,736 cell barcodes.",
+      "product": "P7-[B3:8]-GTGGCCGATGTTTCG | CATCGGCGTACGACTA-[B2:8]-ATCCACGTGCTTGAG | CGCGCTGCATACTTGA-[B1:8]-CCCATGATCGTCCGA | GTCTCGTGGGCTCGG...-[UMI/insert]"
+    },
+    {
+      "step": 7,
+      "title": "Reverse crosslinking & release",
+      "summary": "Proteinase K reverse-crosslinking releases barcoded cDNA and chromatin fragments into solution.",
+      "note": "PMSF inactivates proteinase K afterward.",
+      "product": "Free barcoded molecules: [P7-B3-B2-B1-handle]-[cDNA(+UMI,biotin)]  and  [P7-B3-B2-B1-handle]-[genomic]"
+    },
+    {
+      "step": 8,
+      "title": "Streptavidin separation",
+      "summary": "Capture biotinylated cDNA on MyOne C1 streptavidin beads; supernatant retains transposed chromatin (ATAC).",
+      "note": "This physically splits the shared pool into an RNA (bead-bound) and an ATAC (supernatant) fraction that carry identical cell barcodes.",
+      "product": "Beads: biotin-[cDNA + barcodes]      Supernatant: [chromatin fragments + barcodes]"
+    },
+    {
+      "step": 9,
+      "title": "ATAC library PCR",
+      "summary": "Amplify the supernatant with library-specific Ad1 (P5-i5-Read1) primer + P7 primer to complete the ATAC library.",
+      "note": "Adds P5 + i5 index and Read1 primer on the transposed end; P7 is already present from Round 3.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[genomic]...CCGAGCCCACGAGAC...[B1][B2][B3]...P7 -3'"
+    },
+    {
+      "step": 10,
+      "title": "cDNA amplification, tagmentation & RNA library PCR",
+      "summary": "Template-switch and amplify bead cDNA (RNA PCR primer + P7), tagment with Read1-Tn5, then PCR with Ad1 (P5-i5-Read1) + P7 to finish the RNA library.",
+      "note": "TSO adds the RNA_PCR_primer handle; PCR amplifies full-length cDNA; a second Read1-only Tn5 fragments the cDNA and adds P5/i5/Read1 at internal positions, keeping the barcode/UMI/P7 end intact.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[cDNA][UMI]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC...[B1][B2][B3]...P7 -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "template": "top",
+      "cycles": 30,
+      "note": "Nextera Read 1 primer + mosaic end; reads into the cDNA insert (RNA library) or one genomic end (ATAC library).",
+      "diagram": "                     Read 1 primer  ------------------> (30 cyc)\n                  5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG\n5'- P5-[i5]-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [insert] ... -3'\n3'- P5-[i5]-AGCAGCCGTCGCAGTCTACACATATTCTCTGTC [insert] ... -5'"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "CAAGCAGAAGACGGCATACGAGAT (P7 / i7 index-read primer)",
+      "template": "bottom",
+      "cycles": 99,
+      "note": "Reads the shared cell identity: three split-pool ligation barcodes B3-B2-B1 (8 bp each) separated by their constant linkers. 99 cycles span B3 + linker + B2 + linker + B1.",
+      "diagram": "                        i7 index primer ------------------------------------------------> (99 cyc)\n                     5'-CAAGCAGAAGACGGCATACGAGAT\n5'- CAAGCAGAAGACGGCATACGAGAT [B3] GTGGCCGATGTTTCGCATCGGCGTACGACTA [B2] ATCCACGTGCTTGAGCGCGCTGCATACTTGA [B1] CCCATGATCGTCCGA... -3'\n3'- GTTCGTCTTCTGCCGTATGCTCTA [B3] CACCGGCTACAAAGCGTAGCCGCATGCTGAT [B2] TAGGTGCACGAACTCGCGCGACGTATGAACT [B1] GGGTACTAGCAGGCT... -5'"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "AATGATACGGCGACCACCGAGATCTACAC (P5 / i5 index-read primer)",
+      "template": "top",
+      "cycles": 8,
+      "note": "Reads the 8 bp i5 sample/library index (plate Ad1) that distinguishes PCR sub-libraries.",
+      "diagram": "                   i5 index primer  ----------> (8 cyc)\n                5'-AATGATACGGCGACCACCGAGATCTACAC\n5'- AATGATACGGCGACCACCGAGATCTACAC [i5] TCGTCGGCAGCGTCAGATGTGTAT... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG [i5] AGCAGCCGTCGCAGTCTACACATA... -5'"
+    },
+    {
+      "read": "Read 2",
+      "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "template": "bottom",
+      "cycles": 30,
+      "note": "RNA library: reads the 10 bp UMI, then the poly-dT (bases 11-16 must be TTTTTT), then into the cDNA. ATAC library: reads the second genomic end.",
+      "diagram": "                     Read 2 primer  ---------------------------------> (30 cyc)\n                  5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG\n5'- ...CTCGG-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG [UMI:10] TTTTTTTTTTTTTTT [cDNA] -3'\n3'- ...GAGCC-CAGAGCACCCGAGCCTCTACACATATTCTCTGTC [UMI  ] AAAAAAAAAAAAAAA [cDNA] -5'"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "SHARE-seq",
+  "description": "SHARE-seq (Simultaneous High-throughput ATAC and RNA Expression with sequencing) jointly measures chromatin accessibility and gene expression in the same single cell. Fixed cells/nuclei are tagmented by Tn5 to mark open chromatin, mRNA is reverse-transcribed with a biotinylated poly(dT)+UMI primer, and both molecule types receive the same cell identity through three rounds of split-pool hybridization/ligation barcoding (~96^3 combinations). Streptavidin pulldown separates cDNA from chromatin, and two libraries (RNA and ATAC) are built and sequenced. Reads capture the shared three-part cell barcode (index read), the cDNA or genomic insert (Read 1 / Read 2), and a 10 bp RNA UMI (Read 2).",
+  "reference": {
+    "kind": "paper",
+    "label": "SHARE-seq Supplementary Figure 1 and workflow companion",
+    "path": null,
+    "url": "https://www.ebi.ac.uk/biostudies/studies/S-EPMC7669735",
+    "doi": "10.1016/j.cell.2020.09.056"
+  },
+  "publication": {
+    "year": 2020,
+    "statistical_model": "Spearman correlation with chromVAR GC/accessibility-matched background and one-sided z-test for peak-gene cis-associations; Poisson (Lander-Waterman) model for library-size estimation; birthday-paradox model with Z-tests for barcode collision rate.",
+    "original_publication": {
+      "title": "Chromatin Potential Identified by Shared Single-Cell Profiling of RNA and Chromatin",
+      "journal": "Cell",
+      "doi": "10.1016/j.cell.2020.09.056",
+      "url": "https://doi.org/10.1016/j.cell.2020.09.056"
+    },
+    "authors": [
+      {
+        "name": "Sai Ma",
+        "affiliation": "Klarman Cell Observatory, Broad Institute of MIT and Harvard; Dept. of Biology & Koch Institute, MIT; Dept. of Stem Cell and Regenerative Biology, Harvard University"
+      },
+      {
+        "name": "Bing Zhang",
+        "affiliation": "Dept. of Stem Cell and Regenerative Biology, Harvard University; present address: Westlake University"
+      },
+      {
+        "name": "Lindsay M. LaFave",
+        "affiliation": "MIT; Harvard University"
+      },
+      {
+        "name": "Andrew S. Earl",
+        "affiliation": "Harvard University"
+      },
+      {
+        "name": "Zachary Chiang",
+        "affiliation": "Harvard University"
+      },
+      {
+        "name": "Yan Hu",
+        "affiliation": "Harvard University"
+      },
+      {
+        "name": "Jiarui Ding",
+        "affiliation": "Broad Institute of MIT and Harvard"
+      },
+      {
+        "name": "Alison Brack",
+        "affiliation": "Harvard University"
+      },
+      {
+        "name": "Vinay K. Kartha",
+        "affiliation": "Harvard University"
+      },
+      {
+        "name": "Tristan Tay",
+        "affiliation": "Harvard University"
+      },
+      {
+        "name": "Travis Law",
+        "affiliation": "Broad Institute of MIT and Harvard"
+      },
+      {
+        "name": "Caleb Lareau",
+        "affiliation": "Broad Institute of MIT and Harvard; Harvard University"
+      },
+      {
+        "name": "Ya-Chieh Hsu",
+        "affiliation": "Harvard University"
+      },
+      {
+        "name": "Aviv Regev",
+        "corresponding": true,
+        "email": "aregev@broadinstitute.org",
+        "affiliation": "Broad Institute; MIT; Howard Hughes Medical Institute; present address: Genentech"
+      },
+      {
+        "name": "Jason D. Buenrostro",
+        "corresponding": true,
+        "email": "jason_buenrostro@harvard.edu",
+        "affiliation": "Broad Institute of MIT and Harvard; Dept. of Stem Cell and Regenerative Biology, Harvard University (Lead Contact)"
+      }
+    ],
+    "throughput": {
+      "summary": "Massively scalable split-pool co-assay: ~2 million cells per run at ~1% collision; ~$433 library-prep cost per 100,000 cells. 84,426 cells profiled across 4 cell lines and 3 tissues; 34,774 joint mouse-skin profiles.",
+      "cells": "84,426 total; human/mouse mix gave 903 human + 1,341 mouse cells at 0.04% collision; ~2M cells/run capacity",
+      "rna": "avg 2,545 RNA UMIs per cell (9,660 estimated UMI library size)",
+      "dna": "avg 8,252 unique ATAC fragments per cell (19,723 estimated library size; 65.5% fragments in peaks)"
+    },
+    "other": [
+      {
+        "label": "Collision rate",
+        "value": "0.04% observed vs 0.052% expected"
+      },
+      {
+        "label": "Library prep cost",
+        "value": "~$433 per 100,000 cells (vs >$30,000 for sci-CAR)"
+      },
+      {
+        "label": "Built on",
+        "value": "SPLiT-seq and Paired-seq barcoding strategies"
+      },
+      {
+        "label": "Transposase",
+        "value": "Tn5 produced in-house from pTXB1-Tn5"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO: GSE140203; network app https://buenrostrolab.shinyapps.io/skinnetwork/"
+      },
+      {
+        "label": "Concept",
+        "value": "Defines DORCs and 'chromatin potential' \u2014 chromatin accessibility foreshadows gene expression during lineage commitment"
+      }
+    ]
+  },
+  "modality": "RNA + ATAC",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Two parallel pipelines share the same three-round split-pool cell barcode: an ATAC branch (trim, demultiplex barcodes, bowtie2 alignment, MACS2 peak calling, chromVAR fragment/TF scoring) and an RNA branch (trim + poly-dT filter, STAR alignment, featureCounts exon/intron annotation, UMI-Tools UMI collapse, Seurat/UMAP). Paired single-cell profiles are matched by the common well-barcode combination.",
+    "stages": [
+      {
+        "id": "preprocess",
+        "label": "Read preprocessing"
+      },
+      {
+        "id": "align",
+        "label": "Genome alignment"
+      },
+      {
+        "id": "atac_quant",
+        "label": "ATAC feature quantification"
+      },
+      {
+        "id": "rna_quant",
+        "label": "RNA quantification"
+      },
+      {
+        "id": "embed",
+        "label": "Single-cell embedding"
+      },
+      {
+        "id": "integrate",
+        "label": "Multiomic integration"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "atac_trim",
+        "label": "Trim ATAC reads",
+        "tool": "custom python trimmer",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "atac_demux",
+        "label": "Demultiplex split-pool barcodes",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "bowtie2",
+        "label": "Align to genome",
+        "tool": "bowtie2",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_reads",
+        "label": "Filter low-quality reads",
+        "tool": "",
+        "stage": "atac_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "picard_dedup",
+        "label": "Remove PCR duplicates",
+        "tool": "Picard",
+        "stage": "atac_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "macs2",
+        "label": "Call chromatin peaks",
+        "tool": "MACS2",
+        "stage": "atac_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "merge_peaks",
+        "label": "Merge peaks",
+        "tool": "",
+        "stage": "atac_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "drop_blacklist",
+        "label": "Drop blacklist regions",
+        "tool": "",
+        "stage": "atac_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "extend_summits",
+        "label": "Extend summits 150 bp",
+        "tool": "",
+        "stage": "atac_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "homer_annotate",
+        "label": "Annotate peaks to genes",
+        "tool": "Homer",
+        "stage": "atac_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "chromvar_frag",
+        "label": "Count fragments in peaks",
+        "tool": "chromVAR",
+        "stage": "atac_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "chromvar_tf",
+        "label": "Score TF motif activity",
+        "tool": "chromVAR",
+        "stage": "atac_quant",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "bcl2fastq",
+        "label": "Convert BCL to FASTQ",
+        "tool": "bcl2fastq",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "rna_trim",
+        "label": "Trim RNA reads",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "polyd_filter",
+        "label": "Filter poly-dT reads",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "star",
+        "label": "Align to genome",
+        "tool": "STAR",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "rna_demux",
+        "label": "Demultiplex split-pool barcodes",
+        "tool": "",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "featurecounts",
+        "label": "Annotate exons and introns",
+        "tool": "featureCounts",
+        "stage": "rna_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umi_collapse",
+        "label": "Collapse UMIs to counts",
+        "tool": "UMI-Tools",
+        "stage": "rna_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "log_normalize",
+        "label": "Log-normalize expression",
+        "tool": "Seurat v3",
+        "stage": "embed",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "variable_genes",
+        "label": "Select variable genes",
+        "tool": "Seurat v3",
+        "stage": "embed",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umap",
+        "label": "Embed with UMAP",
+        "tool": "UMAP",
+        "stage": "embed",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "match_pairs",
+        "label": "Match cells by barcode",
+        "tool": "",
+        "stage": "integrate",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cis_association",
+        "label": "Test peak-gene cis-associations",
+        "tool": "",
+        "stage": "integrate",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dorc",
+        "label": "Define DORCs",
+        "tool": "",
+        "stage": "integrate",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "chromatin_potential",
+        "label": "Compute chromatin potential",
+        "tool": "Palantir",
+        "stage": "integrate",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "atac_trim",
+        "to": "atac_demux",
+        "kind": "sequential"
+      },
+      {
+        "from": "atac_demux",
+        "to": "bowtie2",
+        "kind": "sequential"
+      },
+      {
+        "from": "bowtie2",
+        "to": "filter_reads",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_reads",
+        "to": "picard_dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "picard_dedup",
+        "to": "macs2",
+        "kind": "branch"
+      },
+      {
+        "from": "picard_dedup",
+        "to": "chromvar_frag",
+        "kind": "branch"
+      },
+      {
+        "from": "macs2",
+        "to": "merge_peaks",
+        "kind": "sequential"
+      },
+      {
+        "from": "merge_peaks",
+        "to": "drop_blacklist",
+        "kind": "sequential"
+      },
+      {
+        "from": "drop_blacklist",
+        "to": "extend_summits",
+        "kind": "sequential"
+      },
+      {
+        "from": "extend_summits",
+        "to": "homer_annotate",
+        "kind": "branch"
+      },
+      {
+        "from": "extend_summits",
+        "to": "chromvar_frag",
+        "kind": "branch"
+      },
+      {
+        "from": "chromvar_frag",
+        "to": "chromvar_tf",
+        "kind": "sequential"
+      },
+      {
+        "from": "bcl2fastq",
+        "to": "rna_trim",
+        "kind": "sequential"
+      },
+      {
+        "from": "rna_trim",
+        "to": "polyd_filter",
+        "kind": "sequential"
+      },
+      {
+        "from": "polyd_filter",
+        "to": "star",
+        "kind": "sequential"
+      },
+      {
+        "from": "star",
+        "to": "rna_demux",
+        "kind": "sequential"
+      },
+      {
+        "from": "rna_demux",
+        "to": "featurecounts",
+        "kind": "sequential"
+      },
+      {
+        "from": "featurecounts",
+        "to": "umi_collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "umi_collapse",
+        "to": "log_normalize",
+        "kind": "branch"
+      },
+      {
+        "from": "umi_collapse",
+        "to": "match_pairs",
+        "kind": "fan_in"
+      },
+      {
+        "from": "log_normalize",
+        "to": "variable_genes",
+        "kind": "sequential"
+      },
+      {
+        "from": "variable_genes",
+        "to": "umap",
+        "kind": "sequential"
+      },
+      {
+        "from": "chromvar_frag",
+        "to": "match_pairs",
+        "kind": "fan_in"
+      },
+      {
+        "from": "match_pairs",
+        "to": "cis_association",
+        "kind": "sequential"
+      },
+      {
+        "from": "homer_annotate",
+        "to": "cis_association",
+        "kind": "sequential"
+      },
+      {
+        "from": "cis_association",
+        "to": "dorc",
+        "kind": "sequential"
+      },
+      {
+        "from": "dorc",
+        "to": "chromatin_potential",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "One-sided z-test against a chromVAR GC/accessibility-matched background for peak\u2013gene cis-associations; Poisson (Lander\u2013Waterman) model for library-size estimation."
+  }
+}

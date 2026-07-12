@@ -1,0 +1,1102 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "sci_atac_seq3",
+  "assay": "sci-ATAC-seq3",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "sci-ATAC-seq3_original_paper.pdf",
+      "title": "A human cell atlas of fetal chromatin accessibility",
+      "url": "https://doi.org/10.1126/science.aba7612",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_atac_seq3/sci-ATAC-seq3_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "sci-ATAC-seq3_supplement.pdf",
+      "title": "sci-ATAC-seq3 manuscript supplementary materials",
+      "url": "https://doi.org/10.1126/science.aba7612",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_atac_seq3/sci-ATAC-seq3_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "sci-ATAC-seq3.xlsx",
+      "title": "sci-ATAC-seq3.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_atac_seq3/sci-ATAC-seq3.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "sci-ATAC-seq3.pdf",
+      "title": "sci-ATAC-seq3.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_atac_seq3/sci-ATAC-seq3.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "tn5_me_a",
+      "name": "Tn5 mosaic-end adapter A (Nextera Read 1 / i5 transposon strand)",
+      "aliases": [],
+      "role": "Transposon adapter (transferred strand) loaded on standard Nextera Tn5; deposited on one end of every tagmented fragment and provides the Read 1 sequencing primer site",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TDE1 (Nextera) loading. 3' 19 nt (AGATGTGTATAAGAGACAG) is the mosaic end; identical to the 3Lv2_R1_seq sequencing primer."
+    },
+    {
+      "oligo_id": "tn5_me_b",
+      "name": "Tn5 mosaic-end adapter B (Nextera Read 2 / i7 transposon strand)",
+      "aliases": [],
+      "role": "Transposon adapter (transferred strand) loaded on standard Nextera Tn5; deposited on the other end of every tagmented fragment and provides the Read 2 sequencing primer site",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TDE1 (Nextera) loading. Identical to the 3Lv2_R2_seq sequencing primer."
+    },
+    {
+      "oligo_id": "tn5_me_rev",
+      "name": "Tn5 mosaic-end reverse (non-transferred, phosphorylated) strand",
+      "aliases": [],
+      "role": "5'-phosphorylated non-transferred strand of the Tn5 transposon; anneals to the mosaic end of both ME-A and ME-B",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Carries a 5' phosphate. Standard Nextera ME-rev common to both loaded adapters."
+    },
+    {
+      "oligo_id": "n5_splint",
+      "name": "3LV2_N5_Splint",
+      "aliases": [],
+      "role": "Bridging splint oligo that anneals across the N5-oligo/ME-A junction to template the first (N5) ligation; 3' blocked so it is not itself ligated/extended",
+      "kind": "single",
+      "sequence": "GCCGACGACTGATTA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Synthesized as GCCGACGACTGATTA/3ddC/ (3' dideoxy-C block). Reverse-complementary to TAATCAGTCGTCGGC, spanning the N5-oligo 3' end (...GTAATCAG) and the ME-A 5' end (TCGTCGGC...)."
+    },
+    {
+      "oligo_id": "n7_splint",
+      "name": "3LV2_N7_Splint",
+      "aliases": [],
+      "role": "Bridging splint oligo that anneals across the N7-oligo/ME-B junction to template the second (N7) ligation; 3' blocked",
+      "kind": "single",
+      "sequence": "CACGAGACGACAAGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Synthesized as CACGAGACGACAAGT/3ddC/. Reverse-complementary to ACTTGTCGTCTCGTG, spanning the N7-oligo 3' end (...GACTTGTC) and the ME-B 5' end (GTCTCGTG...)."
+    },
+    {
+      "oligo_id": "n5_ligation_oligo",
+      "name": "3LV2_N5_Oligo (384 barcodes, round-1 index)",
+      "aliases": [],
+      "role": "First-round (N5) ligation barcode oligo; splint-ligated onto the ME-A end. 3' constant GTAATCAG ligates to ME-A; 5' constant CACCGCACGAGAGGT is the P5-PCR priming site",
+      "kind": "single",
+      "sequence": "CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5-PCR priming / N5 constant",
+          "sequence": "CACCGCACGAGAGGT",
+          "role": "constant"
+        },
+        {
+          "name": "N5 cell barcode (round 1)",
+          "sequence": "[CELL_BARCODE:10]",
+          "role": "barcode"
+        },
+        {
+          "name": "N5 linker (ligates to ME-A)",
+          "sequence": "GTAATCAG",
+          "role": "constant"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "384 distinct barcodes (Plates 1-4, A01-H12). Example A01_Plate1: CACCGCACGAGAGGTAAGTAGACTAGTAATCAG (barcode AAGTAGACTA)."
+    },
+    {
+      "oligo_id": "n7_ligation_oligo",
+      "name": "3LV2_N7_Oligo (384 barcodes, round-2 index)",
+      "aliases": [],
+      "role": "Second-round (N7) ligation barcode oligo; splint-ligated onto the ME-B end. 3' constant GACTTGTC ligates to ME-B; 5' constant CAGCACGGCGAGACT is the P7-PCR priming site",
+      "kind": "single",
+      "sequence": "CAGCACGGCGAGACT[CELL_BARCODE:10]GACTTGTC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7-PCR priming / N7 constant",
+          "sequence": "CAGCACGGCGAGACT",
+          "role": "constant"
+        },
+        {
+          "name": "N7 cell barcode (round 2)",
+          "sequence": "[CELL_BARCODE:10]",
+          "role": "barcode"
+        },
+        {
+          "name": "N7 linker (ligates to ME-B)",
+          "sequence": "GACTTGTC",
+          "role": "constant"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "384 distinct barcodes (Plates 1-4, A01-H12). Example A01_Plate1: CAGCACGGCGAGACTGGACGCCTAAGACTTGTC (barcode GGACGCCTAA)."
+    },
+    {
+      "oligo_id": "p5_pcr_primer",
+      "name": "3LV2_P5_PCR (96 indexed primers, round-3 i5)",
+      "aliases": [],
+      "role": "Indexed P5 PCR primer; anneals to the N5-constant priming site (CACCGCACGAGAGGT) and adds the i5 index plus the P5 flow-cell adapter",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]CACCGCACGAGAGGT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5 flow-cell adapter",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "constant"
+        },
+        {
+          "name": "i5 index (round-3)",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "index"
+        },
+        {
+          "name": "N5-constant priming site",
+          "sequence": "CACCGCACGAGAGGT",
+          "role": "constant"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "96 barcodes (A01-H12). Example A01: AATGATACGGCGACCACCGAGATCTACACGACCTCCTTGCACCGCACGAGAGGT (i5 index GACCTCCTTG)."
+    },
+    {
+      "oligo_id": "p7_pcr_primer",
+      "name": "3LV2_P7_PCR (96 indexed primers, round-3 i7)",
+      "aliases": [],
+      "role": "Indexed P7 PCR primer; anneals to the N7-constant priming site (CAGCACGGCGAGACT) and adds the i7 index plus the P7 flow-cell adapter",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:10]CAGCACGGCGAGACT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7 flow-cell adapter",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "constant"
+        },
+        {
+          "name": "i7 index (round-3)",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "index"
+        },
+        {
+          "name": "N7-constant priming site",
+          "sequence": "CAGCACGGCGAGACT",
+          "role": "constant"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "96 barcodes (A01-H12). Example A01: CAAGCAGAAGACGGCATACGAGATCAAGGCATTCCAGCACGGCGAGACT (i7 index CAAGGCATTC)."
+    },
+    {
+      "oligo_id": "seq_r1",
+      "name": "3Lv2_R1_seq (custom Read 1 primer)",
+      "aliases": [],
+      "role": "Custom Read 1 sequencing primer; anneals within the ME-A adapter and reads the genomic insert",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Same as Tn5 ME-A adapter."
+    },
+    {
+      "oligo_id": "seq_r2",
+      "name": "3Lv2_R2_seq (custom Read 2 primer)",
+      "aliases": [],
+      "role": "Custom Read 2 sequencing primer; anneals within the ME-B adapter and reads the genomic insert from the other end",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Same as Tn5 ME-B adapter."
+    },
+    {
+      "oligo_id": "seq_idx1",
+      "name": "3Lv2_IDX1 (custom Index 1 primer)",
+      "aliases": [],
+      "role": "Custom Index 1 (i7 side) sequencing primer; reads the N7 barcode (10 cycles), skips the 15 nt N7 constant (dark), then reads the i7 PCR index (10 cycles)",
+      "kind": "single",
+      "sequence": "CTCCGAGCCCACGAGACGACAAGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Anneals in the ME-B/N7 region; recipe index 1 = 10 cycles + 15 dark cycles + 10 cycles."
+    },
+    {
+      "oligo_id": "seq_idx2",
+      "name": "3Lv2_IDX2 (custom Index 2 primer)",
+      "aliases": [],
+      "role": "Custom Index 2 (i5 side) sequencing primer; reads the N5 barcode (10 cycles), skips the 15 nt N5 constant (dark), then reads the i5 PCR index (10 cycles)",
+      "kind": "single",
+      "sequence": "ACACATCTGACGCTGCCGACGACTGATTAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Anneals in the ME-A/N5 region; recipe index 2 = 10 cycles + 15 dark cycles + 10 cycles."
+    }
+  ],
+  "final_library": {
+    "source_label": "sci-ATAC-seq3 final library (Illumina P5\u2192P7 top strand)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC [SAMPLE_INDEX:10](i5) CACCGCACGAGAGGT [CELL_BARCODE:10](N5) GTAATCAG TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG(ME-A) [CDNA] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC(ME-B rc) GACAAGTC [CELL_BARCODE:10](N7 rc) AGTCTCGCCGTGCTG [SAMPLE_INDEX:10](i7 rc) ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGACGACAAGTC[CELL_BARCODE:10]AGTCTCGCCGTGCTG[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' top strand (P5 -> P7)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGACGACAAGTC[CELL_BARCODE:10]AGTCTCGCCGTGCTG[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGACGACAAGTC[CELL_BARCODE:10]AGTCTCGCCGTGCTG[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "5'->3' bottom strand (P7 -> P5)",
+        "source_html": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:10]CAGCACGGCGAGACT[CELL_BARCODE:10]GACTTGTCGTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGACGCTGCCGACGA[CELL_BARCODE:10]CTGATTACACCTCTCGTGCGGTG[SAMPLE_INDEX:10]GTGTAGATCTCGGTGGTCGCCGTATCATT",
+        "source_sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:10]CAGCACGGCGAGACT[CELL_BARCODE:10]GACTTGTCGTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGACGCTGCCGACGA[CELL_BARCODE:10]CTGATTACACCTCTCGTGCGGTG[SAMPLE_INDEX:10]GTGTAGATCTCGGTGGTCGCCGTATCATT"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC          P5 flow-cell adapter",
+      "[SAMPLE_INDEX:10]                      i5 PCR index (round-3 barcode)",
+      "CACCGCACGAGAGGT                        N5 constant / P5-PCR priming site",
+      "[CELL_BARCODE:10]                      N5 ligation barcode (round 1)",
+      "GTAATCAG                               N5 linker (ligation junction to ME-A)",
+      "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG      Tn5 mosaic-end A (Read 1 primer site)",
+      "[CDNA]                                 genomic / accessible-chromatin insert",
+      "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC     Tn5 mosaic-end B (Read 2 site), reverse complement",
+      "GACAAGTC                               N7 linker (rev-comp of GACTTGTC)",
+      "[CELL_BARCODE:10]                      N7 ligation barcode (round 2), reverse complement",
+      "AGTCTCGCCGTGCTG                        N7 constant / P7-PCR priming site, reverse complement",
+      "[SAMPLE_INDEX:10]                      i7 PCR index (round-3 barcode), reverse complement",
+      "ATCTCGTATGCCGTCTTCTGCTTG               P7 flow-cell adapter, reverse complement"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "sci-ATAC-seq3 final library (Illumina P5\u2192P7 top strand)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "3Lv2_R1_seq",
+        "template": "top",
+        "cycles": 51,
+        "segments": [
+          {
+            "name": "genomic insert (accessible chromatin)",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "3Lv2_IDX1",
+        "template": "bottom",
+        "cycles": 20,
+        "segments": [
+          {
+            "name": "N7 cell barcode (round 2)",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "N7 constant (dark cycles)",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 15
+          },
+          {
+            "name": "i7 PCR index (round 3)",
+            "type": "index",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "3Lv2_IDX2",
+        "template": "top",
+        "cycles": 20,
+        "segments": [
+          {
+            "name": "N5 cell barcode (round 1)",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "N5 constant (dark cycles)",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 15
+          },
+          {
+            "name": "i5 PCR index (round 3)",
+            "type": "index",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "3Lv2_R2_seq",
+        "template": "bottom",
+        "cycles": 51,
+        "segments": [
+          {
+            "name": "genomic insert (accessible chromatin)",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Bulk tagmentation (standard Nextera Tn5)",
+      "summary": "Nuclei are tagmented in bulk with uniformly loaded, non-barcoded Nextera Tn5, inserting mosaic-end adapters into accessible chromatin.",
+      "note": "200,000 nuclei per sample are tagmented with 2.5 uL Nextera v2 (TDE1) at 55C for 30 min in Nextera TD buffer with digitonin/Tween-20, then stopped with EDTA/spermidine. Because Tn5 acts as a dimer, fragment ends can be ME-A/ME-A, ME-A/ME-B, or ME-B/ME-B; only the A...B species amplifies to a sequenceable library.",
+      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic DNA] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'\n3'- AGCAGCCGTCGCAGTCTACACATATTCTCTGTC [genomic DNA] GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG -5'"
+    },
+    {
+      "step": 2,
+      "title": "5' phosphorylation (T4 PNK)",
+      "summary": "Tagmented fragment ends are phosphorylated by T4 polynucleotide kinase to prime them for ligation.",
+      "note": "Pooled tagmented nuclei are treated with T4 PNK + 1 mM rATP at 37C for 30 min, adding a 5' phosphate to the mosaic-end adapters so the barcode oligos can be ligated on.",
+      "product": "5'-P- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic DNA] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -P-3'"
+    },
+    {
+      "step": 3,
+      "title": "Round 1 ligation \u2014 N5 barcode (split-pool)",
+      "summary": "A splint bridges each ME-A end to a well-specific N5 barcode oligo, which is ligated on as the first combinatorial index.",
+      "note": "Nuclei are split across 384 wells; T7 DNA ligase seals the N5 oligo 3'-OH (...GTAATCAG) to the ME-A 5'-phosphate, guided by the N5 splint (GCCGACGACTGATTA/3ddC). Wells are pooled after ligation.",
+      "product": "N5 oligo                                ME-A (tagmented fragment)\n5'- CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAG TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic]...\n                        3'-Cdd-ATTAGTCAGCAGCCG-5'   (N5 splint holds ends together)\n\nafter ligation:\n5'- CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic]..."
+    },
+    {
+      "step": 4,
+      "title": "Round 2 ligation \u2014 N7 barcode (split-pool)",
+      "summary": "A second splint bridges each ME-B end to a well-specific N7 barcode oligo, ligated on as the second combinatorial index.",
+      "note": "Nuclei are re-split across 384 wells; T7 DNA ligase seals the N7 oligo 3'-OH (...GACTTGTC) to the ME-B 5'-phosphate on the opposite strand, guided by the N7 splint (CACGAGACGACAAGT/3ddC). The first and second ligations can also be performed simultaneously for a 2-level design.",
+      "product": "5'- CACCGCACGAGAGGT[N5]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic] CTGTCTCTTATACACATCTCCGAGCCCACGAGACGACAAGTC[N7rc]AGTCTCGCCGTGCTG -3'\n3'- GTGGCGTGCTCTCCA[N5rc]CATTAGTCAGCAGCCGTCGCAGTCTACACATATTCTCTGTC [genomic] GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG...GACTTGTC[N7]CAGCACGGCGAGACT -5'\n(N5 barcode on the ME-A end; N7 barcode on the ME-B end)"
+    },
+    {
+      "step": 5,
+      "title": "Reverse cross-linking",
+      "summary": "Nuclei are diluted to ~100-300 per uL across plates and reverse-crosslinked to release barcoded fragments.",
+      "note": "EB buffer + Proteinase K + 1% SDS, 65C for 16 h. 1,000-3,000 nuclei per well define the third-level (PCR) compartments.",
+      "product": "released double-stranded fragment:\n5'- CACCGCACGAGAGGT[N5]GTAATCAG-ME-A-[genomic]-ME-B(rc)-GACAAGTC[N7rc]-AGTCTCGCCGTGCTG -3'"
+    },
+    {
+      "step": 6,
+      "title": "Round 3 indexed PCR (P5 + P7)",
+      "summary": "Indexed P5 and P7 primers amplify each well, adding the i5/i7 third-level barcodes and the P5/P7 flow-cell adapters.",
+      "note": "NEBNext/NPM PCR with well-specific 3LV2_P5_PCR (anneals to CACCGCACGAGAGGT) and 3LV2_P7_PCR (anneals to CAGCACGGCGAGACT), 11-13 cycles (cycle number set by qPCR test). Products are cleaned with Zymo DCC-5 then 1X AMPure and quantified on TapeStation.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5]CACCGCACGAGAGGT[N5]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[genomic]CTGTCTCTTATACACATCTCCGAGCCCACGAGACGACAAGTC[N7rc]AGTCTCGCCGTGCTG[i7rc]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5rc]GTGGCGTGCTCTCCA[N5rc]CATTAGTCAGCAGCCGTCGCAGTCTACACATATTCTCTGTC[genomic]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGCTGTTCAG[N7]TCAGAGCGGCACGAC[i7]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (R1, genomic)",
+      "primer": "3Lv2_R1_seq (TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG)",
+      "template": "top",
+      "cycles": 51,
+      "note": "Custom Read 1 primer identical to the ME-A adapter; anneals across the ME-A mosaic end and reads the accessible-chromatin insert.",
+      "diagram": "Read 1 \u2014 3Lv2_R1_seq (custom R1 primer), reads genomic insert from the ME-A end\n              TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------->\n5'-...GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[genomic insert]...-3'\n3'-...CATTAGTCAGCAGCCGTCGCAGTCTACACATATTCTCTGTC[genomic insert]...-5'"
+    },
+    {
+      "read": "Index 1 (i7, N7 barcode + i7)",
+      "primer": "3Lv2_IDX1 (CTCCGAGCCCACGAGACGACAAGTC)",
+      "template": "bottom",
+      "cycles": 20,
+      "note": "Anneals in the ME-B/N7 region and is extended into the N7 (round-2) barcode, then across the 15 nt N7 constant as dark cycles, then into the i7 PCR index. Recipe: 10 + 15 dark + 10 (20 informative bp). Barcodes are read as the reverse complement on this strand.",
+      "diagram": "Index 1 \u2014 3Lv2_IDX1; reads N7 barcode (10) then i7 index (10), 15 dark cycles between (recipe 10+15dark+10)\n      CTCCGAGCCCACGAGACGACAAGTC------->  [N7 bc] | 15 dark (AGTCTCGCCGTGCTG) | [i7]\n5'-...CTCCGAGCCCACGAGACGACAAGTC[N7 bc:10]AGTCTCGCCGTGCTG[i7:10]ATCTCG...-3'\n3'-...GAGGCTCGGGTGCTCTGCTGTTCAG[N7 bc:10]TCAGAGCGGCACGAC[i7:10]TAGAGC...-5'"
+    },
+    {
+      "read": "Index 2 (i5, N5 barcode + i5)",
+      "primer": "3Lv2_IDX2 (ACACATCTGACGCTGCCGACGACTGATTAC)",
+      "template": "top",
+      "cycles": 20,
+      "note": "Anneals at the N5-linker/ME-A junction on the top strand and is extended leftward into the N5 (round-1) barcode, then across the 15 nt N5 constant as dark cycles, then into the i5 PCR index. Recipe: 10 + 15 dark + 10 (20 informative bp). Barcodes are read as the reverse complement on this strand.",
+      "diagram": "Index 2 \u2014 3Lv2_IDX2; reads N5 barcode (10) then i5 index (10), 15 dark cycles between (recipe 10+15dark+10)\n5'-...CACCGCACGAGAGGT[N5 bc:10]GTAATCAGTCGTCGGCAGCGTCAGATGTGT...-3'\n3'-...GTGGCGTGCTCTCCA[N5 bc:10]CATTAGTCAGCAGCCGTCGCAGTCTACACA...-5'\n            <-------CATTAGTCAGCAGCCGTCGCAGTCTACACA\n   [i5] | 15 dark (CACCGCACGAGAGGT) | [N5 bc]"
+    },
+    {
+      "read": "Read 2 (R2, genomic)",
+      "primer": "3Lv2_R2_seq (GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG)",
+      "template": "bottom",
+      "cycles": 51,
+      "note": "Custom Read 2 primer identical to the ME-B adapter; anneals across the ME-B mosaic end and reads the accessible-chromatin insert from the opposite end.",
+      "diagram": "Read 2 \u2014 3Lv2_R2_seq (custom R2 primer), reads genomic insert from the ME-B end\n5'-...[genomic insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC...-3'\n3'-...[genomic insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG...-5'\n              <-------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "sci-ATAC-seq3",
+  "description": "sci-ATAC-seq3 is a three-level single-cell combinatorial-indexing ATAC-seq assay that profiles chromatin accessibility in ~10^6 nuclei without custom barcoded Tn5. Nuclei are tagmented in bulk with standard, uniformly loaded Nextera Tn5, then two successive rounds of in-nucleus splint-mediated ligation append an N5 barcode and an N7 barcode to the two mosaic-end (ME) adapters; a final indexed PCR adds i5/i7 barcodes and the P5/P7 flow-cell sequences. Paired reads (R1/R2) capture the accessible genomic fragment from each ME end, while the two index reads recover the N7+i7 and N5+i5 barcodes that jointly identify each cell. The 384\u00d7384\u00d7PCR combinatorial scheme (56,623,104 combinations) enables profiling on the order of a million cells per experiment.",
+  "reference": {
+    "kind": "paper",
+    "label": "A human cell atlas of fetal chromatin accessibility",
+    "path": null,
+    "url": "https://cole-trapnell-lab.github.io/papers/Domcke-Hill-Daza-fetal-atac/",
+    "doi": "10.1126/science.aba7612"
+  },
+  "publication": {
+    "year": 2020,
+    "original_publication": {
+      "title": "A human cell atlas of fetal chromatin accessibility",
+      "journal": "Science",
+      "doi": "10.1126/science.aba7612",
+      "url": "https://doi.org/10.1126/science.aba7612"
+    },
+    "authors": [
+      {
+        "name": "Silvia Domcke",
+        "affiliation": "Department of Genome Sciences, University of Washington School of Medicine, Seattle, WA, USA"
+      },
+      {
+        "name": "Andrew J. Hill",
+        "affiliation": "Department of Genome Sciences, University of Washington School of Medicine, Seattle, WA, USA"
+      },
+      {
+        "name": "Riza M. Daza",
+        "affiliation": "Department of Genome Sciences, University of Washington School of Medicine, Seattle, WA, USA"
+      },
+      {
+        "name": "Junyue Cao",
+        "affiliation": "Department of Genome Sciences, University of Washington School of Medicine, Seattle, WA, USA"
+      },
+      {
+        "name": "Diana R. O'Day",
+        "affiliation": "Department of Pediatrics, University of Washington School of Medicine, Seattle, WA, USA"
+      },
+      {
+        "name": "Hannah A. Pliner",
+        "affiliation": "Brotman Baty Institute for Precision Medicine, Seattle, WA, USA"
+      },
+      {
+        "name": "Kimberly A. Aldinger",
+        "affiliation": "Center for Integrative Brain Research, Seattle Children's Research Institute, Seattle, WA, USA"
+      },
+      {
+        "name": "Dmitry Pokholok",
+        "affiliation": "Illumina, San Diego, CA, USA"
+      },
+      {
+        "name": "Fan Zhang",
+        "affiliation": "Illumina, San Diego, CA, USA"
+      },
+      {
+        "name": "Jennifer H. Milbank",
+        "affiliation": "Department of Genome Sciences, University of Washington School of Medicine, Seattle, WA, USA"
+      },
+      {
+        "name": "Michael A. Zager",
+        "affiliation": "Brotman Baty Institute for Precision Medicine; Fred Hutchinson Cancer Research Center, Seattle, WA, USA"
+      },
+      {
+        "name": "Ian A. Glass",
+        "affiliation": "Department of Pediatrics, University of Washington School of Medicine, Seattle, WA, USA"
+      },
+      {
+        "name": "Frank J. Steemers",
+        "affiliation": "Illumina, San Diego, CA, USA"
+      },
+      {
+        "name": "Dan Doherty",
+        "affiliation": "Department of Pediatrics, University of Washington School of Medicine, Seattle, WA, USA"
+      },
+      {
+        "name": "Cole Trapnell",
+        "corresponding": true,
+        "email": "coletrap@uw.edu",
+        "affiliation": "Department of Genome Sciences, University of Washington School of Medicine; Brotman Baty Institute for Precision Medicine, Seattle, WA, USA"
+      },
+      {
+        "name": "Darren A. Cusanovich",
+        "corresponding": true,
+        "email": "darrenc@email.arizona.edu",
+        "affiliation": "Department of Cellular and Molecular Medicine; Asthma and Airway Disease Research Center, University of Arizona, Tucson, AZ, USA"
+      },
+      {
+        "name": "Jay Shendure",
+        "corresponding": true,
+        "email": "shendure@uw.edu",
+        "affiliation": "Department of Genome Sciences, University of Washington School of Medicine; Brotman Baty Institute for Precision Medicine; Howard Hughes Medical Institute, Seattle, WA, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "sci-ATAC-seq3 applied to 59 fetal samples across 15 organs; ~1.6 million cells profiled, 1,568,018 cells identified by barcode; 790,957 high-quality single-cell chromatin accessibility profiles retained from 53 samples. ~110 billion reads (55 billion pairs) across five NovaSeq 6000 runs.",
+      "cells": "790,957 high-quality (1,568,018 total identified)",
+      "rna": "Not applicable (ATAC-seq / chromatin accessibility assay; companion sci-RNA-seq3 profiled ~4 million cells)",
+      "dna": "Median 6,042 nonduplicate fragments per cell (median 5,742 nonduplicate reads/cell); estimated collision rate 1-4%"
+    },
+    "statistical_model": "Mixture of two negative binomials to separate cell barcodes from background; negative binomial regression for TF-motif enrichment across cell types",
+    "other": [
+      {
+        "label": "Master peak set",
+        "value": "1.05 million accessible sites spanning 532 Mb (17.1% of the human genome)"
+      },
+      {
+        "label": "Protocol / data",
+        "value": "protocols.io 10.17504/protocols.io.be8mjhu6; demultiplexing on Zenodo (10.5281/zenodo.4012524); data at GEO GSE149683 / dbGaP phs002003.v1.p1"
+      }
+    ]
+  },
+  "modality": "ATAC",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Reads are demultiplexed by their combinatorial N5/N7/i5/i7 barcodes to assign each read to a single cell, deduplicated, and used to call accessibility peaks (MACS2) merged into a 1.05M-site master set; real cell barcodes are separated from background by fitting a mixture of two negative binomials, then cells are QC- and doublet-filtered (scrublet), reduced by log-scaled LSI (TF-IDF + SVD), batch-corrected (Harmony), Louvain-clustered and UMAP-embedded (Seurat V3), and annotated by NNLS label-transfer from the companion sci-RNA-seq atlas, followed by JASPAR/homer motif enrichment, Cicero co-accessibility, LDSC heritability, and QuASAR allelic-imbalance analyses.",
+    "stages": [
+      {
+        "id": "s_demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment & Dedup"
+      },
+      {
+        "id": "s_cellcall",
+        "label": "Cell Calling"
+      },
+      {
+        "id": "s_peaks",
+        "label": "Peak Calling"
+      },
+      {
+        "id": "s_matrix",
+        "label": "Matrix Construction"
+      },
+      {
+        "id": "s_qc",
+        "label": "QC & Filtering"
+      },
+      {
+        "id": "s_reduce",
+        "label": "Dimensionality Reduction"
+      },
+      {
+        "id": "s_cluster",
+        "label": "Clustering & Embedding"
+      },
+      {
+        "id": "s_annotate",
+        "label": "Annotation"
+      },
+      {
+        "id": "s_downstream",
+        "label": "Regulatory Analysis"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "n_demux",
+        "label": "Demultiplex reads to cells",
+        "tool": "demultiplexing script",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_align",
+        "label": "Align reads to genome",
+        "tool": "HISAT2",
+        "stage": "s_align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_dedup",
+        "label": "Collapse duplicate fragments",
+        "tool": "Picard",
+        "stage": "s_align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_cellcall",
+        "label": "Call real cell barcodes",
+        "tool": "",
+        "stage": "s_cellcall",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_peaks",
+        "label": "Call accessibility peaks",
+        "tool": "MACS2",
+        "stage": "s_peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_merge",
+        "label": "Merge master peak set",
+        "tool": "",
+        "stage": "s_peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_peakmat",
+        "label": "Build peak-by-cell matrix",
+        "tool": "",
+        "stage": "s_matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_genemat",
+        "label": "Build gene-body matrix",
+        "tool": "",
+        "stage": "s_matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_qc",
+        "label": "Filter low-quality cells",
+        "tool": "",
+        "stage": "s_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_doublet",
+        "label": "Remove doublets",
+        "tool": "scrublet",
+        "stage": "s_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_tfidf",
+        "label": "Apply TF-IDF weighting",
+        "tool": "Signac",
+        "stage": "s_reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_svd",
+        "label": "Reduce dimensions (SVD)",
+        "tool": "",
+        "stage": "s_reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_l2",
+        "label": "L2-normalize components",
+        "tool": "",
+        "stage": "s_reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_harmony",
+        "label": "Correct batch effects",
+        "tool": "Harmony",
+        "stage": "s_reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_louvain",
+        "label": "Cluster cells (Louvain)",
+        "tool": "Seurat V3",
+        "stage": "s_cluster",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_umap",
+        "label": "Embed cells with UMAP",
+        "tool": "Seurat V3",
+        "stage": "s_cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "n_annotate",
+        "label": "Transfer cell-type labels",
+        "tool": "",
+        "stage": "s_annotate",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_jaspar",
+        "label": "Test motif enrichment",
+        "tool": "JASPAR",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "n_homer",
+        "label": "Find de novo motifs",
+        "tool": "homer",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "n_cicero",
+        "label": "Compute co-accessibility",
+        "tool": "Cicero",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "n_ldsc",
+        "label": "Estimate trait heritability",
+        "tool": "partitioned LDSC",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "n_quasar",
+        "label": "Test allelic imbalance",
+        "tool": "QuASAR",
+        "stage": "s_downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_demux",
+        "to": "n_align",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_align",
+        "to": "n_dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_dedup",
+        "to": "n_cellcall",
+        "kind": "branch"
+      },
+      {
+        "from": "n_dedup",
+        "to": "n_peaks",
+        "kind": "branch"
+      },
+      {
+        "from": "n_peaks",
+        "to": "n_merge",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_cellcall",
+        "to": "n_peakmat",
+        "kind": "branch"
+      },
+      {
+        "from": "n_cellcall",
+        "to": "n_genemat",
+        "kind": "branch"
+      },
+      {
+        "from": "n_merge",
+        "to": "n_peakmat",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_peakmat",
+        "to": "n_qc",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_qc",
+        "to": "n_doublet",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_doublet",
+        "to": "n_tfidf",
+        "kind": "fan_in"
+      },
+      {
+        "from": "n_tfidf",
+        "to": "n_svd",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_svd",
+        "to": "n_l2",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_l2",
+        "to": "n_harmony",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_harmony",
+        "to": "n_louvain",
+        "kind": "branch"
+      },
+      {
+        "from": "n_harmony",
+        "to": "n_umap",
+        "kind": "branch"
+      },
+      {
+        "from": "n_louvain",
+        "to": "n_annotate",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_genemat",
+        "to": "n_annotate",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_annotate",
+        "to": "n_jaspar",
+        "kind": "branch"
+      },
+      {
+        "from": "n_annotate",
+        "to": "n_homer",
+        "kind": "branch"
+      },
+      {
+        "from": "n_annotate",
+        "to": "n_cicero",
+        "kind": "branch"
+      },
+      {
+        "from": "n_annotate",
+        "to": "n_ldsc",
+        "kind": "branch"
+      },
+      {
+        "from": "n_annotate",
+        "to": "n_quasar",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "mixture of two negative binomials (cell calling); negative binomial regression (motif enrichment and pseudotime-dependent accessibility)"
+  }
+}

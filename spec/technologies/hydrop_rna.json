@@ -1,0 +1,1099 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "hydrop_rna",
+  "assay": "HyDrop-RNA",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "HyDrop_original_paper.pdf",
+      "title": "HyDrop enables droplet-based single-cell ATAC-seq and single-cell RNA-seq using dissolvable hydrogel beads",
+      "url": "https://doi.org/10.7554/eLife.73971",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/hydrop_rna/HyDrop_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "HyDrop-RNA_protocol_v1.0.pdf",
+      "title": "HyDrop-RNA v1.0 V2",
+      "url": "https://doi.org/10.17504/protocols.io.b4xwqxpe",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/hydrop_rna/HyDrop-RNA_protocol_v1.0.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_elife-73971-supp5.xlsx",
+      "title": "HyDrop enables droplet-based single-cell ATAC-seq and single-cell RNA-seq using dissolvable hydrogel beads",
+      "url": "https://doi.org/10.7554/eLife.73971",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/hydrop_rna/supplementary_elife-73971-supp5.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_elife-73971-supp3.docx",
+      "title": "HyDrop enables droplet-based single-cell ATAC-seq and single-cell RNA-seq using dissolvable hydrogel beads",
+      "url": "https://doi.org/10.7554/eLife.73971",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/hydrop_rna/supplementary_elife-73971-supp3.docx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_elife-73971-supp4.xlsx",
+      "title": "HyDrop enables droplet-based single-cell ATAC-seq and single-cell RNA-seq using dissolvable hydrogel beads",
+      "url": "https://doi.org/10.7554/eLife.73971",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/hydrop_rna/supplementary_elife-73971-supp4.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "HyDrop_supp1.docx",
+      "title": "HyDrop_supp1.docx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/hydrop_rna/HyDrop_supp1.docx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "HyDrop_supp2.docx",
+      "title": "HyDrop_supp2.docx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/hydrop_rna/HyDrop_supp2.docx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "HyDrop.pdf",
+      "title": "HyDrop.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/hydrop_rna/HyDrop.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "acrydite_primer",
+      "name": "Acrydite_primer (bead PCR handle)",
+      "aliases": [],
+      "role": "Acrydite/disulfide-anchored capture primer polymerized into the unbarcoded hydrogel bead; carries the T7 promoter + SMART/ISPCR PCR handle onto which the split-pool sub-barcodes are annealed and extended.",
+      "kind": "single",
+      "sequence": "TTTTTTTTAATACGACTCACTATAGGGAAGCAGTGGTATCAACGCAGAGTAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Synthesized as /5Acryd//iThioMC6-D/TTTTTTTT AATACGACTCACTATAGGG (T7 promoter) AAGCAGTGGTATCAACGCAGAGTAC (SMART handle). 5' Acrydite grafts to the polyacrylamide matrix; iThioMC6-D disulfide is DTT-cleavable to release the primer in-droplet."
+    },
+    {
+      "oligo_id": "bc1_subbarcode_primer",
+      "name": "BC1 sub-barcode primer (round 1, 96 variants)",
+      "aliases": [],
+      "role": "First split-pool barcoding oligo; its 3' GTACTCTGCG anneals to the bead handle (\u2026CGCAGAGTAC) and is extended by linear amplification to append BC1 + the BC2 landing linker.",
+      "kind": "single",
+      "sequence": "GCAGTAGCTG[CELL_BARCODE:10]GTACTCTGCG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "One of 96; e.g. GCAGTAGCTGTGTAGCAAGTGTACTCTGCG. Complement of GCAGTAGCTG (=CAGCTACTGC) becomes the inter-barcode linker on the bead."
+    },
+    {
+      "oligo_id": "bc2_subbarcode_primer",
+      "name": "BC2 sub-barcode primer (round 2, 96 variants)",
+      "aliases": [],
+      "role": "Second split-pool barcoding oligo; anneals to the BC1-extended bead and appends BC2 + the BC3 landing linker.",
+      "kind": "single",
+      "sequence": "AGGGTACTCG[CELL_BARCODE:10]GCAGTAGCTG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "One of 96; e.g. AGGGTACTCGTTAGTTGGACGCAGTAGCTG. Complement of AGGGTACTCG (=CGAGTACCCT) becomes the next inter-barcode linker."
+    },
+    {
+      "oligo_id": "bc3_subbarcode_primer_rna",
+      "name": "BC3 sub-barcode primer (round 3, RNA capture, 96 variants)",
+      "aliases": [],
+      "role": "Third/terminal split-pool barcoding oligo for HyDrop-RNA; appends BC3, the 8 nt UMI and the poly(dT) mRNA capture sequence.",
+      "kind": "single",
+      "sequence": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[UMI:8][CELL_BARCODE:10]AGGGTACTCG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "One of 96; e.g. A30-NNNNNNNN-TGACCGTACT-AGGGTACTCG. The poly-A / UMI / BC3 are templated onto the bead so the final bead primer reads BC3-UMI(8)-poly(dT). (HyDrop-ATAC uses a distinct BC3 oligo, CCGAGCCCACGAGAC\u2026AGGGTACTCG, appending a Tn5-adapter-complementary capture site instead.)"
+    },
+    {
+      "oligo_id": "hydrop_rna_bead_primer",
+      "name": "Final HyDrop-RNA bead primer (assembled, 136 bp)",
+      "aliases": [],
+      "role": "Fully barcoded bead-bound RT primer that captures poly(A)+ mRNA and serves as the cell-indexing RT primer in the droplet.",
+      "kind": "assembled",
+      "sequence": "TTTTTTTTAATACGACTCACTATAGGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:10]CAGCTACTGC[CELL_BARCODE:10]CGAGTACCCT[CELL_BARCODE:10][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "acrydite/T7/SMART PCR handle",
+          "sequence": "TTTTTTTTAATACGACTCACTATAGGGAAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "constant handle"
+        },
+        {
+          "name": "BC1",
+          "sequence": "[CELL_BARCODE:10]",
+          "role": "cell barcode round 1"
+        },
+        {
+          "name": "linker 1",
+          "sequence": "CAGCTACTGC",
+          "role": "inter-barcode linear-amplification adapter"
+        },
+        {
+          "name": "BC2",
+          "sequence": "[CELL_BARCODE:10]",
+          "role": "cell barcode round 2"
+        },
+        {
+          "name": "linker 2",
+          "sequence": "CGAGTACCCT",
+          "role": "inter-barcode linear-amplification adapter"
+        },
+        {
+          "name": "BC3",
+          "sequence": "[CELL_BARCODE:10]",
+          "role": "cell barcode round 3"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:8]",
+          "role": "unique molecular identifier"
+        },
+        {
+          "name": "poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "mRNA poly(A) capture"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "30 bp total cell barcode (3x10). Whitelist = 884,736 barcodes."
+    },
+    {
+      "oligo_id": "tso",
+      "name": "TSO (template-switching oligo)",
+      "aliases": [],
+      "role": "Template-switching oligo present in the in-droplet RT reaction; its 3' rGrGrG pairs with the untemplated C's added by Maxima RT to append the ISPCR handle to the cDNA.",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTGAATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Ribo-G at 3' (rGrGrG folded to GGG). An LNA-modified variant was tested in one optimization trial."
+    },
+    {
+      "oligo_id": "tso_p",
+      "name": "TSO-P / SMART PCR primer",
+      "aliases": [],
+      "role": "Single primer for post-RT IS-PCR (bulk cDNA amplification); anneals to the shared SMART handle at both ends of the template-switched cDNA.",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Not yet indexing; amplification drops the 5' T7 promoter, leaving product starting at AAGCAGTGGTATCAACGCAGAGTAC."
+    },
+    {
+      "oligo_id": "nebnext_adapter",
+      "name": "NEBNext Adapter for Illumina (TruSeq Y-adapter)",
+      "aliases": [],
+      "role": "Fragmentation/ligation adapter added to the 3' end of fragmented cDNA, providing the TruSeq Read 1 priming site (i5/P5 arm added in the final PCR).",
+      "kind": "single",
+      "sequence": "AGATCGGAAGAGCACACGTCTGAACTCCAGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard NEBNext/TruSeq hairpin (E7805) with an internal deoxyuracil cleaved by USER enzyme after ligation; ligated top-strand stub shown."
+    },
+    {
+      "oligo_id": "hy_i7_primer",
+      "name": "Hy-i7 indexed primer (HYi7_x, 16 variants)",
+      "aliases": [],
+      "role": "i7 sample-index library PCR primer; anneals to the bead SMART handle and adds the P7/i7 arm. In HyDrop the i7 index read is sacrificed to read the cell barcode, so i7 is not used for sample demultiplexing.",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:10]CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "e.g. HYi7_1_CGCTCAGTTC; two 3'-terminal phosphorothioate bonds (\u2026AGAGT*A*C)."
+    },
+    {
+      "oligo_id": "hy_i5_truseq_primer",
+      "name": "Hyi5-TS (HYi5_TruSeq_x) indexed primer",
+      "aliases": [],
+      "role": "i5 sample-index library PCR primer used for HyDrop-RNA after fragmentation; anneals to the ligated TruSeq adapter and adds the P5/i5 arm plus the TruSeq Read 1 site.",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Use a different i5 index per sample (i5 is the sample demultiplexing index for RNA libraries)."
+    },
+    {
+      "oligo_id": "hydrop_custseq_r2",
+      "name": "HyDrop_CustSeq_R2 (custom Read 2 primer)",
+      "aliases": [],
+      "role": "Custom Read 2 sequencing primer that anneals just 5' of BC1 and reads the three cell barcodes + UMI.",
+      "kind": "single",
+      "sequence": "CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "HPLC-purified custom read-2 primer for HyDrop-RNA."
+    },
+    {
+      "oligo_id": "hydrop_custseq_short",
+      "name": "HyDrop_CustSeq_Short (custom i7 read primer)",
+      "aliases": [],
+      "role": "Custom index-1 (i7) sequencing primer for HyDrop-RNA.",
+      "kind": "single",
+      "sequence": "GTACTCTGCGTTGATACCACTGCTTCCGCGGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reverse complement of the CTGTCCGCGG\u2026AGAGTAC handle; reads the i7 index."
+    },
+    {
+      "oligo_id": "dn_smrt_primer",
+      "name": "dN-SMRT primer",
+      "aliases": [],
+      "role": "Random-primed second-strand synthesis primer used only in the Bst 2.0 / Klenow optimization trials (alternative to TSO/IS-PCR).",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Sequence not disclosed in the provided documents; carries the SMART handle with a 3' random-N tail (added to 2.5 uM). Not used in the final GTP/PEG protocol."
+    },
+    {
+      "oligo_id": "anti_acrydite_fam",
+      "name": "Anti-Acrydite_FAM (QC probe)",
+      "aliases": [],
+      "role": "FAM fluorescent QC probe against the acrydite handle stub on unbarcoded beads (baseline bead fluorescence).",
+      "kind": "single",
+      "sequence": "TTTTTGTACTCTGCGTTGATACCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' 6-FAM."
+    },
+    {
+      "oligo_id": "anti_rna_fam",
+      "name": "Anti-RNA_FAM (QC probe)",
+      "aliases": [],
+      "role": "FAM fluorescent QC probe against the poly(dT) capture site on HyDrop-RNA beads.",
+      "kind": "single",
+      "sequence": "AAAAAAAAAAAAAAAAAAAA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' 6-FAM."
+    },
+    {
+      "oligo_id": "anti_bc1_fam",
+      "name": "Anti-BC1_FAM (QC probe)",
+      "aliases": [],
+      "role": "FAM probe complementary to one of the 96 BC1 sub-barcodes (sub-barcode purity QC).",
+      "kind": "single",
+      "sequence": "TTTTTCTATCCGTCAGTAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' 6-FAM."
+    },
+    {
+      "oligo_id": "anti_bc2_fam",
+      "name": "Anti-BC2_FAM (QC probe)",
+      "aliases": [],
+      "role": "FAM probe complementary to one of the 96 BC2 sub-barcodes.",
+      "kind": "single",
+      "sequence": "TTTTTACACGTTGTGGCAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' 6-FAM."
+    },
+    {
+      "oligo_id": "anti_bc3_fam",
+      "name": "Anti-BC3_FAM (QC probe)",
+      "aliases": [],
+      "role": "FAM probe complementary to one of the 96 BC3 sub-barcodes.",
+      "kind": "single",
+      "sequence": "TTTTTCTCCTATCATAGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' 6-FAM."
+    }
+  ],
+  "final_library": {
+    "source_label": "HyDrop-RNA final dual-indexed library (Supplementary file 3 / eLife-73971-supp3)",
+    "annotated_library_sequence": "5'- CAAGCAGAAGACGGCATACGAGAT -[i7 SAMPLE_INDEX:10]- CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC -[BC1 CELL_BARCODE:10]- CAGCTACTGC -[BC2 CELL_BARCODE:10]- CGAGTACCCT -[BC3 CELL_BARCODE:10]- [UMI:8] -TTTTTTTTTTTTTTTTTTTTTTTTT- [CDNA] -AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT- [i5 SAMPLE_INDEX:10] -GTGTAGATCTCGGTGGTCGCCGTATCATT -3'",
+    "library_sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:10]CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:10]CAGCTACTGC[CELL_BARCODE:10]CGAGTACCCT[CELL_BARCODE:10][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT[SAMPLE_INDEX:10]GTGTAGATCTCGGTGGTCGCCGTATCATT",
+    "strands": [
+      {
+        "direction": "5'->3' (top)",
+        "source_html": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:10]CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:10]CAGCTACTGC[CELL_BARCODE:10]CGAGTACCCT[CELL_BARCODE:10][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT[SAMPLE_INDEX:10]GTGTAGATCTCGGTGGTCGCCGTATCATT",
+        "source_sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:10]CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:10]CAGCTACTGC[CELL_BARCODE:10]CGAGTACCCT[CELL_BARCODE:10][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT[SAMPLE_INDEX:10]GTGTAGATCTCGGTGGTCGCCGTATCATT"
+      },
+      {
+        "direction": "3'->5' (bottom)",
+        "source_html": "GTTCGTCTTCTGCCGTATGCTCTA[SAMPLE_INDEX:10]GACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CELL_BARCODE:10]GTCGATGACG[CELL_BARCODE:10]GCTCATGGGA[CELL_BARCODE:10][UMI:8]AAAAAAAAAAAAAAAAAAAAAAAAA[CDNA]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA[SAMPLE_INDEX:10]CACATCTAGAGCCACCAGCGGCATAGTAA",
+        "source_sequence": "GTTCGTCTTCTGCCGTATGCTCTA[SAMPLE_INDEX:10]GACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CELL_BARCODE:10]GTCGATGACG[CELL_BARCODE:10]GCTCATGGGA[CELL_BARCODE:10][UMI:8]AAAAAAAAAAAAAAAAAAAAAAAAA[CDNA]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA[SAMPLE_INDEX:10]CACATCTAGAGCCACCAGCGGCATAGTAA"
+      }
+    ],
+    "annotation_lines": [
+      "CAAGCAGAAGACGGCATACGAGAT = P7 flow-cell / i7 primer landing (Hy-i7)",
+      "[SAMPLE_INDEX:10] = i7 sample index (read by custom i7 primer; not used for demux)",
+      "CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC = SMART/ISPCR bead handle + Read 2 primer site",
+      "[CELL_BARCODE:10] (BC1) - CAGCTACTGC (linker) - [CELL_BARCODE:10] (BC2) - CGAGTACCCT (linker) - [CELL_BARCODE:10] (BC3) = 30 bp split-pool cell barcode with inter-barcode linkers",
+      "[UMI:8] = unique molecular identifier",
+      "TTTTTTTTTTTTTTTTTTTTTTTTT = poly(dT) mRNA capture (poly(A) junction)",
+      "[CDNA] = 3' cDNA insert (read by Read 1)",
+      "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT = ligated NEBNext/TruSeq adapter + Read 1 primer site",
+      "[SAMPLE_INDEX:10] = i5 sample index (sample demultiplexing; Hyi5-TruSeq)",
+      "GTGTAGATCTCGGTGGTCGCCGTATCATT = P5 flow-cell arm (rev-comp of AATGATACGGCGACCACCGAGATCTACAC)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "HyDrop-RNA final dual-indexed library (Supplementary file 3 / eLife-73971-supp3)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TruSeq Read 1 primer",
+        "template": "bottom",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 50
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "HyDrop_CustSeq_Short",
+        "template": "top",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "standard i5 index primer",
+        "template": "bottom",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "HyDrop_CustSeq_R2",
+        "template": "top",
+        "cycles": 58,
+        "segments": [
+          {
+            "name": "BC1",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "linker 1",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "BC2",
+            "type": "barcode",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "linker 2",
+            "type": "constant",
+            "order": 3,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "BC3",
+            "type": "barcode",
+            "order": 4,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 5,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "mRNA capture in droplet",
+      "summary": "Cells are lysed inside droplets and poly(A)+ mRNA anneals to the poly(dT) tail of the released, uniquely barcoded bead primer.",
+      "note": "DTT in the RT mix cleaves the disulfide linker, releasing the barcoded primer from the dissolving hydrogel; bead lysis buffer lyses the cell simultaneously.",
+      "product": "5'- ...AAGCAGTGGTATCAACGCAGAGTAC-[BC1]-CAGCTACTGC-[BC2]-CGAGTACCCT-[BC3]-[UMI:8]-TTTTTTTTTTTTTTTTTTTTTTTTT -3'\n                                                                                    ||||||||||||||||||\n                                                                    3'-[mRNA]-AAAAAAAAAAAAAAAAAA-5'"
+    },
+    {
+      "step": 2,
+      "title": "Reverse transcription (first strand)",
+      "summary": "Maxima H- RT extends the bead primer along the mRNA, producing barcoded first-strand cDNA and adding untemplated C's at the 3' end.",
+      "note": "In-droplet RT: 42C 90 min with 11 cycles of 50C/42C, GTP + PEG-8000 supplemented to stabilize the template-switch complex and act as a crowding agent.",
+      "product": "5'- ...CGCAGAGTAC-[BC1]-CAGCTACTGC-[BC2]-CGAGTACCCT-[BC3]-[UMI:8]-TTTTT...TTTTT-[cDNA]-CCC -3'\n                                                            3'-AAAAA...AAAAA-[mRNA]-5'"
+    },
+    {
+      "step": 3,
+      "title": "Template switching",
+      "summary": "The TSO anneals via its 3' rGGG to the untemplated CCC and RT copies it, appending the ISPCR/SMART handle to the cDNA 3' end.",
+      "note": "TSO = AAGCAGTGGTATCAACGCAGAGTGAATGGG.",
+      "product": "5'- ...TTTTT-[cDNA]-CCCATTCACTCTGCGTTGATACCACTGCTT -3'\n                     3'-AAAAA-[mRNA]-GGGTAAGTGAGACGCAACTATGGTGACGAA-5' (TSO)"
+    },
+    {
+      "step": 4,
+      "title": "Emulsion break + IS-PCR amplification",
+      "summary": "Droplets are broken and pooled, and cDNA is bulk-amplified with the single TSO-P primer against the shared SMART handles at both ends.",
+      "note": "ExoI treatment removes unused barcode primers before ISPCR (13 cycles, KAPA HiFi). Amplification drops the 5' T7 promoter, so product starts at AAGCAGTGGTATCAACGCAGAGTAC.",
+      "product": "5'-AAGCAGTGGTATCAACGCAGAGTAC-[BC1]-CAGCTACTGC-[BC2]-CGAGTACCCT-[BC3]-[UMI:8]-TTTTT...-[cDNA]-CCCATTCACTCTGCGTTGATACCACTGCTT-3'\n3'-TTCGTCACCATAGTTGCGTCTCATG-[BC1]-GTCGATGACG-[BC2]-GCTCATGGGA-[BC3]-[UMI:8]-AAAAA...-[cDNA]-GGGTAAGTGAGACGCAACTATGGTGACGAA-5'"
+    },
+    {
+      "step": 5,
+      "title": "NEBNext fragmentation + dA-tailing",
+      "summary": "Amplified cDNA is enzymatically fragmented and dA-tailed (NEBNext Ultra II FS).",
+      "note": "~80 ng cDNA input; 37C 10 min / 65C 30 min.",
+      "product": "5'-AAGCAGTGGTATCAACGCAGAGTAC-[BC1]-CAGCTACTGC-[BC2]-CGAGTACCCT-[BC3]-[UMI:8]-TTTTT...-[cDNA]-A-3'\n3'-TTCGTCACCATAGTTGCGTCTCATG-[BC1]-GTCGATGACG-[BC2]-GCTCATGGGA-[BC3]-[UMI:8]-AAAAA...-[cDNA]  -5'"
+    },
+    {
+      "step": 6,
+      "title": "Adapter ligation (NEBNext/TruSeq) + USER",
+      "summary": "The NEBNext Illumina Y-adapter is ligated to the fragmented cDNA and the adapter uracil is cleaved by USER enzyme.",
+      "note": "Provides the TruSeq Read 1 priming site on the cDNA (i5/P5) end.",
+      "product": "5'-AAGCAGTGGTATCAACGCAGAGTAC-...-[cDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTC -3'\n3'-TTCGTCACCATAGTTGCGTCTCATG-...-[cDNA]-TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'"
+    },
+    {
+      "step": 7,
+      "title": "Dual-index PCR (final library)",
+      "summary": "Hy-i7 (binds bead SMART handle) and Hyi5-TruSeq (binds ligated adapter) primers add the P7/i7 and P5/i5 arms to make the sequenceable library.",
+      "note": "13 cycles KAPA HiFi; a distinct i5 index per sample (i5 = sample demux; i7 read is spent reading the cell barcode side).",
+      "product": "5'-CAAGCAGAAGACGGCATACGAGAT-[i7]-CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC-[BC1]-CAGCTACTGC-[BC2]-CGAGTACCCT-[BC3]-[UMI:8]-TTTTT...-[cDNA]-AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT-[i5]-GTGTAGATCTCGGTGGTCGCCGTATCATT-3'\n3'-GTTCGTCTTCTGCCGTATGCTCTA-[i7]-GACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG-[BC1]-GTCGATGACG-[BC2]-GCTCATGGGA-[BC3]-[UMI:8]-AAAAA...-[cDNA]-TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-[i5]-CACATCTAGAGCCACCAGCGGCATAGTAA-5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "R1 (cDNA)",
+      "primer": "TruSeq Read 1 primer (standard Illumina)",
+      "template": "top",
+      "cycles": 50,
+      "note": "Reads 50 nt of the 3' cDNA insert. The Read 1 primer is the reverse complement of the ligated NEBNext/TruSeq stub (AGATCGGAAGAGC...AGAGTGT) on the top strand; its 3' end sits at the cDNA-proximal edge and extends into the insert, so the top strand is the template.",
+      "diagram": "            <------- Read 1 : cDNA insert (50 nt)\n         3'-TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'   TruSeq Read 1 primer\n5'-...(cDNA)AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT[i5:10]GTGTAGATCTCGGTGGTCGCCGTATCATT-3'   (top)\n3'-...(cDNA)TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA[i5:10]CACATCTAGAGCCACCAGCGGCATAGTAA-5'   (bottom)"
+    },
+    {
+      "read": "I1 (i7 index)",
+      "primer": "HyDrop_CustSeq_Short (custom i7 read primer)",
+      "template": "top",
+      "cycles": 10,
+      "note": "Reads the 10 nt i7 index. The custom primer (5'-GTACTCTGCGTTGATACCACTGCTTCCGCGGACAG-3') is the reverse complement of the CTGTCCGCGG...AGAGTAC bead handle; it anneals to the top strand just 3' of the i7 and reads leftward into it. In HyDrop the i7 read is NOT used for sample demultiplexing.",
+      "diagram": "                         3'-GACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG-5'   HyDrop_CustSeq_Short\n              <------- read i7 (10 nt)\n5'-CAAGCAGAAGACGGCATACGAGAT[i7:10]CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC...-3'   (top)\n3'-GTTCGTCTTCTGCCGTATGCTCTA[i7:10]GACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG...-5'   (bottom)"
+    },
+    {
+      "read": "I2 (i5 index)",
+      "primer": "Standard Illumina i5 index primer",
+      "template": "bottom",
+      "cycles": 10,
+      "note": "Reads the 10 nt i5 index from the P5/TruSeq side. i5 is the true sample-demultiplexing index for HyDrop-RNA (a different i5 per sample). On the NextSeq2000 the i5 is read from the resynthesized bottom strand.",
+      "diagram": "                              i5 index primer\n                    <------- read i5 (10 nt)\n5'-...AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT[i5:10]GTGTAGATCTCGGTGGTCGCCGTATCATT-3'   (top)\n3'-...TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA[i5:10]CACATCTAGAGCCACCAGCGGCATAGTAA-5'   (bottom)"
+    },
+    {
+      "read": "R2 (cell barcode + UMI)",
+      "primer": "HyDrop_CustSeq_R2 (custom Read 2 primer)",
+      "template": "bottom",
+      "cycles": 58,
+      "note": "Reads BC1(10) + CAGCTACTGC(10) + BC2(10) + CGAGTACCCT(10) + BC3(10) + UMI(8) = 58 nt. The custom primer is identical to the CTGTCCGCGG...AGAGTAC bead handle on the top strand, so it anneals to the bottom strand and copies it, emitting the barcodes in top-strand sense. Parsed by STARsolo CB_UMI_Complex.",
+      "diagram": "5'-CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC------------------------------------->  Read 2 (58 nt)\n5'-CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[BC1:10]CAGCTACTGC[BC2:10]CGAGTACCCT[BC3:10][UMI:8]TTTTT...-3'   (top)\n3'-GACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[BC1:10]GTCGATGACG[BC2:10]GCTCATGGGA[BC3:10][UMI:8]AAAAA...-5'   (bottom)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "HyDrop-RNA",
+  "description": "HyDrop-RNA is an open-source droplet-microfluidic single-cell RNA-seq assay built on dissolvable, barcoded polyacrylamide hydrogel beads. Each bead carries a three-round split-pool cell barcode (96x96x96 = 884,736 combinations), an 8 nt UMI, and a poly(dT) capture sequence. Inside droplets, cells are lysed and poly(A)+ mRNA is reverse transcribed on the bead primer with template switching (Drop-seq/SMART-style chemistry, GTP/PEG-supplemented); barcoded cDNA is pooled, amplified by IS-PCR, then fragmented and ligated to a NEBNext/TruSeq adapter and dual-indexed. Read 1 reads the 3' cDNA insert, Read 2 reads the three linker-separated cell barcodes plus UMI, and the i7/i5 index reads carry the sample index.",
+  "reference": {
+    "kind": "paper",
+    "label": "HyDrop enables droplet-based single-cell ATAC-seq and single-cell RNA-seq using dissolvable hydrogel beads",
+    "path": null,
+    "url": "https://doi.org/10.17504/protocols.io.b4xwqxpe",
+    "doi": "10.7554/eLife.73971"
+  },
+  "publication": {
+    "year": 2022,
+    "original_publication": {
+      "title": "HyDrop enables droplet-based single-cell ATAC-seq and single-cell RNA-seq using dissolvable hydrogel beads",
+      "journal": "eLife",
+      "doi": "10.7554/eLife.73971",
+      "url": "https://doi.org/10.7554/eLife.73971"
+    },
+    "authors": [
+      {
+        "name": "Florian V De Rop",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; Laboratory of Computational Biology, KU Leuven, Leuven, Belgium"
+      },
+      {
+        "name": "Joy N Ismail",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; KU Leuven, Leuven, Belgium"
+      },
+      {
+        "name": "Carmen Bravo Gonz\u00e1lez-Blas",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; KU Leuven, Leuven, Belgium"
+      },
+      {
+        "name": "Gert J Hulselmans",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; KU Leuven, Leuven, Belgium"
+      },
+      {
+        "name": "Christopher Campbell Flerin",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; Aligning Science Across Parkinson's (ASAP) Collaborative Research Network, Chevy Chase, USA"
+      },
+      {
+        "name": "Jasper Janssens",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; KU Leuven, Leuven, Belgium"
+      },
+      {
+        "name": "Koen Theunis",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; ASAP Collaborative Research Network"
+      },
+      {
+        "name": "Valerie M Christiaens",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; KU Leuven, Leuven, Belgium"
+      },
+      {
+        "name": "Jasper Wouters",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; KU Leuven, Leuven, Belgium"
+      },
+      {
+        "name": "Gabriele Marcassa",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; Laboratory of Synapse Biology, KU Leuven, Leuven, Belgium"
+      },
+      {
+        "name": "Joris de Wit",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; Laboratory of Synapse Biology, KU Leuven, Leuven, Belgium"
+      },
+      {
+        "name": "Suresh Poovathingal",
+        "corresponding": true,
+        "email": "suresh.poovathingal@kuleuven.be",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research, Leuven, Belgium"
+      },
+      {
+        "name": "Stein Aerts",
+        "corresponding": true,
+        "email": "stein.aerts@kuleuven.be",
+        "affiliation": "VIB-KU Leuven Center for Brain & Disease Research; Laboratory of Computational Biology, KU Leuven, Leuven, Belgium"
+      }
+    ],
+    "throughput": {
+      "summary": "9508 single-nuclei transcriptomes from flash-frozen mouse cortex in a single run at ~65% cell recovery; median ~3389 UMIs / 1658 genes per cell (~60% sequencing saturation). Species-mixing: 1235 human + 846 mouse cells, median 1439 UMIs / 904 genes. 973 FAC-sorted Drosophila neurons recovered from ~1500 input.",
+      "cells": "9508 mouse cortex nuclei per run; >90% bead-in-droplet occupancy, ~65% final cell recovery",
+      "rna": "median ~3389\u20133404 UMIs and ~1658\u20131662 genes per cell (mouse cortex); sequencing efficiency 7.44% of reads become mapped UMIs",
+      "dna": "884,736 (96x96x96) cell barcodes; 30 bp barcode + 8 nt UMI"
+    },
+    "statistical_model": "Not explicitly stated; droplet UMI counts (UMIs deduplicate PCR duplicates). Bead-in-droplet loading exceeds Poisson encapsulation statistics via close-packed ordering of deformable beads (Abate et al., 2009).",
+    "other": [
+      {
+        "label": "Per-cell library cost",
+        "value": "<$0.03"
+      },
+      {
+        "label": "Bead",
+        "value": "~50 um dissolvable polyacrylamide with disulfide crosslinkers; 12 uM acrydite primer optimal"
+      },
+      {
+        "label": "Microfluidics",
+        "value": "Droplet Genomics Onyx platform, HyDrop High Aspect 65/80 chip, RAN Biotech EA-008 / HFE-7500 oil"
+      },
+      {
+        "label": "Sequencing platform",
+        "value": "Illumina NextSeq2000 (R1 50, I1 10, I2 10, R2 58)"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO GSE175684; SCope; GitHub aertslab/hydrop_data_analysis"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "droplet + combinatorial indexing",
+  "data_processing": {
+    "summary": "Barcode reads (Read 2) are first trimmed of the inter-sub-barcode linear-amplification linkers, then reads are mapped and cell-demultiplexed with STARsolo in CB_UMI_Complex mode against the 884,736-barcode whitelist (1 bp mismatch); the resulting UMI count matrix is analyzed in Scanpy with Scrublet doublet removal, normalization/PCA/UMAP, and marker-gene cluster annotation.",
+    "stages": [
+      {
+        "id": "s_barcode",
+        "label": "Barcode preprocessing"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment & demultiplexing"
+      },
+      {
+        "id": "s_qc",
+        "label": "QC filtering"
+      },
+      {
+        "id": "s_norm",
+        "label": "Normalization & reduction"
+      },
+      {
+        "id": "s_embed",
+        "label": "Embedding"
+      },
+      {
+        "id": "s_cluster",
+        "label": "Clustering & annotation"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "trim_linkers",
+        "label": "Trim barcode linkers",
+        "tool": "mawk",
+        "stage": "s_barcode",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_reads",
+        "label": "Align reads to genome",
+        "tool": "STARsolo",
+        "stage": "s_align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "demux_barcodes",
+        "label": "Assign cell barcodes (1bp mismatch)",
+        "tool": "STARsolo",
+        "stage": "s_align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse_umis",
+        "label": "Collapse UMIs to counts",
+        "tool": "STARsolo",
+        "stage": "s_align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_cells",
+        "label": "Filter cells (genes, mito)",
+        "tool": "Scanpy",
+        "stage": "s_qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_genes",
+        "label": "Filter genes (>=3 cells)",
+        "tool": "Scanpy",
+        "stage": "s_qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "remove_doublets",
+        "label": "Remove doublets",
+        "tool": "Scrublet",
+        "stage": "s_qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "normalize_total",
+        "label": "Normalize total counts",
+        "tool": "Scanpy",
+        "stage": "s_norm",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "log_transform",
+        "label": "Log-transform counts",
+        "tool": "Scanpy",
+        "stage": "s_norm",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "regress_covariates",
+        "label": "Regress out total/mito counts",
+        "tool": "Scanpy",
+        "stage": "s_norm",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "scale_expression",
+        "label": "Scale expression",
+        "tool": "Scanpy",
+        "stage": "s_norm",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pca",
+        "label": "Compute PCA",
+        "tool": "Scanpy",
+        "stage": "s_norm",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umap",
+        "label": "Compute UMAP embedding",
+        "tool": "Scanpy",
+        "stage": "s_embed",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "leiden_cluster",
+        "label": "Cluster cells (Leiden)",
+        "tool": "Scanpy",
+        "stage": "s_cluster",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "annotate_clusters",
+        "label": "Annotate clusters by markers",
+        "tool": "Scanpy",
+        "stage": "s_cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "trim_linkers",
+        "to": "align_reads",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_reads",
+        "to": "demux_barcodes",
+        "kind": "sequential"
+      },
+      {
+        "from": "demux_barcodes",
+        "to": "collapse_umis",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse_umis",
+        "to": "filter_cells",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_cells",
+        "to": "filter_genes",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_genes",
+        "to": "remove_doublets",
+        "kind": "sequential"
+      },
+      {
+        "from": "remove_doublets",
+        "to": "normalize_total",
+        "kind": "sequential"
+      },
+      {
+        "from": "normalize_total",
+        "to": "log_transform",
+        "kind": "sequential"
+      },
+      {
+        "from": "log_transform",
+        "to": "regress_covariates",
+        "kind": "sequential"
+      },
+      {
+        "from": "regress_covariates",
+        "to": "scale_expression",
+        "kind": "sequential"
+      },
+      {
+        "from": "scale_expression",
+        "to": "pca",
+        "kind": "sequential"
+      },
+      {
+        "from": "pca",
+        "to": "umap",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "leiden_cluster",
+        "kind": "branch"
+      },
+      {
+        "from": "leiden_cluster",
+        "to": "annotate_clusters",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "null"
+  }
+}

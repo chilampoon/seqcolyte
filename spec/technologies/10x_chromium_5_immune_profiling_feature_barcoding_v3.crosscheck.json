@@ -1,0 +1,29 @@
+{
+  "folder": "10x_chromium_5_immune_profiling_feature_barcoding_v3",
+  "title": "10x Chromium 5\u2032 v3 Cell Surface Protein (Feature Barcode)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "10xChromium5vdjfb.html",
+    "oligo_seq_recall": 0.389,
+    "oligo_seqs_matched": 7,
+    "oligo_seqs_total": 18,
+    "missed_oligos": [
+      "Barcoded oligo (FeatureBarcode, FB) on antibody against surface protein",
+      "cDNA reverse primer",
+      "Dual Index Kit forward primer",
+      "Dual Index Kit TN Set A (PN-3000510) (Reverse primer)",
+      "Dual Index Kit TT Set A (PN-3000431) (Reverse primer)",
+      "Feature cDNA Primers 4 reverse (PN-2000277) for FB",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Poly-dT RT primer",
+      "The forward primer of T/B Mix 1 & 2 is the same",
+      "TruSeq i5 index sequencing primer (index2)",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "P5(AATGATACGGCGACCACCGAGATCTACAC) - i5[SAMPLE_INDEX:10] - TruSeqRead1(ACACTCTTTCCCTACACGACGCTCTTCCGATCT) - cellBC[CELL_BARCODE:16] - UMI[UMI:12] - TSO(TTTCTTATATGGG) - [SPACER:9] - featureBC[FEATURE_BARCODE:15] - [SPACER:10] - Read2N(CTGTCTCTTATACACATCTCCGAGCCCACGAGAC) - i7[SAMPLE_INDEX:10] - P7revcomp(ATCTCGTATGCCGTCTTCTGCTTG)",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTCTTATATGGG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

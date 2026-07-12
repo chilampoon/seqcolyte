@@ -1,0 +1,22 @@
+{
+  "folder": "sci_atac_seq3",
+  "title": "sci-ATAC-seq3",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "sci-ATAC-seq_family.html",
+    "oligo_seq_recall": 0.636,
+    "oligo_seqs_matched": 7,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "3LV2_N5_Oligo_{A01..H12}_Plate{1..4} (96 x 4 = 384 oligos)",
+      "3LV2_N7_Oligo_{A01..H12}_Plate{1..4} (96 x 4 = 384 oligos)",
+      "3LV2_P5_PCR_{A01..H12} (96 oligos)",
+      "3LV2_P7_PCR_{A01..H12} (96 oligos)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC [SAMPLE_INDEX:10](i5) CACCGCACGAGAGGT [CELL_BARCODE:10](N5) GTAATCAG TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG(ME-A) [CDNA] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC(ME-B rc) GACAAGTC [CELL_BARCODE:10](N7 rc) AGTCTCGCCGTGCTG [SAMPLE_INDEX:10](i7 rc) ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:10]CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGACGACAAGTC[CELL_BARCODE:10]AGTCTCGCCGTGCTG[I7_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

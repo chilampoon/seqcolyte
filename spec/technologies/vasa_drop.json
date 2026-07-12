@@ -1,0 +1,950 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "vasa_drop",
+  "assay": "VASA-drop",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "VASA-seq_reagents_and_equipment.xlsx",
+      "title": "VASA-seq Supplementary Table 14: reagents and equipment",
+      "url": "https://doi.org/10.1038/s41587-022-01361-8",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/vasa_drop/VASA-seq_reagents_and_equipment.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "VASA-seq_oligos_and_probes.xlsx",
+      "title": "VASA-seq Supplementary Table 12: oligos, probes, and dual-index primers",
+      "url": "https://doi.org/10.1038/s41587-022-01361-8",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/vasa_drop/VASA-seq_oligos_and_probes.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "VASA-seq.pdf",
+      "title": "VASA-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/vasa_drop/VASA-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "indrop_v3_barcoded_bead_oligo",
+      "name": "inDrop v3 barcoded polyacrylamide bead (oligo-dT capture primer)",
+      "aliases": [],
+      "role": "Photocleavable bead capture / RT primer carrying the split-pool cell barcode, UFI (UMI) and oligo-dT; primes reverse transcription of poly(A)-tailed RNA fragments",
+      "kind": "assembled",
+      "sequence": "[PCR_HANDLE][CELL_BARCODE:8][SPACER:22][CELL_BARCODE:8][UMI:6]TTTTTTTTTTTTTTTTTTV",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "PCR/PE handle + T7 promoter + Read handle",
+          "sequence": "",
+          "role": "5' bead handle; the i7 indexing primer common region (GGGTGTCGGGTGCAG) anneals here and T7 drives IVT \u2014 exact bead sequence per inDrop v3 (Zilionis 2017 / Briggs 2018), not printed in these documents"
+        },
+        {
+          "name": "Cell barcode 1 (BC1)",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "first split-pool barcode round; read in the i7 index read"
+        },
+        {
+          "name": "W1 linker",
+          "sequence": "[SPACER:22]",
+          "role": "inDrop v3 W1 adapter separating BC1 and BC2 (canonical GAGTGATTGCTTGTGACGCCTT; not printed here)"
+        },
+        {
+          "name": "Cell barcode 2 (BC2)",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "second split-pool barcode round; read in Read2"
+        },
+        {
+          "name": "UFI / UMI",
+          "sequence": "[UMI:6]",
+          "role": "6-nt unique fragment identifier for strand-specific molecule counting"
+        },
+        {
+          "name": "oligo-dT",
+          "sequence": "",
+          "role": "poly(dT) tail hybridizing the poly(A) added to RNA fragments"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Cell barcode = BC1(8) + BC2(8) = 16 nt; UFI/UMI = 6 nt (stated in FASTQ pre-processing). Beads made per Zilionis 2017; barcoded by Bst 2.0 extension with the inDrop v3 scheme (Briggs 2018). Barcode is UV-photocleaved off the bead inside the droplet before RT."
+    },
+    {
+      "oligo_id": "ra3_adapter_vasa_drop",
+      "name": "RA3 oligonucleotide for VASA-drop",
+      "aliases": [],
+      "role": "3' adapter ligated to the amplified RNA (aRNA) 3' end by T4 RNA Ligase 2 truncated; provides the RTP priming site",
+      "kind": "single",
+      "sequence": "TGGAATTCTCGGGTGCCAAGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Listed as 5rApp/TGGAATTCTCGGGTGCCAAGG/3SpC3 \u2014 5'-adenylated (App) and 3' C3-spacer blocked for pre-adenylated, ATP-independent single-strand ligation. Table S12; 'this study'."
+    },
+    {
+      "oligo_id": "rtp_primer_vasa_drop",
+      "name": "RTP oligonucleotide for VASA-drop",
+      "aliases": [],
+      "role": "Reverse-transcription primer annealing to the ligated RA3 adapter to make cDNA of the aRNA (final-library RT step)",
+      "kind": "single",
+      "sequence": "GCCTTGGCACCCGAGAATTCCA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reverse-complementary to the RA3 adapter (RA3 = TGGAATTCTCGGGTGCCAAGG). Table S12; 'this study'. Used with SuperScript III at 50 \u00b0C."
+    },
+    {
+      "oligo_id": "vd_ilmn8_i5",
+      "name": "VASA-drop dual-index PCR primer, i5 / P5 (VD_ILMN8_i5_1\u201346)",
+      "aliases": [],
+      "role": "P5 indexing PCR primer (i5 read = Index2); adds P5 + 8-nt i5 sample index + Read1/s5 handle",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell adapter"
+        },
+        {
+          "name": "i5 index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-nt sample index (e.g. VD_ILMN8_i5_1 = AGCGCTAG, i5_2 = GATATCGA, i5_3 = CGCAGACG \u2026; 46 provided)"
+        },
+        {
+          "name": "s5 / Read1 handle",
+          "sequence": "TCGTCGGCAGCGTC",
+          "role": "annealing/Read1 sequencing-primer region on the RA3/RTP (cDNA) side of the library"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "46 i5 primers listed in Supplementary Table 12; unique dual indexing used to detect index hopping on NovaSeq."
+    },
+    {
+      "oligo_id": "vd_ilmn8_i7",
+      "name": "VASA-drop dual-index PCR primer, i7 / P7 (VD_ILMN8_i7_1\u201346)",
+      "aliases": [],
+      "role": "P7 indexing PCR primer (i7 read = Index1); adds P7 + 8-nt i7 sample index + 15-bp inDrop common handle",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GGGTGTCGGGTGCAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-nt second sample index inserted directly after the 15-bp common sequence (e.g. VD_ILMN8_i7_1 = AACCGCGG, i7_2 = GGTTATAA, i7_3 = CCAAGTCC \u2026; 46 provided)"
+        },
+        {
+          "name": "inDrop common handle",
+          "sequence": "GGGTGTCGGGTGCAG",
+          "role": "15-bp common sequence that anneals to the bead-derived PCR handle; the i7 read then reads BC1 + W1"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Extended Data Fig. 1b: 'the index i7 read, which usually only contains barcode 1 (inDrop v3) \u2014 we inserted an 8-bp second index directly after a 15-bp common sequence.' 46 i7 primers in Supplementary Table 12."
+    },
+    {
+      "oligo_id": "rrna_depletion_probes",
+      "name": "rRNA depletion probes (antisense to 18S/28S/5.8S/16S/12S/5S rRNA)",
+      "aliases": [],
+      "role": "DNA probes hybridized to aRNA rRNA, then cleaved by thermostable RNaseH and removed by DNase \u2014 reverse complement of published probes (Adiconis 2013)",
+      "kind": "single",
+      "sequence": "GTAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "~200 probes total (Table S12). Representative 5'->3' probe shown (Ribo_Dep_aRNA_18_1). Tiled across 18S (Ribo_Dep_aRNA_18_1..38), 28S (28_1..101), 5.8S (5.8_1..3), mt 16S (16_1..31), mt 12S (12_1..19) and 5S (5_1..3). Used at 25 \u00b5M with hybridization buffer (500 mM Tris-HCl pH7.5, 1 M NaCl)."
+    },
+    {
+      "oligo_id": "celseq2_sortseq_primer_plate",
+      "name": "CEL-seq2 / SORT-seq barcoded RT primer (VASA-plate only)",
+      "aliases": [],
+      "role": "Plate-format barcoded oligo-dT RT primer (0.25 \u00b5M, 50 nl/well) \u2014 the VASA-plate counterpart of the bead oligo",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "VASA-plate uses CEL-seq2/SORT-seq primers (Muraro 2016; Hashimshony 2012); indices available at GSE176588. Read1 = 6-nt UFI + 8-nt cell barcode (384 well barcodes). Sequences not printed in these documents."
+    }
+  ],
+  "final_library": {
+    "source_label": "VASA-drop final dual-indexed Illumina library (schematic; P5 \u2192 P7 top strand)",
+    "annotated_library_sequence": "P5=AATGATACGGCGACCACCGAGATCTACAC | i5=[SAMPLE_INDEX:8] | Read1/s5 handle=TCGTCGGCAGCGTC | RTP/RA3-derived=GCCTTGGCACCCGAGAATTCCA | insert=[CDNA] | poly(dT/dA)=[POLYT] | UFI=[UMI:6] | BC2=[CELL_BARCODE:8] | W1 linker=[SPACER:22] | BC1=[CELL_BARCODE:8] | inDrop handle(rc)=CTGCACCCGACACCC | i7(rc)=[SAMPLE_INDEX:8] | P7(rc)=ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCGCCTTGGCACCCGAGAATTCCA[CDNA][POLYT][UMI:6][CELL_BARCODE:8][SPACER:22][CELL_BARCODE:8]CTGCACCCGACACCC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "top_5to3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCGCCTTGGCACCCGAGAATTCCA[CDNA][POLYT][UMI:6][CELL_BARCODE:8][SPACER:22][CELL_BARCODE:8]CTGCACCCGACACCC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCGCCTTGGCACCCGAGAATTCCA[CDNA][POLYT][UMI:6][CELL_BARCODE:8][SPACER:22][CELL_BARCODE:8]CTGCACCCGACACCC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC  \u2014 P5 (from VD_ILMN8_i5 primer)",
+      "[SAMPLE_INDEX:8]               \u2014 i5 sample index (Index2 read, 8 cycles)",
+      "TCGTCGGCAGCGTC                \u2014 Read1 / s5 handle; Read1 sequencing primer binds here",
+      "GCCTTGGCACCCGAGAATTCCA         \u2014 RTP-derived region (complement of RA3 adapter TGGAATTCTCGGGTGCCAAGG)",
+      "[CDNA]                        \u2014 fragmented total-RNA cDNA insert (Read1, 247 cycles, across gene body)",
+      "[POLYT]                       \u2014 oligo-dT : poly(A) capture junction (bead poly(dT) x RNA poly(A) tail)",
+      "[UMI:6]                       \u2014 UFI / unique fragment identifier (read in Read2)",
+      "[CELL_BARCODE:8]              \u2014 inDrop v3 cell barcode BC2 (read in Read2)",
+      "[SPACER:22]                   \u2014 inDrop v3 W1 linker (read in i7 index read)",
+      "[CELL_BARCODE:8]              \u2014 inDrop v3 cell barcode BC1 (read first in i7 index read)",
+      "CTGCACCCGACACCC               \u2014 reverse complement of the 15-bp inDrop common handle (GGGTGTCGGGTGCAG)",
+      "[SAMPLE_INDEX:8]              \u2014 i7 sample index (Index1 read, reverse complement here)",
+      "ATCTCGTATGCCGTCTTCTGCTTG      \u2014 P7 (reverse complement of VD_ILMN8_i7 primer 5' P7)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "VASA-drop final dual-indexed Illumina library (schematic; P5 \u2192 P7 top strand)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Read1 primer (s5 handle)",
+        "template": "top",
+        "cycles": 247,
+        "segments": [
+          {
+            "name": "RA3/RTP handle",
+            "type": "constant",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 22
+          },
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "i7 index primer",
+        "template": "bottom",
+        "cycles": 31,
+        "segments": [
+          {
+            "name": "cell barcode 1 (BC1)",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "W1 linker",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 22
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "i5 index primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Read2 primer",
+        "template": "bottom",
+        "cycles": 14,
+        "segments": [
+          {
+            "name": "cell barcode 2 (BC2)",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "UFI (UMI)",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Cell + bead co-encapsulation & lysis/fragmentation",
+      "summary": "Single cells, inDrop-v3 barcoded beads and lysis/fragmentation buffer are co-encapsulated in ~0.55 nl droplets, lysed, and RNA is heat-fragmented.",
+      "note": "Flow-focusing device (80 \u00b5m junction, 115 Hz). Lysis mix: dNTPs, IGEPAL-CA630, 40 mM Tris-HCl pH8, First-Strand Buffer, 3 mM MgCl2, Thermolabile Proteinase K. 20 min RT lysis, then 85 \u00b0C / 6.5 min fragmentation (no sequence-specific random priming).",
+      "product": "  droplet: [cell lysate + fragmented RNA]  +  [barcoded bead]\n  5'- ...NNNNN(RNA fragment)NNNNN -3'   (multiple fragments, no poly(A) yet)"
+    },
+    {
+      "step": 2,
+      "title": "Barcode photocleavage",
+      "summary": "UV illumination releases the barcoded oligo-dT primer from the polyacrylamide bead into the droplet.",
+      "note": "High-intensity UV lamp, 7 min.",
+      "product": "  free primer: 5'-[handle/T7][BC1][W1][BC2][UFI]TTTTT...-3'"
+    },
+    {
+      "step": 3,
+      "title": "Picoinjection 1 \u2014 end repair & poly(A) tailing",
+      "summary": "T4 PNK repairs fragment ends and E. coli poly(A) polymerase adds a poly(A) tail to every RNA fragment.",
+      "note": "Coalescence-activated picoinjection (250 V, 10 kHz). Enables capture of non-polyadenylated species. 25 min RT + 8 min 37 \u00b0C.",
+      "product": "  5'- (RNA fragment) -AAAAAAAAAA -3'"
+    },
+    {
+      "step": 4,
+      "title": "Picoinjection 2 \u2014 reverse transcription",
+      "summary": "The barcoded oligo-dT primer anneals to the poly(A) tail and SuperScript III makes first-strand cDNA, tagging each fragment with cell barcode + UFI.",
+      "note": "50 \u00b0C / 2 h then 70 \u00b0C inactivation; droplets collected in ~1,000-cell fractions and de-emulsified.",
+      "product": "  RNA  5'- (fragment) AAAAAAA................3'\n  cDNA 3'- (fragment)*TTTTTTT[UFI][BC2][W1][BC1][handle/T7] -5'"
+    },
+    {
+      "step": 5,
+      "title": "Second-strand synthesis",
+      "summary": "E. coli DNA Pol I / RNaseH convert the cDNA:RNA hybrid into double-stranded cDNA bearing an intact T7 promoter.",
+      "note": "Same as SORT-seq/CEL-seq downstream.",
+      "product": "  ds cDNA with [T7 promoter][barcode][UFI] at one end"
+    },
+    {
+      "step": 6,
+      "title": "In vitro transcription (linear amplification)",
+      "summary": "T7 RNA polymerase transcribes the ds cDNA into many antisense aRNA copies.",
+      "note": "HiScribe/MEGAscript T7. Linear, low-bias amplification carrying barcode + UFI.",
+      "product": "  aRNA (antisense) 5'- [handle][BC1][W1][BC2][UFI](gene body) -3'"
+    },
+    {
+      "step": 7,
+      "title": "rRNA depletion",
+      "summary": "Antisense DNA probes hybridize residual rRNA-derived aRNA, which is cleaved by thermostable RNaseH and removed by DNase.",
+      "note": "~200 tiled probes (Table S12); hybridize 95\u219245 \u00b0C, RNaseH 45 \u00b0C/30 min, RQ1 DNase 37 \u00b0C.",
+      "product": "  rRNA-depleted aRNA (mRNA-derived fragments retained)"
+    },
+    {
+      "step": 8,
+      "title": "RA3 3' adapter ligation",
+      "summary": "The pre-adenylated, 3'-blocked RA3 adapter is ligated to the 3' end of each aRNA by T4 RNA Ligase 2 (truncated).",
+      "note": "25 \u00b0C / 1 h. RA3 = TGGAATTCTCGGGTGCCAAGG.",
+      "product": "  5'-[handle][BC1][W1][BC2][UFI](gene body)-TGGAATTCTCGGGTGCCAAGG-3'"
+    },
+    {
+      "step": 9,
+      "title": "Reverse transcription with RTP",
+      "summary": "The RTP primer anneals to the ligated RA3 adapter and SuperScript III makes cDNA of the aRNA.",
+      "note": "65 \u00b0C anneal \u2192 50 \u00b0C / 1 h; RNaseA cleanup. RTP = GCCTTGGCACCCGAGAATTCCA.",
+      "product": "  aRNA  3'-...GGAACCGTGGGCTCTTAAGGT -5'\n  cDNA        GCCTTGGCACCCGAGAATTCCA-...(gene body)[UFI][BC2][W1][BC1][handle] -3'\n              <-------- RTP extension"
+    },
+    {
+      "step": 10,
+      "title": "Dual-indexed PCR",
+      "summary": "Kapa HiFi PCR with VD_ILMN8 i5 (P5) and i7 (P7) primers adds flow-cell adapters and unique dual sample indices, yielding the final library.",
+      "note": "2 + 5\u20136 cycles (55\u219265 \u00b0C anneal). i5 3' handle (TCGTCGGCAGCGTC) primes the RA3/RTP side; i7 common (GGGTGTCGGGTGCAG) primes the bead-handle/barcode side. 0.8x AMPure \u00d72; Bioanalyzer QC.",
+      "product": "  5'-AATGATACGGCGACCACCGAGATCTACAC[i5]TCGTCGGCAGCGTC...[CDNA]...[UFI][BC2][W1][BC1]...[i7]ATCTCGTATGCCGTCTTCTGCTTG-3'\n     P5-----------------------------i5------------------ insert -------- barcode -----i7----------------P7"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read1",
+      "primer": "Read1 sequencing primer = s5/Read1 handle (5'-TCGTCGGCAGCGTC-3')",
+      "template": "top",
+      "cycles": 247,
+      "note": "Biological read: primer binds the s5 handle, reads through the 22-nt RTP/RA3-derived region and then across the fragmented total-RNA cDNA insert (even gene-body coverage). Adapter/homopolymer trimmed before mapping.",
+      "diagram": "                      Read1 primer\n                      5'-TCGTCGGCAGCGTC------------------------------->  R1 (247 bp)\n5'- ...GAGATCTACAC[i5]TCGTCGGCAGCGTCGCCTTGGCACCCGAGAATTCCA[--cDNA--]poly(dA)... -3'\n3'- ...CTCTAGATGTG[i5]AGCAGCCGTCGCAGCGGAACCGTGGGCTCTTAAGGT[--cDNA--]poly(dT)... -5'"
+    },
+    {
+      "read": "Index1 (i7)",
+      "primer": "i7 index sequencing primer = 15-bp inDrop common handle (5'-GGGTGTCGGGTGCAG-3')",
+      "template": "bottom",
+      "cycles": 31,
+      "note": "Primer anneals to the top-strand reverse complement of the 15-bp common handle (CTGCACCCGACACCC) and reads leftward, reporting cell barcode 1 (BC1, 8 nt) followed by the W1 linker (22 nt) \u2014 the inDrop-v3 first barcode.",
+      "diagram": "5'- ...[--W1: 22 bp--][BC1: 8bp]CTGCACCCGACACCC[i7:8]ATCTCGTATGCC... -3'\n            I1 (31 bp): BC1(8)+W1(22)  GACGTGGGCTGTGGG-5'  (i7 index primer)\n                       <------------------\n3'- ...[--W1'-------][BC1':8 ]GACGTGGGCTGTGGG[i7':8]TAGAGCATACGG... -5'"
+    },
+    {
+      "read": "Index2 (i5)",
+      "primer": "i5 index sequencing primer (binds s5 handle; NovaSeq forward-strand i5 read)",
+      "template": "top",
+      "cycles": 8,
+      "note": "Reads the 8-nt i5 sample index; on the NovaSeq 6000 forward-strand workflow the i5 primer binds the s5/Read1 handle and reads the index toward P5.",
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5:8]TCGTCGGCAGCGTC... -3'\n                          i5 primer  <------GACGCTGCCGACGA\n                              I2 (8 bp): i5 index\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5':8]AGCAGCCGTCGCAG... -5'"
+    },
+    {
+      "read": "Read2",
+      "primer": "Read2 sequencing primer (binds inDrop-v3 W1 linker)",
+      "template": "bottom",
+      "cycles": 14,
+      "note": "Primer anneals to the W1 linker and reads BC2 (8 nt) + UFI/UMI (6 nt). After demultiplexing, the four raw reads are collapsed to two: a combined 16-nt cell barcode (BC1+BC2) + 6-nt UFI, and the cDNA read.",
+      "diagram": "5'- ...poly(dA)[UFI:6][BC2:8][----W1: 22 bp----][BC1:8]... -3'\n                  R2 (14 bp)  <------W1-primer\n                  BC2(8)+UFI(6)\n3'- ...poly(dT)[UFI':6][BC2':8][----W1'---------][BC1':8]... -5'"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "VASA-drop",
+  "description": "VASA-seq (droplet format, \"VASA-drop\") is a high-throughput single-cell TOTAL RNA-seq assay: after cell lysis, all RNA is fragmented, end-repaired and poly(A)-tailed so that non-polyadenylated as well as polyadenylated transcripts are captured. Fragments are reverse-transcribed with inDrop-v3 barcoded oligo-dT beads (cell barcode + 6-nt unique fragment identifier/UFI), second-strand synthesized, linearly amplified by T7 in vitro transcription, rRNA-depleted, then converted to an Illumina library (RA3 3' ligation \u2192 RTP reverse transcription \u2192 dual-indexed PCR). Read1 reads the fragmented cDNA insert across the gene body; the cell barcode, UFI and dual sample indices are read in the index/Read2 reads.",
+  "reference": {
+    "kind": "paper",
+    "label": "VASA-seq Supplementary Table 14: reagents and equipment",
+    "path": null,
+    "url": "https://doi.org/10.1038/s41587-022-01361-8",
+    "doi": "10.1038/s41587-022-01361-8"
+  },
+  "publication": {
+    "year": 2022,
+    "original_publication": {
+      "title": "High-throughput total RNA sequencing in single cells using VASA-seq",
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/s41587-022-01361-8",
+      "url": "https://doi.org/10.1038/s41587-022-01361-8"
+    },
+    "authors": [
+      {
+        "name": "Fredrik Salmen",
+        "affiliation": "Hubrecht Institute-KNAW and University Medical Center, Utrecht, Netherlands; Oncode Institute"
+      },
+      {
+        "name": "Joachim De Jonghe",
+        "affiliation": "Department of Biochemistry, University of Cambridge, UK (present address: Francis Crick Institute, London)"
+      },
+      {
+        "name": "Tomasz S. Kaminski",
+        "affiliation": "Department of Biochemistry, University of Cambridge, UK"
+      },
+      {
+        "name": "Anna Alemany",
+        "affiliation": "Hubrecht Institute-KNAW; Oncode Institute, Utrecht, Netherlands"
+      },
+      {
+        "name": "Guillermo E. Parada",
+        "affiliation": "Wellcome Sanger Institute, Hinxton, UK"
+      },
+      {
+        "name": "Joe Verity-Legg",
+        "affiliation": "Hubrecht Institute-KNAW; Oncode Institute, Utrecht, Netherlands"
+      },
+      {
+        "name": "Ayaka Yanagida",
+        "affiliation": "Institute of Medical Science, University of Tokyo, Japan"
+      },
+      {
+        "name": "Timo N. Kohler",
+        "affiliation": "Department of Biochemistry / WT-MRC Stem Cell Institute, University of Cambridge, UK"
+      },
+      {
+        "name": "Nicholas Battich",
+        "affiliation": "Hubrecht Institute-KNAW; Oncode Institute, Utrecht, Netherlands"
+      },
+      {
+        "name": "Floris van den Brekel",
+        "affiliation": "Hubrecht Institute-KNAW; Oncode Institute, Utrecht, Netherlands"
+      },
+      {
+        "name": "Anna L. Ellermann",
+        "affiliation": "Department of Biochemistry, University of Cambridge, UK"
+      },
+      {
+        "name": "Alfonso Martinez Arias",
+        "affiliation": "Systems Bioengineering, DCEXS, Universidad Pompeu Fabra, Barcelona, Spain"
+      },
+      {
+        "name": "Jennifer Nichols",
+        "affiliation": "WT-MRC Stem Cell Institute and Dept. of Physiology, Development and Neuroscience, University of Cambridge, UK"
+      },
+      {
+        "name": "Martin Hemberg",
+        "affiliation": "Wellcome Sanger Institute, Hinxton, UK; Evergrande Center for Immunologic Diseases, Harvard Medical School and Brigham and Women's Hospital, Boston, MA, USA"
+      },
+      {
+        "name": "Florian Hollfelder",
+        "corresponding": true,
+        "email": "fh111@cam.ac.uk",
+        "affiliation": "Department of Biochemistry, University of Cambridge, UK"
+      },
+      {
+        "name": "Alexander van Oudenaarden",
+        "corresponding": true,
+        "email": "a.vanoudenaarden@hubrecht.eu",
+        "affiliation": "Hubrecht Institute-KNAW and University Medical Center, Utrecht; Oncode Institute, Netherlands"
+      }
+    ],
+    "throughput": {
+      "summary": ">30,000 single cells profiled for the mouse atlas (33,662 cells across E6.5\u2013E9.5); high-throughput droplet format at ~$0.11 USD per cell for sequencing-ready libraries.",
+      "cells": "33,662 single cells (mouse gastrulation/early organogenesis); VASA-drop is the high-throughput droplet arm",
+      "rna": "Total RNA (poly(A)+ and non-poly(A)); ~9,825 \u00b1 280 genes/cell at 75,000 reads/cell; 56.5% unspliced reads (VASA-drop)",
+      "dna": "Dual-indexed Illumina libraries; sequenced on NovaSeq 6000 S2 300-cycle (R1 247 / I1 31 / I2 8 / R2 14)"
+    },
+    "statistical_model": "RNA velocity modeled with scVelo (stochastic and dynamical models); differential splicing-node inclusion (DISNs) modeled by fitting a beta distribution and thresholding CDF-beta values; histone-content bimodality fit with a Weibull distribution; differential expression via two-sided t-test.",
+    "other": [
+      {
+        "label": "Heterotypic doublet rate",
+        "value": "3.08% (human HEK293T / mouse mESC species mixing)"
+      },
+      {
+        "label": "Cell/bead co-encapsulation",
+        "value": "86%; picoinjection success ~98% per injection"
+      },
+      {
+        "label": "Key innovation",
+        "value": "Fragmentation + end-repair + poly(A) tailing of ALL RNA before RT, giving even gene-body coverage and non-polyadenylated (e.g. histone, sncRNA) capture"
+      },
+      {
+        "label": "Cost",
+        "value": "~$0.11 USD/cell (VASA-drop) vs $0.98 (VASA-plate) and ~$0.5 (10x Chromium v2)"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO GSE176588; code at github.com/hemberg-lab/VASAseq_2022"
+      },
+      {
+        "label": "Workflow lineage",
+        "value": "Droplet generation similar to inDrop (Klein 2015); final library resembles CEL-seq/CEL-seq2 (Hashimshony 2012; Muraro 2016)"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "droplet",
+  "data_processing": {
+    "summary": "A custom Python/Snakemake pipeline demultiplexes and rearranges the four sequencing reads into a cDNA read plus a barcode/UFI read, whitelists cell barcodes, trims and rRNA-depletes in silico, aligns with STAR, then assigns reads to spliced/unspliced gene biotypes and collapses by strand-specific UFI to build count matrices; downstream analysis covers clustering, RNA velocity and full-length alternative-splicing quantification.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "barcode",
+        "label": "Barcode Processing"
+      },
+      {
+        "id": "qc",
+        "label": "Trimming & rRNA Depletion"
+      },
+      {
+        "id": "align",
+        "label": "Genome Alignment"
+      },
+      {
+        "id": "quant",
+        "label": "Molecule Counting"
+      },
+      {
+        "id": "cell",
+        "label": "Cell-Level Analysis"
+      },
+      {
+        "id": "velocity",
+        "label": "RNA Velocity"
+      },
+      {
+        "id": "splicing",
+        "label": "Alternative Splicing"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "rearrange",
+        "label": "Rearrange 4 reads to 2",
+        "tool": "",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "extract_bc",
+        "label": "Extract barcode and UFI",
+        "tool": "",
+        "stage": "barcode",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "whitelist",
+        "label": "Whitelist barcodes (Hamming \u22642)",
+        "tool": "",
+        "stage": "barcode",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim_adapter",
+        "label": "Trim adapters",
+        "tool": "Trim Galore",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim_homopolymer",
+        "label": "Trim 3' homopolymers",
+        "tool": "Cutadapt",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "map_rrna",
+        "label": "Map reads to rRNA",
+        "tool": "bwa",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "discard_rrna",
+        "label": "Discard rRNA mappers",
+        "tool": "Samtools",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "star",
+        "label": "Align reads to genome",
+        "tool": "STAR",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "assign_biotype",
+        "label": "Assign reads to biotypes",
+        "tool": "",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse_ufi",
+        "label": "Collapse molecules by UFI",
+        "tool": "",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_matrix",
+        "label": "Build count matrix",
+        "tool": "DropletUtils",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "scrublet",
+        "label": "Remove doublets",
+        "tool": "Scrublet",
+        "stage": "cell",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "normalize",
+        "label": "Normalize library size",
+        "tool": "Scanpy",
+        "stage": "cell",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "leiden",
+        "label": "Leiden cluster cells",
+        "tool": "Scanpy",
+        "stage": "cell",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "umap",
+        "label": "Embed cells (UMAP)",
+        "tool": "Scanpy",
+        "stage": "cell",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "velocyto",
+        "label": "Count spliced/unspliced reads",
+        "tool": "Velocyto",
+        "stage": "velocity",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "scvelo",
+        "label": "Estimate RNA velocity",
+        "tool": "scVelo",
+        "stage": "velocity",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "hisat2",
+        "label": "Align reads (transcriptome)",
+        "tool": "HISAT2",
+        "stage": "splicing",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "stringtie",
+        "label": "Assemble transcripts",
+        "tool": "StringTie2",
+        "stage": "splicing",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "whippet",
+        "label": "Quantify splicing nodes",
+        "tool": "Whippet",
+        "stage": "splicing",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "rearrange",
+        "to": "extract_bc",
+        "kind": "branch"
+      },
+      {
+        "from": "rearrange",
+        "to": "trim_adapter",
+        "kind": "branch"
+      },
+      {
+        "from": "extract_bc",
+        "to": "whitelist",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim_adapter",
+        "to": "trim_homopolymer",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim_homopolymer",
+        "to": "map_rrna",
+        "kind": "sequential"
+      },
+      {
+        "from": "map_rrna",
+        "to": "discard_rrna",
+        "kind": "sequential"
+      },
+      {
+        "from": "discard_rrna",
+        "to": "star",
+        "kind": "branch"
+      },
+      {
+        "from": "discard_rrna",
+        "to": "hisat2",
+        "kind": "branch"
+      },
+      {
+        "from": "star",
+        "to": "assign_biotype",
+        "kind": "branch"
+      },
+      {
+        "from": "star",
+        "to": "velocyto",
+        "kind": "branch"
+      },
+      {
+        "from": "assign_biotype",
+        "to": "collapse_ufi",
+        "kind": "sequential"
+      },
+      {
+        "from": "whitelist",
+        "to": "collapse_ufi",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse_ufi",
+        "to": "count_matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "count_matrix",
+        "to": "scrublet",
+        "kind": "sequential"
+      },
+      {
+        "from": "scrublet",
+        "to": "normalize",
+        "kind": "sequential"
+      },
+      {
+        "from": "normalize",
+        "to": "leiden",
+        "kind": "branch"
+      },
+      {
+        "from": "normalize",
+        "to": "umap",
+        "kind": "branch"
+      },
+      {
+        "from": "velocyto",
+        "to": "scvelo",
+        "kind": "sequential"
+      },
+      {
+        "from": "hisat2",
+        "to": "stringtie",
+        "kind": "sequential"
+      },
+      {
+        "from": "stringtie",
+        "to": "whippet",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "no NB/Poisson count model; differential expression by two-sided t-test, differential splicing-node inclusion by a fitted beta distribution (CDF-beta), histone-content bimodality by a Weibull distribution, RNA velocity by scVelo stochastic/dynamical models"
+  }
+}

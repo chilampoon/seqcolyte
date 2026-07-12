@@ -1,0 +1,824 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "quartz_seq",
+  "assay": "Quartz-Seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "Quartz-seq_original_paper.pdf",
+      "title": "Quartz-Seq: a highly reproducible and sensitive single-cell RNA sequencing method, reveals non-genetic gene-expression heterogeneity",
+      "url": "https://doi.org/10.1186/gb-2013-14-4-r31",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/quartz_seq/Quartz-seq_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "Quartz-seq_LIMprep_protocol.pdf",
+      "title": "DNA library preparation for Quartz-Seq: LIMprep",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/quartz_seq/Quartz-seq_LIMprep_protocol.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_gb-2013-14-4-r31-S8.XLS",
+      "title": "Quartz-Seq: a highly reproducible and sensitive single-cell RNA sequencing method, reveals non-genetic gene-expression heterogeneity",
+      "url": "https://doi.org/10.1186/gb-2013-14-4-r31",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/quartz_seq/supplementary_gb-2013-14-4-r31-S8.XLS",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_gb-2013-14-4-r31-S2.DOCX",
+      "title": "Quartz-Seq: a highly reproducible and sensitive single-cell RNA sequencing method, reveals non-genetic gene-expression heterogeneity",
+      "url": "https://doi.org/10.1186/gb-2013-14-4-r31",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/quartz_seq/supplementary_gb-2013-14-4-r31-S2.DOCX",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_gb-2013-14-4-r31-S7.XLS",
+      "title": "Quartz-Seq: a highly reproducible and sensitive single-cell RNA sequencing method, reveals non-genetic gene-expression heterogeneity",
+      "url": "https://doi.org/10.1186/gb-2013-14-4-r31",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/quartz_seq/supplementary_gb-2013-14-4-r31-S7.XLS",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_gb-2013-14-4-r31-S4.XLS",
+      "title": "Quartz-Seq: a highly reproducible and sensitive single-cell RNA sequencing method, reveals non-genetic gene-expression heterogeneity",
+      "url": "https://doi.org/10.1186/gb-2013-14-4-r31",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/quartz_seq/supplementary_gb-2013-14-4-r31-S4.XLS",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_gb-2013-14-4-r31-S3.PDF",
+      "title": "Quartz-Seq: a highly reproducible and sensitive single-cell RNA sequencing method, reveals non-genetic gene-expression heterogeneity",
+      "url": "https://doi.org/10.1186/gb-2013-14-4-r31",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/quartz_seq/supplementary_gb-2013-14-4-r31-S3.PDF",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_gb-2013-14-4-r31-S1.PDF",
+      "title": "Quartz-Seq: a highly reproducible and sensitive single-cell RNA sequencing method, reveals non-genetic gene-expression heterogeneity",
+      "url": "https://doi.org/10.1186/gb-2013-14-4-r31",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/quartz_seq/supplementary_gb-2013-14-4-r31-S1.PDF",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "Quartz-seq.pdf",
+      "title": "Quartz-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/quartz_seq/Quartz-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_rt_primer_wta",
+      "name": "RT primer (WTA)",
+      "aliases": [],
+      "role": "Reverse transcription primer; primes first-strand cDNA on the mRNA poly(A) tail and adds the WTA tag + T7 promoter to the cDNA 5' end",
+      "kind": "assembled",
+      "sequence": "TATAGAATTCGCGGCCGCTCGCGATAATACGACTCACTATAGGGCGTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "WTA tag / PCR target region (M; EcoRI+NotI)",
+          "sequence": "TATAGAATTCGCGGCCGCTCGCGAT",
+          "role": "Common adapter/PCR-target region used for suppression PCR"
+        },
+        {
+          "name": "T7 promoter",
+          "sequence": "AATACGACTCACTATAGGGCG",
+          "role": "T7 RNA polymerase promoter (enables IVT for Quartz-Chip)"
+        },
+        {
+          "name": "oligo-dT24",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "Anneals to mRNA poly(A) tail"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "HPLC-purified. Identical primer used for the qPCR (non-WTA) RT reaction."
+    },
+    {
+      "oligo_id": "oligo_tagging_primer",
+      "name": "Tagging primer",
+      "aliases": [],
+      "role": "Second-strand synthesis primer; anneals to the TdT-added poly(A) tail on first-strand cDNA and adds the WTA tag to the other end",
+      "kind": "assembled",
+      "sequence": "TATAGAATTCGCGGCCGCTCGCGATTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "WTA tag / PCR target region (M; EcoRI+NotI)",
+          "sequence": "TATAGAATTCGCGGCCGCTCGCGAT",
+          "role": "Common adapter/PCR-target region"
+        },
+        {
+          "name": "oligo-dT24",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "Anneals to the poly(A) tail added to first-strand cDNA"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "HPLC-purified. Lacks the T7 promoter; only the tag + poly-dT."
+    },
+    {
+      "oligo_id": "oligo_suppression_pcr_primer",
+      "name": "Suppression PCR primer (B primer)",
+      "aliases": [],
+      "role": "Single PCR primer for WTA enrichment; suppression PCR that amplifies full-length cDNA while short byproducts self-anneal into a pan-like structure",
+      "kind": "single",
+      "sequence": "GTATAGAATTCGCGGCCGCTCGCGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' NH2(C6) aminated (blocks ligation to TruSeq adapter). 'B primer' (one extra G vs the 'A primer' TATAGAATTCGCGGCCGCTCGCGAT). HPLC-purified; Sigma-Aldrich or Takara-Clontech recommended. 5' amination not required if Nextera/Nextera XT is used for library prep."
+    },
+    {
+      "oligo_id": "oligo_truseq_universal_adapter_trsu",
+      "name": "TruSeq universal adapter (TRSU)",
+      "aliases": [],
+      "role": "P5-side TruSeq adapter oligo (universal strand of the Y-adapter)",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell binding sequence"
+        },
+        {
+          "name": "TruSeq Read 1 primer",
+          "sequence": "TCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "Read 1 sequencing primer binding site"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "HPLC-purified. 3'-terminal phosphorothioate bond (...CCGATC*T). Self-produced TruSeq adapter."
+    },
+    {
+      "oligo_id": "oligo_truseq_indexed_adapter_trsi",
+      "name": "TruSeq indexed adapter (TRSI)",
+      "aliases": [],
+      "role": "P7-side TruSeq adapter oligo carrying the i7 sample index (index strand of the Y-adapter)",
+      "kind": "assembled",
+      "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 2 adapter",
+          "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+          "role": "Read 2 / index sequencing primer binding site"
+        },
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:6]",
+          "role": "6-bp TruSeq sample index"
+        },
+        {
+          "name": "P7 (reverse complement)",
+          "sequence": "ATCTCGTATGCCGTCTTCTGCTTG",
+          "role": "Reverse complement of Illumina P7"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "HPLC-purified. 5'-phosphate; 3'-terminal phosphorothioate (...GCTT*G). Index sequences: TRSI-1 ATCACG, TRSI-2 CGATGT, TRSI-3 TTAGGC, TRSI-4 TGACCA, TRSI-5 ACAGTG, TRSI-6 GCCAAT, TRSI-7 CAGATC, TRSI-8 ACTTGA, TRSI-9 GATCAG, TRSI-10 TAGCTT, TRSI-11 GGCTAC, TRSI-12 CTTGTA."
+    },
+    {
+      "oligo_id": "oligo_truseq_adapter_ds",
+      "name": "TruSeq adapter (annealed, double-stranded Y-adapter)",
+      "aliases": [],
+      "role": "Ligated sequencing adapter formed by annealing TRSU + one TRSI index oligo",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TRSU (universal strand)",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "P5 arm of the forked adapter"
+        },
+        {
+          "name": "TRSI (index strand)",
+          "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+          "role": "P7/index arm of the forked adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Annealed by heating equal amounts of 100 uM TRSU + TRSI to 95C then ramping -0.5C/cycle x170; forms a Y-shaped adapter with a ligatable T-overhang."
+    },
+    {
+      "oligo_id": "oligo_library_pcr_primer_tpc1",
+      "name": "Library PCR primer TPC1 (P5)",
+      "aliases": [],
+      "role": "Library amplification forward primer (P5)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "HPLC-purified. 3'-terminal phosphorothioate (...CCGA*G). Corresponds to Illumina P5."
+    },
+    {
+      "oligo_id": "oligo_library_pcr_primer_tpc2",
+      "name": "Library PCR primer TPC2 (P7)",
+      "aliases": [],
+      "role": "Library amplification reverse primer (P7)",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "HPLC-purified. 3'-terminal phosphorothioate (...TACGA*G). Corresponds to Illumina P7."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "P5 flow-cell grafting sequence (5' end of final library)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Contained within TRSU / primed by TPC1."
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "P7 flow-cell grafting sequence (3' end of final library, appears as reverse complement on the top strand)",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Contained within TRSI (as ATCTCGTATGCCGTCTTCTGCTTG revcomp) / primed by TPC2."
+    },
+    {
+      "oligo_id": "oligo_truseq_read1_seq_primer",
+      "name": "Illumina TruSeq Read 1 sequencing primer",
+      "aliases": [],
+      "role": "Read 1 sequencing primer",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq Read 1 primer (binding site supplied by TRSU; sequence not separately printed in the protocol)."
+    },
+    {
+      "oligo_id": "oligo_truseq_read2_seq_primer",
+      "name": "Illumina TruSeq Read 2 sequencing primer",
+      "aliases": [],
+      "role": "Read 2 sequencing primer",
+      "kind": "single",
+      "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq Read 2 primer (binding site supplied by TRSI; sequence not separately printed in the protocol)."
+    },
+    {
+      "oligo_id": "oligo_truseq_index_seq_primer",
+      "name": "Illumina TruSeq index sequencing primer",
+      "aliases": [],
+      "role": "i7 sample index read primer",
+      "kind": "single",
+      "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq index-read primer (binding site supplied by TRSI; sequence not separately printed in the protocol)."
+    }
+  ],
+  "final_library": {
+    "source_label": "Quartz-Seq WTA cDNA + LIMprep TruSeq paired-end library",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]GATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]GATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]GATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]GATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CDNA]CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CDNA]CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "TCTTTCCCTACACGACGCTCTTCCGATCT = TruSeq Read 1 primer",
+      "[CDNA] = cDNA insert (Covaris-fragmented amplified WTA cDNA)",
+      "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC = TruSeq Read 2 adapter",
+      "[SAMPLE_INDEX:6] = i7 sample index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Quartz-Seq WTA cDNA + LIMprep TruSeq paired-end library",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TruSeq Read 1 sequencing primer",
+        "template": "bottom",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "TruSeq index sequencing primer",
+        "template": "top",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "TruSeq Read 2 sequencing primer",
+        "template": "top",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Reverse transcription (first-strand cDNA)",
+      "summary": "SuperScript III extends the oligo-dT RT primer on the mRNA poly(A) tail, tagging the cDNA 5' end with the WTA tag + T7 promoter.",
+      "note": "Single cell lysed in 0.5% NP-40; RT primer denatured/annealed (70C/35C) then extended at 35C->45C. The RT primer's oligo-dT24 anneals to the mRNA poly(A) tail.",
+      "product": "first-strand cDNA (RNA template still present):\n5'- TATAGAATTCGCGGCCGCTCGCGATAATACGACTCACTATAGGGCG(T)24[cDNA] -3'\n3'- .....................................mRNA.........AAAA -5'"
+    },
+    {
+      "step": 2,
+      "title": "Primer digestion (Exonuclease I)",
+      "summary": "Exo I digests residual single-stranded RT primer to prevent byproduct synthesis.",
+      "note": "37C 30 min then heat-inactivated. Removes most (not all) unextended RT primer; the cDNA is protected as a duplex.",
+      "product": "first-strand cDNA (surviving RT primer removed):\n5'- TATAGAATTCGCGGCCGCTCGCGATAATACGACTCACTATAGGGCG(T)24[cDNA] -3'"
+    },
+    {
+      "step": 3,
+      "title": "Restricted poly-A tailing (TdT) + RNase H",
+      "summary": "Terminal transferase adds a short poly(A) tail to the cDNA 3' end while RNase H removes the mRNA.",
+      "note": "37C 50 sec (restricted time to keep the tail short) then 65C. Temperature is tightly controlled to avoid byproducts.",
+      "product": "poly-A-tailed first-strand cDNA:\n5'- TATAGAATTCGCGGCCGCTCGCGATAATACGACTCACTATAGGGCG(T)24[cDNA](A)n -3'"
+    },
+    {
+      "step": 4,
+      "title": "Second-strand synthesis (tagging primer)",
+      "summary": "The tagging primer anneals to the new poly(A) tail and MightyAmp builds the second strand, placing the WTA tag at both ends.",
+      "note": "98C->40C->68C. Both ends now carry the complementary M tag region, creating the substrate for suppression PCR.",
+      "product": "double-stranded cDNA, tag at both ends:\n5'- TATAGAATTCGCGGCCGCTCGCGAT...(T)24[cDNA](A)n...ATCGCGAGCGGCCGCGAATTCTATA -3'\n3'- ATATCTTAAGCGCCGGCGAGCGCTA...(A)24[cDNA'](T)n...TAGCGCTCGCCGGCGCTTAAGATAT -5'"
+    },
+    {
+      "step": 5,
+      "title": "PCR enrichment (suppression PCR)",
+      "summary": "The single aminated suppression primer amplifies full-length cDNA; short byproducts self-anneal into a pan-like structure and are suppressed.",
+      "note": "MightyAmp, 16-21 cycles (98C/65C/68C). Complementary tag ends on short molecules pair intramolecularly and block priming.",
+      "product": "amplified double-stranded cDNA (aminated tag at both ends):\n5'- (NH2)GTATAGAATTCGCGGCCGCTCGCGAT......[cDNA]......ATCGCGAGCGGCCGCGAATTCTATAC(NH2) -3'\n3'- (NH2)CATATCTTAAGCGCCGGCGAGCGCTA......[cDNA']......TAGCGCTCGCCGGCGCTTAAGATATG(NH2) -5'"
+    },
+    {
+      "step": 6,
+      "title": "Purification of amplified cDNA",
+      "summary": "Amplified cDNA is column-purified (MinElute / Zymo DNA Clean & Concentrator-5).",
+      "note": "~63 ng cDNA obtained from 10 pg total RNA after 21 cycles; no byproducts, so no gel purification is needed.",
+      "product": "purified amplified WTA cDNA (~400-4000 bp), same structure as step 5"
+    },
+    {
+      "step": 7,
+      "title": "Covaris fragmentation (LIMprep)",
+      "summary": "20 ng amplified cDNA is sheared by focused ultrasonication to ~200-400 bp fragments.",
+      "note": "S220: duty 10%, PIP 175 W, 100 cycles/burst, 600 s. Terminal fragments still bear the 5'-aminated WTA tag, which blocks adapter ligation, so only internal cDNA fragments become sequenceable.",
+      "product": "random dsDNA fragments:\n5'- XXXXXXXXXXXXXX[cDNA]XXXXXXXXXXXXXX -3'\n3'- XXXXXXXXXXXXXX[cDNA]XXXXXXXXXXXXXX -5'"
+    },
+    {
+      "step": 8,
+      "title": "End repair",
+      "summary": "KAPA End Repair blunts and phosphorylates fragment ends.",
+      "note": "20C 30 min. Purified on DNA Clean & Concentrator-5 (Ampure XP avoided to retain <100 bp fragments).",
+      "product": "blunt-ended dsDNA fragment:\n5'-  [cDNA fragment]  -3'\n3'-  [cDNA fragment]  -5'"
+    },
+    {
+      "step": 9,
+      "title": "dA-tailing",
+      "summary": "KAPA A-tailing adds a single 3' A overhang to each end.",
+      "note": "30C 30 min.",
+      "product": "A-tailed fragment:\n5'-  [cDNA fragment]A -3'\n3'- A[cDNA fragment]  -5'"
+    },
+    {
+      "step": 10,
+      "title": "TruSeq adapter ligation",
+      "summary": "Self-produced TruSeq Y-adapters (TRSU + indexed TRSI) are ligated to both ends; adapter dimers are removed with AMPure XP.",
+      "note": "20C 15 min. The forked adapter puts the P5/Read1 arm on one end and the Read2/index/P7 arm on the other.",
+      "product": "adapter-ligated fragment (forked adapters):\n5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC -5'"
+    },
+    {
+      "step": 11,
+      "title": "Library PCR enrichment (TPC1 + TPC2)",
+      "summary": "KAPA HiFi with TPC1 (P5) and TPC2 (P7) amplifies adapter-ligated fragments into the final indexed paired-end library.",
+      "note": "98C/60C/72C, typically 10-12 cycles; cycle number pre-determined by qPCR. AMPure XP cleanup; QC by BioAnalyzer + KAPA qPCR.",
+      "product": "final sequenceable library:\n5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]GATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CDNA]CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (cDNA insert)",
+      "primer": "TruSeq Read 1 sequencing primer (5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3')",
+      "template": "bottom",
+      "cycles": 50,
+      "note": "Primer is identical to the P5-proximal top-strand region; it anneals to the bottom strand and reads one end of the cDNA insert 5'->3' into the fragment. Paired-end 50x2 on HiSeq 1000/2000.",
+      "diagram": "                             ACACTCTTTCCCTACACGACGCTCTTCCGATCT------->\n5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CDNA]... -5'"
+    },
+    {
+      "read": "Index 1 (i7 sample index)",
+      "primer": "TruSeq index sequencing primer (5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3')",
+      "template": "bottom",
+      "cycles": 6,
+      "note": "Primer is identical to the top-strand Read-2 adaptor region; it anneals to the bottom strand and reads the 6-bp i7 index (e.g. CGATGT for TRSI-2).",
+      "diagram": "             GATCGGAAGAGCACACGTCTGAACTCCAGTCAC------>\n5'- ...[CDNA]GATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[CDNA]CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'"
+    },
+    {
+      "read": "Read 2 (cDNA insert)",
+      "primer": "TruSeq Read 2 sequencing primer (5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3'; shown 3'->5' below its binding site)",
+      "template": "top",
+      "cycles": 50,
+      "note": "Primer anneals to the top strand at the P7-proximal Read-2 adaptor and extends leftward into the cDNA insert, reading the opposite end. Primer 3' end pairs at the insert/adaptor junction.",
+      "diagram": "5'- ...[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNN... -3'\n3'- ...[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNN... -5'\n  <-------3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "Quartz-Seq",
+  "description": "Quartz-Seq is a plate-based, full-length single-cell RNA-seq / whole-transcript amplification (WTA) method. A single cell is lysed in a PCR tube and reverse-transcribed with an oligo-dT primer carrying a common tag (an EcoRI/NotI 'M' PCR-target region plus a T7 promoter); the RT primer is then digested with exonuclease I, the first-strand cDNA is given a restricted poly-A tail by terminal transferase, a tagging primer builds the second strand so both ends share the tag, and suppression PCR enriches full-length cDNA while eliminating short byproducts \u2014 all in one tube without purification. The amplified cDNA is Covaris-fragmented and converted into a paired-end TruSeq Illumina library (LIMprep). Reads capture cDNA fragments only (there are no cell barcodes or UMIs); sample multiplexing is provided by the TruSeq i7 index in the ligated adapter.",
+  "reference": {
+    "kind": "paper",
+    "label": "Quartz-Seq: a highly reproducible and sensitive single-cell RNA sequencing method, reveals non-genetic gene-expression heterogeneity",
+    "path": null,
+    "url": "https://bit.riken.jp/protocols/quartz-seq/",
+    "doi": "10.1186/gb-2013-14-4-r31"
+  },
+  "publication": {
+    "year": 2013,
+    "original_publication": {
+      "title": "Quartz-Seq: a highly reproducible and sensitive single-cell RNA sequencing method, reveals non-genetic gene-expression heterogeneity",
+      "journal": "Genome Biology",
+      "doi": "10.1186/gb-2013-14-4-r31",
+      "url": "http://genomebiology.com/2013/14/4/R31"
+    },
+    "authors": [
+      {
+        "name": "Yohei Sasagawa",
+        "affiliation": "Functional Genomics Unit / Bioinformatics Research Unit, RIKEN Center for Developmental Biology, Kobe, Japan"
+      },
+      {
+        "name": "Itoshi Nikaido",
+        "affiliation": "Functional Genomics Unit / Bioinformatics Research Unit, RIKEN Center for Developmental Biology, Kobe, Japan"
+      },
+      {
+        "name": "Tetsutaro Hayashi",
+        "affiliation": "Genome Resource and Analysis Unit, RIKEN Center for Developmental Biology, Kobe, Japan"
+      },
+      {
+        "name": "Hiroki Danno",
+        "affiliation": "Laboratory for Systems Biology, RIKEN Center for Developmental Biology, Kobe, Japan"
+      },
+      {
+        "name": "Kenichiro D Uno",
+        "affiliation": "Functional Genomics Unit, RIKEN Center for Developmental Biology, Kobe, Japan"
+      },
+      {
+        "name": "Takeshi Imai",
+        "affiliation": "Laboratory for Sensory Circuit Formation, RIKEN CDB; JST PRESTO, Kobe, Japan"
+      },
+      {
+        "name": "Hiroki R Ueda",
+        "corresponding": true,
+        "email": "uedah-tky@umin.ac.jp",
+        "affiliation": "Functional Genomics Unit / Laboratory for Systems Biology, RIKEN Center for Developmental Biology; Laboratory for Synthetic Biology, QBiC, RIKEN, Kobe, Japan"
+      }
+    ],
+    "throughput": {
+      "summary": "Low-throughput, plate/tube-based single-cell WTA: one cell per PCR tube, one tube and 6 reaction steps per cell, all in a single tube without purification.",
+      "cells": "Single cells FACS-sorted into 0.4 ul lysis buffer (or 10 pg diluted total RNA); ~6.8 pg total RNA/ES cell in G1, ~10 pg average across cell cycle; 98% amplification success (n=49).",
+      "rna": "Validated on 10 pg total RNA and real single cells; reproducibly detects ~8,110 of ~9,873 transcripts (82.1%) at 10 pg.",
+      "dna": "~63 ng amplified cDNA from 10 pg total RNA after 21 PCR cycles."
+    },
+    "statistical_model": "Pearson correlation and F-test for reproducibility; James-Stein empirical-Bayes mutual information (Kullback-Leibler) for differential expression. No UMI count model.",
+    "other": [
+      {
+        "label": "Amplification chemistry",
+        "value": "Poly-A-tailing WTA (TdT) with suppression PCR, single tube, no purification, 6 reaction steps"
+      },
+      {
+        "label": "Byproduct suppression",
+        "value": "Exonuclease I digestion + restricted TdT time + aminated 'B' suppression PCR primer completely eliminate <200 bp byproducts (no gel purification)"
+      },
+      {
+        "label": "Polymerase",
+        "value": "MightyAmp DNA Polymerase (a.k.a. Terra PCR Direct); robust to GC-rich and single-tube crude lysate"
+      },
+      {
+        "label": "Dual platform",
+        "value": "T7 promoter in RT primer enables IVT-labelled cRNA for microarray (Quartz-Chip) in addition to Illumina sequencing (Quartz-Seq)"
+      },
+      {
+        "label": "Reproducibility",
+        "value": "Technical-replicate PCC ~0.93 at 10 pg total RNA (vs ~0.7 for Smart-Seq / CEL-Seq)"
+      },
+      {
+        "label": "Library prep",
+        "value": "LIMprep: Covaris fragmentation + self-produced TruSeq adapters (TRSU/TRSI) + KAPA HiFi PCR (TPC1/TPC2)"
+      },
+      {
+        "label": "Data accession",
+        "value": "GEO GSE42268"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "manual/tube",
+  "data_processing": {
+    "summary": "Raw reads are trimmed of the sequencing and WTA-adaptor primers, aligned to the mouse genome (mm9), and quantified as FPKM per transcript against an Ensembl transcript reference; samples are then hierarchically clustered and cell-state differences are called by mutual information. There are no cell barcodes or UMIs, so there is no demultiplex or UMI-collapse step and no molecular count model.",
+    "stages": [],
+    "nodes": [
+      {
+        "id": "trim",
+        "label": "Trim adaptor and WTA primers",
+        "tool": "Trimmomatic",
+        "stage": "read_processing",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads to mm9 genome",
+        "tool": "TopHat v2.0.3",
+        "stage": "read_processing",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "quantify",
+        "label": "Quantify transcripts as FPKM",
+        "tool": "Cufflinks v2.0.1",
+        "stage": "read_processing",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "matrix",
+        "label": "Assemble FPKM expression matrix",
+        "tool": "",
+        "stage": "aggregate",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster samples (1000 bootstraps)",
+        "tool": "pvclust",
+        "stage": "clustering",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "wilcoxon",
+        "label": "Test cell-state DE (Wilcoxon)",
+        "tool": "R",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "mutual_info",
+        "label": "Estimate mutual information",
+        "tool": "R",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "fluctuation",
+        "label": "Call fluctuations (F-test, FDR)",
+        "tool": "R",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "trim",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "quantify",
+        "kind": "sequential"
+      },
+      {
+        "from": "quantify",
+        "to": "matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "matrix",
+        "to": "cluster",
+        "kind": "branch"
+      },
+      {
+        "from": "matrix",
+        "to": "fluctuation",
+        "kind": "branch"
+      },
+      {
+        "from": "cluster",
+        "to": "wilcoxon",
+        "kind": "branch"
+      },
+      {
+        "from": "cluster",
+        "to": "mutual_info",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "No UMI/molecular count model \u2014 FPKM abundance per transcript. Cell-state differential expression via Wilcoxon rank test plus a James-Stein empirical-Bayes estimator of mutual information (Kullback-Leibler); reproducible expression-fluctuation calling by F-test with FDR across replicate datasets; Pearson correlation for technical reproducibility.</statistical_model>\n<parameter name=\"stages\">[{\"id\": \"read_processing\", \"label\": \"Read processing\"}, {\"id\": \"aggregate\", \"label\": \"Aggregation\"}, {\"id\": \"clustering\", \"label\": \"Sample clustering\"}, {\"id\": \"analysis\", \"label\": \"Differential analysis\"}]"
+  }
+}

@@ -1,0 +1,1176 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "fipresci",
+  "assay": "FIPRESCI",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "FIPRESCI_supplement.pdf",
+      "title": "FIPRESCI Additional file 1",
+      "url": "https://doi.org/10.1186/s13059-023-02893-1",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/fipresci/FIPRESCI_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "FIPRESCI_tagmentation_buffers.xlsx",
+      "title": "FIPRESCI Table S3: tagmentation reaction buffer compositions",
+      "url": "https://doi.org/10.1186/s13059-023-02893-1",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/fipresci/FIPRESCI_tagmentation_buffers.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "FIPRESCI.xlsx",
+      "title": "FIPRESCI.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/fipresci/FIPRESCI.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "FIPRESCI.pdf",
+      "title": "FIPRESCI.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/fipresci/FIPRESCI.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "rt_polyt_primer",
+      "name": "RT PolyT Primer (NEB S1327S)",
+      "aliases": [],
+      "role": "Reverse transcription primer (anchored oligo-dT) priming first-strand cDNA on polyadenylated mRNA",
+      "kind": "single",
+      "sequence": "TTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Listed as d(T)23VN; V = A/C/G (not T), N = any base. Anchored oligo-dT."
+    },
+    {
+      "oligo_id": "rt_random_primer",
+      "name": "RT random Primer (Thermo Scientific SO142)",
+      "aliases": [],
+      "role": "Reverse transcription random hexamer primer (used alone or as equimolar mix with oligo-dT)",
+      "kind": "single",
+      "sequence": "NNNNNN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "d(NNNNNN), N = G/A/T/C."
+    },
+    {
+      "oligo_id": "tn5_a_me",
+      "name": "TN5_A_ME",
+      "aliases": [],
+      "role": "Non-barcoded Tn5 mosaic-end (ME) adapter strand loaded into the i7-only transposome",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Synthesized as [5Phos]CTGTCTCTTATACACATCT/3ddC/ : 5' phosphorylation; 3' dideoxy-C blocks polymerase extension. Reverse complement of the ME (AGATGTGTATAAGAGACAG)."
+    },
+    {
+      "oligo_id": "tn5_r2_index",
+      "name": "TN5_R2_index (TN5_B_index, round1-barcoded)",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposome strand: partial TruSeq Read2 + well-specific round1 barcode + mosaic end",
+      "kind": "single",
+      "sequence": "GACGTGTGCTCTTCCGATCT[CELL_BARCODE:6]AGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Structure = partial TruSeq Read2 (GACGTGTGCTCTTCCGATCT) + 6 bp round1 barcode (NNNNNN) + ME (AGATGTGTATAAGAGACAG). 96 barcodes provided (n-Tn5-bo_i7-index1..96); e.g. index1 barcode AAAGAA -> GACGTGTGCTCTTCCGATCTAAAGAAAGATGTGTATAAGAGACAG; index96 barcode TTTGGG. Round1 barcode records well/sample identity."
+    },
+    {
+      "oligo_id": "indexed_tn5_adapter",
+      "name": "Indexed i7-only Tn5 transposome adapter (annealed)",
+      "aliases": [],
+      "role": "Double-stranded Tn5 adapter cassette (TN5_A_ME annealed to TN5_R2_index) coupled to TruePrep Tn5 to form the round1 indexed transposome",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TN5_R2_index (top)",
+          "sequence": "GACGTGTGCTCTTCCGATCT[CELL_BARCODE:6]AGATGTGTATAAGAGACAG",
+          "role": "Barcoded strand: partial Read2 + round1 barcode + ME"
+        },
+        {
+          "name": "TN5_A_ME (bottom)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "Phosphorylated, 3'-ddC-blocked ME strand annealing to the ME of the top strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Annealed 1:1 at 10 uM then coupled to TruePrep Tagment Enzyme (Vazyme S601-01). i7-only transposome (homodimer of the same barcoded adapter)."
+    },
+    {
+      "oligo_id": "gel_bead_tso",
+      "name": "10x Genomics 5' Gel-bead barcoded TSO oligo",
+      "aliases": [],
+      "role": "Gel-bead capture/template-switch oligo adding round2 cell barcode, UMI and TSO by template switching + cDNA extension",
+      "kind": "single",
+      "sequence": "CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "From 10x Genomics Single Cell 5' RNA Reagent Kit. Structure = partial TruSeq Read1 (CTACACGACGCTCTTCCGATCT) + 16 bp round2 (10x) cell barcode + 10 bp UMI + TSO TTTCTTATAT-rGrGrG (riboG folded to GGG). Anneals to the 3' CCC of the C-tailed cDNA."
+    },
+    {
+      "oligo_id": "s5r_p5_bio",
+      "name": "S5R-P5-bio",
+      "aliases": [],
+      "role": "Biotinylated P5 primer for biotinylated single-primer linear pre-amplification of 5'-end cDNA",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "[5Bio] 5' biotin; enables streptavidin capture. Anneals to the Read1/partial-Read1 region introduced by the gel-bead oligo."
+    },
+    {
+      "oligo_id": "s5r_p5",
+      "name": "S5R-P5",
+      "aliases": [],
+      "role": "P5 forward primer for final library amplification (P5 + partial TruSeq Read1)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Non-biotinylated version used in the library-amplification PCR."
+    },
+    {
+      "oligo_id": "s_p7",
+      "name": "S-P7 (indexed P7 library primer, generic)",
+      "aliases": [],
+      "role": "P7 reverse primer introducing i7 sample index; anneals to the partial Read2 / round1-adapter end",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:6]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Written as CAAGCAGAAGACGGCATACGAGAT[NNNNNN]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATC-s-T (terminal phosphorothioate before the 3' T). [NNNNNN] = 6 bp i7 sample index (optional additional multiplexing)."
+    },
+    {
+      "oligo_id": "s_p7_index1",
+      "name": "S-P7-index1",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index CGTGAT",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCGTGATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T (\u2026CCGATC-s-T)."
+    },
+    {
+      "oligo_id": "s_p7_index2",
+      "name": "S-P7-index2",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index ACATCG",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATACATCGGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "s_p7_index3",
+      "name": "S-P7-index3",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index GCCTAA",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATGCCTAAGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "s_p7_index4",
+      "name": "S-P7-index4",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index TGGTCA",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTGGTCAGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "s_p7_index5",
+      "name": "S-P7-index5",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index CACTGT",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCACTGTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "s_p7_index6",
+      "name": "S-P7-index6",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index ATTGGC",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATATTGGCGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "s_p7_index7",
+      "name": "S-P7-index7",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index GATCTG",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATGATCTGGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "s_p7_index8",
+      "name": "S-P7-index8",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index TCAAGT",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTCAAGTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "s_p7_index9",
+      "name": "S-P7-index9",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index CTGATC",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCTGATCGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "s_p7_index10",
+      "name": "S-P7-index10",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index AAGCTA",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATAAGCTAGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "s_p7_index11",
+      "name": "S-P7-index11",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index GTAGCC",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATGTAGCCGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "s_p7_index12",
+      "name": "S-P7-index12",
+      "aliases": [],
+      "role": "P7 library primer with fixed i7 sample index TACAAG",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTACAAGGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal phosphorothioate T."
+    },
+    {
+      "oligo_id": "human_tcr_outer_1",
+      "name": "Human TCR outer-1",
+      "aliases": [],
+      "role": "Outer (first) nested-PCR primer for single-cell TCR VDJ enrichment",
+      "kind": "single",
+      "sequence": "TGAAGGCGTTTGCACATGCA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "TCR constant-region-specific enrichment primer."
+    },
+    {
+      "oligo_id": "human_tcr_outer_2",
+      "name": "Human TCR outer-2",
+      "aliases": [],
+      "role": "Outer (first) nested-PCR primer for single-cell TCR VDJ enrichment",
+      "kind": "single",
+      "sequence": "TCAGGCAGTATCTGGAGTCATTGAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "TCR constant-region-specific enrichment primer."
+    },
+    {
+      "oligo_id": "human_tcr_inner_1",
+      "name": "Human TCR inner-1",
+      "aliases": [],
+      "role": "Inner (second) nested-PCR primer for single-cell TCR VDJ enrichment",
+      "kind": "single",
+      "sequence": "CTGGTTGCTCCAGGCAATGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "TCR constant-region-specific enrichment primer."
+    },
+    {
+      "oligo_id": "human_tcr_inner_2",
+      "name": "Human TCR inner-2",
+      "aliases": [],
+      "role": "Inner (second) nested-PCR primer for single-cell TCR VDJ enrichment",
+      "kind": "single",
+      "sequence": "TGTAGGCCTGAGGGTCCGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "TCR constant-region-specific enrichment primer."
+    }
+  ],
+  "final_library": {
+    "source_label": "FIPRESCI final library (Fig. S2 'Final Library')",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGA(P5) GATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT(TruSeq Read1) [CELL_BARCODE:16](round2 10x CB) [UMI:10] TTTCTTATATGGG(TSO) [CDNA](5'-end cDNA insert) CTGTCTCTTATACACATCT(ME) [CELL_BARCODE:6](round1 Tn5 barcode) AGATCGGAAGAGCACACGTC(partial TruSeq Read2) TGAACTCCAGTCAC [SAMPLE_INDEX:6](i7) ATCTCGTATGCCGTCTTCTGCTTG(P7)",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]CTGTCTCTTATACACATCT[CELL_BARCODE:6]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' (top)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]CTGTCTCTTATACACATCT[CELL_BARCODE:6]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]CTGTCTCTTATACACATCT[CELL_BARCODE:6]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3'->5' (bottom)",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]GACAGAGAATATGTGTAGA[CELL_BARCODE:6]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]GACAGAGAATATGTGTAGA[CELL_BARCODE:6]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGA \u2014 P5 flow-cell adapter",
+      "GATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT \u2014 TruSeq Read1 sequencing primer region (introduced via gel-bead oligo + S5R-P5)",
+      "[CELL_BARCODE:16] \u2014 round2 (10x Chromium) droplet cell barcode",
+      "[UMI:10] \u2014 unique molecular identifier",
+      "TTTCTTATATGGG \u2014 template-switch oligo (TSO) sequence",
+      "[CDNA] \u2014 5'-end cDNA insert (captures transcript 5' end / TSS)",
+      "CTGTCTCTTATACACATCT \u2014 Tn5 mosaic end (ME)",
+      "[CELL_BARCODE:6] \u2014 round1 well/sample barcode added by indexed Tn5",
+      "AGATCGGAAGAGCACACGTC \u2014 partial TruSeq Read2",
+      "TGAACTCCAGTCAC \u2014 i7 adapter linker",
+      "[SAMPLE_INDEX:6] \u2014 optional i7 sample index (S-P7 primer)",
+      "ATCTCGTATGCCGTCTTCTGCTTG \u2014 P7 flow-cell adapter"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "FIPRESCI final library (Fig. S2 'Final Library')",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TruSeq Read1",
+        "template": "bottom",
+        "cycles": 26,
+        "segments": [
+          {
+            "name": "round2 cell barcode (10x droplet)",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 16
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Partial TruSeq Read2",
+        "template": "top",
+        "cycles": 150,
+        "segments": [
+          {
+            "name": "round1 barcode (Tn5 well)",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          },
+          {
+            "name": "mosaic end (ME)",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 19
+          },
+          {
+            "name": "5'-end cDNA insert",
+            "type": "insert",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "i7 index primer",
+        "template": "top",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "In-situ reverse transcription",
+      "summary": "Poly-dT (or random) primer and MMLV reverse transcriptase make first-strand cDNA on mRNA inside permeabilized cells or nuclei.",
+      "note": "Fixed/permeabilized cells or nuclei are reverse transcribed in situ with Maxima H Minus (M-MLV) using RT PolyT Primer (or random hexamer, or a mix). The RNA/cDNA hybrid is retained inside the cell.",
+      "product": "5'- XXXXXXXXX....XXXXXXXXXXXNBAAAAAAAAAAAAAAAAAAAAAAA -3'  mRNA\n                                <-----------3'-NVTTTTTTTTTTTTTTTTTTTTTTT-5'  RT primer"
+    },
+    {
+      "step": 2,
+      "title": "Terminal-transferase C-tailing",
+      "summary": "M-MLV adds 2-5 untemplated C nucleotides to the 3' end of the newly synthesized cDNA.",
+      "note": "The terminal transferase activity of MMLV appends extra C's (CCC) that later serve as the template-switch landing site for the gel-bead TSO.",
+      "product": "5'- XXXXXXXXX....XXXXXXXXXXXNBAAAAAAAAAAAAAAAAAAAAAAA -3'  mRNA\n3'-CCCXXXXXXXXX....XXXXXXXXXXXNVTTTTTTTTTTTTTTTTTTTTTTT-5'  cDNA"
+    },
+    {
+      "step": 3,
+      "title": "Indexed i7-only Tn5 tagmentation (round1 barcode)",
+      "summary": "A well-specific i7-only Tn5 transposome cuts the RNA/DNA hybrid, inserting the round1 barcode + mosaic end.",
+      "note": "Performed in a 96/384-well plate (one indexed transposome per well). The Tn5 stays bound to its RNA/cDNA substrate (no SDS) so contiguity is preserved until droplet capture. Adds partial TruSeq Read2 + 6 bp round1 barcode to the 5' fragment end.",
+      "product": "5'-XXXXXX....XXXXXX CTGTCTCTTATACACATCT-3'\n3'-CCCXXXXXX....XXXXXXGACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAG-5'"
+    },
+    {
+      "step": 4,
+      "title": "Droplet template switching (round2 barcode + UMI)",
+      "summary": "Inside 10x GEMs the gel-bead TSO templates cDNA extension, adding the round2 cell barcode, UMI and TSO.",
+      "note": "Pre-indexed cells/nuclei are overloaded into 10x Chromium droplets. The gel-bead barcoded TSO base-pairs with the 3' CCC of the cDNA; extension incorporates the 16 bp round2 (droplet) barcode + 10 bp UMI + Read1 handle. Round1(well)+round2(droplet) together uniquely tag each cell.",
+      "product": "5'-CTACACGACGCTCTTCCGATCT[BC2:16][UMI:10]TTTCTTATATGGGXXXXXX....------->\n                                        <-------CCCXXXXXX....GACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAG-5'"
+    },
+    {
+      "step": 5,
+      "title": "Break emulsion and purify",
+      "summary": "Droplets are broken and the barcoded double-stranded cDNA products are recovered and cleaned up.",
+      "note": "Recovery Agent + Dynabeads MyOne Silane cleanup after GEM-RT incubation.",
+      "product": "5'-CTACACGACGCTCTTCCGATCT[BC2:16][UMI:10]TTTCTTATATGGGXXXXXX....XXXXXXCTGTCTCTTATACACATCT[BC1:6]AGATCGGAAGAGCACACGTC-3'\n3'-GATGTGCTGCGAGAAGGCTAGA[BC2:16][UMI:10]AAAGAATATACCCXXXXXX....XXXXXXGACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAG-5'"
+    },
+    {
+      "step": 6,
+      "title": "Biotinylated single-primer linear pre-amplification",
+      "summary": "S5R-P5-bio linearly amplifies the 5'-end cDNA and adds the P5 arm; products are streptavidin-captured.",
+      "note": "Biotinylated single-primer (linear) amplification enriches 5'-end cDNA; biotin enables Dynabeads MyOne Streptavidin C1 capture before library amplification.",
+      "product": "5'-Bio-AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC2:16][UMI:10]TTTCTTATATGGGXXXXXX....XXXXXXCTGTCTCTTATACACATCT[BC1:6]AGATCGGAAGAGCACACGTC-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[BC2:16][UMI:10]AAAGAATATACCCXXXXXX....XXXXXXGACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAG-5'"
+    },
+    {
+      "step": 7,
+      "title": "Library amplification (P5 + i7 S-P7)",
+      "summary": "S5R-P5 and an indexed S-P7 primer amplify the captured cDNA, appending P7 and the optional i7 sample index.",
+      "note": "Final PCR with S5R-P5 (forward) and S-P7-index (reverse) completes the P5...P7 flow-cell library and can add a 6 bp i7 sample index for additional multiplexing.",
+      "product": "5'-AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC2:16][UMI:10]TTTCTTATATGGGXXXXXX....XXXXXXCTGTCTCTTATACACATCT[BC1:6]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7:6]ATCTCGTATGCCGTCTTCTGCTTG-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[BC2:16][UMI:10]AAAGAATATACCCXXXXXX....XXXXXXGACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7:6]TAGAGCATACGGCAGAAGACGAAC-5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "R1",
+      "primer": "TruSeq Read1 (5\u2032-...CTCTTTCCCTACACGACGCTCTTCCGATCT-3\u2032)",
+      "template": "bottom",
+      "cycles": 26,
+      "note": "Read1 primer is identical to the top-strand partial Read1 and anneals to the bottom strand; its 3\u2032 end extends rightward into the gel-bead barcode block, reading the 16 bp round2 (10x droplet) cell barcode then the 10 bp UMI (26 cycles). 150-bp PE on NovaSeq 6000 / MGISeq-T7.",
+      "diagram": "                    Read1 primer 5'-...CTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------->\n5'-...CTCTTTCCCTACACGACGCTCTTCCGATCT[== round2 CB 16 nt ==][= UMI 10 nt =]TTTCTTATATGGG[cDNA]...-3'  (top)\n3'-...GAGAAAGGGATGTGCTGCGAGAAGGCTAGA[== round2 CB 16 nt ==][= UMI 10 nt =]AAAGAATATACCC[cDNA]...-5'  (bottom)\n                                  |___________ R1 reads CB(16)+UMI(10) = 26 nt ___________|"
+    },
+    {
+      "read": "R2",
+      "primer": "Partial TruSeq Read2 (5\u2032-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3\u2032)",
+      "template": "top",
+      "cycles": 150,
+      "note": "Read2 primer is identical to the bottom strand and anneals to the top-strand partial-Read2 region (AGATCGGAAGAGCACACGTC); its 3\u2032 end extends leftward, reading the 6 bp round1 (Tn5 well) barcode, then the 19 bp mosaic end, then into the 5\u2032-end cDNA insert. FASTQs are demultiplexed by the round1 barcode and the BC+ME are trimmed before Cell Ranger.",
+      "diagram": "5'-...[cDNA]CTGTCTCTTATACACATCT[round1 BC 6 nt]AGATCGGAAGAGCACACGTC...-3'  (top)\n3'-...[cDNA]GACAGAGAATATGTGTAGA[round1 BC 6 nt]TCTAGCCTTCTCGTGTGCAG...-5'  (bottom)\n   <-------------------------------------------TCTAGCCTTCTCGTGTGCAG-5'  Read2 primer\n        |__ R2 reads BC1(6) + ME(19) + cDNA (150 cycles) __|"
+    },
+    {
+      "read": "I1",
+      "primer": "i7 index sequencing primer (5\u2032-...GACGTGTGCTCTTCCGATCT-3\u2032 read2/P7 region)",
+      "template": "top",
+      "cycles": 6,
+      "note": "Optional i7 sample-index read, present only when an indexed S-P7 primer is used for an extra round of sample multiplexing. Primer abuts the sample index and reads 6 cycles toward P7.",
+      "diagram": "5'-...CACACGTCTGAACTCCAGTCAC[i7 index 6 nt]ATCTCGTATGCCGTCTTCTGCTTG-3'  (top)\n3'-...GTGTGCAGACTTGAGGTCAGTG[i7 index 6 nt]TAGAGCATACGGCAGAAGACGAAC-5'  (bottom)\n   i7 index primer 5'-...GTGTGCTCTTCCGATCT...CTCCAGTCAC-------->\n                             |__ I1 reads i7 index (6 cycles) __|"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "FIPRESCI",
+  "description": "FIPRESCI (FIve PRime End Single-cell Combinatorial Indexing RNA sequencing) is a droplet-based combinatorial-indexing method for massive-scale 5\u2032-end scRNA-seq and snRNA-seq. Whole transcriptomes are pre-indexed in situ inside permeabilized cells or nuclei: reverse transcription with an oligo-dT (or random) primer creates RNA/cDNA hybrids that an i7-only indexed Tn5 transposome tagments in a 96/384-well plate, adding a well-specific round1 barcode plus a mosaic-end/partial-Read2 adapter. Pooled, overloaded cells are then encapsulated on a 10x Genomics 5\u2032 Chromium platform where a gel-bead TSO adds a droplet-specific round2 (16 bp) barcode and 10 bp UMI by template switching; the combination of round1+round2 uniquely resolves single cells even with multiple cells per droplet. Reads capture the 5\u2032-end/TSS of transcripts (enabling promoter/enhancer and TCR/BCR repertoire analysis), with R1 reading the round2 cell barcode + UMI and R2 reading the round1 barcode + cDNA.",
+  "reference": {
+    "kind": "paper",
+    "label": "FIPRESCI Additional file 1",
+    "path": null,
+    "url": "https://doi.org/10.1186/s13059-023-02893-1",
+    "doi": "10.1186/s13059-023-02893-1"
+  },
+  "publication": {
+    "year": 2023,
+    "original_publication": {
+      "title": "FIPRESCI: droplet microfluidics based combinatorial indexing for massive-scale 5\u2032-end single-cell RNA sequencing",
+      "journal": "Genome Biology",
+      "doi": "10.1186/s13059-023-02893-1",
+      "url": "https://doi.org/10.1186/s13059-023-02893-1"
+    },
+    "authors": [
+      {
+        "name": "Yun Li",
+        "affiliation": "China National Center for Bioinformation, Beijing, China; CAS Key Laboratory of Genome Sciences and Information, Beijing Institute of Genomics, CAS"
+      },
+      {
+        "name": "Zheng Huang",
+        "affiliation": "China National Center for Bioinformation, Beijing, China; Beijing Institute of Genomics, CAS"
+      },
+      {
+        "name": "Zhaojun Zhang",
+        "affiliation": "China National Center for Bioinformation, Beijing, China; Beijing Institute of Genomics, CAS; Sino-Danish College, University of Chinese Academy of Sciences"
+      },
+      {
+        "name": "Qifei Wang",
+        "affiliation": "China National Center for Bioinformation, Beijing, China; Beijing Institute of Genomics, CAS"
+      },
+      {
+        "name": "Fengxian Li",
+        "affiliation": "The Blood Transfusion Department, First Medical Center of Chinese PLA General Hospital, Beijing, China"
+      },
+      {
+        "name": "Shufang Wang",
+        "affiliation": "The Blood Transfusion Department, First Medical Center of Chinese PLA General Hospital, Beijing, China"
+      },
+      {
+        "name": "Xin Ji",
+        "affiliation": "Key Laboratory of Carcinogenesis and Translational Research, Gastrointestinal Cancer Center, Peking University Cancer Hospital & Institute, Beijing, China"
+      },
+      {
+        "name": "Shaokun Shu",
+        "affiliation": "Peking University International Cancer Institute & Peking University Cancer Hospital & Institute, Beijing, China"
+      },
+      {
+        "name": "Xiangdong Fang",
+        "affiliation": "China National Center for Bioinformation, Beijing, China; Beijing Institute of Genomics, CAS; Institute for Stem Cell and Regeneration, CAS"
+      },
+      {
+        "name": "Lan Jiang",
+        "corresponding": true,
+        "email": "jiangl@big.ac.cn",
+        "affiliation": "China National Center for Bioinformation, Beijing, China; CAS Key Laboratory of Genome Sciences and Information, Beijing Institute of Genomics, CAS; College of Future Technology, University of Chinese Academy of Sciences"
+      }
+    ],
+    "throughput": {
+      "summary": "Increases droplet-microfluidic throughput >10-fold over standard 10x 5' scRNA-seq; ~100,000 single-cell transcriptomes per single Chromium channel with low collision. A single experiment can be completed by one person in 12 h.",
+      "cells": "58,771 cells and 59,622 nuclei recovered from 100k loaded (3 cell lines, >58% recovery); 117,804 nuclei from one 10x channel for E10.5 mouse embryo; 8,049 species-mixing cells at 0.2% collision rate (vs expected 7.6% multiplet); 53,183 T cells (41,377 after integration) across 14 donors.",
+      "rna": "5'-end transcript / TSS capture; median 2,239 (mean 2,150) genes per cell with oligo-dT at 50k fragments/cell; ~2% of reads from eRNA loci; identifies 3,898-4,685 eRNA loci.",
+      "dna": "Not applicable \u2014 RNA-only assay (5'-end transcriptome); no separate DNA/ATAC library is generated, though chromatin accessibility is computationally predicted from eRNA signal via BABEL."
+    },
+    "statistical_model": "Droplet loading modeled as a Poisson-like distribution (combinatorial indexing resolves within-droplet doublets); SCTransform regularized negative-binomial regression used for expression normalization; Wilcoxon tests for differential expression and Fisher's exact test for differential TSS usage.",
+    "other": [
+      {
+        "label": "Key enzymology",
+        "value": "Tn5 transposome tagments RNA/DNA hybrids and stays bound to substrate (contiguity preserved) until dissociated by SDS"
+      },
+      {
+        "label": "Platform / kits",
+        "value": "10x Genomics Chromium Single Cell 5' (V(D)J v1.1 / 5' v2); TruePrep Tn5 (Vazyme S601-01); sequenced on Illumina NovaSeq 6000 or MGISeq-T7, 150-bp PE"
+      },
+      {
+        "label": "Multimodal capability",
+        "value": "Compatible with paired single-cell TCR/BCR VDJ profiling via nested PCR; applied to pan-cancer peripheral T cells from 14 donors"
+      },
+      {
+        "label": "Data availability",
+        "value": "Genome Sequence Archive PRJCA007160 (NGDC/CNCB); code at github.com/hz1010/FIPRESCI_data_analysis"
+      },
+      {
+        "label": "Recommended tagmentation buffer",
+        "value": "Customized Tris-based DMF buffer (10 mM Tris-HCl pH 7.5, 5 mM MgCl2, 10% DMF); crowding agents (PEG) reduced in-cell performance"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "droplet + combinatorial indexing",
+  "data_processing": {
+    "summary": "FASTQs are demultiplexed by the round1 (Tn5 well) barcode with zero mismatch; each round1 group is then run through Cell Ranger as a standard 10x 5\u2032 library, and round1+round2 barcodes are concatenated in Seurat to form single-cell barcodes and a merged count matrix for standard normalization, clustering, annotation, and downstream TSS/eRNA and TCR analyses.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "quant",
+        "label": "Alignment & Counting"
+      },
+      {
+        "id": "assembly",
+        "label": "Matrix Assembly"
+      },
+      {
+        "id": "norm",
+        "label": "Normalization"
+      },
+      {
+        "id": "reduction",
+        "label": "Reduction & Clustering"
+      },
+      {
+        "id": "annotation",
+        "label": "Cell Annotation"
+      },
+      {
+        "id": "diffexp",
+        "label": "Differential Analysis"
+      },
+      {
+        "id": "repertoire",
+        "label": "TCR Repertoire"
+      },
+      {
+        "id": "multiomic",
+        "label": "Epigenome Prediction"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex by round1 barcode",
+        "tool": "",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads to genome",
+        "tool": "Cell Ranger",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count",
+        "label": "Count UMIs per gene",
+        "tool": "Cell Ranger",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "concat",
+        "label": "Concatenate round1+round2 barcodes",
+        "tool": "Seurat",
+        "stage": "assembly",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "merge",
+        "label": "Merge groups into matrix",
+        "tool": "Seurat",
+        "stage": "assembly",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "norm",
+        "label": "Normalize expression",
+        "tool": "Seurat",
+        "stage": "norm",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pca",
+        "label": "Reduce dimensions (PCA)",
+        "tool": "Seurat",
+        "stage": "reduction",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells (Louvain)",
+        "tool": "Seurat",
+        "stage": "reduction",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "embed",
+        "label": "Embed cells (UMAP)",
+        "tool": "Seurat",
+        "stage": "reduction",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "anchors",
+        "label": "Find transfer anchors",
+        "tool": "Seurat",
+        "stage": "annotation",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "annotate",
+        "label": "Transfer reference labels",
+        "tool": "Seurat",
+        "stage": "annotation",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "de",
+        "label": "Test differential expression",
+        "tool": "Seurat",
+        "stage": "diffexp",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "peaks",
+        "label": "Call TSS peaks",
+        "tool": "Paraclu",
+        "stage": "diffexp",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "difftss",
+        "label": "Test differential TSS usage",
+        "tool": "",
+        "stage": "diffexp",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "vdj",
+        "label": "Call TCR clonotypes",
+        "tool": "Cell Ranger vdj",
+        "stage": "repertoire",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "screp",
+        "label": "Analyze TCR repertoire",
+        "tool": "scRepertoire",
+        "stage": "repertoire",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "babel",
+        "label": "Predict ATAC signal",
+        "tool": "BABEL",
+        "stage": "multiomic",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "demux",
+        "to": "vdj",
+        "kind": "branch"
+      },
+      {
+        "from": "align",
+        "to": "count",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "peaks",
+        "kind": "branch"
+      },
+      {
+        "from": "count",
+        "to": "concat",
+        "kind": "fan_in"
+      },
+      {
+        "from": "concat",
+        "to": "merge",
+        "kind": "sequential"
+      },
+      {
+        "from": "merge",
+        "to": "norm",
+        "kind": "sequential"
+      },
+      {
+        "from": "merge",
+        "to": "babel",
+        "kind": "branch"
+      },
+      {
+        "from": "norm",
+        "to": "pca",
+        "kind": "sequential"
+      },
+      {
+        "from": "pca",
+        "to": "cluster",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "embed",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "anchors",
+        "kind": "branch"
+      },
+      {
+        "from": "anchors",
+        "to": "annotate",
+        "kind": "sequential"
+      },
+      {
+        "from": "cluster",
+        "to": "de",
+        "kind": "sequential"
+      },
+      {
+        "from": "peaks",
+        "to": "difftss",
+        "kind": "sequential"
+      },
+      {
+        "from": "cluster",
+        "to": "difftss",
+        "kind": "fan_in"
+      },
+      {
+        "from": "vdj",
+        "to": "screp",
+        "kind": "sequential"
+      },
+      {
+        "from": "annotate",
+        "to": "screp",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": "SCTransform regularized negative-binomial regression for normalization; Wilcoxon rank-sum test for differential expression; Fisher's exact test for differential TSS usage; combinatorial round1+round2 indexing resolves Poisson-distributed multi-cell droplet loading."
+  }
+}

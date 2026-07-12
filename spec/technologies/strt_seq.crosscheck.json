@@ -1,0 +1,20 @@
+{
+  "folder": "strt_seq",
+  "title": "STRT-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "STRT-seq_family.html",
+    "oligo_seq_recall": 0.714,
+    "oligo_seqs_matched": 5,
+    "oligo_seqs_total": 7,
+    "missed_oligos": [
+      "Solexa P1 adapter",
+      "Solexa P2 adapter"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCT | AAGCAGTGGTATCAACGCAGAGT | GCAGTGCT | [CELL_BARCODE:6] | GGG | [CDNA] | A\u00b7GATCGGAAGAGC(adapter2) | CTCGTATGCCGTCTTCTGCTTG(P2 revcomp)",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTAAGCAGTGGTATCAACGCAGAGTGCAGTGCT[CELL_BARCODE:6]GGG[INSERT]AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

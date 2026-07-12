@@ -1,0 +1,22 @@
+{
+  "folder": "10x_chromium_3_gene_expression_v1",
+  "title": "Chromium Single Cell 3' v1",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "10xChromium3v1.html",
+    "oligo_seq_recall": 0.6,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 10,
+    "missed_oligos": [
+      "Beads-oligo-dT",
+      "cDNA reverse primer",
+      "SI-PCR Primer",
+      "TruSeq i5 index sequencing primer (index2)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC [SAMPLE_INDEX:8] CTACACGACGCTCTTCCGATCT [CDNA] AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA [UMI:10] [CELL_BARCODE:14] AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]B(pA)[UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[CELL_BARCODE:14]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

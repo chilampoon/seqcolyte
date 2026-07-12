@@ -1,0 +1,23 @@
+{
+  "folder": "ch_atac_seq",
+  "title": "CH-ATAC-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "CH-ATAC-seq.html",
+    "oligo_seq_recall": 0.545,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "Barcoded_HY_oligo_{1..768}",
+      "MGI_P5",
+      "MGI_P7_index_{1..96}",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Tn5_barcode_primer_{1..384}"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "GAACGACATGGCTACGATCCGACTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[HY_BARCODE:10]AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]GAAGACAACAACTCCTTGGCTCACA",
+    "annotated_library_expected": "GAACGACATGGCTACGATCCGACTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[TN5_INDEX:10]AAGCAGTGGTATCAACGCAGAGT[TN5_INDEX:10]AGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:10]GAAGACAACAACTCCTTGGCTCACA",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

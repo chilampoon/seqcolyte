@@ -1,0 +1,721 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "lianti",
+  "assay": "LIANTI",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "LIANTI_original_paper.pdf",
+      "title": "Single-cell whole-genome analyses by Linear Amplification via Transposon Insertion (LIANTI)",
+      "url": "https://doi.org/10.1126/science.aak9787",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/lianti/LIANTI_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "LIANTI.pdf",
+      "title": "LIANTI.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/lianti/LIANTI.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "lianti_transposon",
+      "name": "LIANTI transposon",
+      "aliases": [],
+      "role": "Self-looping Tn5 transposon carrying a single-stranded T7-promoter loop; dimerizes with Tn5 to form the LIANTI transposome",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCTGAACAGAATTTAATACGACTCACTATAGGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Tn5 mosaic end (non-transferred, 5' arm)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "19-bp transposase binding site; folds back to pair with the 3' arm"
+        },
+        {
+          "name": "T7 promoter loop",
+          "sequence": "GAACAGAATTTAATACGACTCACTATAGGG",
+          "role": "single-stranded loop containing the T7 promoter (TAATACGACTCACTATAGGG)"
+        },
+        {
+          "name": "Tn5 mosaic end (transferred, 3' arm)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "19-bp transposase binding site (mosaic end) transferred to genomic DNA"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Synthesized with a 5' phosphate (/5Phos/); PAGE-purified IDT oligo. Anneals into a 1.5 uM self-looping structure: the 5' and 3' 19-mers are reverse complements and form the 19-bp double-stranded transposase binding site, leaving the T7 promoter as a single-stranded loop. After transcription this loop is converted into a 19-bp sequence on the RNA 3' end that forms a 27-nt self-priming hairpin."
+    },
+    {
+      "oligo_id": "second_strand_umi_primer",
+      "name": "Second-strand synthesis primer (UMI primer)",
+      "aliases": [],
+      "role": "Anneals to the 3' end of the first-strand cDNA and primes second-strand synthesis, appending an 8-bp unique molecular barcode (UMI) to each amplicon",
+      "kind": "assembled",
+      "sequence": "[UMI:8]GGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "UMI",
+          "sequence": "[UMI:8]",
+          "role": "8-bp unique molecular identifier (8 x N), added to the 5' end of each LIANTI amplicon for digital counting / PCR-duplicate removal"
+        },
+        {
+          "name": "T7 start + Tn5 mosaic end",
+          "sequence": "GGGAGATGTGTATAAGAGACAG",
+          "role": "binding sequence complementary to the 3' end of the cDNA (T7 +1 GGG followed by the 19-bp mosaic end)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Written 5'-NNNNNNNNGGGAGATGTGTATAAGAGACAG-3' in the protocol; PAGE-purified IDT oligo. The 8 N's are the inline UMI trimmed off before mapping and used for de-duplication on the 5' end."
+    },
+    {
+      "oligo_id": "carrier_ssdna",
+      "name": "Carrier ssDNA",
+      "aliases": [],
+      "role": "Carrier oligonucleotide added to the single-cell lysis buffer and to the in vitro transcription reaction to reduce loss of trace nucleic acids",
+      "kind": "single",
+      "sequence": "TCAGGTTTTCCTGAA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "IDT oligo with standard desalting; used at 0.5 uM in lysis buffer and 0.4 uM in the T7 transcription reaction. Not part of the sequenceable library."
+    },
+    {
+      "oligo_id": "illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "Flow-cell P5 grafting sequence at the 5' end of the final library (added during NEBNext/TruSeq adapter ligation + indexing PCR)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Canonical Illumina P5 sequence. Not printed in the protocol; library prep used the NEBNext Ultra / Ultra II DNA Library Prep Kit (TruSeq chemistry), so standard P5/P7/TruSeq oligos apply."
+    },
+    {
+      "oligo_id": "illumina_truseq_read1_primer",
+      "name": "Illumina TruSeq Read 1 primer",
+      "aliases": [],
+      "role": "Read 1 sequencing primer; primes reading of the inline UMI + mosaic-end binding sequence + genomic insert",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Canonical TruSeq Read 1 sequence (5' ACAC overlaps the 3' end of P5). Standard NEBNext/TruSeq oligo; not printed in the protocol."
+    },
+    {
+      "oligo_id": "illumina_truseq_read2_primer",
+      "name": "Illumina TruSeq Read 2 primer",
+      "aliases": [],
+      "role": "Read 2 sequencing primer; primes reading of the genomic insert from the opposite (sonicated) end",
+      "kind": "single",
+      "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Canonical TruSeq Read 2 sequence; also serves as the i7 index read primer. Standard NEBNext/TruSeq oligo; not printed in the protocol."
+    },
+    {
+      "oligo_id": "illumina_truseq_adapter",
+      "name": "Illumina TruSeq adapter (double-stranded)",
+      "aliases": [],
+      "role": "Y-shaped/forked adapter ligated to end-repaired, dA-tailed LIANTI amplicon fragments during NEBNext library prep",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq adapter (top strand)",
+          "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCA",
+          "role": "ligated forked adapter, top strand (Read 2 side)"
+        },
+        {
+          "name": "TruSeq adapter (bottom strand)",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "ligated forked adapter, bottom strand (Read 1 side)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Canonical TruSeq forked adapter. Standard NEBNext/TruSeq oligo; not printed in the protocol (kit-supplied)."
+    },
+    {
+      "oligo_id": "illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "Flow-cell P7 grafting sequence at the 3' end of the final library; carried on the indexed PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Canonical Illumina P7 sequence (appears reverse-complemented, ATCTCGTATGCCGTCTTCTGCTTG, at the 3' end of the top-strand library). NEBNext index PCR primer carries P7 + the i7 sample index. Standard oligo; not printed in the protocol."
+    },
+    {
+      "oligo_id": "nebnext_i7_index_primer",
+      "name": "NEBNext i7 index (sample index) primer",
+      "aliases": [],
+      "role": "Indexed library PCR primer that appends the i7 sample index and P7; used to multiplex samples (e.g., 24 samples across HiSeq 4000 lanes)",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:6]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "flow-cell P7 grafting sequence"
+        },
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:6]",
+          "role": "6-bp NEBNext sample index for demultiplexing"
+        },
+        {
+          "name": "TruSeq Read 2 primer binding",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "anneals to the ligated TruSeq adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "The protocol states 'NEBNext Indexes' were used (24 samples across 4 HiSeq 4000 lanes). NEBNext single-index i7 barcodes are 6 bp. Exact index sequences are not printed in the protocol."
+    }
+  ],
+  "final_library": {
+    "source_label": "LIANTI amplicon converted to a standard paired-end Illumina (NEBNext Ultra / TruSeq) genomic library",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8]GGGAGATGTGTATAAGAGACAG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8]GGGAGATGTGTATAAGAGACAG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8]GGGAGATGTGTATAAGAGACAG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8]GGGAGATGTGTATAAGAGACAG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = Illumina P5 adapter",
+      "TCTTTCCCTACACGACGCTCTTCCGATCT = Illumina TruSeq Read 1 primer (5' ACAC shared with P5)",
+      "[UMI:8] = 8-bp unique molecular identifier (LIANTI inline barcode)",
+      "GGGAGATGTGTATAAGAGACAG = T7 +1 start (GGG) + Tn5 mosaic-end binding sequence",
+      "[CDNA] = genomic DNA insert (single-cell whole genome)",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = Illumina TruSeq Read 2 adapter",
+      "[SAMPLE_INDEX:6] = i7 sample index (NEBNext)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of Illumina P7 adapter"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "LIANTI amplicon converted to a standard paired-end Illumina (NEBNext Ultra / TruSeq) genomic library",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq Read 1 primer",
+        "template": "bottom",
+        "cycles": 150,
+        "segments": [
+          {
+            "name": "UMI (LIANTI inline barcode)",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "T7 start + Tn5 mosaic end (binding sequence)",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 22
+          },
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Illumina TruSeq Read 2 primer",
+        "template": "top",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina TruSeq Read 2 primer",
+        "template": "top",
+        "cycles": 150,
+        "segments": [
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Single-cell lysis",
+      "summary": "A single cell is lysed and its genomic DNA released for amplification.",
+      "note": "A single BJ fibroblast is mouth-pipetted or FACS-sorted into lysis buffer (Tris-Ac, EDTA, DTT, carrier ssDNA), heated to 75 C, then digested with QIAGEN protease (55 C) and heat-inactivated, freeing intact single-cell genomic DNA (~6 pg).",
+      "product": "5'- ================ single-cell genomic DNA ================ -3'\n3'- ================ single-cell genomic DNA ================ -5'"
+    },
+    {
+      "step": 2,
+      "title": "LIANTI transposome assembly",
+      "summary": "The self-looping LIANTI transposon is loaded onto Tn5 to form the transposome dimer.",
+      "note": "The single-stranded LIANTI transposon anneals into a self-loop whose 19-bp mosaic-end arms form a double-stranded transposase binding site, leaving a single-stranded T7-promoter loop. Equimolar transposon + Tn5 dimerize into the LIANTI transposome (two transposase monomers, two DNA pieces).",
+      "product": "        single-stranded T7 promoter loop\n       ( ...TAATACGACTCACTATAGGG )\n      /                          \\\n5'/Phos/CTGTCTCTTATACACATCT      AGATGTGTATAAGAGACAG-3'\n        |||||||||||||||||||  (folds back / pairs)\n        [ Tn5 ] 19-bp mosaic-end duplex = transposase binding site"
+    },
+    {
+      "step": 3,
+      "title": "Transposition (tagmentation) of genomic DNA",
+      "summary": "Tn5 randomly fragments genomic DNA and tags both ends with the mosaic end + T7 loop.",
+      "note": "Transposition (55 C, 12 min) inserts the transposome, cutting genomic DNA into ~400-bp fragments. Because of transposome symmetry, both ends carry the same mosaic-end + single-stranded T7-promoter loop, with a 9-bp gap left by Tn5.",
+      "product": "  (ss T7 loop)                                        (ss T7 loop)\n       \\                                                  /\n5'- AGATGTGTATAAGAGACAG[==== genomic fragment ====]         -3'\n                       \\___9-bp gap___/            \\\n3'-                    [==== genomic fragment ====]CTGTCTCTTATACACATCT -5'"
+    },
+    {
+      "step": 4,
+      "title": "Gap fill / extension (Q5 DNA polymerase)",
+      "summary": "Polymerase gap-extension converts the single-stranded T7 loops into double-stranded T7 promoters on both ends.",
+      "note": "Q5 DNA polymerase fills the 9-bp gaps and extends through the mosaic ends, making both ends double-stranded and creating functional double-stranded T7 promoters pointing inward on each end of the fragment.",
+      "product": "5'-[T7 promoter=>]AGATGTGTATAAGAGACAG[==== genomic ====]CTGTCTCTTATACACATCT[<=T7 promoter]-3'\n3'-[<=T7 promoter]TCTACACATATTCTCTGTC[==== genomic ====]GACAGAGAATATGTGTGTAGA[T7 promoter=>]-5'\n                 (double-stranded T7 promoter on BOTH ends)"
+    },
+    {
+      "step": 5,
+      "title": "In vitro transcription (T7 RNA polymerase, overnight)",
+      "summary": "T7 linearly amplifies each fragment into thousands of copies of self-priming genomic RNA.",
+      "note": "Overnight T7 transcription (37 C, 10-16 h) makes single-stranded genomic RNA starting at the T7 +1 (GGG). Transcription is usually unidirectional (head-on collision suppresses the opposite promoter). The RNA 3' end forms a 27-nt self-priming hairpin from the converted mosaic-end sequence.",
+      "product": "5'- GGGAGAUGUGUAUAAGAGACAG[==== genomic RNA ====]-3'   (RNA; 3' end self-primes)\n                                              \\__ 27-nt self-priming hairpin"
+    },
+    {
+      "step": 6,
+      "title": "Reverse transcription (SuperScript IV)",
+      "summary": "The self-primed RNA 3' end is reverse-transcribed into first-strand cDNA.",
+      "note": "SuperScript IV extends from the self-priming 3' hairpin along the RNA template, generating first-strand cDNA copies of the genomic RNA.",
+      "product": "5'- GGGAGAUGUGUAUAAGAGACAG[==== genomic RNA ====] -3'\n3'- CCCUCU................[==== cDNA (1st strand) ====] <----------  -5'"
+    },
+    {
+      "step": 7,
+      "title": "RNase digestion (RNase A + RNase H)",
+      "summary": "The RNA template is removed, leaving single-stranded first-strand cDNA.",
+      "note": "Affinity-purified RNase A and RNase H digest the RNA, leaving single-stranded cDNA whose 3' end carries the mosaic-end/T7-derived sequence.",
+      "product": "3'- CCCTCTACACATATTCTCTGTC[==== genomic cDNA (single-stranded) ====] -5'"
+    },
+    {
+      "step": 8,
+      "title": "Second-strand synthesis with UMI primer",
+      "summary": "The UMI primer anneals to the cDNA 3' end and extends, forming double-stranded LIANTI amplicons tagged with an 8-bp UMI.",
+      "note": "The primer 5'-NNNNNNNNGGGAGATGTGTATAAGAGACAG-3' (Q5 polymerase) anneals to the 3' end of the cDNA and extends, adding a unique 8-bp molecular barcode to each amplicon. Amplicons from the same original fragment share the same 5' mapping coordinate but different UMIs, enabling digital fragment counting.",
+      "product": "5'- [UMI:8]GGGAGATGTGTATAAGAGACAG[==== genomic insert ====] ------->\n                                <------- [==== genomic insert ====]CCCTCTACACATATTCTCTGTC[N8] -5'"
+    },
+    {
+      "step": 9,
+      "title": "Sonication (Covaris)",
+      "summary": "Double-stranded LIANTI amplicons are sheared to the insert size required for Illumina sequencing.",
+      "note": "LIANTI amplicons (~20 ng per cell) are sonicated to the length suitable for 2x125 bp / 2x150 bp reads; new genomic 3' ends are created, but the UMI-bearing 5' end (mosaic-end tag) is preserved for digital counting.",
+      "product": "5'- [UMI:8]GGGAGATGTGTATAAGAGACAG[== genomic ==] ~~/~~ [== genomic ==] -3'\n            (UMI-tagged 5' end kept)              sonicated genomic ends"
+    },
+    {
+      "step": 10,
+      "title": "NEBNext library prep (end-repair, dA-tail, TruSeq adapter ligation, indexing PCR)",
+      "summary": "Sonicated amplicons are converted into a standard paired-end Illumina library with P5/P7 and an i7 index.",
+      "note": "NEBNext Ultra / Ultra II DNA Library Prep Kit performs end repair, dA-tailing, TruSeq forked-adapter ligation, and indexing PCR (size selection skipped). Reads at the UMI-tagged end capture the inline 8-bp UMI plus the 22-bp mosaic-end binding sequence before the genomic insert.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8]GGGAGATGTGTATAAGAGACAG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "Illumina TruSeq Read 1 primer (5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3')",
+      "template": "bottom",
+      "cycles": 150,
+      "note": "Primer anneals to the bottom strand and reads the top strand rightward: first the inline 8-bp UMI, then the 22-bp T7 +1 (GGG) + Tn5 mosaic-end binding sequence, then the genomic insert. The UMI enables 5'-end digital fragment counting / duplicate removal (run as 2x125 or 2x150 bp).",
+      "diagram": "           5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------------->  Read 1\n5'- ...GAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNGGGAGATGTGTATAAGAGACAG[gDNA]... -3'\n3'- ...CTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNCCCTCTACACATATTCTCTGTC[gDNA]... -5'\n                                             |--UMI--||--T7+1 GGG + Tn5 mosaic end--|"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "Illumina TruSeq Read 2 / i7 index primer (5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3')",
+      "template": "top",
+      "cycles": 6,
+      "note": "The i7 index read primer anneals to the top-strand Read 2 adapter and reads the 6-bp NEBNext sample index for demultiplexing.",
+      "diagram": "     5'-...GTGTGCTCTTCCGATCT>revcomp aligns to top strand below\n5'- ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n       primer 5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3'------>  i7 index read\n                                         |-i7-|"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Illumina TruSeq Read 2 primer (5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3')",
+      "template": "top",
+      "cycles": 150,
+      "note": "Primer anneals to the top-strand Read 2 adapter and reads leftward through the genomic insert from the opposite (sonicated) amplicon end, giving the paired mate for mapping.",
+      "diagram": "   Read 2  <-----------------------------------------------\n5'- ...[gDNA]XXXAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC... -3'\n3'- ...[gDNA]XXXTCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG... -5'\n              3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'  Read 2 primer"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "LIANTI",
+  "description": "LIANTI (Linear Amplification via Transposon Insertion) is a single-cell whole-genome amplification (WGA) method that combines Tn5 transposition with T7 in vitro transcription to achieve linear \u2014 rather than exponential \u2014 amplification of a single cell's genomic DNA. A self-looping \"pre-cut\" transposon carrying a single-stranded T7-promoter loop tags genomic DNA; DNA-polymerase gap-fill converts the loops into double-stranded T7 promoters on both ends, and overnight in vitro transcription linearly amplifies each fragment into genomic RNA. The RNA self-primes at its 3' end, is reverse-transcribed, RNase-digested, and made double-stranded with a primer bearing an 8-bp unique molecular identifier (UMI), yielding LIANTI amplicons. Amplicons are sonicated and converted into a standard paired-end Illumina genomic library (NEBNext Ultra / TruSeq), where reads capture an inline 8-bp UMI plus the mosaic-end binding sequence on the 5' end of each amplicon, enabling digital fragment counting for high-accuracy micro-CNV and SNV detection.",
+  "reference": {
+    "kind": "paper",
+    "label": "Single-cell whole-genome analyses by Linear Amplification via Transposon Insertion (LIANTI)",
+    "path": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5538131/",
+    "doi": "10.1126/science.aak9787"
+  },
+  "publication": {
+    "year": 2017,
+    "original_publication": {
+      "title": "Single-cell whole-genome analyses by Linear Amplification via Transposon Insertion (LIANTI)",
+      "journal": "Science",
+      "doi": "10.1126/science.aak9787",
+      "url": "https://www.science.org/doi/10.1126/science.aak9787"
+    },
+    "authors": [
+      {
+        "name": "Chongyi Chen",
+        "affiliation": "Department of Chemistry and Chemical Biology, Harvard University, Cambridge, MA, USA"
+      },
+      {
+        "name": "Dong Xing",
+        "affiliation": "Department of Chemistry and Chemical Biology, Harvard University, Cambridge, MA, USA"
+      },
+      {
+        "name": "Longzhi Tan",
+        "affiliation": "Department of Chemistry and Chemical Biology, Harvard University, Cambridge, MA, USA"
+      },
+      {
+        "name": "Heng Li",
+        "affiliation": "Broad Institute of MIT and Harvard, Cambridge, MA, USA"
+      },
+      {
+        "name": "Guangyu Zhou",
+        "affiliation": "Department of Chemistry and Chemical Biology, Harvard University, Cambridge, MA, USA"
+      },
+      {
+        "name": "Lei Huang",
+        "affiliation": "Department of Chemistry and Chemical Biology, Harvard University; BIOPIC, School of Life Sciences, Peking University; Beijing Advanced Innovation Center for Genomics, Peking University"
+      },
+      {
+        "name": "X. Sunney Xie",
+        "corresponding": true,
+        "email": "xie@chemistry.harvard.edu",
+        "affiliation": "Department of Chemistry and Chemical Biology, Harvard University; BIOPIC, School of Life Sciences, Peking University; Beijing Advanced Innovation Center for Genomics, Peking University"
+      }
+    ],
+    "throughput": {
+      "summary": "One single cell amplified per reaction (low-throughput; the authors note high-throughput multiplexing is possible by adding combinatorial cellular barcodes in the transposon and primer). ~6 pg single-cell genomic DNA yields ~20 ng of LIANTI amplicons per cell.",
+      "cells": "single cell per reaction",
+      "rna": "not applicable (whole-genome DNA amplification; genomic RNA is only a linear-amplification intermediate)",
+      "dna": "~20 ng LIANTI amplicons from ~6 pg single-cell genomic DNA"
+    },
+    "statistical_model": "Poisson (read-depth CV compared against the Poisson sampling-noise lower limit); Extreme Value Distribution (EVD) used to set significance thresholds for CNV gain/loss calling",
+    "other": [
+      {
+        "label": "Cell line",
+        "value": "BJ human diploid skin fibroblast (ATCC CRL-2522)"
+      },
+      {
+        "label": "Genome coverage",
+        "value": "97% at ~30x depth"
+      },
+      {
+        "label": "Allele dropout rate",
+        "value": "17% (NR-ADO ~17.6%)"
+      },
+      {
+        "label": "SNV false-positive rate",
+        "value": "5.4 x 10^-6 (lowest among WGA methods)"
+      },
+      {
+        "label": "Micro-CNV resolution",
+        "value": "~10 kb via digital counting of inferred fragment numbers"
+      },
+      {
+        "label": "Average fragment size",
+        "value": "~400 bp after Tn5 transposition"
+      },
+      {
+        "label": "Sequencing platforms",
+        "value": "Illumina HiSeq 2500 (2x125/2x150) and HiSeq 4000 (2x150), skipping size selection"
+      },
+      {
+        "label": "Data / toolkit",
+        "value": "NCBI SRA SRP102259; 'lianti' toolkit at https://gitlab.com/lh3/lianti; mapping with BWA-MEM to GRCh37"
+      },
+      {
+        "label": "Key application",
+        "value": "Direct observation of stochastic replication-origin firing and genome-wide UV-induced SNV spectra (via kindred-cell pairs)"
+      }
+    ]
+  },
+  "modality": "DNA",
+  "method_type": "manual/tube",
+  "data_processing": {
+    "summary": "Reads are demultiplexed by the i7 sample index and the inline 8-bp UMI, aligned to the human reference (GRCh37) with BWA-MEM, and amplicons that map to identical start/end coordinates are collapsed to infer the original genomic-fragment number ('digital counting'); CNVs/micro-CNVs are called from binned fragment counts and read depth, and SNVs are filtered by comparing kindred-cell pairs. Analysis used the authors' own 'lianti' toolkit (gitlab.com/lh3/lianti).",
+    "stages": [
+      {
+        "id": "preprocess",
+        "label": "Read preprocessing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "count",
+        "label": "Digital counting"
+      },
+      {
+        "id": "cnv",
+        "label": "CNV calling"
+      },
+      {
+        "id": "snv",
+        "label": "SNV calling"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex by i7 index",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umi",
+        "label": "Extract inline 8-bp UMI",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align to GRCh37",
+        "tool": "BWA-MEM",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse",
+        "label": "Collapse by start/end coords",
+        "tool": "lianti",
+        "stage": "count",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "bin",
+        "label": "Bin fragment counts",
+        "tool": "lianti",
+        "stage": "cnv",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cnv",
+        "label": "Call CNVs and micro-CNVs",
+        "tool": "lianti",
+        "stage": "cnv",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "snv",
+        "label": "Call SNVs",
+        "tool": "lianti",
+        "stage": "snv",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "snv_filter",
+        "label": "Filter SNVs by kindred pairs",
+        "tool": "lianti",
+        "stage": "snv",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "umi",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse",
+        "to": "bin",
+        "kind": "branch"
+      },
+      {
+        "from": "collapse",
+        "to": "snv",
+        "kind": "branch"
+      },
+      {
+        "from": "bin",
+        "to": "cnv",
+        "kind": "sequential"
+      },
+      {
+        "from": "snv",
+        "to": "snv_filter",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": "Poisson (read-depth sampling-noise reference for CV-vs-bin-size); Extreme Value Distribution (EVD) for CNV gain/loss significance thresholds"
+  }
+}

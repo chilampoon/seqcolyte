@@ -1,0 +1,27 @@
+{
+  "folder": "pip_seq_v4",
+  "title": "PIP-seq (PIPseq T20 3\u2032 v4)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "PIP-seq.html",
+    "oligo_seq_recall": 0.25,
+    "oligo_seqs_matched": 3,
+    "oligo_seqs_total": 12,
+    "missed_oligos": [
+      "Barcoded beads-oligo (T2/20/100 PIPs, FB0003913/FB0003914/FB0003915)",
+      "Illumina Nextera Read 2 primer",
+      "Illumina P5 adapter",
+      "Illumina P7 adapter",
+      "Illumina TruSeq Read 1 primer",
+      "Library P5 Index (FB0001915-1918, FB0001666-1669)",
+      "Library P7 Index (FB0001626-1627, FB0001629-1633, FB0002092)",
+      "Nextera Index 1 sequencing primer (i7)",
+      "TruSeq i5 index sequencing primer (index2)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "P5 | i5 | Read1_handle | CellBC(16) | UMI(12) | cDNA(3') | ligated_ME/Read2_handle | i7 | P7",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:2][CELL_BARCODE:8]ATG[CELL_BARCODE:6]GAG[CELL_BARCODE:6]TCGAG[CELL_BARCODE:8][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]ACTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

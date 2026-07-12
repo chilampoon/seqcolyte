@@ -1,0 +1,23 @@
+{
+  "folder": "cel_seq2",
+  "title": "CEL-Seq2",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "CEL-seq_family.html",
+    "oligo_seq_recall": 0.643,
+    "oligo_seqs_matched": 9,
+    "oligo_seqs_total": 14,
+    "missed_oligos": [
+      "Illumina RA3 adapter (TruSeq Small RNA kit)",
+      "Illumina RA5 adapter (TruSeq Small RNA kit)",
+      "Illumina RP1 primer (TruSeq Small RNA kit)",
+      "Index read primer",
+      "T7 promoter"
+    ],
+    "annotated_library_exact_match": true,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

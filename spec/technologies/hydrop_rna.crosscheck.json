@@ -1,0 +1,33 @@
+{
+  "folder": "hydrop_rna",
+  "title": "HyDrop-RNA",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "HyDrop_RNA.html",
+    "oligo_seq_recall": 0.75,
+    "oligo_seqs_matched": 15,
+    "oligo_seqs_total": 20,
+    "missed_oligos": [
+      "Barcoded beads-oligo",
+      "Illumina P5 adapter",
+      "Illumina P7 adapter",
+      "Illumina TruSeq Read 1 primer",
+      "TruSeq i5 index sequencing primer (index2)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- CAAGCAGAAGACGGCATACGAGAT -[i7 SAMPLE_INDEX:10]- CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC -[BC1 CELL_BARCODE:10]- CAGCTACTGC -[BC2 CELL_BARCODE:10]- CGAGTACCCT -[BC3 CELL_BARCODE:10]- [UMI:8] -TTTTTTTTTTTTTTTTTTTTTTTTT- [CDNA] -AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT- [i5 SAMPLE_INDEX:10] -GTGTAGATCTCGGTGGTCGCCGTATCATT -3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[UMI:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA](pA)[UMI:8][CELL_BARCODE:10]AGGGTACTCG[CELL_BARCODE:10]GCAGTAGCTG[CELL_BARCODE:10]GTACTCTGCGTTGATACCACTGCTTCCGCGGACAG[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {
+      "UMI": {
+        "extracted": [
+          8
+        ],
+        "groundtruth": [
+          8,
+          10
+        ]
+      }
+    },
+    "big_conflict": true
+  }
+}

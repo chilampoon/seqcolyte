@@ -1,0 +1,739 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "sci_rna_seq",
+  "assay": "sci-RNA-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "paper.pdf",
+      "title": "paper.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_rna_seq/paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary.pdf",
+      "title": "supplementary.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_rna_seq/supplementary.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "rt_primer_barcoded_oligodt",
+      "name": "Anchored barcoded oligo-dT RT primer",
+      "aliases": [],
+      "role": "Reverse-transcription primer that introduces the first-round (RT) cell barcode and the UMI while priming on the mRNA poly(A) tail",
+      "kind": "single",
+      "sequence": "ACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "R1 constant (partial TruSeq Read1)",
+          "sequence": "ACGACGCTCTTCCGATCT",
+          "role": "PCR/Read1 handle appended during RT"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:8]",
+          "role": "8-nt unique molecular identifier (NNNNNNNN)"
+        },
+        {
+          "name": "RT barcode",
+          "sequence": "[CELL_BARCODE:10]",
+          "role": "10-nt well-specific first-round cellular index"
+        },
+        {
+          "name": "oligo(dT)30 + VN anchor",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+          "role": "30-mer poly-T with a 2-nt anchored VN 3' end (V = A/C/G, N = any base)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Documented as 5'-ACGACGCTCTTCCGATCTNNNNNNNN[10bp index]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN-3' (IDT). Used at 25 uM. Same primer design used for the related bulk Tn5-RNA-seq control."
+    },
+    {
+      "oligo_id": "p5_primer_i5",
+      "name": "P5 PCR primer (indexed, i5)",
+      "aliases": [],
+      "role": "Library PCR primer that adds the Illumina P5 adaptor and the i5 (second-round) index; anneals to the RT-derived R1 handle",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell adaptor"
+        },
+        {
+          "name": "i5 index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "10-nt second-round PCR barcode"
+        },
+        {
+          "name": "Read1 primer region",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "TruSeq Read1 primer binding site; 3' end overlaps the RT primer R1 handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Documented as 5'-AATGATACGGCGACCACCGAGATCTACAC[i5]ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3' (IDT), 10 uM. In three-level indexing an 'indexed P5 primer' of the same structure is used."
+    },
+    {
+      "oligo_id": "p7_primer_i7",
+      "name": "P7 PCR primer (indexed, i7)",
+      "aliases": [],
+      "role": "Library PCR primer that adds the Illumina P7 adaptor and the i7 (second-round) index; anneals to the Tn5 Nextera adaptor",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:10]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adaptor"
+        },
+        {
+          "name": "i7 index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "10-nt second-round PCR barcode"
+        },
+        {
+          "name": "Nextera S7 region",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "Anneals to the Tn5 (Nextera) transposon adaptor introduced by tagmentation"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Documented as 5'-CAAGCAGAAGACGGCATACGAGAT[i7]GTCTCGTGGGCTCGG-3' (IDT), 10 uM."
+    },
+    {
+      "oligo_id": "tn5_nextera_mosaic_end",
+      "name": "Tn5 (Nextera) mosaic-end transposon adaptor",
+      "aliases": [],
+      "role": "Transposase-loaded adaptor inserted at the 3' cDNA end during tagmentation; provides the Read2 / i7-side handle",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Transferred strand (Nextera S7 + mosaic end)",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "Strand transferred to DNA; 3' 19-mer is the mosaic end (AGATGTGTATAAGAGACAG)"
+        },
+        {
+          "name": "Non-transferred / mosaic-end complement",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "19-nt reverse complement of the mosaic end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Provided pre-loaded in the Nextera DNA Sample Preparation kit / TDE1 (Illumina). Sequence is the standard Nextera mosaic end; only the i7-side adaptor is retained in the final library because the PCR primers are RT-product-specific. In three-level indexing a barcoded (indexed) TDE1/Tn5 introduces a third cellular index at this junction."
+    },
+    {
+      "oligo_id": "read1_seq_primer",
+      "name": "Read 1 sequencing primer (TruSeq Read1)",
+      "aliases": [],
+      "role": "Primes Read 1 to sequence the UMI then the RT barcode",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq Read1 primer; matches the R1 region built by the RT primer + P5 primer."
+    },
+    {
+      "oligo_id": "read2_seq_primer",
+      "name": "Read 2 sequencing primer (Nextera Read2)",
+      "aliases": [],
+      "role": "Primes Read 2 to sequence the cDNA 3' tag from the Tn5 mosaic-end side",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Nextera Read2 primer (S7 + mosaic end)."
+    }
+  ],
+  "final_library": {
+    "source_label": "sci-RNA-seq final Illumina library (two-level indexing), Cao et al. Science 2017, Fig. 1B + Methods",
+    "annotated_library_sequence": "5'-AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG-3'",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' (top / sense)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = Illumina P5 adaptor",
+      "[SAMPLE_INDEX:10] = i5 index (second-round PCR barcode)",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT = Read 1 primer region (TruSeq R1 / RT handle)",
+      "[UMI:8] = 8-nt unique molecular identifier (sequenced first in Read 1)",
+      "[CELL_BARCODE:10] = RT barcode (first-round cellular index; sequenced next in Read 1)",
+      "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT = oligo(dT)30 (poly-T from RT primer / poly-A junction)",
+      "[CDNA] = 3' cDNA insert (read by Read 2)",
+      "CTGTCTCTTATACACATCT = Tn5 mosaic end (reverse complement)",
+      "CCGAGCCCACGAGAC = Nextera S7 / Read 2 primer region (reverse complement)",
+      "[SAMPLE_INDEX:10] = i7 index (reverse complement; second-round PCR barcode)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = Illumina P7 adaptor (reverse complement)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "sci-RNA-seq final Illumina library (two-level indexing), Cao et al. Science 2017, Fig. 1B + Methods",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+        "template": "top",
+        "cycles": 18,
+        "segments": [
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "RT barcode",
+            "type": "barcode",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+        "template": "bottom",
+        "cycles": 52,
+        "segments": [
+          {
+            "name": "cDNA 3' tag",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "GTCTCGTGGGCTCGG",
+        "template": "bottom",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i7 index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "P5 i5 index primer",
+        "template": "top",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i5 index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Fix and distribute cells",
+      "summary": "Methanol-fixed (or lysed-to-nuclei) cells are distributed across 96-/384-well plates.",
+      "note": "5M cells fixed in ice-cold 100% methanol, washed with RNase-inhibitor buffers, and 1,000-10,000 cells (optimally ~2,000 cells or ~5,000 nuclei) dispensed per well. Wells define the first-round sample/barcode assignment.",
+      "product": "cell/nucleus in well  (mRNA: 5'- [CDNA-template mRNA] AAAAA...AAA -3')"
+    },
+    {
+      "step": 2,
+      "title": "In situ barcoded reverse transcription (1st index + UMI)",
+      "summary": "A well-specific barcoded oligo-dT primer with a UMI primes RT on the poly(A) tail in situ.",
+      "note": "1 uL 25 uM anchored oligo-dT RT primer + dNTPs, denature 55C, then SuperScript IV mix; RT 55C 10 min. Each well delivers a distinct RT barcode; the UMI tags individual molecules.",
+      "product": "mRNA:cDNA hybrid\n5'- ...[mRNA]... AAAAAAAAAAAA -3'\n3'-        ...[cDNA]... TTTTTTTTTTTT[CELL_BARCODE:10][UMI:8]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA -5'"
+    },
+    {
+      "step": 3,
+      "title": "Pool and FACS-sort",
+      "summary": "All wells are pooled, DAPI-stained, and single cells/nuclei are FACS-sorted into a fresh plate.",
+      "note": "Gating on DAPI discriminates singlets from doublets; sorting into new wells sets up the second-round (PCR) barcode. Typically 10-100+ cells sorted per destination well.",
+      "product": "sorted single cell/nucleus in new well (barcoded mRNA:cDNA hybrid, as step 2)"
+    },
+    {
+      "step": 4,
+      "title": "Second-strand synthesis",
+      "summary": "mRNA Second Strand Synthesis converts the RT product into double-stranded cDNA.",
+      "note": "NEB mRNA Second Strand Synthesis buffer + enzyme, 16C 150 min, stop 75C 20 min.",
+      "product": "double-stranded cDNA\n5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTT...[CDNA] -3'\n3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[UMI:8comp][CELL_BARCODE:10comp]AAAA...[CDNAcomp] -5'"
+    },
+    {
+      "step": 5,
+      "title": "Tn5 tagmentation (Nextera)",
+      "summary": "Tn5 transposase fragments the ds-cDNA and inserts Nextera mosaic-end adaptors.",
+      "note": "Nextera TD buffer + TDE1, 55C 5 min, with carrier genomic DNA to avoid over-tagmentation. In the three-level variant a barcoded/indexed Tn5 adds a third cellular index here. Only the i7-side adaptor is retained because downstream PCR primers are RT-product-specific.",
+      "product": "5'- ...[CELL_BARCODE:10]TTTT...[CDNA]      AGATGTGTATAAGAGACAG -3'\n                                   3'- TCTACACATATTCTCTGTCGGCTCGGGTGCTCTG -5'"
+    },
+    {
+      "step": 6,
+      "title": "PCR with indexed P5/P7 (2nd index)",
+      "summary": "P5(i5) and P7(i7) primers amplify RT products and add flow-cell adaptors + the second index.",
+      "note": "2 uL each 10 uM P5/P7 primer + NEBNext 2X master mix; 72C 5 min, 98C 30 s, 18-22 cycles (98C 10 s / 66C 30 s / 72C 1 min), 72C 5 min. RT barcode + PCR (i5/i7) barcode together form the full cellular index.",
+      "product": "5'-AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTT...[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG-3'"
+    },
+    {
+      "step": 7,
+      "title": "Pool, purify, sequence",
+      "summary": "Amplicons are pooled, AMPure-purified, quantified, and sequenced on Illumina NextSeq 500.",
+      "note": "0.8X AMPure cleanup; QC by Qubit and 6% TBE-PAGE. Sequenced with a V2 75-cycle kit (R1 18, R2 52, I1 10, I2 10).",
+      "product": "final sequenceable library (see final_library)"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT (TruSeq Read1)",
+      "template": "top",
+      "cycles": 18,
+      "note": "Read 1 primer anneals to the RT/R1 handle on the bottom strand and reads the 8-nt UMI immediately followed by the 10-nt RT barcode (8 + 10 = 18 cycles).",
+      "diagram": "Read 1 primer:\n5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------->\n                                    (reads UMI 8 + RT barcode 10 = 18 nt)\n\n5'-...ACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTTTTTTTT...[cDNA]-3'   (top strand)\n3'-...TGTGCTGCGAGAAGGCTAGA[UMI:8][CELL_BARCODE:10]AAAAAAAAAA...[cDNA]-5'   (bottom strand)"
+    },
+    {
+      "read": "Read 2",
+      "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG (Nextera Read2)",
+      "template": "bottom",
+      "cycles": 52,
+      "note": "Read 2 primer anneals to the Tn5 mosaic-end/S7 region on the top strand and reads the 3' cDNA tag off the bottom strand (52 cycles).",
+      "diagram": "                                              Read 2 primer:\n                        3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n<---------------------(reads cDNA 3' tag, 52 nt)\n\n5'-...[cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:10]ATCTCGTATGCCGTCTTCTGCTTG-3'   (top strand)\n3'-...[cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:10]TAGAGCATACGGCAGAAGACGAAC-5'   (bottom strand)"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG (Nextera i7 index primer)",
+      "template": "bottom",
+      "cycles": 10,
+      "note": "The i7 index read primer anneals at the mosaic-end/S7 junction and reads the 10-nt i7 (second-round PCR) barcode toward P7.",
+      "diagram": "Index 1 (i7) primer:\n5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG--->\n                                        (reads i7, 10 nt)\n\n5'-...CTCCGAGCCCACGAGAC[SAMPLE_INDEX:10(i7)]ATCTCGTATGCCGTCTTCTGCTTG-3'   (top strand)\n3'-...GAGGCTCGGGTGCTCTG[SAMPLE_INDEX:10(i7)]TAGAGCATACGGCAGAAGACGAAC-5'   (bottom strand)"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT (P5/R1 i5 index primer)",
+      "template": "top",
+      "cycles": 10,
+      "note": "On the NextSeq 500 the i5 (second-round PCR) barcode is read from the R1-handle primer toward P5 (10 cycles); on this patterned-flow-cell workflow it is read off the resynthesized bottom strand.",
+      "diagram": "                                     Index 2 (i5) primer:\n              <---3'-TCTAGCCTTCTCGCAGCACATATCCCTTTCTCACA-5'\n(reads i5, 10 nt)\n\n5'-AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10(i5)]ACACTCTTTCCCTACACGACGCTCTTCCGATCT...-3'   (top strand)\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:10(i5)]TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA...-5'   (bottom strand)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "sci-RNA-seq",
+  "description": "Single-cell combinatorial indexing RNA sequencing (sci-RNA-seq): a plate-based, split-pool method that produces 3'-tag digital gene-expression profiles from tens of thousands of single cells or nuclei without physical isolation of each cell. Methanol-fixed cells are distributed to wells and given an in situ reverse-transcription with a well-specific barcoded oligo-dT primer carrying a UMI (first index); cells are pooled, FACS-sorted into a new plate, then second-strand synthesis, Tn5 (Nextera) tagmentation, and PCR with indexed P5/P7 primers add a second well-specific index. Read 1 captures the UMI + RT barcode, Read 2 captures the 3' end of the transcript, and the two index reads capture i5/i7; the combination of RT barcode + PCR barcode forms the cellular index.",
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "sci rna seq",
+    "path": null,
+    "url": null,
+    "doi": null
+  },
+  "publication": {
+    "year": 2017,
+    "original_publication": {
+      "title": "Comprehensive single-cell transcriptional profiling of a multicellular organism",
+      "journal": "Science",
+      "doi": "10.1126/science.aam8940",
+      "url": "http://science.sciencemag.org/content/357/6352/661"
+    },
+    "authors": [
+      {
+        "name": "Junyue Cao",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA; Molecular and Cellular Biology Program, University of Washington"
+      },
+      {
+        "name": "Jonathan S. Packer",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Vijay Ramani",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Darren A. Cusanovich",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Chau Huynh",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Riza Daza",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Xiaojie Qiu",
+        "affiliation": "Department of Genome Sciences, University of Washington; Molecular and Cellular Biology Program, University of Washington"
+      },
+      {
+        "name": "Choli Lee",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Scott N. Furlan",
+        "affiliation": "Ben Towne Center for Childhood Cancer Research, Seattle Children's Research Institute; Department of Pediatrics, University of Washington; Fred Hutchinson Cancer Research Center"
+      },
+      {
+        "name": "Frank J. Steemers",
+        "affiliation": "Advanced Research Group, Illumina, San Diego, CA, USA"
+      },
+      {
+        "name": "Andrew Adey",
+        "affiliation": "Department of Molecular & Medical Genetics, Oregon Health & Science University; Knight Cardiovascular Institute, Portland, OR, USA"
+      },
+      {
+        "name": "Robert H. Waterston",
+        "corresponding": true,
+        "email": "watersto@uw.edu",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Cole Trapnell",
+        "corresponding": true,
+        "email": "coletrap@uw.edu",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Jay Shendure",
+        "corresponding": true,
+        "email": "shendure@uw.edu",
+        "affiliation": "Department of Genome Sciences, University of Washington; Howard Hughes Medical Institute, Seattle, WA, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "Two-level indexing routinely profiles ~10^4 single cells per experiment; demonstrated 576 x 960 indexing yielding ~4 x 10^4 cells; ~50,000 C. elegans cells profiled across two experiments. Three-level indexing projected to enable >10^6 cells.",
+      "cells": "42,035 C. elegans single-cell transcriptomes (experiment 1) + 7,325 (experiment 2, incl. 511 intestine); 15,997 cells in the 384x384 human/mouse demonstration",
+      "rna": "3'-tag digital gene expression; e.g. ~24,454 UMIs / 5,604 genes per human cell and ~17,665 UMIs / 4,065 genes per mouse cell (optimized 96x96); median 575 protein-coding-gene UMIs per C. elegans cell",
+      "dna": "Not applicable (RNA assay); tagmented carrier genomic DNA is not amplified or sequenced because PCR primers are RT-product-specific"
+    },
+    "statistical_model": "Negative binomial (per-cell-type gene expression modeled as a negative binomial with mean mu and dispersion alpha; 95% CIs via normal approximation N(mu, (mu + mu^2*alpha)/n)); species collision rate modeled combinatorially",
+    "other": [
+      {
+        "label": "Cost per cell",
+        "value": "$0.03 to $0.20 per cell (as low as <$0.025 with 1,536 RT barcodes)"
+      },
+      {
+        "label": "Sequencer / kit",
+        "value": "Illumina NextSeq 500, V2 75-cycle kit (R1 18, R2 52, I1 10, I2 10)"
+      },
+      {
+        "label": "Transposase",
+        "value": "Tn5 via Nextera DNA Sample Preparation kit (TDE1); tagmented carrier genomic DNA is not amplified because PCR primers are RT-product-specific"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO accession GSE98561; cell atlas at http://atlas.gs.washington.edu"
+      },
+      {
+        "label": "Organism",
+        "value": "Caenorhabditis elegans L2 larva (strain RW12139) plus HEK293T/HeLa S3/NIH-3T3 controls"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Base calls are demultiplexed with bcl2fastq, adaptor-trimmed with trim_galore, and aligned to the reference genome with STAR; PCR duplicates are collapsed using the UMI together with the RT index and the read-2 tagmentation coordinate, reads are split into single-cell indices by the RT barcode (plus the Tn5 barcode for three-level indexing), and strand-specific exonic+intronic UMIs are counted per gene with HTSeq to build a digital gene-expression matrix that is reduced by PCA then t-SNE and clustered by the density-peak algorithm in Monocle.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplex"
+      },
+      {
+        "id": "preprocess",
+        "label": "Trim & Align"
+      },
+      {
+        "id": "quantify",
+        "label": "Quantify"
+      },
+      {
+        "id": "reduce",
+        "label": "Dimensionality Reduction"
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster & Annotate"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex base calls",
+        "tool": "bcl2fastq",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim",
+        "label": "Trim adaptor sequences",
+        "tool": "trim_galore",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align to genome",
+        "tool": "STAR",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_unique",
+        "label": "Filter uniquely mapping reads",
+        "tool": "samtools/pysam",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Collapse UMI duplicates",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "split_cells",
+        "label": "Split reads by cell barcode",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count",
+        "label": "Count exonic+intronic UMIs per gene",
+        "tool": "HTSeq",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "matrix",
+        "label": "Assemble expression matrix",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pca",
+        "label": "Reduce dimensions",
+        "tool": "",
+        "stage": "reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tsne",
+        "label": "Embed with t-SNE",
+        "tool": "",
+        "stage": "reduce",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells",
+        "tool": "Monocle 2",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "annotate",
+        "label": "Assign cell types",
+        "tool": "",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "trim",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "filter_unique",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_unique",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "split_cells",
+        "kind": "sequential"
+      },
+      {
+        "from": "split_cells",
+        "to": "count",
+        "kind": "sequential"
+      },
+      {
+        "from": "count",
+        "to": "matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "matrix",
+        "to": "pca",
+        "kind": "sequential"
+      },
+      {
+        "from": "pca",
+        "to": "tsne",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "cluster",
+        "kind": "branch"
+      },
+      {
+        "from": "cluster",
+        "to": "annotate",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "negative binomial"
+  }
+}

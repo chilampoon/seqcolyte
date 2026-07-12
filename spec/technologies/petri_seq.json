@@ -1,0 +1,1339 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "petri_seq",
+  "assay": "PETRI-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "supplementary_NIHMS1587539-supplement-1587539_Supp_Tab3-5.xlsx",
+      "title": "Prokaryotic single-cell RNA sequencing by in situ combinatorial indexing",
+      "url": "https://doi.org/10.1038/s41564-020-0729-6",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/petri_seq/supplementary_NIHMS1587539-supplement-1587539_Supp_Tab3-5.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_NIHMS1587539-supplement-1587539_Supp_Fig1-2-Supp_Tab1-2.pdf",
+      "title": "Prokaryotic single-cell RNA sequencing by in situ combinatorial indexing",
+      "url": "https://doi.org/10.1038/s41564-020-0729-6",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/petri_seq/supplementary_NIHMS1587539-supplement-1587539_Supp_Fig1-2-Supp_Tab1-2.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "PETRI-seq.xlsx",
+      "title": "PETRI-seq.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/petri_seq/PETRI-seq.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "PETRI-seq_protocol.pdf",
+      "title": "PETRI-seq_protocol.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/petri_seq/PETRI-seq_protocol.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "PETRI-seq_paper.pdf",
+      "title": "PETRI-seq_paper.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/petri_seq/PETRI-seq_paper.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_round1_rt_barcode_primer",
+      "name": "Round 1 RT barcoded random-hexamer primer (BC1)",
+      "aliases": [],
+      "role": "Barcoded reverse-transcription primer; in-cell first-strand synthesis and first (RT) cell barcode",
+      "kind": "assembled",
+      "sequence": "GCCAGA[CELL_BARCODE:7]NNNNNN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Round 1 5' ligation handle (universal)",
+          "sequence": "GCCAGA",
+          "role": "constant; accepts Round 2 ligation at 5' phosphate"
+        },
+        {
+          "name": "Round 1 cell barcode",
+          "sequence": "[CELL_BARCODE:7]",
+          "role": "cell barcode (96 wells)"
+        },
+        {
+          "name": "Random hexamer (RT priming)",
+          "sequence": "NNNNNN",
+          "role": "random primer that anneals to mRNA"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 3, 96 Round-1 oligos. 5' modification /5Phos/ (required for downstream ligation). Full example: /5Phos/GCCAGACAGAGAANNNNNN. The 7-nt barcodes all begin with C or G. No UMI in Round 1."
+    },
+    {
+      "oligo_id": "oligo_round2_ligation_barcode",
+      "name": "Round 2 ligation barcode oligo (BC2)",
+      "aliases": [],
+      "role": "Second (ligation) cell barcode, added by split-pool T4 ligation",
+      "kind": "assembled",
+      "sequence": "GCTTCGC[CELL_BARCODE:7]CCTCCTAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Round 2 5' handle (universal)",
+          "sequence": "GCTTCGC",
+          "role": "constant; accepts Round 3 ligation at 5' phosphate"
+        },
+        {
+          "name": "Round 2 cell barcode",
+          "sequence": "[CELL_BARCODE:7]",
+          "role": "cell barcode (96 wells)"
+        },
+        {
+          "name": "Round 2 3' handle (universal)",
+          "sequence": "CCTCCTAC",
+          "role": "constant; ligates via linker SB83 to the GCCAGA end of BC1"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 3, 96 Round-2 oligos. 5' modification /5Phos/. Full example: /5Phos/GCTTCGCGACCTTACCTCCTAC. Annealed to linker SB83 before ligation."
+    },
+    {
+      "oligo_id": "oligo_round3_ligation_barcode_umi",
+      "name": "Round 3 ligation barcode + UMI oligo (BC3)",
+      "aliases": [],
+      "role": "Third (ligation) cell barcode, 7-nt UMI, and Read 1 / P5-side handle",
+      "kind": "assembled",
+      "sequence": "AGAATACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 1 handle (PETRI)",
+          "sequence": "AGAATACACGACGCTCTTCCGATCT",
+          "role": "Read 1 primer binding / P5-side PCR handle"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:7]",
+          "role": "7 degenerate nt, distinguishes transcripts from PCR duplicates"
+        },
+        {
+          "name": "Round 3 cell barcode",
+          "sequence": "[CELL_BARCODE:7]",
+          "role": "cell barcode (96 wells)"
+        },
+        {
+          "name": "Round 3 3' handle (universal)",
+          "sequence": "GGTCCTTG",
+          "role": "constant; ligates via linker SB80 to the GCTTCGC end of BC2"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 3, 96 Round-3 oligos. Full example: AGAATACACGACGCTCTTCCGATCTNNNNNNNGTGTGAAGGTCCTTG. UMI = NNNNNNN (7 nt). Annealed to linker SB80 before ligation. Downstream demux linker GGTCCTTGGCTTCGC."
+    },
+    {
+      "oligo_id": "oligo_sb83_round2_linker",
+      "name": "Round 2 linker oligo (SB83)",
+      "aliases": [],
+      "role": "Bridging/splint oligo that anneals across the BC2-BC1 junction for Round 2 ligation",
+      "kind": "single",
+      "sequence": "STCTGGCGTAGGAGGW",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. S = C/G, W = A/T (IUPAC, kept literal). Reverse complement of the CCTCCTACGCCAGA junction. Also used as the 16-base ligation linker in ligation-efficiency tests."
+    },
+    {
+      "oligo_id": "oligo_sb80_round3_linker",
+      "name": "Round 3 linker oligo (SB80)",
+      "aliases": [],
+      "role": "Bridging/splint oligo that anneals across the BC3-BC2 junction for Round 3 ligation",
+      "kind": "single",
+      "sequence": "GCGAAGCCAAGGACCW",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. W = A/T. Reverse complement of the GGTCCTTGGCTTCGC junction. Used at 70 uM."
+    },
+    {
+      "oligo_id": "oligo_sb84_round2_blocking1",
+      "name": "Round 2 blocking oligo 1 (SB84)",
+      "aliases": [],
+      "role": "Blocking oligo (self-annealed hairpin) that caps unreacted Round 2 linker/barcode ends after ligation",
+      "kind": "single",
+      "sequence": "GCCAGASACGTTAGGCAGGACCTAACGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. S = C/G. Annealed to form an intramolecular hairpin (95->20 C ramp) before use."
+    },
+    {
+      "oligo_id": "oligo_sb85_round2_blocking2",
+      "name": "Round 2 blocking oligo 2 (SB85)",
+      "aliases": [],
+      "role": "Blocking oligo that caps unreacted Round 2 ends after ligation",
+      "kind": "single",
+      "sequence": "WCCTCCTACGCCAGAS",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. W = A/T, S = C/G."
+    },
+    {
+      "oligo_id": "oligo_sb81_round3_blocking1",
+      "name": "Round 3 blocking oligo 1 (SB81)",
+      "aliases": [],
+      "role": "Blocking oligo (self-annealed hairpin) that caps unreacted Round 3 linker/barcode ends after ligation",
+      "kind": "single",
+      "sequence": "GCTTCGCTGCAATCGGACCTCGATTGCA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Annealed to a hairpin before use."
+    },
+    {
+      "oligo_id": "oligo_sb82_round3_blocking2",
+      "name": "Round 3 blocking oligo 2 (SB82)",
+      "aliases": [],
+      "role": "Blocking oligo that caps unreacted Round 3 ends after ligation",
+      "kind": "single",
+      "sequence": "WGGTCCTTGGCTTCGC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. W = A/T."
+    },
+    {
+      "oligo_id": "oligo_sb14_tso",
+      "name": "Template Switch Oligo (TSO, SB14)",
+      "aliases": [],
+      "role": "Template-switching oligo used in the alternative (template-switch) second-strand route",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTGAATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Terminal rGrGrG folded to GGG. Used only in the template-switching alternative to second-strand synthesis; standard PETRI-seq uses NEBNext second-strand synthesis instead."
+    },
+    {
+      "oligo_id": "oligo_sb15_pcr_after_ts",
+      "name": "PCR primer after template switch (SB15)",
+      "aliases": [],
+      "role": "PCR primer (pairs with SB86) for the template-switch route",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Anneals to the TSO handle installed by SB14."
+    },
+    {
+      "oligo_id": "oligo_sb86_pcr_after_ts",
+      "name": "PCR primer after template switch (SB86)",
+      "aliases": [],
+      "role": "PCR primer (pairs with SB15 or SB13); anneals to the ligated Read-1 handle",
+      "kind": "single",
+      "sequence": "AGAATACACGACGCTCTTCC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Also used in ligation-efficiency qPCR (amplifies only ligated product)."
+    },
+    {
+      "oligo_id": "oligo_sb94_hexamer_rt_no_barcode",
+      "name": "Hexamer for RT without barcoding (SB94)",
+      "aliases": [],
+      "role": "Non-barcoded random-hexamer RT primer for bulk control libraries",
+      "kind": "single",
+      "sequence": "AGAATACACGACGCTCTTCCGATCTNNNNNN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Bulk RNA-seq control primer; not used in single-cell barcoding."
+    },
+    {
+      "oligo_id": "oligo_sb10_rpsb_rt_primer",
+      "name": "rpsB-specific RT primer (SB10)",
+      "aliases": [],
+      "role": "Gene-specific RT primer used in qPCR validation of in situ RT",
+      "kind": "single",
+      "sequence": "ACAGACATGTGCTCTTCCAGCTGAGAACGGCCTTCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. 5' modification /5Biosg/ (biotin). qPCR/validation only."
+    },
+    {
+      "oligo_id": "oligo_sb5_rpsb_qpcr_fwd",
+      "name": "rpsB qPCR primer (SB5)",
+      "aliases": [],
+      "role": "qPCR primer for rpsB cDNA quantification",
+      "kind": "single",
+      "sequence": "AAACCGTTCGTCAGTCCATC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Validation only."
+    },
+    {
+      "oligo_id": "oligo_sb6_rpsb_qpcr_rev",
+      "name": "rpsB qPCR primer (SB6)",
+      "aliases": [],
+      "role": "qPCR primer for rpsB cDNA quantification",
+      "kind": "single",
+      "sequence": "ATGTCTTTGATACCGCCCAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Validation only."
+    },
+    {
+      "oligo_id": "oligo_sb12_qpcr",
+      "name": "SB10-binding rpsB qPCR primer (SB12)",
+      "aliases": [],
+      "role": "qPCR primer (with SB13) that anneals to the SB10 gene-specific RT primer",
+      "kind": "single",
+      "sequence": "ACAGACATGTGCTCTTCCAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Validation only."
+    },
+    {
+      "oligo_id": "oligo_sb13_qpcr",
+      "name": "rpsB qPCR primer (SB13)",
+      "aliases": [],
+      "role": "qPCR primer (with SB12/SB86/SB115)",
+      "kind": "single",
+      "sequence": "ATACCAACTCTGATCCGGAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Validation only."
+    },
+    {
+      "oligo_id": "oligo_sb110_ligation_test_rt",
+      "name": "rpsB-specific RT primer for ligation test (SB110)",
+      "aliases": [],
+      "role": "RT primer used in the barcode-ligation efficiency assay",
+      "kind": "single",
+      "sequence": "GCCAGAGGCCAGGAATGAGAACGGCCTTCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. 5' /5Phos/. Validation only."
+    },
+    {
+      "oligo_id": "oligo_sb111_ligation_test_linker",
+      "name": "Linker for ligation test (SB111)",
+      "aliases": [],
+      "role": "30-base linker control for ligation-efficiency assay",
+      "kind": "single",
+      "sequence": "TTCCTGGCCTCTGGCGTAGGAGGTGGAAGA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Validation only."
+    },
+    {
+      "oligo_id": "oligo_sb113_ligation_test_ligated",
+      "name": "Ligated primer for ligation test (SB113)",
+      "aliases": [],
+      "role": "Primer to be ligated in the ligation-efficiency assay",
+      "kind": "single",
+      "sequence": "AGAATACACGACGCTCTTCCACCTCCTAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Validation only."
+    },
+    {
+      "oligo_id": "oligo_sb114_ligation_test_poscontrol",
+      "name": "rpsB-specific RT primer, positive control (SB114)",
+      "aliases": [],
+      "role": "Positive control mimicking 100%-efficient ligation",
+      "kind": "single",
+      "sequence": "AGAATACACGACGCTCTTCCACCTCCTACGCCAGAGGCCAGGAATGAGAACGGCCTTCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Contains primer sites for both SB86 and SB115. Validation only."
+    },
+    {
+      "oligo_id": "oligo_sb115_ligation_test_qpcr",
+      "name": "qPCR primer for ligation test (SB115)",
+      "aliases": [],
+      "role": "qPCR primer (with SB13) that anneals to the RT-primer overhang (all RT product)",
+      "kind": "single",
+      "sequence": "AGAGGCCAGGAATGAGAAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 2. Validation only."
+    },
+    {
+      "oligo_id": "oligo_i5_pcr_primer",
+      "name": "P5 / i5 library PCR primer (NEBNext i5, E7600)",
+      "aliases": [],
+      "role": "P5-side indexing PCR primer; installs P5, i5 sample index, and TruSeq Read 1",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell adapter"
+        },
+        {
+          "name": "i5 sample index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "i5 index (Index 2)"
+        },
+        {
+          "name": "TruSeq Read 1",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "Read 1 primer binding site; anneals to the PETRI AGAAT...GATCT handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Protocol: 'i50x primer (NEB kit E7600S)' or the same from IDT. Anneals to the round-3 AGAATACACGACGCTCTTCCGATCT handle."
+    },
+    {
+      "oligo_id": "oligo_i7_pcr_primer",
+      "name": "N70x / i7 library PCR primer (Nextera Index Kit v2)",
+      "aliases": [],
+      "role": "Read 2 / P7-side indexing PCR primer; installs Nextera Read 2, i7 sample index, and P7",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "i7 index (Index 1)"
+        },
+        {
+          "name": "Nextera Read 2 / s7",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "Read 2 primer binding site"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "transposon mosaic end at the tagmented cDNA junction"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Protocol: 2.5 uL N70x primer from Nextera Index Kit v2 Set A (TG-131-2001). Anneals to the Nextera adapter inserted during tagmentation."
+    },
+    {
+      "oligo_id": "oligo_eztn5_transposon_adapter",
+      "name": "EZ-Tn5 transposon adapter (SB117/SB118)",
+      "aliases": [],
+      "role": "Optional loaded Tn5 mosaic-end adapter (alternative to Nextera XT)",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Tn5 transferred strand (SB118)",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "top / transferred strand (Nextera s7 + mosaic end)"
+        },
+        {
+          "name": "Tn5 mosaic-end complement (SB117)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "non-transferred mosaic-end strand; 5' /5Phos/"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Materials section: anneal SB117 (/5Phos/CTGTCTCTTATACACATCT) with SB118 (GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG), load onto EZ-Tn5. Only used if substituting EZ-Tn5 for the Nextera XT kit."
+    },
+    {
+      "oligo_id": "oligo_truseq_read1_primer",
+      "name": "Illumina TruSeq Read 1 sequencing primer",
+      "aliases": [],
+      "role": "Sequencing primer for Read 1 (UMI + three cell barcodes)",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina Read 1 primer; reads the UMI and BC3/BC2/BC1. Installed by the i5 PCR primer."
+    },
+    {
+      "oligo_id": "oligo_nextera_read2_primer",
+      "name": "Nextera Read 2 sequencing primer",
+      "aliases": [],
+      "role": "Sequencing primer for Read 2 (cDNA insert)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Nextera Read 2 primer; reads the cDNA from the tagmented end."
+    }
+  ],
+  "final_library": {
+    "source_label": "PETRI-seq final paired-end Illumina library (Nextera / TruSeq hybrid)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTGGCTTCGC[CELL_BARCODE:7]CCTCCTACGCCAGA[CELL_BARCODE:7]NNNNNN[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTGGCTTCGC[CELL_BARCODE:7]CCTCCTACGCCAGA[CELL_BARCODE:7]NNNNNN[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTGGCTTCGC[CELL_BARCODE:7]CCTCCTACGCCAGA[CELL_BARCODE:7]NNNNNN[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTGGCTTCGC[CELL_BARCODE:7]CCTCCTACGCCAGA[CELL_BARCODE:7]NNNNNN[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[SAMPLE_INDEX:8] = i5 sample index (Index 2)",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT = TruSeq Read 1 primer",
+      "[UMI:7] = UMI (7 nt)",
+      "[CELL_BARCODE:7] = Round 3 cell barcode (BC3)",
+      "GGTCCTTGGCTTCGC = Round 3/Round 2 linker (constant)",
+      "[CELL_BARCODE:7] = Round 2 cell barcode (BC2)",
+      "CCTCCTACGCCAGA = Round 2/Round 1 linker (constant)",
+      "[CELL_BARCODE:7] = Round 1 (RT) cell barcode (BC1)",
+      "NNNNNN = random hexamer (RT priming region)",
+      "[CDNA] = cDNA insert",
+      "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC = Nextera Read 2 adapter (mosaic end + s7)",
+      "[SAMPLE_INDEX:8] = i7 sample index (Index 1)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "PETRI-seq final paired-end Illumina library (Nextera / TruSeq hybrid)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+        "template": "top",
+        "cycles": 58,
+        "segments": [
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 7
+          },
+          {
+            "name": "Round 3 cell barcode (BC3)",
+            "type": "barcode",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 7
+          },
+          {
+            "name": "Round 3/2 linker",
+            "type": "constant",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 15
+          },
+          {
+            "name": "Round 2 cell barcode (BC2)",
+            "type": "barcode",
+            "order": 3,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 7
+          },
+          {
+            "name": "Round 2/1 linker",
+            "type": "constant",
+            "order": 4,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 14
+          },
+          {
+            "name": "Round 1 cell barcode (BC1)",
+            "type": "barcode",
+            "order": 5,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 7
+          },
+          {
+            "name": "Random hexamer (RT priming)",
+            "type": "constant",
+            "order": 6,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+        "template": "bottom",
+        "cycles": 17,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "In situ reverse transcription (Round 1 barcode)",
+      "summary": "Fixed, permeabilized cells are split across a 96-well plate and reverse-transcribed with well-specific barcoded random hexamers, tagging cDNA with the first cell barcode.",
+      "note": "Maxima H Minus reverse transcriptase extends the random-hexamer RT primer on cellular mRNA inside intact cells; the 5' /5Phos/ handle (GCCAGA + BC1) is carried on the cDNA for later ligation.",
+      "product": "5'- /5Phos/GCCAGA[CELL_BARCODE:7]NNNNNN----------------->[CDNA] -3'\n                                3'- ......mRNA template...... -5'"
+    },
+    {
+      "step": 2,
+      "title": "Round 2 split-pool barcode ligation (+ blocking)",
+      "summary": "Cells are pooled, re-split, and a second barcode is ligated onto the 5' handle of the first-strand cDNA using splint linker SB83; unreacted ends are then capped with blocking oligos SB84/SB85.",
+      "note": "T4 DNA ligase joins the 3' handle (CCTCCTAC) of the Round 2 oligo to the 5' phosphate (GCCAGA) of BC1, guided by linker SB83. Blocking prevents further ligation to unbarcoded ends.",
+      "product": "5'- /5Phos/GCTTCGC[CELL_BARCODE:7]CCTCCTAC GCCAGA[CELL_BARCODE:7]NNNNNN[CDNA] -3'\n            (BC2 oligo)              |__SB83 splint__|      (BC1)"
+    },
+    {
+      "step": 3,
+      "title": "Round 3 split-pool barcode + UMI ligation (+ blocking)",
+      "summary": "Cells are pooled and re-split again; a third oligo carrying the UMI, third barcode, and the Read 1 / P5 handle is ligated via linker SB80. Unreacted ends are capped with blocking oligos SB81/SB82.",
+      "note": "T4 DNA ligase joins the 3' handle (GGTCCTTG) of the Round 3 oligo to the 5' phosphate (GCTTCGC) of BC2, guided by linker SB80. After three rounds each cDNA carries 1 of ~884,736 barcode combinations plus a 7-nt UMI.",
+      "product": "5'- AGAATACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTG GCTTCGC[CELL_BARCODE:7]CCTCCTAC GCCAGA[CELL_BARCODE:7]NNNNNN[CDNA] -3'\n                    (Read1 handle)     (UMI)   (BC3)    |_SB80_|   (BC2)              (BC1)"
+    },
+    {
+      "step": 4,
+      "title": "Cell lysis and cDNA purification",
+      "summary": "~10,000 barcoded cells are lysed with proteinase K and the barcoded single-stranded cDNA is purified with AMPure XP beads.",
+      "note": "Combinatorial barcoding is complete inside cells; lysis releases the labelled cDNA. Every barcoded molecule is non-recoverable if lost, so purification carries the entire library forward.",
+      "product": "5'- AGAATACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTGGCTTCGC[CELL_BARCODE:7]CCTCCTACGCCAGA[CELL_BARCODE:7]NNNNNN[CDNA] -3'"
+    },
+    {
+      "step": 5,
+      "title": "Second-strand synthesis",
+      "summary": "NEBNext second-strand synthesis converts the barcoded single-stranded cDNA into double-stranded cDNA.",
+      "note": "Chosen over template switching, which gave lower yield. Produces the double-stranded template required for tagmentation.",
+      "product": "5'- AGAATACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTGGCTTCGC[CELL_BARCODE:7]CCTCCTACGCCAGA[CELL_BARCODE:7]NNNNNN[CDNA] -3'\n3'- TCTTATGTGCTGCGAGAAGGCTAGA[UMI:7][CELL_BARCODE:7]CCAGGAACCGAAGCG[CELL_BARCODE:7]GGAGGATGCGGTCT[CELL_BARCODE:7]NNNNNN[CDNA] -5'"
+    },
+    {
+      "step": 6,
+      "title": "Tagmentation (Nextera XT / EZ-Tn5)",
+      "summary": "Double-stranded cDNA is fragmented and tagged with Nextera mosaic-end adapters; only fragments retaining the P5-side barcode handle and an N7 mosaic end are amplifiable.",
+      "note": "Tn5 inserts the mosaic end (AGATGTGTATAAGAGACAG / CTGTCTCTTATACACATCT) into the dsDNA. PCR later uses the transposon-inserted sequence plus the upstream Read 1 handle as primer sites, so only correctly tagmented, barcoded molecules amplify (excluding undigested genomic DNA).",
+      "product": "5'- AGAATACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTGGCTTCGC[CELL_BARCODE:7]CCTCCTACGCCAGA[CELL_BARCODE:7]NNNNNN[CDNA]CTGTCTCTTATACACATCT -3'\n                                                                                                              3'- GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG... -5'"
+    },
+    {
+      "step": 7,
+      "title": "Indexing PCR (final library)",
+      "summary": "Limited-cycle PCR with the i5 (P5) primer and the Nextera N7 (i7) primer appends P5, both sample indices, and P7 to yield the final paired-end Illumina library.",
+      "note": "i5 primer anneals to the AGAAT...GATCT Read 1 handle and adds P5 + i5 + TruSeq Read 1; the N7/i7 Nextera primer anneals to the mosaic-end adapter and adds Read 2 + i7 + P7. ~16-19 total cycles, monitored by qPCR.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTGGCTTCGC[CELL_BARCODE:7]CCTCCTACGCCAGA[CELL_BARCODE:7]NNNNNN[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (UMI + 3 cell barcodes)",
+      "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "template": "top",
+      "cycles": 58,
+      "note": "TruSeq Read 1 primer anneals to the bottom strand and extends rightward across the 7-nt UMI, then BC3, linker GGTCCTTGGCTTCGC, BC2, linker CCTCCTACGCCAGA, and BC1 (barcodes read 3\u21922\u21921). Barcodes overlap the adjacent linker by one base.",
+      "diagram": "primer:               5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------->  read 1 (58 cyc)\ntop:    5'- ...GAGATCTACAC[i5]ACACTCTTTCCCTACACGACGCTCTTCCGATCT NNNNNNN NNNNNNN GGTCCTTGGCTTCGC NNNNNNN CCTCCTACGCCAGA NNNNNNN NNNNNN [cDNA]... -3'\nbottom: 3'- ...CTCTAGATGTG[i5]TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNN NNNNNNN CCAGGAACCGAAGCG NNNNNNN GGAGGATGCGGTCT NNNNNNN NNNNNN [cDNA]... -5'\n                                                            UMI     BC3       linker         BC2       linker         BC1    hex"
+    },
+    {
+      "read": "Read 2 (cDNA)",
+      "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "template": "bottom",
+      "cycles": 17,
+      "note": "Nextera Read 2 primer (= bottom-strand s7 + mosaic end) anneals to the top-strand adapter and extends leftward into the cDNA from the tagmented junction; reads map adjacent to the Tn5 insertion site (mild bias toward the 5' end of operons).",
+      "diagram": "top:    5'- ...NNNNNN[cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]... -3'\nbottom: 3'- ...NNNNNN[cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]... -5'\nprimer:  read 2 (17 cyc) <-----------5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG\n                    (cDNA insert)          (Nextera R2 / s7 + ME)"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "8-cycle i7 sample-index read off the Nextera P7-side adapter; primer anneals to the bottom strand and reads the i7 rightward.",
+      "diagram": "primer: 5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC------->  index 1 (8 cyc)\ntop:    5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC NNNNNNNN ATCTCGTATGCCGTCTTCTGCTTG -3'\nbottom: 3'- ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG NNNNNNNN TAGAGCATACGGCAGAAGACGAAC -5'\n                                              i7            (P7')"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "8-cycle i5 sample-index read (Index 2) off the P5-side adapter. On the NextSeq 500/550 (reverse-complement workflow) i5 is read from the regenerated bottom strand, so the recorded index is the reverse complement of the top-strand i5.",
+      "diagram": "top:    5'- AATGATACGGCGACCACCGAGATCTACAC NNNNNNNN ACACTCTTTCCCTACACGACGCTCTTCCGATCT ... -3'\nbottom: 3'- TTACTATGCCGCTGGTGGCTCTAGATGTG NNNNNNNN TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA ... -5'\nprimer:                       index 2 <-------NNNNNNNN-3' (i5 read primer, NextSeq bottom strand)\n                          (P5)          i5"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "PETRI-seq",
+  "description": "PETRI-seq (Prokaryotic Expression profiling by Tagging RNA In situ and sequencing) is a high-throughput bacterial single-cell RNA-seq method based on in situ combinatorial indexing. Fixed, permeabilized Gram-negative (E. coli) or Gram-positive (S. aureus) cells are barcoded in place: in-cell reverse transcription with barcoded random hexamers (Round 1) is followed by two rounds of split-pool barcode ligation (Rounds 2 and 3), giving each cell's cDNA a unique three-barcode combination (~884,736 possible) plus a 7-nt UMI. After pooling and lysis, second-strand synthesis and Nextera XT tagmentation build a paired-end Illumina library. Read 1 reads the UMI and the three cell barcodes; Read 2 reads the cDNA insert.",
+  "reference": {
+    "kind": "paper",
+    "label": "Prokaryotic single-cell RNA sequencing by in situ combinatorial indexing",
+    "path": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8330242/",
+    "doi": "10.1038/s41564-020-0729-6"
+  },
+  "publication": {
+    "year": 2020,
+    "original_publication": {
+      "title": "Prokaryotic single-cell RNA sequencing by in situ combinatorial indexing",
+      "journal": "Nature Microbiology",
+      "doi": "10.1038/s41564-020-0729-6",
+      "url": "https://doi.org/10.1038/s41564-020-0729-6"
+    },
+    "authors": [
+      {
+        "name": "Sydney B. Blattman",
+        "affiliation": "Departments of Biological Sciences, Systems Biology, and Biochemistry and Molecular Biophysics, Columbia University, New York City, NY, USA"
+      },
+      {
+        "name": "Wenyan Jiang",
+        "affiliation": "Departments of Biological Sciences, Systems Biology, and Biochemistry and Molecular Biophysics, Columbia University, New York City, NY, USA"
+      },
+      {
+        "name": "Panos Oikonomou",
+        "affiliation": "Departments of Biological Sciences, Systems Biology, and Biochemistry and Molecular Biophysics, Columbia University, New York City, NY, USA"
+      },
+      {
+        "name": "Saeed Tavazoie",
+        "corresponding": true,
+        "email": "st2744@columbia.edu",
+        "affiliation": "Departments of Biological Sciences, Systems Biology, and Biochemistry and Molecular Biophysics, Columbia University, New York City, NY, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "Split-pool combinatorial indexing across 96x96x96 wells gives ~884,736 barcode combinations; ~10,000 cells lysed per library (~30,000 E. coli + S. aureus sequenced across the study) at US$0.056 per cell including sequencing.",
+      "cells": "Tens of thousands of cells per experiment; ~10,000 cells lysed per library; multiplet frequency ~1.5% at 10,000 cells (Poisson expectation 0.56-0.85%).",
+      "rna": "Median >200 mRNA UMIs per exponential-phase E. coli cell (median 227 in optimized experiment 2.01; 27 for stationary phase; 43 for S. aureus); estimated 2.5-10% capture of the ~2,000-8,000 mRNAs per E. coli cell.",
+      "dna": ""
+    },
+    "statistical_model": "Poisson (multiplet-frequency modeling and transcriptional-noise analysis, sigma^2/mu ~ mu; negative binomial regression via sctransform used as an alternative normalization)",
+    "other": [
+      {
+        "label": "Sequencing",
+        "value": "Illumina NextSeq 500/550, 75 cycles: 58 cyc Read 1 (UMI+barcodes), 17 cyc Read 2 (cDNA), 8 cyc Index 1, 8 cyc Index 2; ~50M reads/library"
+      },
+      {
+        "label": "Organisms",
+        "value": "Gram-negative E. coli MG1655 and Gram-positive S. aureus USA300"
+      },
+      {
+        "label": "Cost per cell",
+        "value": "US$0.056 including sequencing (US$0.037 excluding)"
+      },
+      {
+        "label": "Notable finding",
+        "value": "Detected rare prophage phi-SA3usa induction in ~0.04% of S. aureus cells"
+      },
+      {
+        "label": "Related method",
+        "value": "Adapts eukaryotic SPLiT-seq / sci-RNA-seq in situ combinatorial indexing to bacteria; random hexamers replace poly(dT)"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Reads are quality-trimmed, the 7-nt UMI is extracted from read 1, and read pairs are demultiplexed by their three cell barcodes (BC3\u2192BC2\u2192BC1, each anchored to its downstream linker with \u22641 mismatch). An inclusive knee threshold selects candidate barcode combinations (BCs); read 2 cDNA is aligned to the E. coli/S. aureus genomes with bwa, operons are annotated with featureCounts (RegulonDB/ProOpDB), PCR duplicates are collapsed to UMIs with umi_tools directional grouping, and an operon-by-BC UMI count matrix is built (anti-sense removed, per-cell UMI thresholding) for PCA / sctransform clustering.",
+    "stages": [
+      {
+        "id": "qc",
+        "label": "Read Preprocessing"
+      },
+      {
+        "id": "demux",
+        "label": "Barcode Demultiplexing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment & Annotation"
+      },
+      {
+        "id": "quant",
+        "label": "UMI Quantification"
+      },
+      {
+        "id": "analysis",
+        "label": "Normalization & Clustering"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "trim",
+        "label": "Quality-trim read pairs",
+        "tool": "Cutadapt",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umi_extract",
+        "label": "Extract 7-nt UMI",
+        "tool": "UMI-tools",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "demux_bc3",
+        "label": "Demultiplex barcode 3",
+        "tool": "",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "demux_bc2",
+        "label": "Demultiplex barcode 2",
+        "tool": "",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "demux_bc1",
+        "label": "Demultiplex barcode 1",
+        "tool": "",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "knee",
+        "label": "Select barcodes (knee method)",
+        "tool": "",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align cDNA to genome",
+        "tool": "bwa",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "annotate",
+        "label": "Annotate operons",
+        "tool": "featureCounts",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Collapse duplicates to UMIs",
+        "tool": "UMI-tools",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "thresh_umi",
+        "label": "Threshold reads per UMI",
+        "tool": "",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "build_matrix",
+        "label": "Build operon-by-BC matrix",
+        "tool": "",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "remove_antisense",
+        "label": "Remove anti-sense counts",
+        "tool": "",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_bc",
+        "label": "Filter low-UMI barcodes",
+        "tool": "",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pca",
+        "label": "Reduce dimensions (PCA)",
+        "tool": "scikit-learn",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "sctransform",
+        "label": "Normalize counts (sctransform)",
+        "tool": "Seurat",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "trim",
+        "to": "umi_extract",
+        "kind": "sequential"
+      },
+      {
+        "from": "umi_extract",
+        "to": "demux_bc3",
+        "kind": "sequential"
+      },
+      {
+        "from": "demux_bc3",
+        "to": "demux_bc2",
+        "kind": "sequential"
+      },
+      {
+        "from": "demux_bc2",
+        "to": "demux_bc1",
+        "kind": "sequential"
+      },
+      {
+        "from": "demux_bc1",
+        "to": "knee",
+        "kind": "branch"
+      },
+      {
+        "from": "demux_bc1",
+        "to": "align",
+        "kind": "branch"
+      },
+      {
+        "from": "align",
+        "to": "annotate",
+        "kind": "sequential"
+      },
+      {
+        "from": "annotate",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "thresh_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "thresh_umi",
+        "to": "build_matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "knee",
+        "to": "build_matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "build_matrix",
+        "to": "remove_antisense",
+        "kind": "sequential"
+      },
+      {
+        "from": "remove_antisense",
+        "to": "filter_bc",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_bc",
+        "to": "pca",
+        "kind": "branch"
+      },
+      {
+        "from": "filter_bc",
+        "to": "sctransform",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "cluster",
+        "kind": "sequential"
+      },
+      {
+        "from": "sctransform",
+        "to": "cluster",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "Poisson (multiplet-frequency and transcriptional-noise modeling, \u03c3\u00b2/\u03bc ~ \u03bc); negative binomial via sctransform for alternative normalization"
+  }
+}

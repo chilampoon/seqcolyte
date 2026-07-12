@@ -1,0 +1,25 @@
+{
+  "folder": "issaac_seq_facs",
+  "title": "ISSAAC-seq (FACS)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "ISSAAC-seq.html",
+    "oligo_seq_recall": 0.462,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 13,
+    "missed_oligos": [
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera Index 2 sequencing primer (i5)",
+      "Nextera (XT) N7xx Index primer",
+      "Nextera (XT) N/S5xx Index primer",
+      "TruSeq i5 index sequencing primer (index2)",
+      "TruSeq P5/i5 index PCR primer",
+      "TruSeqR1_oligo_dT"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC-[SAMPLE_INDEX:8]-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-[UMI:10]-(T)30-[CDNA]-CTGTCTCTTATACACATCT-CCGAGCCCACGAGAC-[SAMPLE_INDEX:8]-ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

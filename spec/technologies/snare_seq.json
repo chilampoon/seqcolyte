@@ -1,0 +1,1005 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "snare_seq",
+  "assay": "SNARE-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "supplementary_NIHMS1539957-supplement-1.docx",
+      "title": "High-throughput sequencing of the transcriptome and chromatin accessibility in the same cell",
+      "url": "https://doi.org/10.1038/s41587-019-0290-0",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/snare_seq/supplementary_NIHMS1539957-supplement-1.docx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SNARE-seq.xlsx",
+      "title": "SNARE-seq.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/snare_seq/SNARE-seq.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SNARE-seq.pdf",
+      "title": "SNARE-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/snare_seq/SNARE-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "beads_oligo_dt",
+      "name": "Beads-oligo-dT (Drop-seq barcoded bead)",
+      "aliases": [],
+      "role": "Barcoded capture bead: oligo(dT) primer bearing shared cell barcode + UMI that captures both mRNA poly(A) and the splint-oligo poly(A)",
+      "kind": "assembled",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SMART/PCR handle (Read 1)",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "constant priming handle"
+        },
+        {
+          "name": "Cell barcode",
+          "sequence": "[CELL_BARCODE:12]",
+          "role": "barcode"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:8]",
+          "role": "umi"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "polyA/polyT capture"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "ChemGenes cat. no. Macosko201110 Drop-seq bead. Read 1 (30 bp) reads the 12-bp cell barcode + 8-bp UMI immediately 3' of the SMART handle."
+    },
+    {
+      "oligo_id": "splint_oligo_nextera_r1_rc_polya",
+      "name": "Splint oligonucleotide (Nextera-R1-rc-polyA)",
+      "aliases": [],
+      "role": "Splint that bridges tagmented genomic DNA to the bead: 5' region is complementary to the transposed Nextera Read-1 adapter, 3' poly(A) is captured by the bead oligo(dT)",
+      "kind": "single",
+      "sequence": "/5Phos/CTGTCTCTTATACACATCTGACGCTGCCGACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Added to Drop-seq lysis buffer at 10 uM. 5' /5Phos/ phosphate; 5' 33-nt block (CTGTCTCTTATACACATCTGACGCTGCCGACGA) is the reverse complement of the Nextera Read-1 adapter, followed by a poly(A) tail."
+    },
+    {
+      "oligo_id": "nextera_r1_bk",
+      "name": "Nextera-R1-bk (Read-1 blocking oligo)",
+      "aliases": [],
+      "role": "Blocking oligo that saturates free transposed Read-1 adapter ends on the beads before RT",
+      "kind": "single",
+      "sequence": "/5Phos/TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG/3InvdT/",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used at 100 uM in 6x SSC wash. 3' inverted dT block. Sequence = Nextera Read-1 handle + mosaic end."
+    },
+    {
+      "oligo_id": "nextera_ad2_bk",
+      "name": "Nextera-Ad2-bk (Read-2 blocking oligo)",
+      "aliases": [],
+      "role": "Blocking oligo that saturates the free transposed Read-2/Ad2 adapter ends before RT",
+      "kind": "single",
+      "sequence": "/5Phos/CCGAGCCCACGAGAC/3InvdT/",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used at 100 uM. 3' inverted dT block. Reverse complement of the Nextera Read-2 handle GTCTCGTGGGCTCGG."
+    },
+    {
+      "oligo_id": "template_switch_oligo_tso",
+      "name": "Template Switch Oligo (TSO)",
+      "aliases": [],
+      "role": "Template-switching oligo adding a defined handle to the 3' end of first-strand cDNA during reverse transcription",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTGAATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used at 2.5 uM in the RT/ligation mix. 3' rGrGrG folded to GGG."
+    },
+    {
+      "oligo_id": "tso_pcr",
+      "name": "Tso-PCR (cDNA/whole-transcriptome PCR primer)",
+      "aliases": [],
+      "role": "PCR primer annealing to the SMART/TSO handle; used in the shared amplification and alone for cDNA enrichment",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Shared PCR uses Nextera-R2 + Tso-PCR (16 cycles); cDNA library enriched with Tso-PCR alone."
+    },
+    {
+      "oligo_id": "nextera_r2",
+      "name": "Nextera-R2 (Read-2 PCR primer)",
+      "aliases": [],
+      "role": "PCR primer that appends the Nextera Read-2 handle onto the far (Ad2) mosaic end of tagmented genomic fragments during the shared amplification",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera Read 2 handle",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "constant"
+        },
+        {
+          "name": "Mosaic end",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "constant"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "oligo_id": "nextera_me_adapter",
+      "name": "Nextera / Tn5 mosaic-end (ME) adapter",
+      "aliases": [],
+      "role": "Double-stranded adapter loaded on TDE1 Tn5 transposase and inserted into accessible chromatin (Read-1 and Read-2 arms), reconstructed from the blocking oligos and Read-2 primer",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Read-1 arm (top)",
+          "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+          "role": "transposed Read-1 adapter"
+        },
+        {
+          "name": "Read-2 arm (top)",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "transposed Read-2 adapter"
+        },
+        {
+          "name": "Mosaic-end complement (bottom)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "shared 19-bp ME complement"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "TDE1 Tagment DNA Enzyme in 2x Nextera Tagment DNA Buffer. Sequences grounded in Nextera-R1-bk, Nextera-Ad2-bk and Nextera-R2; standard Nextera mosaic end AGATGTGTATAAGAGACAG."
+    },
+    {
+      "oligo_id": "p5xx_tso_index_primer",
+      "name": "P5XX-Tso (i5 / P5 chromatin index primer)",
+      "aliases": [],
+      "role": "P5-side indexing PCR primer that adds the P5 adapter and an i5 sample index and primes on the bead SMART handle to build the chromatin library",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 adapter"
+        },
+        {
+          "name": "i5 sample index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "sample index"
+        },
+        {
+          "name": "Linker",
+          "sequence": "GCCTGTCCGCGG",
+          "role": "constant linker"
+        },
+        {
+          "name": "SMART/TSO priming region",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "priming handle"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3' terminal ...GAGT*A*C carries phosphorothioate bonds. Six i5 variants: P501 TAGATCGC, P502 CTCTCTAT, P503 TATCCTCT, P504 AGAGTAGA, P505 GTAAGGAG, P506 ACTGCATA. The 8-bp i5 is the 'index 2' read used for demultiplexing the chromatin library."
+    },
+    {
+      "oligo_id": "ad2_x_index_primer",
+      "name": "Ad2.X (i7 / P7 chromatin index primer)",
+      "aliases": [],
+      "role": "P7-side indexing PCR primer that adds the P7 adapter and an i7 sample index and primes on the Nextera Read-2 handle to build the chromatin library",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTCTCGTGGGCTCGGAGATGT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 adapter"
+        },
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "sample index"
+        },
+        {
+          "name": "Nextera Read 2 handle",
+          "sequence": "GTCTCGTGGGCTCGGAGATGT",
+          "role": "priming handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Six i7 variants (index shown in name is the sample sheet index; primer carries its reverse complement): Ad2.1 TAAGGCGA->TCGCCTTA, Ad2.2 CGTACTAG->CTAGTACG, Ad2.3 AGGCAGAA->TTCTGCCT, Ad2.4 TCCTGAGC->GCTCAGGA, Ad2.5 GGACTCCT->AGGAGTCC, Ad2.6 TAGGCATG->CATGCCTA."
+    },
+    {
+      "oligo_id": "read1_custom_seq_b",
+      "name": "Read1CustomSeqB (custom Read-1 sequencing primer)",
+      "aliases": [],
+      "role": "Custom Read-1 sequencing primer that primes across the cell barcode + UMI for both cDNA and chromatin libraries",
+      "kind": "single",
+      "sequence": "GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Primes read 1 (30 bp) on HiSeq 2500. Equals linker + SMART handle of the P5XX-Tso primer / bead."
+    },
+    {
+      "oligo_id": "hp10",
+      "name": "HP10 (index-1 sequencing primer)",
+      "aliases": [],
+      "role": "Custom sequencing primer used to prime index-1 (75 bp genomic read) of the chromatin library",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Named in Methods (Drop-seq custom primer); exact sequence not provided in the source documents."
+    },
+    {
+      "oligo_id": "hp11",
+      "name": "HP11 (Read-2 sequencing primer)",
+      "aliases": [],
+      "role": "Custom sequencing primer used to prime read 2 (cDNA 80 bp; chromatin 75 bp genomic read)",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Named in Methods (Drop-seq custom primer); exact sequence not provided in the source documents."
+    }
+  ],
+  "final_library": {
+    "source_label": "SNARE-seq chromatin accessibility library (final Illumina construct; cell-barcode-shared cDNA library built in parallel via Nextera XT)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC [SAMPLE_INDEX:8] GCCTGTCCGCGG AAGCAGTGGTATCAACGCAGAGTAC [CELL_BARCODE:12] [UMI:8] TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [CDNA] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC [SAMPLE_INDEX:8] ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:8]CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CELL_BARCODE:12][UMI:8]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:8]CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CELL_BARCODE:12][UMI:8]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[SAMPLE_INDEX:8] = i5 sample index (P50X)",
+      "GCCTGTCCGCGG = linker",
+      "AAGCAGTGGTATCAACGCAGAGTAC = SMART / bead PCR handle (Read 1)",
+      "[CELL_BARCODE:12] = cell barcode",
+      "[UMI:8] = UMI",
+      "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT = poly(dT) bead/splint bridge",
+      "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG = Nextera Read 1 / Tn5 mosaic end",
+      "[CDNA] = accessible genomic (chromatin) insert",
+      "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC = Nextera Read 2 / Tn5 mosaic end (rev comp)",
+      "[SAMPLE_INDEX:8] = i7 sample index (Ad2.X)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "SNARE-seq chromatin accessibility library (final Illumina construct; cell-barcode-shared cDNA library built in parallel via Nextera XT)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Read1CustomSeqB",
+        "template": "bottom",
+        "cycles": 30,
+        "segments": [
+          {
+            "name": "Cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 12
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "HP10",
+        "template": "top",
+        "cycles": 75,
+        "segments": [
+          {
+            "name": "Genomic insert (chromatin)",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "R3",
+        "primer": "HP11",
+        "template": "bottom",
+        "cycles": 75,
+        "segments": [
+          {
+            "name": "Genomic insert (chromatin)",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "i5 index primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Tn5 tagmentation of permeabilized nuclei",
+      "summary": "TDE1 Tn5 fragments accessible chromatin in intact nuclei and inserts Nextera mosaic-end adapters while remaining bound to hold the fragments together.",
+      "note": "~200,000 nuclei tagmented with TDE1 in 2x Nextera Tagment DNA Buffer + RNase inhibitor, 37 C, 30 min. Without heat/detergent the transposase stays bound, preserving fragment contiguity.",
+      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[gDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'\n3'- AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[gDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG -5'\n(Tn5 still bound; 9-bp gaps at each mosaic end)"
+    },
+    {
+      "step": 2,
+      "title": "Droplet co-encapsulation + splint/mRNA capture",
+      "summary": "Nuclei, barcoded beads and splint oligos are co-droplet-encapsulated; heat lysis releases fragments and the splint bridges each genomic fragment to the bead while mRNA poly(A) is also captured.",
+      "note": "72 C, 5 min releases Tn5 and nuclei contents inside droplets. Splint 5' end anneals to the transposed Read-1 adapter; splint 3' poly(A) and mRNA poly(A) both hybridize to the bead oligo(dT).",
+      "product": "Bead   |--5'-AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTT...T-3'\n                                                              ::::::::::::  (dT:dA)\nSplint                                    3'-AAAAAAAAAA...AGCAGCCGTCGCAGTCTACAC...-5'\n(splint 5' region anneals to genomic TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG adapter)"
+    },
+    {
+      "step": 3,
+      "title": "Reverse transcription / template switching + barcode ligation",
+      "summary": "One droplet reaction reverse-transcribes mRNA with template switching and links the cell barcode to genomic fragments via T7 ligase and Klentaq.",
+      "note": "RT/ligation mix (reverse transcriptase, TSO, Hemo Klentaq, T7 ligase) at RT 30 min then 42 C 90 min. RNA: dT-primed first-strand cDNA gains the TSO handle. Chromatin: bead oligo is extended/ligated across the splint to carry the barcode onto the genomic fragment.",
+      "product": "RNA:  |--5'-...[CELL_BARCODE:12][UMI:8](T)30[cDNA]CCCTACGT...GTGGTGACGAA -5'  (TSO handle added)\nDNA:  |--5'-...[CELL_BARCODE:12][UMI:8](T)30 TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[gDNA]... -3'"
+    },
+    {
+      "step": 4,
+      "title": "Exonuclease I cleanup",
+      "summary": "Exonuclease I removes unextended single-stranded oligos from the beads.",
+      "note": "37 C, 45 min after RT/ligation.",
+      "product": "|--5'-AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[barcoded cDNA / barcoded gDNA] -3'"
+    },
+    {
+      "step": 5,
+      "title": "Shared amplification PCR (Nextera-R2 / Tso-PCR)",
+      "summary": "A single 16-cycle PCR co-amplifies barcoded cDNA and barcoded genomic fragments, appending the Nextera Read-2 handle to the genomic Ad2 end.",
+      "note": "Primer pair Nextera-R2 + Tso-PCR, 16 cycles, on ~10,000 beads. Tso-PCR primes the SMART handle; Nextera-R2 primes the distal mosaic end.",
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30 TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[gDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'\n(cDNA amplicon flanked by SMART/TSO handles amplified in parallel)"
+    },
+    {
+      "step": 6,
+      "title": "cDNA branch: enrichment + Nextera XT",
+      "summary": "Half the shared PCR product is enriched with Tso-PCR alone and converted to a standard cDNA library with a Nextera XT kit.",
+      "note": "0.6x bead size-selection, Tso-PCR-only enrichment, second 0.6x selection, then Nextera XT tagmentation/indexing (Drop-seq style).",
+      "product": "5'- P5-[i7 idx]-...SMARThandle-[CELL_BARCODE:12][UMI:8](T)30[cDNA]-Nextera R2-P7 -3'  (cDNA sequencing library)"
+    },
+    {
+      "step": 7,
+      "title": "Chromatin branch: indexing PCR (P5XX-Tso / Ad2.X)",
+      "summary": "The other half is amplified with P5XX-Tso and Ad2.X to add i5/P5 and i7/P7, yielding the final size-selected chromatin accessibility library.",
+      "note": "P5XX-Tso primes the SMART handle to add P5+i5; Ad2.X primes the Read-2 handle to add P7+i7. 225-1,000 bp fragments are excised from a PAGE gel and column-purified.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "cDNA library - Read 1 (cell barcode + UMI)",
+      "primer": "Read1CustomSeqB (GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC)",
+      "template": "bottom",
+      "cycles": 30,
+      "note": "cDNA library on Illumina HiSeq 2500. Primer anneals to the SMART/bead handle on the bottom strand and reads the shared 12-bp cell barcode + 8-bp UMI (barcode/UMI taken from the first 20 bases).",
+      "diagram": "   5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC------------> (read, 30 nt)\n5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CB:12][UMI:8][T x30]...-3'  (top)\n3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CB:12][UMI:8][A x30]...-5'  (bottom = template)\n                                          |--CB (12)--||UMI(8)|"
+    },
+    {
+      "read": "cDNA library - Read 2 (cDNA insert)",
+      "primer": "HP11",
+      "template": "top",
+      "cycles": 80,
+      "note": "Read 2 (80 bp) primed by HP11 on the Nextera Read-2 handle; reads into the cDNA insert. Aligned to hg38/mm10 after trimming SMART adapter and poly(A).",
+      "diagram": "5'-...[cDNA insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]...-3'  (top = template)\n3'-...[cDNA insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]...-5'  (bottom)\n   <------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  HP11 (read, 80 nt)"
+    },
+    {
+      "read": "Chromatin library - Read 1 (cell barcode + UMI)",
+      "primer": "Read1CustomSeqB (GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC)",
+      "template": "bottom",
+      "cycles": 30,
+      "note": "Chromatin library on HiSeq 2500. Same shared 12-bp cell barcode + 8-bp UMI read as the cDNA library, priming on the bead SMART handle.",
+      "diagram": "   5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC------------> (read, 30 nt)\n5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CB:12][UMI:8][T x30]...-3'  (top)\n3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CB:12][UMI:8][A x30]...-5'  (bottom = template)\n                                          |--CB (12)--||UMI(8)|"
+    },
+    {
+      "read": "Chromatin library - genomic read (HP10)",
+      "primer": "HP10",
+      "template": "bottom",
+      "cycles": 75,
+      "note": "Genomic ATAC read (75 bp), termed 'index 1' in the Methods but is one of the paired open-chromatin mates. Primes on the transposed Nextera Read-1 / mosaic end and reads into the accessible genomic insert. Processed with the ENCODE ATAC-seq pipeline.",
+      "diagram": "   5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------------> (read, 75 nt)\n5'-...TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[genomic insert]...-3'  (top)\n3'-...AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[genomic insert]...-5'  (bottom = template)"
+    },
+    {
+      "read": "Chromatin library - genomic read (HP11)",
+      "primer": "HP11",
+      "template": "top",
+      "cycles": 75,
+      "note": "Second paired genomic ATAC mate (75 bp), primed by HP11 on the Nextera Read-2 / Ad2 mosaic end, reading into the accessible insert from the opposite side.",
+      "diagram": "5'-...[genomic insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]...-3'  (top = template)\n3'-...[genomic insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]...-5'  (bottom)\n      <------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  HP11 (read, 75 nt)"
+    },
+    {
+      "read": "Chromatin library - Index 2 (i5 demultiplexing)",
+      "primer": "i5 index-2 sequencing primer",
+      "template": "top",
+      "cycles": 8,
+      "note": "8-bp index-2 read of the P50X i5 sample index used to demultiplex the chromatin library; primes 3' of the i5 (in the linker/SMART region) and reads the index.",
+      "diagram": "5'-...AATGATACGGCGACCACCGAGATCTACAC[i5:8]GCCTGTCCGCGG...-3'  (top = template)\n3'-...TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]CGGACAGGCGCC...-5'  (bottom)\n                            <----[i5:8]CGGACAGGCGCC-5'  i5 index-2 primer (8 nt)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "SNARE-seq",
+  "description": "SNARE-seq (Single-Nucleus chromatin Accessibility and mRNA Expression sequencing) is a droplet-based dual-omics assay that jointly profiles open chromatin and the transcriptome from the same individual nuclei. Accessible sites in permeabilized nuclei are tagmented by Tn5 (Nextera adapters) before droplet generation; inside Drop-seq droplets a splint oligo whose 5' end is complementary to the transposed Read-1 adapter and whose 3' polyA is captured by oligo(dT) beads links each genomic fragment to the same cellular barcode that captures the cell's polyadenylated mRNA. Reverse transcription with template switching builds the RNA library while T7 ligase/Klentaq attach the barcode to genomic fragments, yielding paired cDNA and chromatin libraries that share a cell barcode and are read out on Illumina.",
+  "reference": {
+    "kind": "paper",
+    "label": "High-throughput sequencing of the transcriptome and chromatin accessibility in the same cell",
+    "path": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6893138/",
+    "doi": "10.1038/s41587-019-0290-0"
+  },
+  "publication": {
+    "year": 2019,
+    "original_publication": {
+      "title": "High-throughput sequencing of the transcriptome and chromatin accessibility in the same cell",
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/s41587-019-0290-0",
+      "url": "https://doi.org/10.1038/s41587-019-0290-0"
+    },
+    "authors": [
+      {
+        "name": "Song Chen",
+        "affiliation": "Department of Bioengineering, University of California San Diego, La Jolla, CA, USA"
+      },
+      {
+        "name": "Blue B. Lake",
+        "affiliation": "Department of Bioengineering, University of California San Diego, La Jolla, CA, USA"
+      },
+      {
+        "name": "Kun Zhang",
+        "corresponding": true,
+        "email": "kzhang@bioeng.ucsd.edu",
+        "affiliation": "Department of Bioengineering, University of California San Diego, La Jolla, CA, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "Droplet dual-omics: paired transcriptome + chromatin accessibility profiles from single nuclei. 1,047 and 1,043 human cell-line-mix nuclei; 5,081 neonatal (P0, n=5) and 10,309 adult (n=12) mouse cerebral cortex nuclei.",
+      "cells": "5,081 (P0 mouse cortex) and 10,309 (adult mouse cortex) paired nuclei; 1,047 / 1,043 human cell-line-mix nuclei",
+      "rna": "Median UMIs: 500 (cell mix), 357 (P0), 1,159 (EZ cell mix), 1,332 (adult); 66% RNA recovery",
+      "dna": "Median accessible sites: 2,720 (GM12878), 805/2,254 (cell mix), 2,583 (P0), 2,000 (adult); 100% chromatin recovery; ~6% doublet rate"
+    },
+    "statistical_model": "Negative binomial modeling of read counts with cell-size-factor normalization (Monocle); latent Dirichlet allocation topic modeling of chromatin accessibility (cisTopic); Fisher's exact test for differential accessibility",
+    "other": [
+      {
+        "label": "Platform",
+        "value": "Drop-seq microdroplet (ChemGenes Macosko201110 beads); Illumina HiSeq 2500"
+      },
+      {
+        "label": "GEO accession",
+        "value": "GSE126074"
+      },
+      {
+        "label": "Code",
+        "value": "https://github.com/chensong611/SNARE_prep"
+      },
+      {
+        "label": "Key innovation",
+        "value": "Splint oligo (Nextera-R1-rc-polyA) links Tn5-tagmented accessible DNA to oligo(dT) beads for joint capture with mRNA"
+      },
+      {
+        "label": "Received / Accepted / Published",
+        "value": "21 Feb 2019 / 12 Sep 2019 / 14 Oct 2019"
+      }
+    ]
+  },
+  "modality": "RNA + ATAC",
+  "method_type": "droplet",
+  "data_processing": {
+    "summary": "Paired-end reads are split by library and linked through the shared cell barcode. RNA reads are quality-filtered, barcode/UMI-demultiplexed (first 20 bases), trimmed of SMART adapter and poly(A), aligned to hg38/mm10 with STAR, and collapsed into a UMI expression matrix; the paired genomic (chromatin) reads carrying the same barcode are run through the ENCODE ATAC-seq pipeline for peak calling and a per-cell accessibility matrix. Expression is clustered with PAGODA2/Seurat, chromatin is topic-modeled with cisTopic, and the linked modalities are used for differential-accessibility (Fisher's exact) and Monocle pseudotime analyses.",
+    "stages": [
+      {
+        "id": "qc_barcode",
+        "label": "Read QC & barcoding"
+      },
+      {
+        "id": "rna_quant",
+        "label": "RNA quantification"
+      },
+      {
+        "id": "atac_quant",
+        "label": "ATAC quantification"
+      },
+      {
+        "id": "analysis",
+        "label": "Multi-omics analysis"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "filter_reads",
+        "label": "filter low-quality reads",
+        "tool": "",
+        "stage": "qc_barcode",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "infer_barcode",
+        "label": "extract barcode and UMI",
+        "tool": "",
+        "stage": "qc_barcode",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim_smart",
+        "label": "trim SMART adapter",
+        "tool": "",
+        "stage": "rna_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim_polya",
+        "label": "trim poly(A) tails",
+        "tool": "",
+        "stage": "rna_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_rna",
+        "label": "align reads to genome",
+        "tool": "STAR v2.5",
+        "stage": "rna_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_exon_intron",
+        "label": "count exonic/intronic reads",
+        "tool": "",
+        "stage": "rna_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse_umi",
+        "label": "collapse UMIs (1-edit)",
+        "tool": "",
+        "stage": "rna_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "expr_matrix",
+        "label": "build expression matrix",
+        "tool": "",
+        "stage": "rna_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "link_barcode",
+        "label": "assign shared barcode",
+        "tool": "",
+        "stage": "atac_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_atac",
+        "label": "align chromatin reads",
+        "tool": "ENCODE ATAC-seq pipeline",
+        "stage": "atac_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "call_peaks",
+        "label": "call peaks",
+        "tool": "ENCODE ATAC-seq pipeline",
+        "stage": "atac_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "access_matrix",
+        "label": "build accessibility matrix",
+        "tool": "Picard",
+        "stage": "atac_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster_expr",
+        "label": "cluster expression cells",
+        "tool": "PAGODA2",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "markers",
+        "label": "identify marker genes",
+        "tool": "Seurat v2.3.4",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "topic_model",
+        "label": "topic-model accessibility",
+        "tool": "cisTopic v0.1",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "diff_access",
+        "label": "test differential accessibility",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pseudotime",
+        "label": "order cells in pseudotime",
+        "tool": "Monocle v2.10",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "coaccess",
+        "label": "link co-accessible peaks",
+        "tool": "Cicero",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "motif_enrich",
+        "label": "run motif enrichment",
+        "tool": "HOMER v4.10",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "go_enrich",
+        "label": "run GO enrichment",
+        "tool": "GREAT",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "filter_reads",
+        "to": "infer_barcode",
+        "kind": "sequential"
+      },
+      {
+        "from": "infer_barcode",
+        "to": "trim_smart",
+        "kind": "branch"
+      },
+      {
+        "from": "infer_barcode",
+        "to": "link_barcode",
+        "kind": "branch"
+      },
+      {
+        "from": "trim_smart",
+        "to": "trim_polya",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim_polya",
+        "to": "align_rna",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_rna",
+        "to": "count_exon_intron",
+        "kind": "sequential"
+      },
+      {
+        "from": "count_exon_intron",
+        "to": "collapse_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse_umi",
+        "to": "expr_matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "link_barcode",
+        "to": "align_atac",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_atac",
+        "to": "call_peaks",
+        "kind": "branch"
+      },
+      {
+        "from": "align_atac",
+        "to": "access_matrix",
+        "kind": "branch"
+      },
+      {
+        "from": "call_peaks",
+        "to": "access_matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "expr_matrix",
+        "to": "cluster_expr",
+        "kind": "fan_in"
+      },
+      {
+        "from": "expr_matrix",
+        "to": "pseudotime",
+        "kind": "fan_in"
+      },
+      {
+        "from": "access_matrix",
+        "to": "topic_model",
+        "kind": "fan_in"
+      },
+      {
+        "from": "access_matrix",
+        "to": "diff_access",
+        "kind": "fan_in"
+      },
+      {
+        "from": "access_matrix",
+        "to": "coaccess",
+        "kind": "fan_in"
+      },
+      {
+        "from": "cluster_expr",
+        "to": "markers",
+        "kind": "branch"
+      },
+      {
+        "from": "cluster_expr",
+        "to": "diff_access",
+        "kind": "branch"
+      },
+      {
+        "from": "diff_access",
+        "to": "motif_enrich",
+        "kind": "branch"
+      },
+      {
+        "from": "diff_access",
+        "to": "go_enrich",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "Negative binomial with cell-size-factor normalization (Monocle); latent Dirichlet allocation topic modeling (cisTopic); Fisher's exact test for differential accessibility."
+  }
+}

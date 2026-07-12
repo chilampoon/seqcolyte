@@ -1,0 +1,753 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "mars_seq_v2",
+  "assay": "MARS-seq2.0",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "MARS-seq2_protocols.io.pdf",
+      "title": "MARS-seq2.0: an experimental and analytical pipeline for indexed sorting combined with single-cell RNA sequencing",
+      "url": "https://doi.org/10.1038/s41596-019-0164-4",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/mars_seq_v2/MARS-seq2_protocols.io.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "MARS-seq2_supplement.pdf",
+      "title": "MARS-seq2.0 Supplementary Information",
+      "url": "https://doi.org/10.1038/s41596-019-0164-4",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/mars_seq_v2/MARS-seq2_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "MARS-seqv2.pdf",
+      "title": "MARS-seqv2.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/mars_seq_v2/MARS-seqv2.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "rt1_primer",
+      "name": "RT primer (RT1)",
+      "aliases": [],
+      "role": "Reverse-transcription / cell-barcoding primer; anneals to mRNA polyA and adds cell barcode, UMI, Illumina Read2 handle and T7 promoter",
+      "kind": "assembled",
+      "sequence": "CGATTGAGGCCGGTAATACGACTCACTATAGGGGCGACGTGTGCTCTTCCGATCT[CELL_BARCODE:7][UMI:8]TTTTTTTTTTTTTTTTTTTTN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' leader/handle",
+          "sequence": "CGATTGAGGCC",
+          "role": "5' handle"
+        },
+        {
+          "name": "T7 promoter",
+          "sequence": "GGTAATACGACTCACTATAGGG",
+          "role": "T7 RNA polymerase promoter (core TAATACGACTCACTATAG; +1 GGG transcription start)"
+        },
+        {
+          "name": "Illumina Read2 (rd2) partial adaptor",
+          "sequence": "GCGACGTGTGCTCTTCCGATCT",
+          "role": "read2 sequencing handle"
+        },
+        {
+          "name": "cell/well barcode",
+          "sequence": "[CELL_BARCODE:7]",
+          "role": "cell barcode (7 bp, X; edit distance >=2, ~constant GC)"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:8]",
+          "role": "unique molecular identifier (8 bp)"
+        },
+        {
+          "name": "anchored polyT",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTN",
+          "role": "polyT RT primer with 3' anchor N"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Full 384-primer barcode list at compgenomics.weizmann.ac.il/tanay (Supplementary Table 1). Working concentration 12.5 nM; final in-reaction 4 nM."
+    },
+    {
+      "oligo_id": "ligation_plate_adaptor",
+      "name": "Barcoded ligation adaptor (plate/pool adaptor)",
+      "aliases": [],
+      "role": "RNA:ssDNA ligation adaptor added to 3' end of fragmented aRNA; encodes 4-bp pool/plate barcode + partial Read1 adaptor",
+      "kind": "assembled",
+      "sequence": "[SAMPLE_INDEX:4]NNNNNAGATCGGAAGAGCGTCGTGTAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "pool/plate barcode",
+          "sequence": "[SAMPLE_INDEX:4]",
+          "role": "pool (amplification-batch) barcode, 4 bp (X)"
+        },
+        {
+          "name": "random spacer",
+          "sequence": "NNNNN",
+          "role": "5 random nt"
+        },
+        {
+          "name": "partial Illumina Read1 adaptor",
+          "sequence": "AGATCGGAAGAGCGTCGTGTAG",
+          "role": "read1-side adaptor / RT2 binding site"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' phosphate (/5Phos/) enables ligation to RNA 3' end; 3' C3 spacer (/3SpC3/) blocks adaptor self-ligation. Full list in Supplementary Table 2. Stock 100 uM."
+    },
+    {
+      "oligo_id": "rt2_primer",
+      "name": "Second RT primer (RT2)",
+      "aliases": [],
+      "role": "Reverse-transcription primer complementary to the ligated plate adaptor",
+      "kind": "single",
+      "sequence": "CTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reverse complement of the adaptor AGATCGGAAGAGCGTCGTGTAG; used at 25 uM."
+    },
+    {
+      "oligo_id": "enrichment_primer_fwd",
+      "name": "Enrichment primer, forward (P5-Read1)",
+      "aliases": [],
+      "role": "Final library PCR forward primer; adds Illumina P5 + TruSeq Read1 sequences on the pool-barcode side",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell adaptor"
+        },
+        {
+          "name": "TruSeq Read1 (SP1)",
+          "sequence": "TCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "Read1 sequencing primer binding site"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Working mix (fwd+rev) at 25 uM."
+    },
+    {
+      "oligo_id": "enrichment_primer_rev",
+      "name": "Enrichment primer, reverse (P7-Read2)",
+      "aliases": [],
+      "role": "Final library PCR reverse primer; adds Illumina P7 + Read2 sequences on the cell-barcode/UMI side",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adaptor"
+        },
+        {
+          "name": "Read2 (SP2)",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "Read2 sequencing primer binding site"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "No sample index used (libraries are pooled by the in-line 4-bp plate barcode; sequenced with no index reads)."
+    },
+    {
+      "oligo_id": "mouse_actb_qc_fwd",
+      "name": "Mouse ActB QC primer, forward",
+      "aliases": [],
+      "role": "qPCR housekeeping-gene QC primer (mouse ActB 3' end)",
+      "kind": "single",
+      "sequence": "GGAGGGGGTTGAGGTGTT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Working aliquots 12.5 uM."
+    },
+    {
+      "oligo_id": "mouse_actb_qc_rev",
+      "name": "Mouse ActB QC primer, reverse",
+      "aliases": [],
+      "role": "qPCR housekeeping-gene QC primer (mouse ActB 3' end)",
+      "kind": "single",
+      "sequence": "TGTGCACTTTTATTGGTCTCAAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "oligo_id": "human_gapdh_qc_fwd",
+      "name": "Human GAPDH QC primer, forward",
+      "aliases": [],
+      "role": "qPCR housekeeping-gene QC primer (human GAPDH 3' end)",
+      "kind": "single",
+      "sequence": "TCCCCCACCACACTGAATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "oligo_id": "human_gapdh_qc_rev",
+      "name": "Human GAPDH QC primer, reverse",
+      "aliases": [],
+      "role": "qPCR housekeeping-gene QC primer (human GAPDH 3' end)",
+      "kind": "single",
+      "sequence": "ACAAGGTGCGGCTCCCTA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "final_library": {
+    "source_label": "MARS-seq2.0 final sequenceable library (Illumina, NextSeq 500)",
+    "annotated_library_sequence": "5'- AATGATACGGCGACCACCGAGATCTACAC (P5) | TCTTTCCCTACACGACGCTCTTCCGATCT (TruSeq Read1/SP1) | NNNNN (5 nt random, ligation adaptor) | [SAMPLE_INDEX:4] (pool/plate barcode) | [CDNA] (3' mRNA-derived insert) | AAAAAAAAAAAAAAAAAAAA (polyA) | [UMI:8] | [CELL_BARCODE:7] | AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC (Read2/SP2) ATCTCGTATGCCGTCTTCTGCTTG (P7) -3'",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNN[SAMPLE_INDEX:4][CDNA]AAAAAAAAAAAAAAAAAAAA[UMI:8][CELL_BARCODE:7]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' (sense / top)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNN[SAMPLE_INDEX:4][CDNA]AAAAAAAAAAAAAAAAAAAA[UMI:8][CELL_BARCODE:7]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNN[SAMPLE_INDEX:4][CDNA]AAAAAAAAAAAAAAAAAAAA[UMI:8][CELL_BARCODE:7]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "5'->3' (antisense / bottom)",
+        "source_html": "CAAGCAGAAGACGGCATACGAGATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:7]'[UMI:8]'TTTTTTTTTTTTTTTTTTTT[CDNA]'[SAMPLE_INDEX:4]'NNNNNAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT",
+        "source_sequence": "CAAGCAGAAGACGGCATACGAGATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:7]'[UMI:8]'TTTTTTTTTTTTTTTTTTTT[CDNA]'[SAMPLE_INDEX:4]'NNNNNAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT"
+      }
+    ],
+    "annotation_lines": [
+      "P5 flow-cell adaptor: AATGATACGGCGACCACCGAGATCTACAC",
+      "TruSeq Read1 (SP1) primer site: TCTTTCCCTACACGACGCTCTTCCGATCT",
+      "NNNNN: 5 random nt from the ligation adaptor (ignored in Read1)",
+      "[SAMPLE_INDEX:4]: 4-bp pool/plate (amplification-batch) barcode, read in Read1",
+      "[CDNA]: 3'-end mRNA-derived insert, read in Read1",
+      "polyA (AAAAAAAAAAAAAAAAAAAA): from the RT1 polyT",
+      "[UMI:8]: unique molecular identifier, read in Read2",
+      "[CELL_BARCODE:7]: cell/well barcode, read in Read2",
+      "Read2 (SP2) primer site: AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+      "P7 flow-cell adaptor: ATCTCGTATGCCGTCTTCTGCTTG (rev-comp of CAAGCAGAAGACGGCATACGAGAT)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "MARS-seq2.0 final sequenceable library (Illumina, NextSeq 500)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TruSeq Read1 / SP1 (TCTTTCCCTACACGACGCTCTTCCGATCT)",
+        "template": "top",
+        "cycles": 75,
+        "segments": [
+          {
+            "name": "random spacer (ligation adaptor Ns)",
+            "type": "constant",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 5
+          },
+          {
+            "name": "pool/plate barcode",
+            "type": "index",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 4
+          },
+          {
+            "name": "cDNA (3' mRNA)",
+            "type": "insert",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 66
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina Read2 / SP2 (GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT)",
+        "template": "bottom",
+        "cycles": 15,
+        "segments": [
+          {
+            "name": "cell/well barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 7
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "FACS index-sort, lysis & RT1 annealing",
+      "summary": "Single cells are index-sorted into 384-well plates and lysed, and the well-specific RT1 poly-T primer anneals to the mRNA polyA tail.",
+      "note": "Each well contains a unique RT1 primer carrying a 7-bp cell barcode, 8-bp UMI, an Illumina Read2 handle and a T7 promoter; lysis buffer is evaporated and 0.5 ul RT mix added.",
+      "product": "mRNA   5'- [CDNA] AAAAAAAAAAAAAAAAAAAA -3'\n                        ::::::::::::::::::::\nRT1  3'-N TTTTTTTTTTTTTTTTTTTT-[UMI:8]-[CB:7]-(rd2)-(T7 promoter)-(leader) -5'"
+    },
+    {
+      "step": 2,
+      "title": "Reverse transcription",
+      "summary": "SuperScript III extends RT1 to make first-strand cDNA tagged with the cell barcode, UMI, Read2 handle and T7 promoter.",
+      "note": "RT primer final concentration only 4 nM to minimize well-to-well contamination.",
+      "product": "cDNA 5'-CGATTGAGGCCGGTAATACGACTCACTATAGGGGCGACGTGTGCTCTTCCGATCT[CB:7][UMI:8]TTTTTTTTTTTTTTTTTTTTN[CDNA]-3'\n              (leader)(---T7 promoter---)(----rd2----)"
+    },
+    {
+      "step": 3,
+      "title": "Exonuclease I cleanup & pooling",
+      "summary": "Leftover RT primers are digested by exonuclease I in each well, then all 384 barcoded cells are pooled into one amplification batch and bead-purified.",
+      "note": "Pooling combines 384 wells into a single tube; QC1 qPCR estimates starting material.",
+      "product": "pooled cDNA 5'-...(T7 promoter)-(rd2)-[CB:7][UMI:8]-T20-[CDNA]-3'   (x384 barcodes)"
+    },
+    {
+      "step": 4,
+      "title": "Second-strand synthesis",
+      "summary": "The pooled cDNA is converted to double-stranded DNA, making the T7 promoter double-stranded.",
+      "note": "NEBNext second-strand module (enzyme diluted 1:8) optimized to reduce PCR-contaminant noise.",
+      "product": "top 5'-[mRNA-sense CDNA]AAAA...[UMI:8]'[CB:7]'-(rd2')-CCCTATAGTGAGTCGTATTACCGGCCTCAATCG-3'\nbot 3'-[CDNA]'TTTT...[UMI:8][CB:7]-(rd2)-GGGATATCACTCAGCATAATGGCCGGAGTTAGC-5'\n                                        (----- T7 promoter (ds) -----)"
+    },
+    {
+      "step": 5,
+      "title": "T7 in-vitro transcription (linear amplification)",
+      "summary": "T7 RNA polymerase linearly amplifies the dsDNA from the promoter into many antisense aRNA copies; template DNA is then DNase-digested.",
+      "note": "Amplified RNA (aRNA) carries the barcode/UMI/Read2 handle; QC2 measures IVT enrichment (~5 cycles).",
+      "product": "aRNA 5'-GGGGCGACGUGUGCUCUUCCGAUCU[CB:7][UMI:8]UUUUUUUUUUUUUUUUUUUU[CDNA-antisense]-3'   (many copies)"
+    },
+    {
+      "step": 6,
+      "title": "RNA fragmentation",
+      "summary": "aRNA is chemically fragmented with Zn2+ to a median size of ~300 nt.",
+      "note": "3 min at 70 C; barcode-bearing 5' fragments retain the rd2/CB/UMI region.",
+      "product": "aRNA frag 5'-GGGGCGACGUGUGCUCUUCCGAUCU[CB:7][UMI:8]UUUU...[insert]-3'"
+    },
+    {
+      "step": 7,
+      "title": "Ligation of plate (pool) barcode",
+      "summary": "The 5'-phosphorylated, 3'-blocked plate adaptor is ligated by T4 RNA ligase 1 to the 3' end of each fragmented aRNA, adding the 4-bp pool barcode.",
+      "note": "3SpC3 block prevents adaptor concatemers; adaptor = /5Phos/[pool BC 4]NNNNN AGATCGGAAGAGCGTCGTGTAG/3SpC3.",
+      "product": "5'-GGGGCGACGUGUGCUCUUCCGAUCU[CB:7][UMI:8]UUUU...[insert]-3' = 5'p-[POOL:4]NNNNNAGATCGGAAGAGCGTCGTGTAG-3'SpC3"
+    },
+    {
+      "step": 8,
+      "title": "Second reverse transcription (RT2)",
+      "summary": "RT2, complementary to the ligated adaptor, primes and reverse-transcribes the ligated aRNA into cDNA that now bears both barcodes.",
+      "note": "AffinityScript RT; 3 min 72 C anneal then extension.",
+      "product": "RT2 cDNA 5'-CTACACGACGCTCTTCCGATCT-N'N'N'N'N'-[POOL:4]'-[mRNA-sense]-AAAA-[UMI:8]'-[CB:7]'-AGATCGGAAGAGCACACGTCGC-3'"
+    },
+    {
+      "step": 9,
+      "title": "PCR enrichment (final library)",
+      "summary": "KAPA HiFi PCR with the P5-Read1 and P7-Read2 enrichment primers completes the Illumina adaptors and amplifies the final library.",
+      "note": "11-17 cycles; final library peak 300-500 bp (mean ~384 bp). QC3 assesses final amount.",
+      "product": "5'-AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNN[SAMPLE_INDEX:4][CDNA]AAAAAAAAAAAAAAAAAAAA[UMI:8][CELL_BARCODE:7]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACATCTCGTATGCCGTCTTCTGCTTG-3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "TruSeq Read1 / SP1 (TCTTTCCCTACACGACGCTCTTCCGATCT)",
+      "template": "top",
+      "cycles": 75,
+      "note": "Sequences from the Read1 handle into the pool-barcode side: first 5 nt are the random Ns of the ligation adaptor (ignored), the next 4 nt are the pool/plate (amplification-batch) barcode, then ~66 nt of 3'-end mRNA-derived cDNA (gene identity). No separate index reads are run.",
+      "diagram": "                      Read 1 primer (SP1)\n            5'-TCTTTCCCTACACGACGCTCTTCCGATCT----------------------->\ntop 5'-...ACAC TCTTTCCCTACACGACGCTCTTCCGATCT NNNNN BBBB CDNA(3')..... -3'\n              ||||||||||||||||||||||||||||| ||||| ||||\nbot 3'-...TGTG AGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNN VVVV cdna(3')..... -5'\n                                            |_5N_| |pool| 3' mRNA (gene body)\n                                           ignored  BC(4)   ---> 75 cycles"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Illumina Read2 / SP2 (GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT)",
+      "template": "bottom",
+      "cycles": 15,
+      "note": "Sequences from the Read2 handle back across the RT1-derived barcodes: reads the 7-bp cell/well barcode first, then the 8-bp UMI (15 cycles total). Sequencer parameters: rd1=75 bp, rd2=15 bp, no index reads (NextSeq 500, High Output v2).",
+      "diagram": "top 5'-..CDNA-AAAA-[UMI 8]-[CB 7]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC..-3'\n                               ||||||||||||||||||||||||||||||||||\nbot 3'-..cdna-TTTT-[umi 8]-[cb 7]-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG..-5'\n        <--------------------------  Read 2 primer (SP2)\n      reads CB(7) then UMI(8)       5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3'\n                                        ---> 15 cycles"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "MARS-seq2.0",
+  "description": "MARS-seq2.0 is a plate-based, FACS-indexed, 3'-end single-cell RNA-seq method. Single cells are index-sorted into 384-well plates and reverse-transcribed with a poly-T primer carrying a 7-bp cell/well barcode, an 8-bp UMI, an Illumina Read2 handle and a T7 promoter. Pooled cDNA is made double-stranded, linearly amplified by T7 in-vitro transcription, fragmented, and given a 4-bp pool/plate barcode by RNA:ssDNA ligation; Illumina adaptors are then added by a second RT and PCR. Read1 captures the pool barcode plus the 3' mRNA sequence; Read2 captures the cell barcode and UMI.",
+  "reference": {
+    "kind": "paper",
+    "label": "MARS-seq2.0: an experimental and analytical pipeline for indexed sorting combined with single-cell RNA sequencing",
+    "path": null,
+    "url": "https://doi.org/10.17504/protocols.io.7hkhj4w",
+    "doi": "10.1038/s41596-019-0164-4"
+  },
+  "publication": {
+    "year": 2019,
+    "original_publication": {
+      "title": "MARS-seq2.0: an experimental and analytical pipeline for indexed sorting combined with single-cell RNA sequencing",
+      "journal": "Nature Protocols (vol. 14, June 2019, 1841-1862)",
+      "doi": "10.1038/s41596-019-0164-4",
+      "url": "https://doi.org/10.1038/s41596-019-0164-4"
+    },
+    "authors": [
+      {
+        "name": "Hadas Keren-Shaul",
+        "affiliation": "Department of Immunology & Life Science Core Facility, Weizmann Institute of Science, Rehovot, Israel"
+      },
+      {
+        "name": "Ephraim Kenigsberg",
+        "affiliation": "Precision Immunology Institute, Icahn Institute for Data Science and Genomic Technology, and Department of Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai, New York, NY, USA"
+      },
+      {
+        "name": "Diego Adhemar Jaitin",
+        "affiliation": "Department of Immunology, Weizmann Institute of Science, Rehovot, Israel"
+      },
+      {
+        "name": "Eyal David",
+        "affiliation": "Department of Immunology, Weizmann Institute of Science, Rehovot, Israel"
+      },
+      {
+        "name": "Franziska Paul",
+        "affiliation": "Department of Immunology, Weizmann Institute of Science, Rehovot, Israel"
+      },
+      {
+        "name": "Amos Tanay",
+        "corresponding": true,
+        "email": "amos.tanay@weizmann.ac.il",
+        "affiliation": "Department of Computer Science and Applied Mathematics and Department of Biological Regulation, Weizmann Institute, Rehovot, Israel"
+      },
+      {
+        "name": "Ido Amit",
+        "corresponding": true,
+        "email": "ido.amit@weizmann.ac.il",
+        "affiliation": "Department of Immunology, Weizmann Institute of Science, Rehovot, Israel"
+      }
+    ],
+    "throughput": {
+      "summary": "8,000-10,000 cells sequenced per run; libraries of 20-40 384-well plates pooled per NextSeq 500 flow cell (~0.5x10^9 reads); >1 million cells processed overall.",
+      "cells": "8,000-10,000 cells/run; tens of thousands/day; >1,000,000 total",
+      "rna": "~1,700 UMIs and ~700 genes per cell on average (range ~100-10,000 UMIs); saturation ~8,250 molecules/cell at 200,000 reads/cell",
+      "dna": "Final library 1-10 ng/ul dsDNA, peak 300-500 bp (mean ~384 bp)"
+    },
+    "statistical_model": "Sequential-sampling/amplification model of RNA-seq data generation; spurious genomic positions ('offsets') filtered by a hypergeometric test (BH-adjusted); library complexity estimated by an exponential saturation fit; cell-to-cell contamination estimated from empty negative-control wells.",
+    "other": [
+      {
+        "label": "RT reaction volume",
+        "value": "500 nl (8-fold reduction vs original MARS-seq); RT primer 4 nM final"
+      },
+      {
+        "label": "Cost / noise",
+        "value": "~$0.10 per cell; background noise reduced to ~2%"
+      },
+      {
+        "label": "Sequencer / kit",
+        "value": "Illumina NextSeq 500, High Output v2 (75 cycles); rd1=75 bp, rd2=15 bp, no indices"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO: GSE123392 (mouse ES and MEF example dataset)"
+      },
+      {
+        "label": "Prior version",
+        "value": "Builds on MARS-seq (Jaitin et al., Science 343:776-779, 2014)"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "plate-based",
+  "data_processing": {
+    "summary": "Sequenced reads are run through the dedicated MARS-seq2.0 computational pipeline, which demultiplexes reads by their pool (plate) and cell (well) barcodes, error-corrects barcodes and UMIs, maps reads to the genome, and collapses UMIs into a per-gene molecule count per cell while modeling and subtracting background noise. It emits a per-amplification-batch diagnostics report with >20 QC metrics (reads, % exonic, UMIs, saturation) and estimates cell-to-cell contamination from empty negative-control wells.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "correct",
+        "label": "Barcode & UMI correction"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "quantify",
+        "label": "Quantification"
+      },
+      {
+        "id": "qc",
+        "label": "QC & diagnostics"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux_pool",
+        "label": "Demultiplex by pool barcode",
+        "tool": "MARS-seq2.0 pipeline",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "demux_cell",
+        "label": "Demultiplex by cell barcode",
+        "tool": "MARS-seq2.0 pipeline",
+        "stage": "demux",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "correct_cb",
+        "label": "Error-correct cell barcodes",
+        "tool": "MARS-seq2.0 pipeline",
+        "stage": "correct",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "correct_umi",
+        "label": "Error-correct UMIs",
+        "tool": "MARS-seq2.0 pipeline",
+        "stage": "correct",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "map",
+        "label": "Map reads to genome",
+        "tool": "MARS-seq2.0 pipeline",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_offset",
+        "label": "Filter spurious UMI offsets",
+        "tool": "MARS-seq2.0 pipeline",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse",
+        "label": "Collapse UMIs to gene counts",
+        "tool": "MARS-seq2.0 pipeline",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "assemble_matrix",
+        "label": "Assemble cell\u00d7gene matrix",
+        "tool": "MARS-seq2.0 pipeline",
+        "stage": "quantify",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "contamination",
+        "label": "Estimate well contamination",
+        "tool": "MARS-seq2.0 pipeline",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "qc_report",
+        "label": "Generate QC diagnostics report",
+        "tool": "MARS-seq2.0 pipeline",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux_pool",
+        "to": "demux_cell",
+        "kind": "sequential"
+      },
+      {
+        "from": "demux_cell",
+        "to": "correct_cb",
+        "kind": "branch"
+      },
+      {
+        "from": "demux_cell",
+        "to": "correct_umi",
+        "kind": "branch"
+      },
+      {
+        "from": "demux_cell",
+        "to": "map",
+        "kind": "branch"
+      },
+      {
+        "from": "map",
+        "to": "filter_offset",
+        "kind": "sequential"
+      },
+      {
+        "from": "correct_cb",
+        "to": "collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "correct_umi",
+        "to": "collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_offset",
+        "to": "collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse",
+        "to": "assemble_matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "assemble_matrix",
+        "to": "contamination",
+        "kind": "branch"
+      },
+      {
+        "from": "assemble_matrix",
+        "to": "qc_report",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "Sequential-sampling/amplification model of RNA-seq data generation; spurious genomic offsets filtered by a hypergeometric test (Benjamini-Hochberg adjusted); library complexity estimated by an exponential saturation fit"
+  }
+}

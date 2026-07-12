@@ -1,0 +1,886 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "scths_seq",
+  "assay": "scTHS-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "supplementary_NIHMS920808-supplement-1.doc",
+      "title": "Integrative single-cell analysis of transcriptional and epigenetic states in the human adult brain",
+      "url": "https://doi.org/10.1038/nbt.4038",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scths_seq/supplementary_NIHMS920808-supplement-1.doc",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_NIHMS920808-supplement-2.docx",
+      "title": "Integrative single-cell analysis of transcriptional and epigenetic states in the human adult brain",
+      "url": "https://doi.org/10.1038/nbt.4038",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scths_seq/supplementary_NIHMS920808-supplement-2.docx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "scTHS-seq.pdf",
+      "title": "scTHS-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scths_seq/scTHS-seq.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "scTHS-seq.xlsx",
+      "title": "scTHS-seq.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scths_seq/scTHS-seq.xlsx",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "barcoded_r5_transposon",
+      "name": "Barcoded r5 transposon (74-bp)",
+      "aliases": [],
+      "role": "Barcoded transposon (transferred/top strand) loaded into Tn5059; carries the round-1 combinatorial cell barcode (r5)",
+      "kind": "assembled",
+      "sequence": "TAATACGACTCACTATAGGG[SPACER:N][CELL_BARCODE:6][SPACER:M]AGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "T7 promoter",
+          "sequence": "TAATACGACTCACTATAGGG",
+          "role": "T7 RNA-pol promoter for in vitro transcription (linear amplification); standard T7 promoter sequence (exact transcribed sequence not printed in provided documents)"
+        },
+        {
+          "name": "i5 connector",
+          "sequence": "",
+          "role": "i5 connector sequence used in PCR amplification (linker read through during i5 index read); sequence in Supplementary Table 12, not extractable"
+        },
+        {
+          "name": "r5 barcode",
+          "sequence": "[CELL_BARCODE:6]",
+          "role": "6-bp round-1 cell barcode, unique to each of 384 transposons, minimum edit distance 2 (Supplementary Table 12)"
+        },
+        {
+          "name": "Read1 primer site",
+          "sequence": "",
+          "role": "Read 1 sequencing-primer binding site; sequence in Supplementary Table 12, not extractable"
+        },
+        {
+          "name": "Mosaic end (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "19-bp Tn5 mosaic end for transposase binding; canonical Tn5 ME (not literally printed in provided documents)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Two-oligo transposon: this 74-bp barcoded strand is annealed to the 19-bp 5'-phosphorylated RC mosaic end, then loaded onto Tn5059. 384 uniquely barcoded r5 transposons total."
+    },
+    {
+      "oligo_id": "rc_mosaic_end",
+      "name": "Universal 5'-phosphorylated (RC) mosaic end (19-bp)",
+      "aliases": [],
+      "role": "Non-transferred strand of the Tn5 transposome; anneals to the ME of every barcoded transposon",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Described as the 19-bp universal 5' phosphorylated mosaic end ('RC mosaic end'). Sequence shown is the canonical reverse-complement Tn5 mosaic end (5'-phosphate); exact characters not printed in the provided documents."
+    },
+    {
+      "oligo_id": "nxtv2_i7_transposon",
+      "name": "Custom nXTv2_i7 transposon",
+      "aliases": [],
+      "role": "Transposon annealed and loaded onto Tn5059 to make the custom nXTv2_i7 transposome used for simultaneous fragmentation + 3' i7-adaptor addition on double-stranded cDNA",
+      "kind": "assembled",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "nXTv2_i7 adaptor",
+          "sequence": "",
+          "role": "i7-side Nextera XT v2 adaptor arm; sequence in Supplementary Table 12, not extractable"
+        },
+        {
+          "name": "Mosaic end (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "Tn5 mosaic end (canonical); annealed to the 5'-phosphorylated RC mosaic end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Complexed at 7 uM Tn5059 with 10 uM annealed transposon, diluted to 0.7 uM; used at 0.14 uM final for 3' tagmentation."
+    },
+    {
+      "oligo_id": "random_hexamers",
+      "name": "Random hexamers (N6)",
+      "aliases": [],
+      "role": "Reverse-transcription primers on the IVT RNA (SMART MMLV RT)",
+      "kind": "single",
+      "sequence": "NNNNNN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used at 20 uM; 2.5 uL per reaction."
+    },
+    {
+      "oligo_id": "sss_scnxtv2",
+      "name": "sss_scnXTv2 second-strand primer",
+      "aliases": [],
+      "role": "Second-strand synthesis primer added after RNase H digestion (extended with NEB Taq)",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "20 uM stock, 2.5 uL per reaction (Supplementary Table 12); exact sequence not extractable."
+    },
+    {
+      "oligo_id": "sct7_s5xx_index_primer",
+      "name": "scT7_S5XX i5 index primer",
+      "aliases": [],
+      "role": "Custom scTHS-seq i5 index PCR primer (P5 side); adds i5 sample index and P5",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell adaptor (canonical; not literally printed in documents)"
+        },
+        {
+          "name": "i5 index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "Custom scTHS-seq i5 sample index (round-2 barcode, 8-well set)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with KAPA SYBR Fast in an 8 x 12 (i5 x i7) qPCR barcoding format; exact index sequences in Supplementary Table 12."
+    },
+    {
+      "oligo_id": "nxtv2_i7xx_index_primer",
+      "name": "nXTv2_i7XX i7 index primer",
+      "aliases": [],
+      "role": "Standard Illumina Nextera XT v2 i7 index PCR primer (P7 side); adds i7 sample index and P7",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "i7 index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "Standard Illumina i7 sample index (round-2 barcode, 12-well set)"
+        },
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adaptor (canonical; not literally printed in documents)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina i7 indexes; 8 x 12 (i5 x i7) format, 9-12 qPCR cycles."
+    }
+  ],
+  "final_library": {
+    "source_label": "scTHS-seq final sequenceable library (Illumina, single-end 50 + 8 + 32)",
+    "annotated_library_sequence": "P5 - i5 index - i5 connector/linker - r5 barcode - Read1 primer - genomic insert - ME - nXTv2_i7 adaptor - i7 index - P7",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8][SPACER:N][CELL_BARCODE:6][SPACER:M][CDNA]CTGTCTCTTATACACATCT[SPACER:K][SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5to3_top",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8][i5 connector][CELL_BARCODE:6][Read1 primer][CDNA]CTGTCTCTTATACACATCT[nXTv2_i7 adaptor][SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8][i5 connector][CELL_BARCODE:6][Read1 primer][CDNA]CTGTCTCTTATACACATCT[nXTv2_i7 adaptor][SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC : P5 (Illumina flow-cell adaptor)",
+      "[SAMPLE_INDEX:8]              : custom scTHS-seq i5 index (round-2 barcode)",
+      "[SPACER:N]                    : i5 connector / linker (read through during i5 index read)",
+      "[CELL_BARCODE:6]              : r5 transposon barcode (round-1 combinatorial barcode)",
+      "[SPACER:M]                    : Read 1 sequencing-primer binding site",
+      "[CDNA]                        : captured genomic DNA (accessible-chromatin fragment; ~50 bp read)",
+      "CTGTCTCTTATACACATCT           : Tn5 mosaic end (from nXTv2_i7 tagmentation)",
+      "[SPACER:K]                    : nXTv2_i7 adaptor arm",
+      "[SAMPLE_INDEX:8]              : standard Illumina i7 index (round-2 barcode)",
+      "ATCTCGTATGCCGTCTTCTGCTTG      : P7 (Illumina flow-cell adaptor)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "scTHS-seq final sequenceable library (Illumina, single-end 50 + 8 + 32)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Read 1 sequencing primer (transposon read-primer site)",
+        "template": "top",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 50
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "standard Illumina i7 index primer",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "scTHS-seq i5 index primer (scT7_S5)",
+        "template": "top",
+        "cycles": 32,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "i5 connector/linker",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          },
+          {
+            "name": "r5 transposon barcode",
+            "type": "barcode",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Nuclei isolation & tagmentation buffer",
+      "summary": "Mixed human+mouse nuclei are lysed and resuspended in tagmentation buffer for combinatorial indexing.",
+      "note": "Human and mouse nuclei (for collision-rate QC) are mixed at ~2.4x10^5 nuclei/mL in 1.5x tagmentation buffer (33 mM TrisOAc pH7.8, 66 mM K-OAc, 10 mM Mg-OAc, 16% DMF).",
+      "product": "( intact nucleus with open chromatin )"
+    },
+    {
+      "step": 2,
+      "title": "Barcoded r5 tagmentation (round-1 index)",
+      "summary": "~2,000 nuclei per well are tagmented in a 384-well plate of uniquely barcoded r5 Tn5059 transposomes, inserting a T7-promoter/r5-barcode transposon into accessible DNA.",
+      "note": "Tn5059 super-mutant complexed with 384 unique r5 barcodes; 0.7 uM final, 37 C 30 min; stopped with 50 mM EDTA.",
+      "product": "5'- T7prom-[i5conn]-[r5 BC:6]-[Read1]-AGATGTGTATAAGAGACAG          genomic DNA          -3'\n                                        <--Tn5-->\n3'-                          genomic DNA          CTGTCTCTTATACACATCT-[Read1]-[r5 BC:6]-[i5conn]-T7prom -5'"
+    },
+    {
+      "step": 3,
+      "title": "Pool + FACS redistribution (round-2 setup)",
+      "summary": "Tagmented, inactivated nuclei are pooled and FACS-sorted (100 nuclei/well) into 96-well plates.",
+      "note": "Propidium-iodide sort; doublets removed by FSC/SSC. Establishes the second split for combinatorial indexing.",
+      "product": "( 100 barcoded nuclei per well, 96-well plate )"
+    },
+    {
+      "step": 4,
+      "title": "End fill-in",
+      "summary": "NEB Taq fills in the 9-bp tagmentation gap to make the transposon-borne T7 promoter double-stranded.",
+      "note": "72 C 3 min on SPRI beads.",
+      "product": "5'- T7prom(ds)-[i5conn]-[r5 BC]-[Read1]-ME= genomic DNA =ME-[...] -3'"
+    },
+    {
+      "step": 5,
+      "title": "In vitro transcription (linear amplification)",
+      "summary": "T7 RNA polymerase transcribes from the double-stranded T7 promoter, linearly amplifying each tagmented fragment into RNA.",
+      "note": "NEB HiScribe T7, 37 C 19 h. Confers high sensitivity (THS-seq principle).",
+      "product": "5'- GGG-[i5conn]-[r5 BC]-[Read1]- genomic-DNA-derived RNA -3'  (many copies)"
+    },
+    {
+      "step": 6,
+      "title": "Reverse transcription",
+      "summary": "Random hexamers prime SMART MMLV RT to copy the IVT RNA back into cDNA.",
+      "note": "22 C 10 min, 42 C 60 min, 70 C 10 min; then Enzymatics RNase H degrades RNA in the hybrid.",
+      "product": "RNA:cDNA hybrid -> (RNase H) -> single-strand cDNA"
+    },
+    {
+      "step": 7,
+      "title": "Second-strand synthesis",
+      "summary": "The sss_scnXTv2 primer anneals and NEB Taq extends to regenerate double-stranded cDNA.",
+      "note": "65 C 2 min anneal; 72 C 8 min extension.",
+      "product": "5'- [i5conn]-[r5 BC:6]-[Read1]- genomic insert -3'\n3'- [i5conn]-[r5 BC:6]-[Read1]- genomic insert -5'"
+    },
+    {
+      "step": 8,
+      "title": "3' adaptor tagmentation (i7 side)",
+      "summary": "A custom nXTv2_i7 Tn5059 transposome fragments the dsDNA and adds the i7-side adaptor.",
+      "note": "0.14 uM transposome, 55 C 6 min; stopped with 4 M guanidine-HCl.",
+      "product": "5'- [i5conn]-[r5 BC]-[Read1]- genomic insert -AGATGTGTATAAGAGACAG-[nXTv2_i7] -3'"
+    },
+    {
+      "step": 9,
+      "title": "PCR indexing (round-2 i5 x i7)",
+      "summary": "qPCR with scT7_S5XX (i5) and nXTv2_i7XX (i7) primers adds sample indexes and P5/P7 in an 8x12 format.",
+      "note": "KAPA SYBR Fast; 95 C 10 s / 63 C 30 s / 72 C 1 min, 9-12 cycles to saturation.",
+      "product": "5'- P5-[i5 index]-[i5conn]-[r5 BC]-[Read1]- insert -ME-[nXTv2_i7]-[i7 index]-P7 -3'"
+    },
+    {
+      "step": 10,
+      "title": "Pool & size-select",
+      "summary": "Uniquely indexed qPCR products are pooled, size-selected, quantified, and sequenced.",
+      "note": "Validated on 6% TBE/SYBR Gold gels; SPRI size selection.",
+      "product": "final scTHS-seq sequenceable library"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "R1",
+      "primer": "Read 1 sequencing primer (transposon read-primer site)",
+      "template": "top",
+      "cycles": 50,
+      "note": "50-bp read of captured genomic (accessible-chromatin) DNA, primed from the r5-transposon Read1 site and extending into the insert toward the nXTv2_i7 mosaic end.",
+      "diagram": "                          Read 1 sequencing primer\n                          ------------------------------------->\n5'- [r5 bc (6)][Read1 primer site]|==== genomic DNA insert (50 nt) ====|CTGTCTCTTATACACATCT[i7 adaptor]... -3'\n3'- [r5 bc (6)][Read1 primer site]|==== genomic DNA insert (50 nt) ====|GACAGAGAATATGTGTAGA[i7 adaptor]... -5'\n                                  |<-------------- Read 1: 50 bp -------------->|"
+    },
+    {
+      "read": "I1",
+      "primer": "Standard Illumina Nextera i7 index primer",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "8-cycle standard Illumina i7 sample index read (round-2 barcode); primer anneals to the P7-proximal nXTv2_i7 adaptor and reads the i7 index.",
+      "diagram": "5'- CTGTCTCTTATACACATCT[i7 adaptor][i7 index (8)]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- GACAGAGAATATGTGTAGA[i7 adaptor][i7 index (8)]TAGAGCATACGGCAGAAGACGAAC -5'\n                                 <----------------------------------------\n                                 i7 index primer  (Index 1: 8 cycles)"
+    },
+    {
+      "read": "I2",
+      "primer": "scTHS-seq i5 index primer (scT7_S5XX)",
+      "template": "top",
+      "cycles": 32,
+      "note": "32-cycle read that captures the i5 index (round-2 barcode), then reads through the i5 connector/linker and ends in the r5 transposon barcode (round-1 barcode) \u2014 'the i5 and r5 barcodes are read in one sequencing read'. MiSeq validation ran 50+32+32; HiSeq 2500 data generation ran 50+8+32.",
+      "diagram": "    i5 index primer (scT7_S5XX)\n    ------------------------------------------------------->\n5'- AATGATACGGCGACCACCGAGATCTACAC[i5 index (8)][i5 linker][r5 bc (6)][Read1 primer site]... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5 index (8)][i5 linker][r5 bc (6)][Read1 primer site]... -5'\n                                 |<---- Index 2 read: 32 cycles (i5 + linker + r5 barcode) ---->|"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "scTHS-seq",
+  "description": "scTHS-seq (single-cell transposome hypersensitive-site sequencing) is a droplet-free, combinatorial-indexing single-nucleus DNA-accessibility assay. Nuclei are distributed into a 384-well plate of uniquely barcoded (r5) Tn5059 super-mutant transposome complexes that tagment open chromatin, inserting a barcoded transposon bearing a T7 promoter; after pooling and FACS redistribution, in vitro transcription linearly amplifies tagmented fragments, which are reverse-transcribed, made double-stranded, tagmented again with a custom i7 transposome, and PCR-indexed (i5 \u00d7 i7). Sequencing reads capture ~50 bp of genomic DNA (Read 1) plus the combinatorial cell identity (r5 transposon barcode + i5 index + i7 index), mapping accessible chromatin at single-cell resolution across archived human brain tissue.",
+  "reference": {
+    "kind": "paper",
+    "label": "Integrative single-cell analysis of transcriptional and epigenetic states in the human adult brain",
+    "path": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5951394/",
+    "doi": "10.1038/nbt.4038"
+  },
+  "publication": {
+    "year": 2018,
+    "original_publication": {
+      "title": "Integrative single-cell analysis of transcriptional and epigenetic states in the human adult brain",
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/nbt.4038",
+      "url": "https://doi.org/10.1038/nbt.4038"
+    },
+    "authors": [
+      {
+        "name": "Blue B Lake",
+        "affiliation": "Department of Bioengineering, University of California San Diego, La Jolla, California, USA"
+      },
+      {
+        "name": "Song Chen",
+        "affiliation": "Department of Bioengineering, University of California San Diego, La Jolla, California, USA"
+      },
+      {
+        "name": "Brandon C Sos",
+        "affiliation": "Department of Bioengineering, University of California San Diego / UC San Diego School of Medicine, La Jolla, California, USA"
+      },
+      {
+        "name": "Jean Fan",
+        "affiliation": "Department of Biomedical Informatics, Harvard Medical School, Boston, Massachusetts, USA"
+      },
+      {
+        "name": "Gwendolyn E Kaeser",
+        "affiliation": "UC San Diego School of Medicine / Sanford Burnham Prebys Medical Discovery Institute, La Jolla, California, USA"
+      },
+      {
+        "name": "Yun C Yung",
+        "affiliation": "Sanford Burnham Prebys Medical Discovery Institute, La Jolla, California, USA"
+      },
+      {
+        "name": "Thu E Duong",
+        "affiliation": "Department of Pediatric Respiratory Medicine, University of California San Diego, La Jolla, California, USA"
+      },
+      {
+        "name": "Derek Gao",
+        "affiliation": "Department of Bioengineering, University of California San Diego, La Jolla, California, USA"
+      },
+      {
+        "name": "Jerold Chun",
+        "corresponding": true,
+        "email": "jchun@sbpdiscovery.org",
+        "affiliation": "Sanford Burnham Prebys Medical Discovery Institute, La Jolla, California, USA"
+      },
+      {
+        "name": "Peter V Kharchenko",
+        "corresponding": true,
+        "email": "Peter_Kharchenko@hms.harvard.edu",
+        "affiliation": "Department of Biomedical Informatics, Harvard Medical School, Boston, Massachusetts, USA"
+      },
+      {
+        "name": "Kun Zhang",
+        "corresponding": true,
+        "email": "kzhang@bioeng.ucsd.edu",
+        "affiliation": "Department of Bioengineering, University of California San Diego, La Jolla, California, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "scTHS-seq generated 32,869 single-cell chromatin-accessibility datasets from 3 individuals/3 experiments; ~25,000 single-cell datasets are optimally recovered per run.",
+      "cells": "32,869 single nuclei profiled (27,906 resolved into cell types; 15,786 combined across regions); ~2,000 nuclei per 384-well well; median 10,168 unique accessible-region reads per cell; 287,381 accessibility peaks over 144 Mb; 52,694 sites used for clustering.",
+      "rna": "In vitro transcription (T7) provides linear amplification of tagmented fragments (RNA intermediate); no transcriptome measured by scTHS-seq itself.",
+      "dna": "Single-cell open-chromatin (DNA-accessibility) maps; paired snDrop-seq gave >60,000 combined single cells across both assays."
+    },
+    "statistical_model": "Censored (right-censored) Poisson process modeling the probability of observing a read at each genomic site per cell (saturating after a few reads); overdispersion scored with a variance-gamma distribution. (snDrop-seq expression modeled with negative binomial / Poisson-family; scTHS-seq/snDrop-seq integration via gradient-boosted regression models.)",
+    "other": [
+      {
+        "label": "Transposase",
+        "value": "Tn5059 engineered super-mutant Tn5 (from Illumina; Kia et al. 2017), enabling higher sensitivity than ATAC-seq"
+      },
+      {
+        "label": "Amplification",
+        "value": "Linear amplification by in vitro transcription (T7), inherited from the THS-seq assay (Sos et al. 2016)"
+      },
+      {
+        "label": "Sequencing platforms",
+        "value": "Illumina MiSeq (50+32+32 single-end, validation) and HiSeq 2500 (50+8+32 single-end, data generation)"
+      },
+      {
+        "label": "Species-mixing collision QC",
+        "value": "hg38 (no-alt +decoy) vs mm10; a barcode combination assigned to one species if >=89% reads map to one genome"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO SuperSeries GSE97942"
+      },
+      {
+        "label": "Sequence caveat",
+        "value": "Exact r5 barcode, i5 connector, Read1-primer, sss_scnXTv2, scT7_S5XX and nXTv2_i7 sequences are in Supplementary Table 12, which could not be extracted from the provided files; canonical Tn5 mosaic end, T7 promoter, and Illumina P5/P7 shown are standard constants, not verbatim from the documents."
+      }
+    ]
+  },
+  "modality": "ATAC",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Raw reads are demultiplexed by combinatorial cell barcode, mapped to hg38 (no-alt + decoy) and mm10 with BWA, deduplicated, and filtered per barcode; pooled BAMs feed joint peak calling, and the resulting binary peaks-by-cells matrix is clustered under a censored-Poisson accessibility model and visualized by t-SNE.",
+    "stages": [
+      {
+        "id": "s_demux",
+        "label": "Demultiplex & barcode"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment"
+      },
+      {
+        "id": "s_qc",
+        "label": "Per-nucleus QC"
+      },
+      {
+        "id": "s_peaks",
+        "label": "Peak calling"
+      },
+      {
+        "id": "s_matrix",
+        "label": "Matrix & clustering"
+      },
+      {
+        "id": "s_viz",
+        "label": "Visualization & integration"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "fastq",
+        "label": "Convert BCL to FASTQ",
+        "tool": "bcl2fastq",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "assign_barcodes",
+        "label": "Assign combinatorial barcodes",
+        "tool": "deindexer",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "append_barcodes",
+        "label": "Append barcodes to headers",
+        "tool": "in-house Perl",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads to references",
+        "tool": "BWA",
+        "stage": "s_align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "redemux",
+        "label": "Demultiplex SAM by barcode",
+        "tool": "SAMtools",
+        "stage": "s_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "convert_bam",
+        "label": "Convert SAM to BAM",
+        "tool": "SAMtools",
+        "stage": "s_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Remove duplicate reads",
+        "tool": "SAMtools",
+        "stage": "s_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_nuclei",
+        "label": "Filter nuclei by read count",
+        "tool": "",
+        "stage": "s_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "remove_repeat",
+        "label": "Remove RepeatMasker-proximal reads",
+        "tool": "RepeatMasker",
+        "stage": "s_peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "call_peaks",
+        "label": "Call peaks on pooled BAMs",
+        "tool": "SPP",
+        "stage": "s_peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_peaks",
+        "label": "Filter peaks (FDR, \u226530 cells)",
+        "tool": "",
+        "stage": "s_peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "construct_matrix",
+        "label": "Build peaks-by-cells matrix",
+        "tool": "",
+        "stage": "s_matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "binarize",
+        "label": "Binarize matrix",
+        "tool": "",
+        "stage": "s_matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "deviance",
+        "label": "Compute deviance residuals",
+        "tool": "PAGODA2",
+        "stage": "s_matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pca",
+        "label": "Compute top-30 PCs",
+        "tool": "PAGODA2",
+        "stage": "s_matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "knn",
+        "label": "Build kNN graph",
+        "tool": "igraph",
+        "stage": "s_matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Detect communities (multilevel)",
+        "tool": "igraph",
+        "stage": "s_matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tsne",
+        "label": "Embed with t-SNE",
+        "tool": "t-SNE",
+        "stage": "s_viz",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "project",
+        "label": "Project regions onto PCs",
+        "tool": "",
+        "stage": "s_viz",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "integrate",
+        "label": "Integrate with snDrop-seq",
+        "tool": "caret (GBM)",
+        "stage": "s_viz",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "fastq",
+        "to": "assign_barcodes",
+        "kind": "sequential"
+      },
+      {
+        "from": "assign_barcodes",
+        "to": "append_barcodes",
+        "kind": "sequential"
+      },
+      {
+        "from": "append_barcodes",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "redemux",
+        "kind": "sequential"
+      },
+      {
+        "from": "redemux",
+        "to": "convert_bam",
+        "kind": "sequential"
+      },
+      {
+        "from": "convert_bam",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "filter_nuclei",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_nuclei",
+        "to": "remove_repeat",
+        "kind": "fan_in"
+      },
+      {
+        "from": "filter_nuclei",
+        "to": "construct_matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "remove_repeat",
+        "to": "call_peaks",
+        "kind": "sequential"
+      },
+      {
+        "from": "call_peaks",
+        "to": "filter_peaks",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_peaks",
+        "to": "construct_matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "construct_matrix",
+        "to": "binarize",
+        "kind": "sequential"
+      },
+      {
+        "from": "binarize",
+        "to": "deviance",
+        "kind": "sequential"
+      },
+      {
+        "from": "deviance",
+        "to": "pca",
+        "kind": "sequential"
+      },
+      {
+        "from": "pca",
+        "to": "knn",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "tsne",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "project",
+        "kind": "branch"
+      },
+      {
+        "from": "knn",
+        "to": "cluster",
+        "kind": "sequential"
+      },
+      {
+        "from": "cluster",
+        "to": "integrate",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "Censored (right-censored) Poisson process per genomic site; overdispersion scored with a variance-gamma distribution."
+  }
+}

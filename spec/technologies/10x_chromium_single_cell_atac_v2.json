@@ -1,0 +1,941 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "10x_chromium_single_cell_atac_v2",
+  "assay": "10x Chromium Single Cell ATAC v2",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "10x_scATAC_foundational_paper.pdf",
+      "title": "Massively parallel single-cell chromatin landscapes of human immune cell development and intratumoral T cell exhaustion",
+      "url": "https://doi.org/10.1038/s41587-019-0206-z",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_single_cell_atac_v2/10x_scATAC_foundational_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "10x_scATAC_foundational_supplement.pdf",
+      "title": "10x droplet scATAC foundational Supplementary Information",
+      "url": "https://doi.org/10.1038/s41587-019-0206-z",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_single_cell_atac_v2/10x_scATAC_foundational_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "10x_scATAC_barcode_table.xlsx",
+      "title": "10x droplet scATAC Supplementary Table 1: 16-bp cell barcodes",
+      "url": "https://doi.org/10.1038/s41587-019-0206-z",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_single_cell_atac_v2/10x_scATAC_barcode_table.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "10xChromium_scATACv2.pdf",
+      "title": "10xChromium_scATACv2.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_single_cell_atac_v2/10xChromium_scATACv2.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "gel_bead_barcoded_oligo",
+      "name": "Chromium Single Cell ATAC Gel Bead Oligo (PN-2000210 / v1 PN-2000132)",
+      "aliases": [],
+      "role": "Single-stranded barcoded oligo released from the dissolved gel bead; primes linear amplification of transposed DNA and appends the P5 adapter and 16 bp 10x barcode to each nucleus's fragments",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Illumina P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 flow-cell adapter (29 bp sequencing adapter)"
+        },
+        {
+          "name": "16 bp 10x Barcode (cell barcode)",
+          "sequence": "[CELL_BARCODE:16]",
+          "role": "16 nt GEM/cell barcode from ~750,000 designed sequences (e.g. GGATAGGGTCATAGCT); read out as the i5 index"
+        },
+        {
+          "name": "Partial Read 1N",
+          "sequence": "TCGTCGGCAGCGTC",
+          "role": "First 14 bp of Read 1N; priming sequence for the linear amplification reaction"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Not chemically modified. Barcode whitelist sequences are listed in Supplementary Table 1."
+    },
+    {
+      "oligo_id": "tn5_adapter_read1n",
+      "name": "Tn5 Transposon Adapter A (Read 1N / mosaic end)",
+      "aliases": [],
+      "role": "Tn5-loaded transposon; during tagmentation the transferred strand is appended to fragment ends, adding the Read 1N sequencing handle and mosaic end",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Read 1N transfer strand",
+          "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+          "role": "5'->3' transferred strand carrying the Read 1N handle plus the 19 nt mosaic end (ME)"
+        },
+        {
+          "name": "Mosaic end complement (5' phosphorylated)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "Non-transferred 5'-phosphorylated ME complement strand of the transposome"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "tn5_adapter_read2n",
+      "name": "Tn5 Transposon Adapter B (Read 2N / mosaic end)",
+      "aliases": [],
+      "role": "Tn5-loaded transposon; transferred strand added to the opposite fragment end, adding the Read 2N sequencing handle and mosaic end",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Read 2N transfer strand",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "5'->3' transferred strand carrying the Read 2N handle plus the 19 nt mosaic end (ME)"
+        },
+        {
+          "name": "Mosaic end complement (5' phosphorylated)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "Non-transferred 5'-phosphorylated ME complement strand of the transposome"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "mosaic_end_complement",
+      "name": "Mosaic End complement (ME-rev)",
+      "aliases": [],
+      "role": "Common 5'-phosphorylated bottom (non-transferred) strand shared by both Tn5 transposon adapters",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "si_pcr_primer_b",
+      "name": "SI-PCR Primer B (P5 forward, PN-2000128)",
+      "aliases": [],
+      "role": "Forward primer of Sample Index PCR; anneals to the P5 end of the barcoded linear amplification product to complete library amplification",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "sample_index_primer_n",
+      "name": "Chromium i7 Sample Index Plate N, Set A (PN-3000427)",
+      "aliases": [],
+      "role": "Reverse primer of Sample Index PCR; anneals to the Read 2N handle and appends the 8 nt i7 sample index and the P7 adapter",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Illumina P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 Sample Index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8 nt sample index; each plate well is a base-balanced mix of 4 distinct sequences"
+        },
+        {
+          "name": "Partial Read 2N",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "Anneals to the Read 2N handle of the linear amplification product"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "read1n_seq_primer",
+      "name": "Read 1N sequencing primer",
+      "aliases": [],
+      "role": "Read 1 sequencing primer that reads the genomic insert; identical to the Tn5 Adapter A transferred strand",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "read2n_seq_primer",
+      "name": "Read 2N sequencing primer",
+      "aliases": [],
+      "role": "Read 2 sequencing primer that reads the genomic insert from the opposite end; identical to the Tn5 Adapter B transferred strand",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    }
+  ],
+  "final_library": {
+    "source_label": "10x Chromium Single Cell ATAC v2 (User Guide CG000496 Appendix; Satpathy et al. 2019, Nat Biotechnol)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTG[CELL_BARCODE:16]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTG[CELL_BARCODE:16]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[CELL_BARCODE:16] = 16 bp 10x cell barcode (read as i5)",
+      "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG = Read 1N adapter (+ mosaic end)",
+      "[CDNA] = accessible genomic insert",
+      "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC = mosaic end complement + Read 2N handle (revcomp of Read 2N)",
+      "[SAMPLE_INDEX:8] = i7 sample index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "10x Chromium Single Cell ATAC v2 (User Guide CG000496 Appendix; Satpathy et al. 2019, Nat Biotechnol)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+        "template": "bottom",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 50
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "i7 index-read primer (Read 2N handle)",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "i5 index-read primer (P5 / Read 1N adjacent)",
+        "template": "top",
+        "cycles": 16,
+        "segments": [
+          {
+            "name": "10x cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 16
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+        "template": "top",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 50
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Bulk transposition (tagmentation)",
+      "summary": "Hyperactive Tn5 loaded with Read 1N and Read 2N mosaic-end adapters fragments accessible chromatin and adds sequencing handles to fragment ends.",
+      "note": "Nuclei are incubated with ATAC Enzyme B (Tn5 transposase) for 60 min at 37 C. The transposase enters intact nuclei and preferentially cuts open (accessible) chromatin, simultaneously adding the Read 1N adapter to one end and the Read 2N adapter to the other end of each fragment.",
+      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT           -3'\n3'-           TCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG -5'"
+    },
+    {
+      "step": 2,
+      "title": "GEM generation & barcoding (linear amplification)",
+      "summary": "Transposed nuclei are partitioned into GEMs with gel beads; the released barcoded gel-bead oligo primes the Read 1N end and 12 cycles of linear amplification add P5 + the 16 bp cell barcode.",
+      "note": "On Chromium Next GEM Chip H, transposed nuclei are combined with barcoded Gel Beads and Master Mix (Barcoding Enzyme). The gel bead dissolves and its oligo (P5 + 16 nt barcode + partial Read 1N) anneals to the Read 1N handle; linear amplification (72 C 5 min, then 12 cycles) copies the fragment, prepending P5 and the GEM barcode to give barcoded single-stranded product.",
+      "product": "|--5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTC------->\n                                                     3'- AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GAGGCTCGGGTGCTCTG -5'\n\nproduct after extension:\n5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'"
+    },
+    {
+      "step": 3,
+      "title": "Post-GEM cleanup",
+      "summary": "GEMs are broken and the barcoded amplification product is purified with Dynabeads MyOne SILANE and SPRIselect beads to remove leftover reagents and unused barcodes.",
+      "note": "No change to the molecule; silane and SPRI bead clean-ups recover the single-stranded barcoded linear amplification product for library construction.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'"
+    },
+    {
+      "step": 4,
+      "title": "Sample Index PCR (library construction)",
+      "summary": "SI-PCR Primer B (P5) and the i7 Sample Index N primer add the 8 bp sample index and P7, producing the final dual-indexed Illumina library.",
+      "note": "SI-PCR Primer B anneals to the P5 end; the Single Index N (Set A) primer anneals to the Read 2N handle and adds the i7 sample index plus P7. PCR (7-9 cycles by nuclei recovery) yields double-stranded, P5/P7-flanked library molecules.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[CELL_BARCODE:16]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1N",
+      "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "template": "bottom",
+      "cycles": 50,
+      "note": "Read 1N primer anneals to the bottom strand at the Read 1N handle/mosaic end and reads 50 bp of the accessible genomic insert; sequence read matches the top strand.",
+      "diagram": "                 5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG--------------->  Read 1N (50 bp)\n5'- ...[BC16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[========insert========]... -3'\n3'- ...[BC16]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[========insert========]... -5'  (bottom = template)"
+    },
+    {
+      "read": "i7 Index",
+      "primer": "i7 index-read primer (anneals to Read 2N handle)",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "Index-1 read: primer anneals to the top-strand Read 2N handle and reads the 8 bp i7 sample index off the bottom strand.",
+      "diagram": "5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC------------->  i7 index primer\n5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[NNNNNNNN]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[NNNNNNNN]TAGAGCATACGGCAGAAGACGAAC -5'  (bottom = template)\n                                         i7 index (8 bp)"
+    },
+    {
+      "read": "i5 Index",
+      "primer": "i5 index-read primer (P5 / Read 1N-adjacent)",
+      "template": "top",
+      "cycles": 16,
+      "note": "Index-2 read: captures the 16 bp 10x cell barcode adjacent to P5; barcode sequences used by Cell Ranger ATAC for cell demultiplexing come from this read.",
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[NNNNNNNNNNNNNNNN]TCGTCGGCAGCGTC... -3'  (top = template)\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[NNNNNNNNNNNNNNNN]AGCAGCCGTCGCAGTC.. -5'\n                  10x cell barcode  <----[NNNNNNNNNNNNNNNN]  i5 read (16 bp)"
+    },
+    {
+      "read": "Read 2N",
+      "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "template": "top",
+      "cycles": 50,
+      "note": "Read 2N primer anneals to the top-strand Read 2N handle/mosaic end and reads 50 bp of the accessible genomic insert from the opposite end; sequence read matches the bottom strand.",
+      "diagram": "5'- ...[========insert========]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC... -3'  (top = template)\n3'- ...[========insert========]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG... -5'\n     Read 2N (50 bp)  <---------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "10x Chromium Single Cell ATAC v2",
+  "description": "Droplet-based single-cell assay for transposase-accessible chromatin (scATAC-seq) on the 10x Chromium platform. Nuclei are transposed in bulk with a hyperactive Tn5 loaded with Read 1N / Read 2N mosaic-end adapters, then partitioned into GEMs where a gel-bead oligo (P5 + 16 nt 10x barcode + partial Read 1N) primes 12 cycles of linear amplification to barcode each nucleus's tagmented fragments. Sample-index PCR adds an i7 index and P7 to build a dual-indexed Illumina library. Paired reads (Read 1N/Read 2N) capture the accessible genomic insert, the i5 read captures the 16 bp cell barcode, and the i7 read captures the 8 bp sample index.",
+  "reference": {
+    "kind": "paper",
+    "label": "Massively parallel single-cell chromatin landscapes of human immune cell development and intratumoral T cell exhaustion",
+    "path": null,
+    "url": "https://doi.org/10.1038/s41587-019-0206-z",
+    "doi": "10.1038/s41587-019-0206-z"
+  },
+  "publication": {
+    "year": 2019,
+    "original_publication": {
+      "title": "Massively parallel single-cell chromatin landscapes of human immune cell development and intratumoral T cell exhaustion",
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/s41587-019-0206-z",
+      "url": "https://doi.org/10.1038/s41587-019-0206-z"
+    },
+    "authors": [
+      {
+        "name": "Ansuman T. Satpathy",
+        "affiliation": "Center for Personal Dynamic Regulomes, Stanford University School of Medicine; Department of Pathology, Stanford University School of Medicine"
+      },
+      {
+        "name": "Jeffrey M. Granja",
+        "affiliation": "Center for Personal Dynamic Regulomes and Department of Genetics, Stanford University School of Medicine"
+      },
+      {
+        "name": "Kathryn E. Yost",
+        "affiliation": "Stanford University School of Medicine"
+      },
+      {
+        "name": "Yanyan Qi",
+        "affiliation": "Stanford University School of Medicine"
+      },
+      {
+        "name": "Francesca Meschi",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Geoffrey P. McDermott",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Brett N. Olsen",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Maxwell R. Mumbach",
+        "affiliation": "Stanford University School of Medicine"
+      },
+      {
+        "name": "Sarah E. Pierce",
+        "affiliation": "Stanford University School of Medicine"
+      },
+      {
+        "name": "M. Ryan Corces",
+        "affiliation": "Stanford University School of Medicine"
+      },
+      {
+        "name": "Preyas Shah",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Jason C. Bell",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Darisha Jhutty",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Corey M. Nemec",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Jean Wang",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Li Wang",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Yifeng Yin",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Paul G. Giresi",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "Anne Lynn S. Chang",
+        "affiliation": "Department of Dermatology, Stanford University School of Medicine, Redwood City, CA"
+      },
+      {
+        "name": "Grace X. Y. Zheng",
+        "corresponding": true,
+        "email": "grace@10xgenomics.com",
+        "affiliation": "10x Genomics, Inc., Pleasanton, CA"
+      },
+      {
+        "name": "William J. Greenleaf",
+        "corresponding": true,
+        "email": "wjg@stanford.edu",
+        "affiliation": "Department of Genetics and Department of Applied Physics, Stanford University; Chan Zuckerberg Biohub"
+      },
+      {
+        "name": "Howard Y. Chang",
+        "corresponding": true,
+        "email": "howchang@stanford.edu",
+        "affiliation": "Center for Personal Dynamic Regulomes and Department of Dermatology, Stanford University; Howard Hughes Medical Institute"
+      }
+    ],
+    "throughput": {
+      "summary": "scATAC-seq profiles of >200,000 single cells (61,806 blood/bone-marrow immune cells + 37,818 BCC tumor cells, plus species-mixing/QC experiments); cost ~$0.40 per cell; ~100,000 GEMs and typically <6,000 nuclei captured per channel (8 channels per chip).",
+      "cells": ">200,000 single cells across all experiments",
+      "rna": "Not applicable (chromatin-accessibility assay; no RNA measured)",
+      "dna": "Mean ~27.8x10^3 unique nuclear fragments/cell (GM12878/A20 cell lines) and ~15.6x10^3/cell (primary blood/bone marrow); ~38-62% of Tn5 insertions within peaks"
+    },
+    "statistical_model": "Latent semantic indexing (TF-IDF term frequency-inverse document frequency followed by SVD) for dimensionality reduction of the binarized cell-by-peak matrix; chromVAR bias-corrected deviations for TF-motif activity; Cicero co-accessibility (Pearson correlation) for gene scores; multiplet rate modeled as a linear function of loaded nuclei.",
+    "other": [
+      {
+        "label": "Transposase",
+        "value": "Hyperactive Tn5 (ATAC Enzyme B); ATAC buffer derived from Omni-ATAC"
+      },
+      {
+        "label": "Instrument / chip",
+        "value": "Chromium Controller or X Series; Next GEM Chip H (v2); original paper used Chromium Chip E (v1)"
+      },
+      {
+        "label": "Software",
+        "value": "Cell Ranger ATAC (v1.0) for demultiplexing, barcode correction (i5), BWA-MEM alignment, and fragment deduplication"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO accession GSE129785"
+      }
+    ]
+  },
+  "modality": "ATAC",
+  "method_type": "droplet",
+  "data_processing": {
+    "summary": "Cell Ranger ATAC (v1.0) demultiplexes reads, corrects the 16 bp cell barcode obtained from the i5 index read against a whitelist (correctable within 2 Hamming distance), trims adapters, aligns fragments with BWA-MEM, and deduplicates PCR duplicates (adjusting +4/-5 for the Tn5 9 bp footprint) to build a fragments file. Downstream, cells are filtered by TSS enrichment and unique fragments, a binarized cell-by-peak matrix is reduced by latent semantic indexing (TF-IDF + SVD) and clustered with Seurat SNN, peaks are called per cluster with MACS2, and TF-motif activity and gene scores are computed with chromVAR and Cicero.",
+    "stages": [
+      {
+        "id": "read_proc",
+        "label": "Read Processing"
+      },
+      {
+        "id": "alignment",
+        "label": "Alignment & Fragments"
+      },
+      {
+        "id": "cell_qc",
+        "label": "Cell QC"
+      },
+      {
+        "id": "feature_matrix",
+        "label": "Feature Matrix"
+      },
+      {
+        "id": "dim_reduction",
+        "label": "Dimensionality Reduction"
+      },
+      {
+        "id": "clustering",
+        "label": "Clustering"
+      },
+      {
+        "id": "peak_calling",
+        "label": "Peak Calling"
+      },
+      {
+        "id": "downstream",
+        "label": "Downstream Analysis"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex reads",
+        "tool": "Cell Ranger ATAC",
+        "stage": "read_proc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "correct_bc",
+        "label": "Correct cell barcodes",
+        "tool": "Cell Ranger ATAC",
+        "stage": "read_proc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim",
+        "label": "Trim adapters",
+        "tool": "cutadapt",
+        "stage": "read_proc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align fragments to genome",
+        "tool": "BWA-MEM",
+        "stage": "alignment",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Deduplicate PCR fragments",
+        "tool": "Cell Ranger ATAC",
+        "stage": "alignment",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cut_sites",
+        "label": "Identify Tn5 cut sites",
+        "tool": "Cell Ranger ATAC",
+        "stage": "alignment",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_frags",
+        "label": "Count unique fragments",
+        "tool": "Cell Ranger ATAC",
+        "stage": "cell_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tss_enrich",
+        "label": "Compute TSS enrichment",
+        "tool": "Cell Ranger ATAC",
+        "stage": "cell_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_cells",
+        "label": "Filter cells by QC",
+        "tool": "Cell Ranger ATAC",
+        "stage": "cell_qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_insertions",
+        "label": "Count Tn5 insertions in windows",
+        "tool": "Cell Ranger ATAC",
+        "stage": "feature_matrix",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "build_matrix",
+        "label": "Assemble cell-by-peak matrix",
+        "tool": "Cell Ranger ATAC",
+        "stage": "feature_matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "binarize",
+        "label": "Binarize peak matrix",
+        "tool": "",
+        "stage": "dim_reduction",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tfidf",
+        "label": "Compute TF-IDF weights",
+        "tool": "",
+        "stage": "dim_reduction",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "svd",
+        "label": "Reduce dimensions with SVD",
+        "tool": "irlba",
+        "stage": "dim_reduction",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "build_snn",
+        "label": "Build SNN graph",
+        "tool": "Seurat",
+        "stage": "clustering",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster_cells",
+        "label": "Cluster cells",
+        "tool": "Seurat",
+        "stage": "clustering",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umap",
+        "label": "Embed cells with UMAP",
+        "tool": "UMAP",
+        "stage": "clustering",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "call_peaks",
+        "label": "Call peaks per cluster",
+        "tool": "MACS2",
+        "stage": "peak_calling",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "union_peaks",
+        "label": "Build union peak set",
+        "tool": "Cell Ranger ATAC",
+        "stage": "peak_calling",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "chromvar",
+        "label": "Compute TF-motif deviations",
+        "tool": "chromVAR",
+        "stage": "downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "cicero",
+        "label": "Score gene co-accessibility",
+        "tool": "Cicero",
+        "stage": "downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "correct_bc",
+        "kind": "branch"
+      },
+      {
+        "from": "demux",
+        "to": "trim",
+        "kind": "branch"
+      },
+      {
+        "from": "trim",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "correct_bc",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "cut_sites",
+        "kind": "sequential"
+      },
+      {
+        "from": "cut_sites",
+        "to": "count_frags",
+        "kind": "branch"
+      },
+      {
+        "from": "cut_sites",
+        "to": "tss_enrich",
+        "kind": "branch"
+      },
+      {
+        "from": "cut_sites",
+        "to": "count_insertions",
+        "kind": "branch"
+      },
+      {
+        "from": "cut_sites",
+        "to": "call_peaks",
+        "kind": "branch"
+      },
+      {
+        "from": "count_frags",
+        "to": "filter_cells",
+        "kind": "sequential"
+      },
+      {
+        "from": "tss_enrich",
+        "to": "filter_cells",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_cells",
+        "to": "build_matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "count_insertions",
+        "to": "build_matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "build_matrix",
+        "to": "binarize",
+        "kind": "sequential"
+      },
+      {
+        "from": "binarize",
+        "to": "tfidf",
+        "kind": "sequential"
+      },
+      {
+        "from": "tfidf",
+        "to": "svd",
+        "kind": "sequential"
+      },
+      {
+        "from": "svd",
+        "to": "build_snn",
+        "kind": "branch"
+      },
+      {
+        "from": "svd",
+        "to": "umap",
+        "kind": "branch"
+      },
+      {
+        "from": "build_snn",
+        "to": "cluster_cells",
+        "kind": "sequential"
+      },
+      {
+        "from": "cluster_cells",
+        "to": "call_peaks",
+        "kind": "sequential"
+      },
+      {
+        "from": "call_peaks",
+        "to": "union_peaks",
+        "kind": "sequential"
+      },
+      {
+        "from": "union_peaks",
+        "to": "chromvar",
+        "kind": "branch"
+      },
+      {
+        "from": "union_peaks",
+        "to": "cicero",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "Latent semantic indexing (TF-IDF followed by SVD) on the binarized cell-by-peak matrix; chromVAR GC-bias-corrected deviations for TF-motif activity; Cicero Pearson co-accessibility for gene scores; multiplet rate modeled as a linear function of loaded nuclei."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "folder": "tang_2009",
+  "title": "Tang single-cell mRNA-Seq (SOLiD)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "tang2009.html",
+    "oligo_seq_recall": 1.0,
+    "oligo_seqs_matched": 9,
+    "oligo_seqs_total": 9,
+    "missed_oligos": [],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT [CDNA] AACTGCCCCGGGTTCCTCATTCTCT -3'",
+    "annotated_library_expected": "CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT[CDNA]CGCCTTGGCCGTACAGCAG[CELL_BARCODE:6]AGAGAATGAGGAACCCGGGGCAG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

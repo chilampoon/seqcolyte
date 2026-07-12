@@ -1,0 +1,24 @@
+{
+  "folder": "bd_rhapsody_wta",
+  "title": "BD Rhapsody WTA",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "BD_Rhapsody.html",
+    "oligo_seq_recall": 0.5,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 12,
+    "missed_oligos": [
+      "Enhanced Bead (introduced in 2022)",
+      "Pre-amp forward primer",
+      "Pre-amp reverse primer",
+      "TruSeq sample index sequencing primer forward",
+      "Universal P5 PCR primer",
+      "V1 Indexed-Bead-oligo"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC | TATAGCCT(i5) | ACACTCTTTCCCTACACGACGCTCTTCCGATCT(Read1) | [CELL_BARCODE:9][CELL_BARCODE:9][CELL_BARCODE:9] | [UMI:8] | TTTTTTTTTTTTTTTTTT(polyT) | [CDNA] | AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC(Read2 handle) | [SAMPLE_INDEX:8](i7) | ATCTCGTATGCCGTCTTCTGCTTG(P7')",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:9]ACTGGCCTGCGA[CELL_BARCODE:9]GGTAGCGGTGACA[CELL_BARCODE:9][UMI:8]TTTTTTTTTTTTTTTTTT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

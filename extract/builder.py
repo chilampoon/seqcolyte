@@ -288,6 +288,57 @@ def _build_source_docs() -> list[dict]:
     return docs
 
 
+# Concise metadata + verified publication (Zheng et al., Nat Commun 2017, DOI 10.1038/ncomms14049).
+# Unverified fields are left null; no authors/emails are fabricated.
+_TENX_TITLE = "10x 3' scRNA-seq (v3)"
+_TENX_DESCRIPTION = (
+    "Droplet-based single-cell 3' gene-expression profiling on Illumina. Cells are partitioned into "
+    "gel-bead emulsions (GEMs); mRNA is barcoded during reverse transcription with a per-cell 16 nt "
+    "barcode + 12 nt UMI, and the amplified cDNA is fragmented and built into a P5/P7-indexed short-read "
+    "library. Profiles the transcriptomes of thousands of single cells per run."
+)
+_TENX_REFERENCE = {
+    "kind": "protocol_doc",
+    "label": "10x Genomics CG000204 (Chromium Next GEM Single Cell 3' v3.1 User Guide)",
+    "path": None,
+    "url": "https://www.10xgenomics.com/support/single-cell-gene-expression",
+    "doi": None,
+}
+_TENX_PUBLICATION = {
+    "year": 2017,
+    "original_publication": {
+        "title": "Massively parallel digital transcriptional profiling of single cells",
+        "journal": "Nature Communications",
+        "doi": "10.1038/ncomms14049",
+        "url": "https://www.nature.com/articles/ncomms14049",
+    },
+    "authors": [
+        {"name": "Grace X. Y. Zheng", "corresponding": False, "email": None, "affiliation": "10x Genomics"},
+        {"name": "Benjamin J. Hindson", "corresponding": True, "email": "ben@10xgenomics.com",
+         "affiliation": "10x Genomics"},
+        {"name": "Jason H. Bielas", "corresponding": True, "email": "jbielas@fredhutch.org",
+         "affiliation": "Fred Hutchinson Cancer Research Center"},
+    ],
+    "throughput": {"summary": "~50% cell capture efficiency; ~8,000-9,000 cells recovered per channel",
+                   "cells": "~8,000-9,000 per channel", "rna": None, "dna": None},
+    "statistical_model": ("Poisson - cells are loaded at limiting dilution following Poisson statistics "
+                          "to minimize multiplets."),
+    "other": [
+        {"label": "Partitioning", "value": "GEMs (gel beads-in-emulsion)"},
+    ],
+}
+_TENX_STEP_SUMMARIES = {
+    1: "Poly(dT) beads capture mRNA in droplets; MMLV reverse-transcribes it into barcoded cDNA.",
+    2: "MMLV's terminal-transferase activity adds a few untemplated C's to the cDNA 3' end.",
+    3: "The TSO base-pairs with the C overhang to prime second-strand synthesis.",
+    4: "cDNA Forward/Reverse primers PCR-amplify the full-length cDNA.",
+    5: "Fragmentase shears the cDNA and A-tails the fragment ends.",
+    6: "A T-overhang TruSeq adapter is ligated onto the A-tailed fragments.",
+    7: "Library PCR primers 1 & 2 add P5/P7 and the i7 sample index.",
+    8: "The final P5/P7-indexed Illumina paired-end library.",
+}
+
+
 def build_spec(html_path: str | Path = DEFAULT_HTML) -> dict:
     """Parse the HTML, cross-check, and assemble the consolidated spec dict."""
     parsed = parse_protocol(html_path)
@@ -298,10 +349,17 @@ def build_spec(html_path: str | Path = DEFAULT_HTML) -> dict:
     idx_len = _token_len(parsed.oligos["library_pcr_primer_2"], "SAMPLE_INDEX")
     r2_cycles = 90  # 10x recommendation; source diagram shows 98; pbmc_1k_v3 data is 91
 
+    lib_gen = [
+        {**s, "summary": _TENX_STEP_SUMMARIES[s["step"]]} if s.get("step") in _TENX_STEP_SUMMARIES else s
+        for s in parsed.library_generation
+    ]
+
     spec = {
         "schema_version": "seqcolyte.spec.v1",
         "spec_id": SPEC_ID,
         "assay": "10x Chromium Single Cell 3' Gene Expression",
+        "title": _TENX_TITLE,
+        "description": _TENX_DESCRIPTION,
         "chemistry_version": "v3/v3.1",
         "platform": "illumina",
         "platform_params": {
@@ -314,10 +372,12 @@ def build_spec(html_path: str | Path = DEFAULT_HTML) -> dict:
             "read_lengths": {"R1": cb_len + umi_len, "R2": r2_cycles, "I1": idx_len},
         },
         "source_docs": _build_source_docs(),
+        "reference": _TENX_REFERENCE,
+        "publication": _TENX_PUBLICATION,
         "oligos": _build_oligos(parsed, cb_len, umi_len, idx_len),
         "final_library": _build_final_library(parsed, cb_len, umi_len, idx_len),
         "read_structure": _build_read_structure(parsed, cb_len, umi_len, idx_len, r2_cycles),
-        "library_generation": parsed.library_generation,
+        "library_generation": lib_gen,
         "whitelists": {
             "cell_barcode_3M_feb2018": {
                 "name": "3M-february-2018",

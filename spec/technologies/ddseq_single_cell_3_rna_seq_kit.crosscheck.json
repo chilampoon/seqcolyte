@@ -1,0 +1,32 @@
+{
+  "folder": "ddseq_single_cell_3_rna_seq_kit",
+  "title": "ddSEQ Single-Cell 3\u2032 RNA-Seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "ddSEQ_3pRNA.html",
+    "oligo_seq_recall": 0.125,
+    "oligo_seqs_matched": 2,
+    "oligo_seqs_total": 16,
+    "missed_oligos": [
+      "Bead-TruSeq Read 1-UMI-CBC-DO-A",
+      "Bead-TruSeq Read 1-UMI-CBC-DO-B",
+      "Bead-TruSeq Read 1-UMI-CBC-poly(T)",
+      "ddSEQ cDNA/DO Index Plate forward primer",
+      "ddSEQ Single-Cell 3' RNA-Seq cDNA Index Plate reverse",
+      "ddSEQ Single-Cell 3' RNA-Seq DO Index Plate reverse",
+      "Illumina Nextera Read 2 primer",
+      "Illumina TruSeq Read 1 primer",
+      "Illumina TruSeq Read 2 primer",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera N7xx primer entry point (s7)",
+      "Nextera Tn5 binding site (19-bp Mosaic End (ME))",
+      "TruSeq i5 index sequencing primer (index2)",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8][READ1_PRIMER_SITE][CELL_BARCODE][UMI](T)n[CDNA][TN5_READ2_HANDLE][SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:7][CELL_BARCODE:2]TATGCATGAC[CELL_BARCODE:7]CAGTCAGTCA[CELL_BARCODE:7]AACGCAGTCAGATTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

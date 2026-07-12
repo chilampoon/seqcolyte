@@ -1,0 +1,765 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "scdnase_seq",
+  "assay": "scDNase-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "supplementary_NIHMS723562-supplement-1.pdf",
+      "title": "Genome-wide detection of DNase I hypersensitive sites in single cells and FFPE tissue samples",
+      "url": "https://doi.org/10.1038/nature15740",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdnase_seq/supplementary_NIHMS723562-supplement-1.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "scDNase-seq.pdf",
+      "title": "scDNase-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdnase_seq/scDNase-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_illumina_truseq_dna_adapter",
+      "name": "Illumina TruSeq DNA Adapter",
+      "aliases": [],
+      "role": "Forked (Y-shaped) double-stranded adapter ligated to end-repaired, dA-tailed DHS fragments; carries the Read 1 and Read 2 primer landing sites",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 1 side strand",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "Top adapter strand; provides the Read 1 primer binding sequence"
+        },
+        {
+          "name": "TruSeq Read 2 side strand",
+          "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCA",
+          "role": "5'-phosphorylated bottom adapter strand; provides the Read 2 primer binding sequence"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Sequences not printed in the paper (states library 'prepared using Illumina kits'); canonical TruSeq forked-adapter sequences supplied. The circular carrier DNA is not compatible with adaptor ligation, which suppresses its later amplification."
+    },
+    {
+      "oligo_id": "oligo_truseq_p5_amplification_primer",
+      "name": "Illumina TruSeq P5 amplification primer",
+      "aliases": [],
+      "role": "Round-1 PCR forward primer (paired with the index primer) that completes the P5/Read1 arm of the library",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "First amplification (6 cycles, 98/67/72 C) done with index primers per Methods."
+    },
+    {
+      "oligo_id": "oligo_truseq_index_pcr_primer_i7",
+      "name": "Illumina TruSeq Index PCR Primer (i7)",
+      "aliases": [],
+      "role": "Round-1 PCR reverse primer that adds the P7 sequence plus the per-cell/per-sample i7 index onto the Read 2 arm",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:6]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell grafting sequence"
+        },
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:6]",
+          "role": "6-nt index identifying the single-cell/sample library"
+        },
+        {
+          "name": "TruSeq Read 2 primer",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "Read 2 primer landing sequence; anneals to the ligated adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Index sequences per single cell/library are not tabulated in the documents; represented as a placeholder. Single indexing (HiSeq 2500, 2015)."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_primer",
+      "name": "Illumina P5 primer",
+      "aliases": [],
+      "role": "Round-2 PCR forward primer used to bulk-amplify (22 cycles) the small DHS fragments after size selection",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_primer",
+      "name": "Illumina P7 primer",
+      "aliases": [],
+      "role": "Round-2 PCR reverse primer used to bulk-amplify (22 cycles) the small DHS fragments after size selection",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_illumina_truseq_read1_primer",
+      "name": "Illumina TruSeq Read 1 primer",
+      "aliases": [],
+      "role": "Sequencing primer for Read 1 (reads one end of the genomic DHS insert)",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_illumina_truseq_read2_primer",
+      "name": "Illumina TruSeq Read 2 primer",
+      "aliases": [],
+      "role": "Sequencing primer for Read 2 (reads the other end of the genomic DHS insert in paired-end runs)",
+      "kind": "single",
+      "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_illumina_index_sequencing_primer",
+      "name": "Illumina Index sequencing primer (i7)",
+      "aliases": [],
+      "role": "Sequencing primer for the i7 index read",
+      "kind": "single",
+      "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    }
+  ],
+  "final_library": {
+    "source_label": "scDNase-seq TruSeq single-index genomic DHS library (reconstructed from Jin & Tang et al., Nature 2015; sequences absent from paper filled from canonical Illumina TruSeq)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "TCTTTCCCTACACGACGCTCTTCCGATCT = Illumina TruSeq Read 1 primer (shares the ACAC overlap with P5)",
+      "[CDNA] = genomic DNase I hypersensitive-site insert (open-chromatin fragment)",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = Illumina TruSeq Read 2 adapter (reverse complement of Read 2 primer)",
+      "[SAMPLE_INDEX:6] = i7 sample index (one index per single-cell library)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "scDNase-seq TruSeq single-index genomic DHS library (reconstructed from Jin & Tang et al., Nature 2015; sequences absent from paper filled from canonical Illumina TruSeq)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq Read 1 primer",
+        "template": "bottom",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "genomic DHS insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Illumina Index sequencing primer (i7)",
+        "template": "top",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina TruSeq Read 2 primer",
+        "template": "top",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "genomic DHS insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "FACS single-cell deposition and lysis",
+      "summary": "A single live cell is sorted into lysis buffer, releasing intact nucleosomal genomic DNA.",
+      "note": "DAPI-stained single live cells are flow-sorted directly into 30 ul cell lysis buffer (10 mM Tris-HCl pH7.5, 10 mM NaCl, 3 mM MgCl2, 0.1% Triton X-100). For FFPE, cells are scraped from the slide, de-paraffinized and lysed instead.",
+      "product": "5'- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -3'\n3'- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -5'\n(genomic DNA packaged in nucleosomes; open regions = DHSs)"
+    },
+    {
+      "step": 2,
+      "title": "DNase I digestion of open chromatin",
+      "summary": "0.2-1 U DNase I preferentially cleaves accessible (hypersensitive) chromatin into short double-stranded fragments.",
+      "note": "Roche DNase I (04716728001), 37 C for 5 min. Cutting is biased to DHSs, generating heterogeneous small dsDNA fragments (<200 bp) from open chromatin.",
+      "product": "5'- XXXXXXXXXXXXXXXX -3'\n3'- XXXXXXXXXXXXXXXX -5'\n(<200 bp DHS-derived fragments with ragged ends)"
+    },
+    {
+      "step": 3,
+      "title": "Stop reaction, add circular carrier DNA, purify",
+      "summary": "Digestion is stopped and ~30 ng of circular plasmid carrier DNA is spiked in before phenol-chloroform/ethanol purification.",
+      "note": "Stop buffer contains SDS/EDTA + proteinase K; 5 ul of 6 ng/ul circular carrier DNA (~3x10^5 fold over single-cell DHS DNA) prevents loss of the <0.1 pg of released DNA. The circular carrier cannot be ligated to adapters, limiting its downstream amplification. For FFPE, crosslinks are reversed at 65 C overnight.",
+      "product": "5'- XXXXXXXXXXXXXXXX -3'      +   (((  circular carrier plasmid  )))\n3'- XXXXXXXXXXXXXXXX -5'          (supercoiled; NOT ligation-competent)"
+    },
+    {
+      "step": 4,
+      "title": "End-repair and dA-tailing",
+      "summary": "Fragment ends are blunted and 3' A-tailed to prepare for T-overhang TruSeq adapter ligation.",
+      "note": "Standard Illumina TruSeq end-repair converts ragged ends to blunt, phosphorylated ends; Klenow exo- adds a single 3' dA overhang.",
+      "product": "5'-  XXXXXXXXXXXXXXXX A -3'\n3'- A XXXXXXXXXXXXXXXX   -5'\n(blunt, 5'-phosphorylated, single 3' dA overhangs)"
+    },
+    {
+      "step": 5,
+      "title": "TruSeq forked-adapter ligation",
+      "summary": "Y-shaped TruSeq adapters are ligated to both ends of each DHS fragment; circular carrier remains unligated.",
+      "note": "The forked adapter creates asymmetric ends carrying the Read 1 and Read 2 primer landing sites, so only ligated fragments become PCR-amplifiable.",
+      "product": "5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT XXXX...XXXX AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -3'\n3'- GAGTGTGCTGCGAGAAGGCTAGA          XXXX...XXXX TCTAGCCTTCTCACACGTGTGCA          -5'\n(forked/Y adapters on both ends; carrier plasmid not ligated)"
+    },
+    {
+      "step": 6,
+      "title": "First PCR with index primers (6 cycles)",
+      "summary": "The P5 amplification primer and the indexed P7 primer add full P5/P7 ends and the sample index, preferentially amplifying the small DHS fragments.",
+      "note": "98 C 10 s / 67 C 30 s / 72 C 30 s x6. Short cycle count plus the non-ligatable carrier minimizes non-specific carrier amplification.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC -5'"
+    },
+    {
+      "step": 7,
+      "title": "Size selection of DHS fragments (160-300 bp)",
+      "summary": "The desired small-insert library molecules (160-300 bp) are isolated on a 2% E-gel, removing carrier and large products.",
+      "note": "Enriches for the short fragments derived from DNase I hypersensitive sites.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC...[CDNA]...ATCTCGTATGCCGTCTTCTGCTTG -3'\n(gel-purified 160-300 bp indexed library molecules)"
+    },
+    {
+      "step": 8,
+      "title": "Second PCR with P5 and P7 primers (22 cycles)",
+      "summary": "Universal short P5 and P7 primers bulk-amplify the size-selected library.",
+      "note": "98 C 10 s / 68 C 30 s / 72 C 30 s x22; primes off the P5/P7 sequences already added in round 1 to generate sequenceable amounts.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC -5'"
+    },
+    {
+      "step": 9,
+      "title": "Final size selection and sequencing",
+      "summary": "Fragments between 160 and 300 bp are re-isolated on E-gel and sequenced on Illumina HiSeq 2500.",
+      "note": "Yields the final sequenceable TruSeq single-index genomic DHS library.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:6]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "Illumina TruSeq Read 1 primer",
+      "template": "bottom",
+      "cycles": 50,
+      "note": "Reads one end of the genomic DHS insert (top-strand sequence). Most single-cell libraries were single-end; some were paired-end (paired reads with insert distance <500 bp were retained). The Read 1 primer is identical to a top-strand segment, so it anneals to the bottom strand and is extended into the insert.",
+      "diagram": "                  Read 1 primer  5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3'\n                  ------------------------------------->  (read = top-strand insert)\n5'- ...GAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[INSERT]AGATCGGAAGAGC... -3'\n3'- ...CTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[INSERT]TCTAGCCTTCTCG... -5'   (template = bottom)"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "Illumina Index sequencing primer (i7)",
+      "template": "bottom",
+      "cycles": 6,
+      "note": "Reads the 6-nt i7 sample index identifying the single-cell/sample library. The index primer is identical to the top-strand Read 2 adapter segment, so it anneals to the bottom strand and is extended rightward into the index.",
+      "diagram": "        i7 index primer  5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3'\n        ------------------------------------->  (read = NNNNNN i7 index)\n5'- ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC NNNNNN ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG NNNNNN TAGAGCATACGGCAGAAGACGAAC -5'   (template = bottom)"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Illumina TruSeq Read 2 primer",
+      "template": "top",
+      "cycles": 50,
+      "note": "In paired-end runs, reads the opposite end of the genomic DHS insert (bottom-strand sequence). The Read 2 primer is the bottom-strand adapter sequence, so it anneals to the top strand and is extended leftward into the insert.",
+      "diagram": "5'- ...[INSERT]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'   (template = top)\n              <-------------------------------------  (read = bottom-strand insert)\n              Read 2 primer  3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\n3'- ...[INSERT]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "scDNase-seq",
+  "description": "scDNase-seq (also called Pico-Seq) is an ultrasensitive DNase I hypersensitive site (DHS) sequencing method that maps genome-wide chromatin accessibility in single cells or in tiny cell pools recovered from FFPE tissue. FACS-sorted single cells are lysed and lightly digested with DNase I, which cuts preferentially at open (hypersensitive) chromatin; because a single cell releases <0.1 pg of DHS DNA, a large excess of circular carrier plasmid DNA (~30 ng) is added before a standard Illumina TruSeq end-repair/adaptor-ligation library prep. A two-step PCR (index primers, then P5/P7 primers) preferentially amplifies the small DHS-derived fragments over the non-ligatable circular carrier. The short reads simply map genomic fragments derived from accessible chromatin; there is no cell barcode or UMI because each single cell is processed one-per-tube and carries one sample index.",
+  "reference": {
+    "kind": "paper",
+    "label": "Genome-wide detection of DNase I hypersensitive sites in single cells and FFPE tissue samples",
+    "path": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4697938/",
+    "doi": "10.1038/nature15740"
+  },
+  "publication": {
+    "year": 2015,
+    "original_publication": {
+      "title": "Genome-wide detection of DNase I hypersensitive sites in single cells and FFPE tissue samples",
+      "journal": "Nature",
+      "doi": "10.1038/nature15740",
+      "url": "https://doi.org/10.1038/nature15740"
+    },
+    "authors": [
+      {
+        "name": "Wenfei Jin",
+        "affiliation": "Systems Biology Center, Division of Intramural Research, National Heart, Lung, and Blood Institute, NIH, Bethesda, Maryland, USA"
+      },
+      {
+        "name": "Qingsong Tang",
+        "affiliation": "Systems Biology Center, Division of Intramural Research, National Heart, Lung, and Blood Institute, NIH, Bethesda, Maryland, USA"
+      },
+      {
+        "name": "Mimi Wan",
+        "affiliation": "Department of Pathology, Yale University School of Medicine, New Haven, Connecticut, USA"
+      },
+      {
+        "name": "Kairong Cui",
+        "affiliation": "Systems Biology Center, Division of Intramural Research, National Heart, Lung, and Blood Institute, NIH, Bethesda, Maryland, USA"
+      },
+      {
+        "name": "Yi Zhang",
+        "affiliation": "Systems Biology Center, NHLBI, NIH; and Institute of Immunology, Third Military Medical University, Chongqing, China"
+      },
+      {
+        "name": "Gang Ren",
+        "affiliation": "Systems Biology Center, NHLBI, NIH; and College of Animal Science and Technology, Northwest A&F University, Yangling, Shaanxi, China"
+      },
+      {
+        "name": "Bing Ni",
+        "affiliation": "Institute of Immunology, Third Military Medical University of the People's Liberation Army, Chongqing, China"
+      },
+      {
+        "name": "Jeffrey Sklar",
+        "affiliation": "Department of Pathology, Yale University School of Medicine, New Haven, Connecticut, USA"
+      },
+      {
+        "name": "Teresa M. Przytycka",
+        "affiliation": "Computational Biology Branch, National Center for Biotechnology Information, National Library of Medicine, NIH, Bethesda, Maryland, USA"
+      },
+      {
+        "name": "Richard Childs",
+        "affiliation": "Hematology Branch, National Heart, Lung, and Blood Institute, NIH, Bethesda, Maryland, USA"
+      },
+      {
+        "name": "David Levens",
+        "affiliation": "Laboratory of Pathology, National Cancer Institute, NIH, Bethesda, Maryland, USA"
+      },
+      {
+        "name": "Keji Zhao",
+        "corresponding": true,
+        "email": "zhaok@nhlbi.nih.gov",
+        "affiliation": "Systems Biology Center, Division of Intramural Research, National Heart, Lung, and Blood Institute, NIH, Bethesda, Maryland 20892, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "Detects genome-wide DHSs from single cells up to ~20 million cells; on average ~317,000 unique reads and ~38,000 DHSs per single cell, with 23-26% of reads falling in DHS regions.",
+      "cells": "Single cell up to ~20 million cells (single, 100, 1,000, 10,000-cell and bulk libraries; also FFPE tumour/normal cell pools)",
+      "dna": "<0.1 pg of DNase I-released DHS DNA per single cell, rescued with ~30 ng circular carrier plasmid DNA (~3x10^5-fold excess)",
+      "rna": ""
+    },
+    "statistical_model": "DHSs called with MACS (Poisson-based peak model); differential (tumour/normal, cell-type-specific) DHSs identified with edgeR (negative binomial); cell-specificity assessed by Wilcoxon signed-rank and Fisher's exact tests; a custom noise/FDR model estimates false-positive DHSs from genome-wide background read density.",
+    "other": [
+      {
+        "label": "GEO accession",
+        "value": "GSE61844"
+      },
+      {
+        "label": "Alternate assay name",
+        "value": "Pico-Seq"
+      },
+      {
+        "label": "Sequencing platform",
+        "value": "Illumina HiSeq 2500"
+      },
+      {
+        "label": "Carrier DNA",
+        "value": "~30 ng circular plasmid DNA per reaction (~3x10^5-fold over single-cell DHS DNA); not ligation-competent, suppressing carrier amplification"
+      },
+      {
+        "label": "Two-step PCR",
+        "value": "6 cycles with index primers, size-select 160-300 bp, then 22 cycles with P5/P7 primers"
+      },
+      {
+        "label": "Single-cell mappability",
+        "value": "~2% (vs ~40% for 1,000-cell libraries) owing to non-specific carrier-DNA amplification"
+      },
+      {
+        "label": "Reference genomes / aligner",
+        "value": "mouse mm9 / human hg18, mapped with Bowtie2"
+      },
+      {
+        "label": "Clinical finding",
+        "value": "Detected a de novo SNV chr18:52417839 G>C near TXNL1 in follicular thyroid carcinoma cells that disrupts a p53 binding motif and correlates with decreased TXNL1 expression"
+      },
+      {
+        "label": "Comparison to scATAC-seq",
+        "value": "scDNase-seq recovers many more DHSs per cell than Tn5-based scATAC-seq, enabling cell-to-cell variation analysis at individual regulatory regions"
+      }
+    ]
+  },
+  "modality": "ATAC",
+  "method_type": "manual/tube",
+  "data_processing": {
+    "summary": "Reads are mapped to mm9/hg18 with Bowtie2 using iterative 5-bp trimming re-alignment, low-quality and redundant reads are removed, and DHS peaks are called with MACS; tag densities are normalized per bin and compared across libraries by Pearson correlation, while differential/cell-specific DHSs, tumour SNVs, super-enhancers and GO enrichment are derived with edgeR, SAMtools, ROSE and GREAT/DAVID/GSEA. A custom genome-wide background-noise model estimates the false-positive (FDR) rate of single-cell DHSs.",
+    "stages": [
+      {
+        "id": "alignment",
+        "label": "Alignment"
+      },
+      {
+        "id": "filtering",
+        "label": "Read filtering"
+      },
+      {
+        "id": "quantification",
+        "label": "Peak calling & quantification"
+      },
+      {
+        "id": "comparison",
+        "label": "Cross-library comparison"
+      },
+      {
+        "id": "differential",
+        "label": "Differential analysis"
+      },
+      {
+        "id": "annotation",
+        "label": "Annotation & enrichment"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "align",
+        "label": "Align reads to genome",
+        "tool": "Bowtie2",
+        "stage": "alignment",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_mapq",
+        "label": "Remove low-MAPQ reads",
+        "tool": "",
+        "stage": "filtering",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Remove redundant reads",
+        "tool": "",
+        "stage": "filtering",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "normalize_bins",
+        "label": "Normalize tag density per bin",
+        "tool": "",
+        "stage": "quantification",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "call_peaks",
+        "label": "Call DHS peaks",
+        "tool": "MACS",
+        "stage": "quantification",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "merge_peaks",
+        "label": "Merge peaks into consensus DHS",
+        "tool": "",
+        "stage": "quantification",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pearson_corr",
+        "label": "Correlate libraries (Pearson)",
+        "tool": "",
+        "stage": "comparison",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "count_reads",
+        "label": "Count reads per DHS",
+        "tool": "",
+        "stage": "comparison",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "estimate_fdr",
+        "label": "Estimate single-cell DHS FDR",
+        "tool": "",
+        "stage": "comparison",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "diff_dhs",
+        "label": "Identify differential DHSs",
+        "tool": "edgeR",
+        "stage": "differential",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "snv_calling",
+        "label": "Call tumour SNVs in DHSs",
+        "tool": "SAMtools",
+        "stage": "annotation",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "super_enhancers",
+        "label": "Call super-enhancers",
+        "tool": "ROSE",
+        "stage": "annotation",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "go_enrichment",
+        "label": "Run GO enrichment",
+        "tool": "GREAT",
+        "stage": "annotation",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "gsea",
+        "label": "Run gene-set enrichment",
+        "tool": "GSEA",
+        "stage": "annotation",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "align",
+        "to": "filter_mapq",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_mapq",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "normalize_bins",
+        "kind": "branch"
+      },
+      {
+        "from": "dedup",
+        "to": "call_peaks",
+        "kind": "branch"
+      },
+      {
+        "from": "dedup",
+        "to": "count_reads",
+        "kind": "fan_in"
+      },
+      {
+        "from": "dedup",
+        "to": "snv_calling",
+        "kind": "fan_in"
+      },
+      {
+        "from": "call_peaks",
+        "to": "merge_peaks",
+        "kind": "fan_in"
+      },
+      {
+        "from": "normalize_bins",
+        "to": "pearson_corr",
+        "kind": "fan_in"
+      },
+      {
+        "from": "merge_peaks",
+        "to": "count_reads",
+        "kind": "branch"
+      },
+      {
+        "from": "merge_peaks",
+        "to": "snv_calling",
+        "kind": "branch"
+      },
+      {
+        "from": "merge_peaks",
+        "to": "super_enhancers",
+        "kind": "branch"
+      },
+      {
+        "from": "count_reads",
+        "to": "estimate_fdr",
+        "kind": "branch"
+      },
+      {
+        "from": "count_reads",
+        "to": "diff_dhs",
+        "kind": "branch"
+      },
+      {
+        "from": "diff_dhs",
+        "to": "go_enrichment",
+        "kind": "branch"
+      },
+      {
+        "from": "diff_dhs",
+        "to": "gsea",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "Poisson-based peak model (MACS) for DHS calling; negative binomial (edgeR) for differential DHSs; custom genome-wide background-noise model for single-cell DHS FDR"
+  }
+}

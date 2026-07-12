@@ -1,0 +1,20 @@
+{
+  "folder": "hydrop_atac",
+  "title": "HyDrop-ATAC",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "HyDrop_ATAC.html",
+    "oligo_seq_recall": 0.889,
+    "oligo_seqs_matched": 16,
+    "oligo_seqs_total": 18,
+    "missed_oligos": [
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera Index 2 sequencing primer (i5)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "CAAGCAGAAGACGGCATACGAGAT-[SAMPLE_INDEX:10]-CTGTCCGCGG-AAGCAGTGGTATCAACGCAGAGTAC-[CELL_BARCODE:10]-CAGCTACTGC-[CELL_BARCODE:10]-CGAGTACCCT-[CELL_BARCODE:10]-GTCTCGTGGGCTCGG-AGATGTGTATAAGAGACAG-[CDNA]-CTGTCTCTTATACACATCT-GACGCTGCCGACGA-[SAMPLE_INDEX:10]-GTGTAGATCTCGGTGGTCGCCGTATCATT",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[UMI:10]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[CELL_BARCODE:10]AGGGTACTCG[CELL_BARCODE:10]GCAGTAGCTG[CELL_BARCODE:10]GTACTCTGCGTTGATACCACTGCTTCCGCGGACAG[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

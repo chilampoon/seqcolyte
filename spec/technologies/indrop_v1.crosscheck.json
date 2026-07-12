@@ -1,0 +1,26 @@
+{
+  "folder": "indrop_v1",
+  "title": "inDrop (v1)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "inDrop.html",
+    "oligo_seq_recall": 0.556,
+    "oligo_seqs_matched": 10,
+    "oligo_seqs_total": 18,
+    "missed_oligos": [
+      "Acrydite-modified primer",
+      "BA19 oligo",
+      "Beads-oligo-dT19V",
+      "FAM-BA19 probe",
+      "Illumina P5 adapter",
+      "Illumina P7 adapter",
+      "Read 2 sequencing primer",
+      "TruSeq Read 1 sequencing primer partial"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- AATGATACGGCGACCACCGAGATCTACAC [P5] TCTTTCCCTACACGACGCTCTTCCGATCT [PE1/Read1] [CELL_BARCODE:8] (bc1) GAGTGATTGCTTGTGACGCCTT [W1] [CELL_BARCODE:8] (bc2) [UMI:6] TTTTTTTTTTTTTTTTTTT [polyT] [CDNA] AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACC [ligated adapter + PE2] GATCTCGTATGCCGTCTTCTGCTTG [P7] -3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:8]GAGTGATTGCTTGTGACGCCTT[CELL_BARCODE:8][UMI:6]TTTTTTTTTTTTTTTTTTV[CDNA]AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

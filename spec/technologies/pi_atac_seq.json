@@ -1,0 +1,889 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "pi_atac_seq",
+  "assay": "Pi-ATAC",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "Pi-ATAC_supplement.pdf",
+      "title": "Pi-ATAC Supplementary Information",
+      "url": "https://doi.org/10.1038/s41467-018-07115-y",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/pi_atac_seq/Pi-ATAC_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "Pi-ATAC-seq.pdf",
+      "title": "Pi-ATAC-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/pi_atac_seq/Pi-ATAC-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_tn5me_a",
+      "name": "Tn5ME-A (Nextera Read 1 transposon oligo)",
+      "aliases": [],
+      "role": "Transposon adapter oligo carrying the Read 1 (s5) sequence plus the 19-bp mosaic end; loaded onto Tn5",
+      "kind": "assembled",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera Read 1 (s5)",
+          "sequence": "TCGTCGGCAGCGTCAG",
+          "role": "Read 1 sequencing primer binding site"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "Tn5 recognition / transposition end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard ATAC-seq/Nextera transposon oligo used per the original ATAC-seq protocol (Buenrostro et al. 2013, ref 37); not printed verbatim in the paper."
+    },
+    {
+      "oligo_id": "oligo_tn5me_b",
+      "name": "Tn5ME-B (Nextera Read 2 transposon oligo)",
+      "aliases": [],
+      "role": "Transposon adapter oligo carrying the Read 2 (s7) sequence plus the 19-bp mosaic end; loaded onto Tn5",
+      "kind": "assembled",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera Read 2 (s7)",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "Read 2 sequencing primer binding site"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "Tn5 recognition / transposition end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard ATAC-seq/Nextera transposon oligo (Buenrostro et al. 2013, ref 37)."
+    },
+    {
+      "oligo_id": "oligo_tn5me_rev",
+      "name": "Tn5MErev (mosaic-end reverse, 5'-phosphorylated)",
+      "aliases": [],
+      "role": "Phosphorylated complementary mosaic-end strand annealed to Tn5ME-A and Tn5ME-B to form the double-stranded transposon end",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Mosaic End reverse",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "complement of the 19-bp mosaic end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Carries a 5' phosphate (/5Phos/). Standard ATAC-seq transposon reverse oligo (ref 37)."
+    },
+    {
+      "oligo_id": "oligo_tn5_transposon_a",
+      "name": "Tn5 transposon A (ds, ME-A/ME-rev)",
+      "aliases": [],
+      "role": "Assembled double-stranded transposon end (A side) loaded onto Tn5",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Tn5ME-A",
+          "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+          "role": "top strand (5_to_3)"
+        },
+        {
+          "name": "Tn5MErev",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "bottom strand, 5'-phosphorylated (5_to_3)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_tn5_transposon_b",
+      "name": "Tn5 transposon B (ds, ME-B/ME-rev)",
+      "aliases": [],
+      "role": "Assembled double-stranded transposon end (B side) loaded onto Tn5",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Tn5ME-B",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "top strand (5_to_3)"
+        },
+        {
+          "name": "Tn5MErev",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "bottom strand, 5'-phosphorylated (5_to_3)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_barcoding_primer_ad1_i5",
+      "name": "Ad1 barcoding-PCR primer (P5 / i5-indexed)",
+      "aliases": [],
+      "role": "Well-specific PCR primer adding P5, the i5 cell/sample index, and the Read 1 adapter; one of the 90 i5 barcodes",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 flow-cell adapter"
+        },
+        {
+          "name": "i5 index (cell barcode)",
+          "sequence": "[I5_INDEX:8]",
+          "role": "well/cell-identifying index"
+        },
+        {
+          "name": "Nextera Read 1 (s5)+ME",
+          "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+          "role": "anneals to the tagmented A end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Per-cell identity comes from the combinatorial i5\u00d7i7 index (96 \u00d7 90 = 8640 combinations). Sequences follow the ATAC-seq barcoding primers of ref 37; barcode sequences not tabulated in the documents."
+    },
+    {
+      "oligo_id": "oligo_barcoding_primer_ad2_i7",
+      "name": "Ad2 barcoding-PCR primer (P7 / i7-indexed)",
+      "aliases": [],
+      "role": "Well-specific PCR primer adding P7, the i7 cell/sample index, and the Read 2 adapter; one of the 96 i7 barcodes",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[I7_INDEX:8]GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 index (cell barcode)",
+          "sequence": "[I7_INDEX:8]",
+          "role": "well/cell-identifying index"
+        },
+        {
+          "name": "Nextera Read 2 (s7)+ME",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "anneals to the tagmented B end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Combinatorial with Ad1; 96 \u00d7 90 adapter combinations index 8640 single cells per experiment."
+    },
+    {
+      "oligo_id": "oligo_nextera_read1_primer",
+      "name": "Nextera Read 1 sequencing primer",
+      "aliases": [],
+      "role": "Read 1 sequencing primer; anneals to the s5/ME region and reads into the accessible-DNA insert",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera Read 1",
+          "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+          "role": "Read 1 primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_nextera_read2_primer",
+      "name": "Nextera Read 2 sequencing primer",
+      "aliases": [],
+      "role": "Read 2 sequencing primer; anneals to the s7/ME region and reads into the insert from the P7 side",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera Read 2",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "Read 2 primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_nextera_i7_index_primer",
+      "name": "Nextera i7 index sequencing primer",
+      "aliases": [],
+      "role": "Index 1 (i7) read primer; reads the i7 cell/sample index",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "i7 index primer",
+          "sequence": "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC",
+          "role": "i7 index read primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "P5 flow-cell grafting sequence (5' end of the library top strand)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "P7 flow-cell grafting sequence (3' end of the library top strand appears as its reverse complement)",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    }
+  ],
+  "final_library": {
+    "source_label": "Pi-ATAC final Illumina library (dual-indexed Nextera/ATAC-seq structure)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTG[I5_INDEX:8]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[I7_INDEX:8]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTG[I5_INDEX:8]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[I7_INDEX:8]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[I5_INDEX:8] = i5 sample index (encodes the sorted well / cell)",
+      "TCGTCGGCAGCGTCAG = Nextera Read 1 primer (s5)",
+      "AGATGTGTATAAGAGACAG = Mosaic End (ME)",
+      "[CDNA] = accessible genomic DNA insert",
+      "CTGTCTCTTATACACATCT = Mosaic End, reverse complement",
+      "CCGAGCCCACGAGAC = Nextera Read 2 adapter (s7)",
+      "[I7_INDEX:8] = i7 sample index (encodes the sorted well / cell)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Pi-ATAC final Illumina library (dual-indexed Nextera/ATAC-seq structure)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Nextera Read 1 primer",
+        "template": "bottom",
+        "cycles": 75,
+        "segments": [
+          {
+            "name": "accessible genomic DNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 75
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Nextera i7 index primer",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 cell/sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "i5 index read primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 cell/sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Nextera Read 2 primer",
+        "template": "top",
+        "cycles": 75,
+        "segments": [
+          {
+            "name": "accessible genomic DNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 75
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Fixation, permeabilization & antibody staining",
+      "summary": "Cells or nuclei are PFA-fixed, permeabilized, and stained with antibodies against surface/intracellular protein epitopes.",
+      "note": "1% formaldehyde fixation (quenched with glycine) preserves protein epitopes and chromatin; permeabilization with mild detergent (e.g. NP-40/Igepal) allows intracellular and intranuclear antibody staining (e.g. EpCAM, CD45, HIF1a, GATA2, phospho-NF-kB). Chromatin still carries no adapters at this point.",
+      "product": "5'- ==============  accessible / closed chromatin  ============== -3'\n3'- ==============  accessible / closed chromatin  ============== -5'\n         (fixed, permeabilized, antibody-stained; no adapters yet)"
+    },
+    {
+      "step": 2,
+      "title": "Bulk Tn5 tagmentation of accessible chromatin",
+      "summary": "Tn5 loaded with Nextera mosaic-end adapters inserts Read 1/Read 2 adapters into accessible DNA and is stopped with EDTA (no purification).",
+      "note": "Hyperactive Tn5 carrying Tn5ME-A/ME-rev and Tn5ME-B/ME-rev cuts open chromatin and appends adapters, leaving a characteristic 9-bp gap on each strand. The reaction is quenched with 40 mM EDTA; no clean-up is performed so that the sample can be sorted directly.",
+      "product": "     5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG                                            \n                          3'- TCTACACATATTCTCTGTC/5Phos/                              \n                                        [ accessible genomic DNA ]                    \n                                                    /5Phos/CTGTCTCTTATACACATCTGAGGGCGTCTCTG -3'\n                                                            GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG -5'\n         (A-adapter on one end, B-adapter on the other; 9-bp gaps left by Tn5)"
+    },
+    {
+      "step": 3,
+      "title": "Index-FACS single-cell sorting + reverse crosslinking",
+      "summary": "Single cells are index-sorted into wells prefilled with reverse-crosslink buffer, recording each cell's antibody fluorescence, then de-crosslinked.",
+      "note": "The FACS AriaII sorts one cell per well of a 96- or 384-well plate; the per-cell protein-epitope fluorescence intensities are stored (index sorting) and mapped to the well. Reverse crosslinking (65 \u00b0C overnight, proteinase K, then 80 \u00b0C inactivation) uses a Taq-compatible buffer so PCR can proceed directly on the same well.",
+      "product": "  per well (one cell):\n  5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[ genomic DNA ]CTGTCTCTTATACACATCT... -3'\n  3'- ...TCTACACATATTCTCTGTC[ genomic DNA ]GAGCTCGGGTGCTCTG... GTCTCGTGGGCTCGGAG -5'\n  (tagmented fragment + recorded protein index; 9-bp gaps to be filled by PCR polymerase)"
+    },
+    {
+      "step": 4,
+      "title": "Well-specific combinatorial barcoding PCR",
+      "summary": "Each well is amplified with a unique i5 (Ad1) \u00d7 i7 (Ad2) primer pair, gap-filling the tagmented ends and building the full P5/index/Read/P7 library.",
+      "note": "72 \u00b0C extension first fills the 9-bp gaps; 20 cycles of PCR with the well's Ad1(i5)/Ad2(i7) primer combination add P5, the i5 index, the Read 1 adapter (5' side) and the Read 2 adapter, i7 index, P7 (3' side). The i5\u00d7i7 combination uniquely encodes the well/cell. Wells are pooled, size-selected (>150 bp), and purified.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[I5_INDEX:8]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[I7_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (accessible DNA insert)",
+      "primer": "Nextera Read 1 primer (TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG)",
+      "template": "bottom",
+      "cycles": 75,
+      "note": "First end of the 75x2 paired-end run on Illumina HiSeq 4000. The Read 1 primer (identical to the s5+ME top-strand segment) anneals to the bottom strand and reads rightward into the accessible genomic-DNA insert.",
+      "diagram": "                 Read 1 primer\n                 5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------------->  (reads insert)\n5'-...GAGATCTACAC[i5]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGXXXXXXXXXXXXX...-3'\n3'-...CTCTAGATGTG[i5]AGCAGCCGTCGCAGTCTACACATATTCTCTGTCXXXXXXXXXXXXX...-5'\n                                                     (bottom strand = template)"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "Nextera i7 index primer (CTGTCTCTTATACACATCTCCGAGCCCACGAGAC)",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "Reads the 8-bp i7 index. Primer (ME-rc + s7-rc, identical to the top strand) anneals to the bottom strand and reads rightward across the i7; together with i5 it encodes the sorted well/cell.",
+      "diagram": "                                    Index 1 (i7) primer\n                                    5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC------->  (reads i7)\n5'-...XXXXXXXCTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG-3'\n3'-...XXXXXXXGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]TAGAGCATACGGCAGAAGACGAAC-5'\n                                               (bottom strand = template)"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "i5 index read primer (P5/Read 1-proximal, HiSeq 4000)",
+      "template": "top",
+      "cycles": 8,
+      "note": "On HiSeq 4000 the i5 index is read after paired-end resynthesis: the primer anneals just 3' of the i5 and reads leftward (toward P5) using the top strand as template. With i7 it encodes the sorted well/cell.",
+      "diagram": "5'-AATGATACGGCGACCACCGAGATCTACAC[i5]TCGTCGGCAGCGTCAG...-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG[i5]AGCAGCCGTCGCAGTC...-5'\n                             <------- i5 index primer (top strand = template)\n                                 (reads the 8-bp i5)"
+    },
+    {
+      "read": "Read 2 (accessible DNA insert)",
+      "primer": "Nextera Read 2 primer (GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG)",
+      "template": "top",
+      "cycles": 75,
+      "note": "Second end of the 75x2 paired-end run. The Read 2 primer anneals to the top strand at the s7+ME (ME-rc/s7-rc) region and reads leftward into the insert from the P7 side.",
+      "diagram": "     Read 2 primer\n     3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n     <-----------(reads insert)\n5'-...XXXXXXXXXXXXXCTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]...-3'\n3'-...XXXXXXXXXXXXXGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]...-5'\n   (top strand = template)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "Pi-ATAC",
+  "description": "Pi-ATAC (Protein-indexed Assay of Transposase Accessible Chromatin with sequencing) jointly profiles single-cell chromatin accessibility and protein-epitope abundance from the same cell. Cells or nuclei are fixed, permeabilized, antibody-stained, and tagmented in bulk with Tn5 loaded with Nextera mosaic-end adapters; single cells are then index-sorted by FACS into wells (recording per-cell antibody fluorescence) and reverse-crosslinked, and each well is amplified with a unique combinatorial i5\u00d7i7 barcoding-PCR primer pair that also builds the Illumina library. The paired-end reads capture accessible genomic DNA fragments, while the i5/i7 index combination encodes the well (and thus the cell) whose FACS protein levels are known.",
+  "reference": {
+    "kind": "paper",
+    "label": "Pi-ATAC Supplementary Information",
+    "path": null,
+    "url": "https://doi.org/10.1038/s41467-018-07115-y",
+    "doi": "10.1038/s41467-018-07115-y"
+  },
+  "publication": {
+    "year": 2018,
+    "original_publication": {
+      "title": "Joint single-cell DNA accessibility and protein epitope profiling reveals environmental regulation of epigenomic heterogeneity",
+      "journal": "Nature Communications",
+      "doi": "10.1038/s41467-018-07115-y",
+      "url": "https://doi.org/10.1038/s41467-018-07115-y"
+    },
+    "authors": [
+      {
+        "name": "Xingqi Chen",
+        "affiliation": "Center for Personal Dynamic Regulomes, Stanford University, Stanford, CA 94305, USA; present address: Department of Cell and Molecular Biology, Karolinska Institutet, 17177 Solna, Sweden"
+      },
+      {
+        "name": "Ulrike M. Litzenburger",
+        "corresponding": true,
+        "email": "litzenbu@stanford.edu",
+        "affiliation": "Center for Personal Dynamic Regulomes, Stanford University, Stanford, CA 94305, USA"
+      },
+      {
+        "name": "Yuning Wei",
+        "affiliation": "Center for Personal Dynamic Regulomes, Stanford University, Stanford, CA 94305, USA"
+      },
+      {
+        "name": "Alicia N. Schep",
+        "affiliation": "Center for Personal Dynamic Regulomes; Dept of Genetics; Department of Applied Physics, Stanford University, Stanford, CA 94305, USA"
+      },
+      {
+        "name": "Edward L. LaGory",
+        "affiliation": "Division of Radiation and Cancer Biology, Department of Radiation Oncology, Stanford University, Stanford, CA 94305, USA"
+      },
+      {
+        "name": "Hani Choudhry",
+        "affiliation": "Department of Biochemistry, Cancer Metabolism and Epigenetic Unit, Faculty of Science, King Fahd Center for Medical Research, King Abdulaziz University, Jeddah 22252, Saudi Arabia"
+      },
+      {
+        "name": "Amato J. Giaccia",
+        "affiliation": "Division of Radiation and Cancer Biology, Department of Radiation Oncology, Stanford University, Stanford, CA 94305, USA"
+      },
+      {
+        "name": "William J. Greenleaf",
+        "affiliation": "Center for Personal Dynamic Regulomes; Dept of Genetics; Department of Applied Physics, Stanford University, Stanford, CA 94305, USA"
+      },
+      {
+        "name": "Howard Y. Chang",
+        "corresponding": true,
+        "email": "howchang@stanford.edu",
+        "affiliation": "Center for Personal Dynamic Regulomes; Howard Hughes Medical Institute, Stanford University, Stanford, CA 94305, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "Sorting into 384-well plates with 96 \u00d7 90 adapter combinations indexes 8640 single cells in one experiment; ~1000 single cells sequenced per HiSeq 4000 lane at ~0.3 million reads per cell; cost ~$0.15-$1.50 per cell.",
+      "cells": "Up to 8640 single cells per experiment (96 \u00d7 90 i7 \u00d7 i5 adapter combinations)",
+      "rna": "",
+      "dna": "~0.3 million reads per cell; single-cell libraries filtered at >=500 nuclear fragments"
+    },
+    "statistical_model": "Single-cell accessibility summarized as ChromVAR bias-corrected TF-motif deviations (accessibility deviation vs. GC/accessibility-matched background peak sets, normalized to a z-score); reproducibility/correlations assessed by Pearson correlation, and group comparisons by Wilcoxon and chi-squared tests.",
+    "other": [
+      {
+        "label": "Data availability",
+        "value": "NCBI GEO accession GSE112091"
+      },
+      {
+        "label": "Protocol",
+        "value": "Step-by-step protocol deposited on protocols.io; library prep follows the original ATAC-seq protocol (Buenrostro et al. 2013)"
+      }
+    ]
+  },
+  "modality": "ATAC + protein",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Paired-end ATAC fragments are adapter/transposase-trimmed, aligned to hg19/mm9 with Bowtie2, deduplicated and mitochondria-filtered, then peak-called with MACS2; per-cell libraries passing fragment/FRiP filters are summarized as ChromVAR bias-corrected TF-motif accessibility deviations and integrated with the per-cell FACS protein-index values.",
+    "stages": [
+      {
+        "id": "preprocess",
+        "label": "Preprocessing & Alignment"
+      },
+      {
+        "id": "peaks",
+        "label": "Peak Calling"
+      },
+      {
+        "id": "cellqc",
+        "label": "Cell QC"
+      },
+      {
+        "id": "tfmotif",
+        "label": "TF Motif Accessibility"
+      },
+      {
+        "id": "integrate",
+        "label": "Clustering & Integration"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "trim",
+        "label": "Trim adapter and Tn5 ends",
+        "tool": "custom script",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads to genome",
+        "tool": "Bowtie2",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "qfilter",
+        "label": "Filter Q30 proper pairs",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Remove PCR duplicates",
+        "tool": "Picard",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "mito",
+        "label": "Remove mitochondrial reads",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "callpeaks",
+        "label": "Call peaks and summits",
+        "tool": "MACS2",
+        "stage": "peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "blacklist",
+        "label": "Filter NumtS and blacklist",
+        "tool": "bedtools",
+        "stage": "peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "normalize",
+        "label": "Normalize bulk peak counts",
+        "tool": "DESeq2",
+        "stage": "peaks",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "cellfilter",
+        "label": "Filter cells by fragments/FRiP",
+        "tool": "",
+        "stage": "cellqc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "motifmatch",
+        "label": "Match TF motifs to peaks",
+        "tool": "motifmatchr",
+        "stage": "tfmotif",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "chromvar",
+        "label": "Compute motif accessibility deviations",
+        "tool": "ChromVAR",
+        "stage": "tfmotif",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "hierclust",
+        "label": "Cluster cells hierarchically",
+        "tool": "pheatmap",
+        "stage": "integrate",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "tsne",
+        "label": "Embed cells with t-SNE",
+        "tool": "Rtsne",
+        "stage": "integrate",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "facs",
+        "label": "Integrate FACS protein index",
+        "tool": "",
+        "stage": "integrate",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "trim",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "qfilter",
+        "kind": "sequential"
+      },
+      {
+        "from": "qfilter",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "mito",
+        "kind": "sequential"
+      },
+      {
+        "from": "mito",
+        "to": "callpeaks",
+        "kind": "fan_in"
+      },
+      {
+        "from": "mito",
+        "to": "cellfilter",
+        "kind": "branch"
+      },
+      {
+        "from": "callpeaks",
+        "to": "blacklist",
+        "kind": "sequential"
+      },
+      {
+        "from": "blacklist",
+        "to": "normalize",
+        "kind": "branch"
+      },
+      {
+        "from": "blacklist",
+        "to": "cellfilter",
+        "kind": "branch"
+      },
+      {
+        "from": "blacklist",
+        "to": "motifmatch",
+        "kind": "branch"
+      },
+      {
+        "from": "cellfilter",
+        "to": "chromvar",
+        "kind": "fan_in"
+      },
+      {
+        "from": "motifmatch",
+        "to": "chromvar",
+        "kind": "sequential"
+      },
+      {
+        "from": "chromvar",
+        "to": "hierclust",
+        "kind": "branch"
+      },
+      {
+        "from": "chromvar",
+        "to": "tsne",
+        "kind": "branch"
+      },
+      {
+        "from": "chromvar",
+        "to": "facs",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "ChromVAR bias-corrected TF motif-accessibility deviations (z-scores vs GC-/accessibility-matched background peak sets); Pearson correlation, Wilcoxon and chi-squared tests for group comparisons; DESeq2 normalization for bulk peak counts"
+  }
+}

@@ -1,0 +1,1038 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "drop_seq",
+  "assay": "Drop-seq",
+  "chemistry_version": "unspecified",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "Drop-seq_author_protocol_v1.1.pdf",
+      "title": "Drop-seq Laboratory Protocol v1.1",
+      "url": "https://doi.org/10.17504/protocols.io.mkbc4sn",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/drop_seq/Drop-seq_author_protocol_v1.1.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "drop-seq_supp.pdf",
+      "title": "drop-seq_supp.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/drop_seq/drop-seq_supp.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "drop-seq_paper.pdf",
+      "title": "drop-seq_paper.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/drop_seq/drop-seq_paper.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_barcoded_bead_seqb",
+      "name": "Barcoded Bead SeqB (bead capture oligo)",
+      "aliases": [],
+      "role": "Bead-tethered capture/RT primer: SMART PCR handle + cell barcode + UMI + oligo-dT (recommended go-forward bead; used in retina replicates 4-7)",
+      "kind": "assembled",
+      "sequence": "TTTTTTTAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Bead-Linker",
+          "sequence": "",
+          "role": "18-carbon PEG flexible-chain linker tethering the oligo to the Toyopearl bead (sequence not specified)"
+        },
+        {
+          "name": "T-spacer",
+          "sequence": "TTTTTTT",
+          "role": "spacer"
+        },
+        {
+          "name": "SMART PCR handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "constant PCR/sequencing handle (SeqB variant, ends ...GAGTAC)"
+        },
+        {
+          "name": "Cell barcode",
+          "sequence": "[CELL_BARCODE:12]",
+          "role": "12-bp split-and-pool cell barcode (JJJJJJJJJJJJ; 4^12 = 16,777,216 sequences)"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:8]",
+          "role": "8-bp unique molecular identifier (NNNNNNNN; 4^8 = 65,536)"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "30-nt oligo-dT mRNA capture / RT priming"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6. 5'-Bead-Linker-TTTTTTTAAGCAGTGGTATCAACGCAGAGTAC JJJJJJJJJJJJ NNNNNNNN T(30)-3'. Prime Read 1 with Read1CustomSeqB. >10^8 primers per bead."
+    },
+    {
+      "oligo_id": "oligo_barcoded_bead_seqa",
+      "name": "Barcoded Bead SeqA (bead capture oligo)",
+      "aliases": [],
+      "role": "Bead-tethered capture/RT primer variant with a longer handle (...GAGTACGT); used in the human-mouse experiments and retina replicates 1-3",
+      "kind": "assembled",
+      "sequence": "TTTTTTTAAGCAGTGGTATCAACGCAGAGTACGT[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Bead-Linker",
+          "sequence": "",
+          "role": "18-carbon PEG flexible-chain linker (sequence not specified)"
+        },
+        {
+          "name": "T-spacer",
+          "sequence": "TTTTTTT",
+          "role": "spacer"
+        },
+        {
+          "name": "SMART PCR handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTACGT",
+          "role": "constant PCR/sequencing handle (SeqA variant, ends ...GAGTACGT)"
+        },
+        {
+          "name": "Cell barcode",
+          "sequence": "[CELL_BARCODE:12]",
+          "role": "12-bp split-and-pool cell barcode (JJJJJJJJJJJJ)"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:8]",
+          "role": "8-bp UMI (NNNNNNNN)"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "30-nt oligo-dT"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6. 5'-Bead-Linker-TTTTTTTAAGCAGTGGTATCAACGCAGAGTACGT JJJJJJJJJJJJ NNNNNNNN T(30)-3'. Prime Read 1 with Read1CustomSeqA."
+    },
+    {
+      "oligo_id": "oligo_template_switch_oligo",
+      "name": "Template_Switch_Oligo (TSO)",
+      "aliases": [],
+      "role": "Template-switching oligo; its 3\u2032 riboG triplet pairs the untemplated C's added by Maxima H- RT, appending the SMART handle to the cDNA 3\u2032 end",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTGAATGGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SMART handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+          "role": "constant handle"
+        },
+        {
+          "name": "Spacer",
+          "sequence": "GAAT",
+          "role": "spacer"
+        },
+        {
+          "name": "Riboguanosines",
+          "sequence": "GGG",
+          "role": "3\u2032 rGrGrG that base-pairs with cDNA 3\u2032 dC overhang"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6: AAGCAGTGGTATCAACGCAGAGTGAAT rGrGrG (folded rGrGrG -> GGG). Used at 2.5 \u00b5M (supp) / 50 \u00b5M stock (protocol) in RT."
+    },
+    {
+      "oligo_id": "oligo_tso_pcr_smart_primer",
+      "name": "TSO_PCR / SMART PCR Primer (Template_Switch_PCR primer)",
+      "aliases": [],
+      "role": "Whole-transcriptome cDNA amplification primer; anneals to the SMART handle present on both cDNA ends after template switching",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SMART handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+          "role": "PCR primer / handle"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6 TSO_PCR. Called 'SMART PCR PRIMER' (100 \u00b5M) in the protocol; 0.8 \u00b5M in supp."
+    },
+    {
+      "oligo_id": "oligo_p5_tso_hybrid",
+      "name": "P5-TSO_Hybrid (New-P5-SMART PCR hybrid oligo)",
+      "aliases": [],
+      "role": "Library-PCR forward primer after tagmentation; appends the Illumina P5 adapter to the SMART/3\u2032-cDNA end",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 adapter"
+        },
+        {
+          "name": "Bridge",
+          "sequence": "GCCTGTCCGCGG",
+          "role": "linker/bridge sequence"
+        },
+        {
+          "name": "SMART handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "anneals to bead SMART handle; ends with phosphorothioate *A*C"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6 P5-TSO_Hybrid: AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGT*A*C (3\u2032 *A*C = phosphorothioate). Used at 200 nM in Nextera PCR."
+    },
+    {
+      "oligo_id": "oligo_nextera_n701",
+      "name": "Nextera_N701 (N70X i7 library primer)",
+      "aliases": [],
+      "role": "Library-PCR reverse primer after tagmentation; appends the i7 sample index + Illumina P7 adapter to the Nextera (Tn5) end",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTCGCCTTAGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 adapter"
+        },
+        {
+          "name": "i7 sample index (N701)",
+          "sequence": "TCGCCTTA",
+          "role": "8-bp i7 sample index"
+        },
+        {
+          "name": "Nextera Read 2 handle (s7)",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "anneals to Nextera mosaic-end/s7 region installed by tagmentation"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6. Condition-1 index in species-contamination experiment. Used at 200 nM in Nextera PCR."
+    },
+    {
+      "oligo_id": "oligo_nextera_n702",
+      "name": "Nextera_N702 (i7 library primer)",
+      "aliases": [],
+      "role": "Alternate i7-indexed library-PCR reverse primer (species-contamination condition 2)",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCTAGTACGGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 adapter"
+        },
+        {
+          "name": "i7 sample index (N702)",
+          "sequence": "CTAGTACG",
+          "role": "8-bp i7 sample index"
+        },
+        {
+          "name": "Nextera Read 2 handle (s7)",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "s7 region"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6."
+    },
+    {
+      "oligo_id": "oligo_nextera_n703",
+      "name": "Nextera_N703 (i7 library primer)",
+      "aliases": [],
+      "role": "Alternate i7-indexed library-PCR reverse primer (species-contamination condition 3)",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTTCTGCCTGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 adapter"
+        },
+        {
+          "name": "i7 sample index (N703)",
+          "sequence": "TTCTGCCT",
+          "role": "8-bp i7 sample index"
+        },
+        {
+          "name": "Nextera Read 2 handle (s7)",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "s7 region"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6."
+    },
+    {
+      "oligo_id": "oligo_read1_custom_seq_a",
+      "name": "Read1CustomSeqA (custom Read 1 sequencing primer)",
+      "aliases": [],
+      "role": "Custom Read 1 sequencing primer for libraries made with Barcoded Bead SeqA; primes the cell barcode + UMI read",
+      "kind": "single",
+      "sequence": "GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTACGT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Read1CustomSeqA",
+          "sequence": "GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTACGT",
+          "role": "custom Read 1 primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6. Loaded at 0.3 \u00b5M for Read 1 priming on NextSeq/MiSeq."
+    },
+    {
+      "oligo_id": "oligo_read1_custom_seq_b",
+      "name": "Read1CustomSeqB (custom Read 1 sequencing primer)",
+      "aliases": [],
+      "role": "Custom Read 1 sequencing primer for libraries made with Barcoded Bead SeqB; primes the cell barcode + UMI read",
+      "kind": "single",
+      "sequence": "GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Read1CustomSeqB",
+          "sequence": "GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "custom Read 1 primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6."
+    },
+    {
+      "oligo_id": "oligo_p7_tso_hybrid",
+      "name": "P7-TSO_Hybrid",
+      "aliases": [],
+      "role": "P7-side hybrid PCR primer used in the bead-primer RT validation (soluble-RNA) experiment to amplify off the SMART handle",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCGTGATCGGTCTCGGCGGAAGCAGTGGTATCAACGCAGAGTAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 adapter"
+        },
+        {
+          "name": "Index/bridge",
+          "sequence": "CGTGATCGGTCTCGGCGG",
+          "role": "index + bridge region"
+        },
+        {
+          "name": "SMART handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "anneals to SMART handle; 3\u2032 *A*C phosphorothioate"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6: CAAGCAGAAGACGGCATACGAGATCGTGATCGGTCTCGGCGGAAGCAGTGGTATCAACGCAGAGT*A*C. Used at 400 nM with TruSeq_F."
+    },
+    {
+      "oligo_id": "oligo_truseq_f",
+      "name": "TruSeq_F (standard Illumina TruSeq primer)",
+      "aliases": [],
+      "role": "P5/TruSeq Read 1 primer used in the soluble-RNA validation PCR and to prime Read 1 for the synRNA molecular-barcode read",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 adapter"
+        },
+        {
+          "name": "TruSeq Read 1",
+          "sequence": "TCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "TruSeq Read 1 sequence"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6: ...CCGATC*T (3\u2032 phosphorothioate T)."
+    },
+    {
+      "oligo_id": "oligo_cust_syn_rna_seq",
+      "name": "CustSynRNASeq",
+      "aliases": [],
+      "role": "Custom Read 2 sequencing primer used in the synRNA bead-barcode-homogeneity experiment to read the 12-bp cell barcode + 8-bp UMI",
+      "kind": "single",
+      "sequence": "CGGTCTCGGCGGAAGCAGTGGTATCAACGCAGAGTAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "CustSynRNASeq",
+          "sequence": "CGGTCTCGGCGGAAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "custom sequencing primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6."
+    },
+    {
+      "oligo_id": "oligo_umi_smart_dt",
+      "name": "UMI_SMARTdT",
+      "aliases": [],
+      "role": "In-solution RT primer (SMART handle + 9-nt UMI + oligo-dT) for the standard in-solution template-switch amplification comparison",
+      "kind": "assembled",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTAC[UMI:9]TTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SMART handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "constant handle"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:9]",
+          "role": "9-nt UMI (NNNNNNNNN)"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "24-nt oligo-dT RT priming"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6: AAGCAGTGGTATCAACGCAGAGTAC NNNNNNNNN T(24)."
+    },
+    {
+      "oligo_id": "oligo_synrna",
+      "name": "synRNA (polyadenylated synthetic RNA spike-in)",
+      "aliases": [],
+      "role": "Polyadenylated synthetic RNA carrying a 20-nt molecular barcode; used to quantify bead primer sites and validate barcode readout",
+      "kind": "assembled",
+      "sequence": "CCUACACGACGCUCUUCCGAUCU[UMI:20]BAAAAAAAAAAAAAAAAAAAAAAAA",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq-derived RNA handle",
+          "sequence": "CCUACACGACGCUCUUCCGAUCU",
+          "role": "RNA sequence homologous to TruSeq Read 1 region (ribo)"
+        },
+        {
+          "name": "Molecular barcode",
+          "sequence": "[UMI:20]",
+          "role": "20-nt degenerate molecular barcode (rN x20)"
+        },
+        {
+          "name": "Anchor + poly(A)",
+          "sequence": "BAAAAAAAAAAAAAAAAAAAAAAAA",
+          "role": "rB anchor + poly(A) tail (24 A)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S6, given as ribonucleotides (folded rX -> X; RNA U retained). Read 1 (TruSeq primer) reads the 20-bp molecular barcode."
+    }
+  ],
+  "final_library": {
+    "source_label": "Drop-seq final Illumina library (Barcoded Bead SeqB chemistry; P5-TSO_Hybrid + Nextera N701)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTGCGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CELL_BARCODE:12]'[UMI:8]'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[CDNA]'GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]'TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTGCGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CELL_BARCODE:12]'[UMI:8]'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[CDNA]'GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[SAMPLE_INDEX:8]'TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "GCCTGTCCGCGG = SMART/P5 hybrid bridge",
+      "AAGCAGTGGTATCAACGCAGAGTAC = SMART PCR handle (Read 1 primer region)",
+      "[CELL_BARCODE:12] = 12-bp cell barcode",
+      "[UMI:8] = 8-bp UMI",
+      "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT = poly(dT) (30 nt)",
+      "[CDNA] = cDNA insert",
+      "CTGTCTCTTATACACATCT = Nextera Read 2 mosaic end (revcomp of ME)",
+      "CCGAGCCCACGAGAC = Nextera Read 2 handle (s7)",
+      "[SAMPLE_INDEX:8] = i7 sample index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Drop-seq final Illumina library (Barcoded Bead SeqB chemistry; P5-TSO_Hybrid + Nextera N701)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Read1CustomSeqB / Read1CustomSeqA (custom)",
+        "template": "bottom",
+        "cycles": 20,
+        "segments": [
+          {
+            "name": "Cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 12
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Illumina i7 index primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Nextera Read 2 primer",
+        "template": "top",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "mRNA capture on barcoded bead (droplet co-encapsulation + lysis)",
+      "summary": "A lysed cell's polyadenylated mRNA hybridizes by its poly(A) tail to the 30-nt oligo-dT of a co-encapsulated barcoded bead.",
+      "note": "The co-flow device pairs one cell with one bead in a ~1 nL droplet; lysis buffer (Ficoll/Sarkosyl/Tris/EDTA/DTT) releases mRNA that anneals to the bead-tethered oligo-dT.",
+      "product": "|--5'- ...AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT----->\n                                                                         3'- AAAAA......[mRNA] -5'"
+    },
+    {
+      "step": 2,
+      "title": "Reverse transcription with template switching (STAMP formation)",
+      "summary": "Maxima H- RT extends the bead primer into first-strand cDNA and adds untemplated dC's at the 3\u2032 end.",
+      "note": "Reverse transcription copies the mRNA into cDNA covalently attached to the bead (a STAMP); the terminal-transferase activity of Maxima H- appends 2-3 dC's to the cDNA 3\u2032 end.",
+      "product": "|--5'- ...AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CCC----->\n                                                              3'- ...........[mRNA template] -5'"
+    },
+    {
+      "step": 3,
+      "title": "Template switch appends SMART handle to cDNA 3\u2032 end",
+      "summary": "The TSO rGrGrG anneals to the cDNA dC overhang and is copied, placing a SMART handle on the cDNA 3\u2032 end.",
+      "note": "Both ends of the first-strand cDNA now carry the AAGCAGTGGTATCAACGCAGAGT SMART handle, enabling single-primer whole-transcriptome PCR.",
+      "product": "|--5'- ...AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CCCATTCACTCTGCGTTGATACCACTGCTT -3'\n                                                                   GGGTAAG......TGACGAA -5' (from TSO)"
+    },
+    {
+      "step": 4,
+      "title": "Exonuclease I treatment",
+      "summary": "Exonuclease I chews back bead primers that never captured an mRNA, leaving only extended STAMPs.",
+      "note": "Single-stranded, unextended oligos are degraded so they cannot participate in PCR; barcode-bearing extended primers (double-stranded at the 5\u2032 handle after RT) are protected.",
+      "product": "|--5'- ...AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CCCATTCACTCTGCGTTGATACCACTGCTT -3'"
+    },
+    {
+      "step": 5,
+      "title": "Whole-transcriptome PCR (SMART/TSO_PCR primer)",
+      "summary": "A single SMART PCR primer amplifies full-length cDNA off both handle-bearing ends.",
+      "note": "Kapa HiFi + TSO_PCR/SMART primer (AAGCAGTGGTATCAACGCAGAGT) produce double-stranded, amplified cDNA averaging 1300-2000 bp.",
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CCCATTCACTCTGCGTTGATACCACTGCTT -3'\n3'- TTCGTCACCATAGTTGCGTCTCATG[CB']........[UMI'](A)30[CDNA']GGGTAAGTGAGACGCAACTATGGTGACGAA -5'"
+    },
+    {
+      "step": 6,
+      "title": "Nextera XT tagmentation (Tn5)",
+      "summary": "Tn5 fragments the amplified cDNA and inserts the Nextera mosaic-end adapter.",
+      "note": "Tagmentation adds the Nextera Read 2 / s7 handle to internal 3\u2032-biased fragments; only fragments still bearing the 5\u2032 SMART handle can later receive P5, restricting the library to 3\u2032 ends.",
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CTGTCTCTTATACACATCT -3'\n                                                                <-- Nextera mosaic end (ME) -->"
+    },
+    {
+      "step": 7,
+      "title": "Nextera library PCR (P5-TSO_Hybrid + Nextera N70X)",
+      "summary": "P5-TSO_Hybrid adds P5 at the SMART end and Nextera N70X adds the i7 index + P7 at the tagmented end.",
+      "note": "Because P5 is added only via the SMART handle, exclusively 3\u2032-end cDNA fragments are amplified into the final sequenceable library (~450-680 bp).",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (cell barcode + UMI)",
+      "primer": "Read1CustomSeqB (GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC) \u2014 Read1CustomSeqA for SeqA beads",
+      "template": "bottom",
+      "cycles": 20,
+      "note": "Custom Read 1 primer anneals to the bottom strand across the bridge + SMART handle; its 3' end sits at the barcode boundary and extension reads the 12-bp cell barcode (bases 1-12) then the 8-bp UMI (bases 13-20).",
+      "diagram": "   5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC----------------------->\n5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTACNNNNNNNNNNNNNNNNNNNNTTTTTTTT...[cDNA]-3'\n3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATGNNNNNNNNNNNNNNNNNNNNAAAAAAAA...[cDNA]-5'\n                                          \\___cell BC (12)___/\\_UMI(8)_/"
+    },
+    {
+      "read": "Index 1 (i7 sample index)",
+      "primer": "Nextera i7 index sequencing primer (anneals to the s7 handle: 5'-...CCGAGCCCACGAGAC-3'); only when multiplexing",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "The index primer matches the top-strand s7 handle, so it anneals to the bottom strand with its 3' end at the index boundary and reads the 8-bp i7 sample index installed by the Nextera N70X primer.",
+      "diagram": "    5'-CCGAGCCCACGAGAC-------->\n5'- ...CCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...GGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                   reads 8-bp i7 index -->"
+    },
+    {
+      "read": "Read 2 (cDNA)",
+      "primer": "Nextera Read 2 / s7 primer (GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG)",
+      "template": "top",
+      "cycles": 50,
+      "note": "The s7 Read 2 primer anneals to the top strand across the Nextera mosaic-end + s7 region; its 3' end points into the insert and extension reads back through the 3' cDNA fragment (50 bp; 60 bp in the retina experiment).",
+      "diagram": "                            3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n5'- ...(dT)30-[cDNA]-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-[i7]...-3'\n3'- ...(dA)30-[cDNA]-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-[i7]...-5'\n        <-----------[reads cDNA insert]"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "Drop-seq",
+  "description": "Drop-seq is a droplet-based, massively parallel 3\u2032 single-cell RNA-seq method. Individual cells are co-encapsulated with a DNA-barcoded microparticle (\"bead\") in a nanoliter (~1 nL, 125 \u00b5m) aqueous droplet formed by a co-flow microfluidic device; the cell lyses inside the droplet and its polyadenylated mRNAs hybridize to the bead's oligo-dT primers. Each bead carries a common SMART/PCR handle, a 12-bp split-pool cell barcode (one of 4^12 = 16,777,216), an 8-bp UMI, and a 30-bp oligo-dT. After bulk reverse transcription with template switching (STAMP formation), exonuclease treatment, whole-transcriptome PCR, and Nextera XT tagmentation of the 3\u2032 ends, the library is sequenced on Illumina: Read 1 (20 bp) yields the cell barcode + UMI, and Read 2 the cDNA.",
+  "reference": {
+    "kind": "paper",
+    "label": "Drop-seq Laboratory Protocol v1.1",
+    "path": null,
+    "url": "https://www.protocols.io/view/drop-seq-laboratory-protocol-mkbc4sn",
+    "doi": "10.17504/protocols.io.mkbc4sn"
+  },
+  "publication": {
+    "year": 2015,
+    "original_publication": {
+      "title": "Highly Parallel Genome-wide Expression Profiling of Individual Cells Using Nanoliter Droplets",
+      "journal": "Cell",
+      "doi": "10.1016/j.cell.2015.05.002",
+      "url": "http://dx.doi.org/10.1016/j.cell.2015.05.002"
+    },
+    "authors": [
+      {
+        "name": "Evan Z. Macosko",
+        "corresponding": true,
+        "email": "emacosko@genetics.med.harvard.edu",
+        "affiliation": "Department of Genetics, Harvard Medical School; Stanley Center for Psychiatric Research and Program in Medical and Population Genetics, Broad Institute of Harvard and MIT"
+      },
+      {
+        "name": "Anindita Basu",
+        "affiliation": "Klarman Cell Observatory, Broad Institute; School of Engineering and Applied Sciences, Harvard University"
+      },
+      {
+        "name": "Rahul Satija",
+        "affiliation": "Klarman Cell Observatory, Broad Institute; New York Genome Center; Department of Biology, New York University"
+      },
+      {
+        "name": "James Nemesh",
+        "affiliation": "Department of Genetics, Harvard Medical School; Broad Institute"
+      },
+      {
+        "name": "Karthik Shekhar",
+        "affiliation": "Klarman Cell Observatory, Broad Institute"
+      },
+      {
+        "name": "Melissa Goldman",
+        "affiliation": "Department of Genetics, Harvard Medical School; Stanley Center for Psychiatric Research, Broad Institute"
+      },
+      {
+        "name": "Itay Tirosh",
+        "affiliation": "Klarman Cell Observatory, Broad Institute"
+      },
+      {
+        "name": "Allison R. Bialas",
+        "affiliation": "The Program in Cellular and Molecular Medicine, Children's Hospital Boston"
+      },
+      {
+        "name": "Nolan Kamitaki",
+        "affiliation": "Department of Genetics, Harvard Medical School; Broad Institute"
+      },
+      {
+        "name": "Emily M. Martersteck",
+        "affiliation": "Department of Molecular and Cellular Biology and Center for Brain Science, Harvard University"
+      },
+      {
+        "name": "John J. Trombetta",
+        "affiliation": "Klarman Cell Observatory, Broad Institute"
+      },
+      {
+        "name": "David A. Weitz",
+        "affiliation": "School of Engineering and Applied Sciences and Department of Physics, Harvard University"
+      },
+      {
+        "name": "Joshua R. Sanes",
+        "affiliation": "Department of Molecular and Cellular Biology and Center for Brain Science, Harvard University"
+      },
+      {
+        "name": "Alex K. Shalek",
+        "affiliation": "Klarman Cell Observatory, Broad Institute; Ragon Institute of MGH, MIT, and Harvard; Institute for Medical Engineering and Science and Department of Chemistry, MIT"
+      },
+      {
+        "name": "Aviv Regev",
+        "affiliation": "Klarman Cell Observatory and Department of Biology, MIT; Howard Hughes Medical Institute"
+      },
+      {
+        "name": "Steven A. McCarroll",
+        "corresponding": true,
+        "email": "mccarroll@genetics.med.harvard.edu",
+        "affiliation": "Department of Genetics, Harvard Medical School; Stanley Center for Psychiatric Research and Program in Medical and Population Genetics, Broad Institute of Harvard and MIT"
+      }
+    ],
+    "throughput": {
+      "summary": "~10,000 single-cell libraries prepared per hour at 100 cells/\u00b5L (12 hr for 10,000 cells); ~1,200/hr at 12.5 cells/\u00b5L. ~6.5 cents per cell. 44,808 mouse retinal cells profiled into 39 clusters.",
+      "cells": "10,000 single-cell libraries in ~12 hr; 44,808 retinal cells analyzed (49,300 STAMPs sequenced)",
+      "rna": "At saturating depth ~44,295 transcripts / 6,722 genes per HEK cell and ~26,044 transcripts / 5,663 genes per 3T3 cell; ~12.8% transcript capture efficiency (ERCC); ~10.7% by ddPCR",
+      "dna": "Amplified cDNA ~1300-2000 bp; final tagmented library ~450-680 bp; yield 10-30 nM (HEK/3T3)"
+    },
+    "statistical_model": "Digital transcript counting via UMIs with edit-distance-1 (substitution-only recommended) collapse; single-cell purity and doublet rates estimated from species-mixing (binomial co-encapsulation) experiments.",
+    "other": [
+      {
+        "label": "Primers per bead",
+        "value": ">10^8 barcoded primer sites per microparticle"
+      },
+      {
+        "label": "Droplet size",
+        "value": "~125 \u00b5m diameter, ~1 nL, generated on a PDMS co-flow device (>100,000 droplets/min)"
+      },
+      {
+        "label": "Bead synthesis",
+        "value": "Reverse-direction (5'->3') phosphoramidite synthesis on Toyopearl HW-65S resin by Chemgenes"
+      },
+      {
+        "label": "Capture efficiency",
+        "value": "~12.8% (ERCC spike-in), corroborated at ~10.7% by droplet digital PCR"
+      },
+      {
+        "label": "Accession",
+        "value": "GEO: GSE63473"
+      },
+      {
+        "label": "Protocol source",
+        "value": "Drop-seq Laboratory Protocol v1.1 (Aug 6, 2015), Macosko & Goldman, McCarroll Lab (www.mccarrolllab.com/dropseq)"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "droplet",
+  "data_processing": {
+    "summary": "Read 1 supplies the 12-bp cell barcode + 8-bp UMI, which are tagged onto the paired cDNA read; the cDNA (Read 2) is aligned to the reference genome, reads are grouped by cell barcode, and UMIs are collapsed per gene to give digital transcript counts \u2014 producing a cell-by-gene digital gene-expression (DGE) matrix that is then clustered. The paper and protocol point to the McCarroll-lab 'Drop-seq tools' software (Nemesh, with help from Wysoker) and an accompanying downloadable informatics guide.",
+    "stages": [
+      {
+        "id": "prep",
+        "label": "Barcode Tagging & Trimming"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "quant",
+        "label": "Quantification"
+      },
+      {
+        "id": "analysis",
+        "label": "Analysis"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "tag_bc",
+        "label": "Tag reads with barcode + UMI",
+        "tool": "Drop-seq tools",
+        "stage": "prep",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim_adapter",
+        "label": "Trim SMART adapter",
+        "tool": "Drop-seq tools",
+        "stage": "prep",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim_polya",
+        "label": "Trim poly(A) tail",
+        "tool": "Drop-seq tools",
+        "stage": "prep",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align cDNA to genome",
+        "tool": "STAR",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "group_bc",
+        "label": "Group reads by cell barcode",
+        "tool": "Drop-seq tools",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse_umi",
+        "label": "Collapse UMIs (edit distance 1)",
+        "tool": "Drop-seq tools",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "build_dge",
+        "label": "Build DGE matrix",
+        "tool": "Drop-seq tools",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "species_mix",
+        "label": "Estimate doublet rate",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "tag_bc",
+        "to": "trim_adapter",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim_adapter",
+        "to": "trim_polya",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim_polya",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "group_bc",
+        "kind": "sequential"
+      },
+      {
+        "from": "group_bc",
+        "to": "collapse_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse_umi",
+        "to": "build_dge",
+        "kind": "sequential"
+      },
+      {
+        "from": "build_dge",
+        "to": "cluster",
+        "kind": "branch"
+      },
+      {
+        "from": "build_dge",
+        "to": "species_mix",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "Digital transcript counting via UMIs collapsed at edit distance 1 (substitution-only); single-cell purity and doublet rate estimated from species-mixing (binomial co-encapsulation) analysis."
+  }
+}

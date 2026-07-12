@@ -1,0 +1,22 @@
+{
+  "folder": "cel_seq",
+  "title": "CEL-Seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "CEL-seq_family.html",
+    "oligo_seq_recall": 0.714,
+    "oligo_seqs_matched": 10,
+    "oligo_seqs_total": 14,
+    "missed_oligos": [
+      "Barcoded RT primer variant 2",
+      "Illumina RA5 adapter (TruSeq Small RNA kit)",
+      "Index read primer",
+      "randomhexRT primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[CELL_BARCODE:8]TTTTTTTTTTTTTTTTTTTTTTTT[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[CELL_BARCODE:8]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[UMI:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

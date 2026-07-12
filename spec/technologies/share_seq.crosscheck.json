@@ -1,0 +1,25 @@
+{
+  "folder": "share_seq",
+  "title": "SHARE-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "SHARE-seq.html",
+    "oligo_seq_recall": 0.632,
+    "oligo_seqs_matched": 12,
+    "oligo_seqs_total": 19,
+    "missed_oligos": [
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera Index 2 sequencing primer (i5)",
+      "Round1 barcodes",
+      "Round2 barcodes",
+      "RT_primer",
+      "Template Switching Oligo (TSO) with LNA",
+      "v2_Ad1.01"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- AATGATACGGCGACCACCGAGATCTACAC [i5:8] TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [CDNA] [UMI:10] CTGTCTCTTATACACATCTCCGAGCCCACGAGACTCGGACGATCATGGG [B1:8] TCAAGTATGCAGCGCGCTCAAGCACGTGGAT [B2:8] TAGTCGTACGCCGATGCGAAACATCGGCCAC [B3:8] ATCTCGTATGCCGTCTTCTGCTTG -3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]B(pA)[UMI:10]CTGTCTCTTATACACATCTCCGAGCCCACGAGACTCGGACGATCATGGG[CELL_BARCODE:8]CAAGTATGCAGCGCGCTCAAGCACGTGGAT[CELL_BARCODE:8]AGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

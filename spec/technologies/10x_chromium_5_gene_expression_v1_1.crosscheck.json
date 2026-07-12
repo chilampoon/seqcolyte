@@ -1,0 +1,19 @@
+{
+  "folder": "10x_chromium_5_gene_expression_v1_1",
+  "title": "10x Chromium Single Cell 5\u2032 Gene Expression v1.1",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "10xChromium5.html",
+    "oligo_seq_recall": 0.909,
+    "oligo_seqs_matched": 10,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "cDNA Primer Mix reverse (PN-220106)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC-TCTTTCCCTACACGACGCTCTTCCGATCT-[CELL_BARCODE:16]-[UMI:10]-TTTCTTATATGGG-[CDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-[SAMPLE_INDEX:8]-ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

@@ -19,7 +19,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-__all__ = ["extract_text", "docling_markdown", "text_layer"]
+__all__ = ["extract_text", "extract_texts", "docling_markdown", "text_layer"]
 
 _TEXT_LAYER_HEADER = "\n\n## Appendix: raw PDF text layer (figure/vector text docling may not emit)\n\n"
 
@@ -71,4 +71,58 @@ def extract_text(doc_path: str | Path, *, include_text_layer: bool = True) -> st
         if include_text_layer:
             md += _TEXT_LAYER_HEADER + text_layer(path)
         return md
+    if suffix == ".xls":
+        return _xls_text(path)  # docling only reads .xlsx; legacy .xls goes through pandas + xlrd
     return docling_markdown(path)  # xlsx / docx / pptx / … handled by docling's format backends
+
+
+def _xls_text(path: str | Path) -> str:
+    """Legacy .xls (BIFF) → text: every sheet as CSV (pandas + xlrd). Oligo tables often live here."""
+    import pandas as pd
+
+    sheets = pd.read_excel(path, sheet_name=None)  # needs xlrd>=2.0.1 for .xls
+    return "\n\n".join(f"## Sheet: {name}\n{df.to_csv(index=False)}" for name, df in sheets.items())
+
+
+def _fair_caps(lengths: list[int], budget: int) -> list[int]:
+    """Water-filling: give every doc at least an equal share; short docs keep their full text and free
+    budget is redistributed to the longer docs. Guarantees each doc keeps >0 chars (nothing dropped)."""
+    caps = [0] * len(lengths)
+    remaining, left = budget, len(lengths)
+    for i in sorted(range(len(lengths)), key=lambda i: lengths[i]):
+        share = max(1, remaining // left)
+        caps[i] = min(lengths[i], share)
+        remaining -= caps[i]
+        left -= 1
+    return caps
+
+
+def extract_texts(
+    paths, *, char_budget: int = 1_800_000, include_text_layer: bool = True
+) -> tuple[str, list[dict]]:
+    """Extract + concatenate several documents into one blob for a single LLM extraction.
+
+    Every document contributes (nothing is silently dropped): each file is extracted, then if the total
+    exceeds ``char_budget`` the largest docs are truncated (water-filling) so the concatenation fits the
+    model context. Returns ``(combined_text, log)`` where ``log`` records per-doc kept/total chars and
+    whether it was truncated. Docs are joined with ``=== DOCUMENT: <name> ===`` separators.
+    """
+    extracted: list[tuple[str, str]] = []
+    for p in paths:
+        name = Path(p).name
+        try:
+            extracted.append((name, extract_text(p, include_text_layer=include_text_layer)))
+        except Exception as exc:  # keep going — one unreadable supplement shouldn't sink the whole tech
+            extracted.append((name, f"[could not extract {name}: {exc}]"))
+
+    lengths = [len(t) for _, t in extracted]
+    total = sum(lengths)
+    caps = lengths if total <= char_budget else _fair_caps(lengths, char_budget)
+
+    parts, log = [], []
+    for (name, text), cap, full in zip(extracted, caps, lengths):
+        truncated = cap < full
+        body = text[:cap] + (f"\n…[truncated {full - cap} of {full} chars]" if truncated else "")
+        parts.append(f"=== DOCUMENT: {name} ===\n{body}")
+        log.append({"name": name, "chars": full, "kept": cap, "truncated": truncated})
+    return "\n\n".join(parts), log

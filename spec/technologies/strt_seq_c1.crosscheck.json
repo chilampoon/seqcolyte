@@ -1,0 +1,23 @@
+{
+  "folder": "strt_seq_c1",
+  "title": "STRT-seq-C1",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "STRT-seq_family.html",
+    "oligo_seq_recall": 0.375,
+    "oligo_seqs_matched": 3,
+    "oligo_seqs_total": 8,
+    "missed_oligos": [
+      "Barcoded C1-Tn5 forward (including 19-bp Mosaic End (ME))",
+      "Barcoded Tn5 reverse oligo",
+      "C1-P1-RNA-TSO",
+      "Solexa P1 adapter",
+      "Solexa P2 adapter"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAT [UMI:5] GGG [CDNA] CTGTCTCTTATACACATCTGACGC [SAMPLE_INDEX:8] TCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAT[UMI:5]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[CELL_BARCODE:8]TCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

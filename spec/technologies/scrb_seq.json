@@ -1,0 +1,662 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "scrb_seq",
+  "assay": "SCRB-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "SCRB-seq_original_paper_preprint.pdf",
+      "title": "Characterization of directed differentiation by high-throughput single-cell RNA-Seq",
+      "url": "https://doi.org/10.1101/003236",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scrb_seq/SCRB-seq_original_paper_preprint.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SCRB-seq.pdf",
+      "title": "SCRB-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scrb_seq/SCRB-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "e3v6next",
+      "name": "E3V6NEXT (barcoded RT primer)",
+      "aliases": [],
+      "role": "Reverse-transcription primer carrying the well-specific cell barcode, UMI and poly(dT) capture region; anneals to the mRNA poly(A) tail and primes first-strand cDNA synthesis.",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:6][UMI:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' biotin (/5Biosg/). [BC6] = 6 bp well/cell barcode from Supplementary Table S2 (384-plex; barcode set 1 for D1/D2, set 2 for D3). N10 = 10 bp UMI. T30 = 30-nt poly(dT). VN = anchor (V = A/C/G, N = any). Ordered from IDT; 1 pmol per well."
+    },
+    {
+      "oligo_id": "e5v6next",
+      "name": "E5V6NEXT (universal template-switching oligo)",
+      "aliases": [],
+      "role": "Template-switching oligo; its terminal riboguanosines base-pair with the untemplated Cs added by the RT at the 3' end of the first-strand cDNA, appending the universal 5' adapter.",
+      "kind": "single",
+      "sequence": "CGCACACTCTTTCCCTACACGACGCGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Written 5'->3' as iCiGiC-ACACTCTTTCCCTACACGACGC-rGrGrG. iC = iso-dC, iG = iso-dG (non-natural bases reducing background), rG = riboguanosine. Ordered from Eurogentec; 1 pmol per well."
+    },
+    {
+      "oligo_id": "e3v6next_bulk",
+      "name": "E3V6NEXT (bulk, 16 bp UMI version)",
+      "aliases": [],
+      "role": "RT primer used for bulk SCRB-seq DGE libraries; identical to E3V6NEXT but omits the well-specific 6 bp barcode, using a 16 bp UMI instead.",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:16]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' biotin (/5Biosg/). N16 = 16 bp UMI (no cell barcode). Used at 10 pmol for bulk 10 ng total-RNA libraries. From IDT."
+    },
+    {
+      "oligo_id": "singv6",
+      "name": "SINGV6 (single-primer PCR primer)",
+      "aliases": [],
+      "role": "Single primer used for full-length cDNA pre-amplification after pooling; anneals to the universal ACACTCTTTCCCTACACGACGC adapter present on both ends of the template-switched cDNA.",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' biotin (/5Biosg/). Used with Advantage 2 Polymerase Mix; 10 pmol. From IDT."
+    },
+    {
+      "oligo_id": "p5nextpt5",
+      "name": "P5NEXTPT5 (custom i5/P5 library primer)",
+      "aliases": [],
+      "role": "Custom P5 library-amplification primer that replaces the Nextera XT i5 primer, grafting the P5 flow-cell sequence onto the barcode/UMI end and serving as the Read 1 priming site.",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "3'-terminal * = phosphorothioate bonds (last 4 linkages: ...CCG*A*T*C*T*). Used at 5 uM in the modified Nextera library amplification. From IDT. Doubles as the custom Read 1 sequencing-primer region."
+    },
+    {
+      "oligo_id": "nextera_i7_primer",
+      "name": "Nextera XT i7 index primer (N7xx)",
+      "aliases": [],
+      "role": "Standard Nextera XT i7 index/library-amplification primer that grafts the P7 flow-cell sequence and the i7 sample index onto the transposon (s7) end during library amplification.",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell grafting sequence"
+        },
+        {
+          "name": "i7 index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8 bp Nextera sample index (decoded by the index read)"
+        },
+        {
+          "name": "s7",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "Nextera transposon (s7) primer-binding sequence"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplied by the Nextera XT kit (i5 replaced by P5NEXTPT5, i7 retained). Constant regions confirmed from the final-library diagram (top strand ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG)."
+    },
+    {
+      "oligo_id": "nextera_s7_transposon_adapter",
+      "name": "Nextera transposon end (s7 / mosaic end)",
+      "aliases": [],
+      "role": "Transposon adapter sequence deposited on the fragmented 3' cDNA end by the Nextera Tn5 transposase during tagmentation; provides the Read 2 / i7-side priming region.",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Read from the tagmented-product diagram (bottom strand 3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'). Contains the mosaic-end reverse complement (CTGTCTCTTATACACATCT) fused to the s7 sequence."
+    },
+    {
+      "oligo_id": "read1_seq_primer",
+      "name": "Custom Read 1 sequencing primer",
+      "aliases": [],
+      "role": "Primes Read 1, reading the cell barcode + UMI (+ start of poly-dT).",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Corresponds to the grafted P5NEXTPT5 region (see p5nextpt5). Reads 17 cycles into [BC6][UMI]."
+    },
+    {
+      "oligo_id": "i7_index_seq_primer",
+      "name": "Nextera i7 index sequencing primer",
+      "aliases": [],
+      "role": "Primes the 8-cycle index read that decodes the i7 Nextera sample barcode.",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Nextera Index 1 (i7) read primer; annealing site present on the s7/transposon end of the library."
+    },
+    {
+      "oligo_id": "read2_seq_primer",
+      "name": "Nextera Read 2 sequencing primer",
+      "aliases": [],
+      "role": "Primes the 34-cycle second read that sequences the 3' end of the cDNA fragment.",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Nextera Read 2 primer; complementary to the CTGTCTCTTATACACATCTCCGAGCCCACGAGAC transposon region, reads leftward into the cDNA insert."
+    }
+  ],
+  "final_library": {
+    "source_label": "SCRB-seq resulting library (Figure S1)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTAC | ACACTCTTTCCCTACACGACGCTCTTCCGATCT | [CELL_BARCODE:6] | [UMI:10] | TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT VN | [CDNA] | CTGTCTCTTATACACATCTCCGAGCCCACGAGAC | [SAMPLE_INDEX:8] | ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:6][UMI:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "top",
+        "source_html": "5' AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC6](N)10(T)30VN-Frag-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG 3'",
+        "source_sequence": "5' AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC6](N)10(T)30VN-Frag-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG 3'"
+      },
+      {
+        "direction": "bottom",
+        "source_html": "3' TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[BC6](N)10(A)30BN-Frag-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]TAGAGCATACGGCAGAAGACGAAC 5'",
+        "source_sequence": "3' TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[BC6](N)10(A)30BN-Frag-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]TAGAGCATACGGCAGAAGACGAAC 5'"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTAC  -- P5 flow-cell adapter",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT  -- universal adapter / Read 1 priming region (TruSeq-R1-like)",
+      "[CELL_BARCODE:6]  -- well-specific cell barcode (6 bp, Supplementary Table S2)",
+      "[UMI:10]  -- unique molecular identifier (10 bp)",
+      "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT VN  -- 30-nt poly(dT) capture + VN anchor (former mRNA poly(A))",
+      "[CDNA]  -- 3' cDNA fragment (Read 2 insert)",
+      "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC  -- Nextera transposon / s7 end (Read 2 priming region)",
+      "[SAMPLE_INDEX:8]  -- i7 Nextera sample index (index read)",
+      "ATCTCGTATGCCGTCTTCTGCTTG  -- P7 flow-cell adapter"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "SCRB-seq resulting library (Figure S1)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Custom Read 1 primer (P5NEXTPT5 region)",
+        "template": "bottom",
+        "cycles": 17,
+        "segments": [
+          {
+            "name": "cell_barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          },
+          {
+            "name": "umi",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "polyT",
+            "type": "polyA",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 1
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Nextera i7 index primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7_sample_index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Nextera Read 2 primer",
+        "template": "top",
+        "cycles": 34,
+        "segments": [
+          {
+            "name": "cdna",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 34
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Template-switching reverse transcription",
+      "summary": "Single-cell mRNA is reverse-transcribed with the barcoded poly(dT) RT primer E3V6NEXT, tagging each cDNA with a well barcode and UMI.",
+      "note": "Cells are FACS-sorted into 384-well plates; ERCC spike-in is added and the template-switching RT reaction is run with SmartScribe (D1/D2) or Maxima H Minus (D3). E3V6NEXT anneals to the mRNA poly(A) tail (T30VN) and copies the transcript; the RT adds a few untemplated C's at the cDNA 3' end.",
+      "product": "5'-RNA:NB(A)30-3'\n3'-CCC:cDNA:NV(T)30(N)10[BC6]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'"
+    },
+    {
+      "step": 2,
+      "title": "Template switching (E5V6NEXT)",
+      "summary": "The universal TSO E5V6NEXT base-pairs with the cDNA's terminal C's and the RT extends across it, appending the universal 5' adapter.",
+      "note": "E5V6NEXT terminal rGrGrG pairs with the CCC overhang; the iso-dC/iso-dG bases suppress background. This yields cDNA flanked by universal adapters on both ends.",
+      "product": "5'-ACACTCTTTCCCTACACGACGCGGG:cDNA:NB(A)30-3'\n                          CCC:cDNA:NV(T)30(N)10[BC6]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'"
+    },
+    {
+      "step": 3,
+      "title": "Full-length barcoded cDNA",
+      "summary": "Second-strand synthesis completes a double-stranded, barcoded, adapter-flanked full-length cDNA.",
+      "note": "Both ends now carry the ACACTCTTTCCCTACACGACGC universal sequence, enabling single-primer PCR.",
+      "product": "5'-ACACTCTTTCCCTACACGACGCGGG:cDNA:NB(A)30(N)10[BC6]AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT-3'\n3'-TGTGAGAAAGGGATGTGCTGCGCCC:cDNA:NV(T)30(N)10[BC6]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'"
+    },
+    {
+      "step": 4,
+      "title": "Pool, ExoI, single-primer PCR (SINGV6)",
+      "summary": "cDNA from all 384 wells is pooled, purified, Exonuclease I-treated, and amplified by single-primer PCR with SINGV6.",
+      "note": "Because both ends share the universal adapter, one primer (SINGV6, ACACTCTTTCCCTACACGACGC) amplifies the whole pool with Advantage 2 polymerase; products are AMPure-purified and quantified.",
+      "product": "5'-ACACTCTTTCCCTACACGACGCGGG:cDNA:NB(A)30(N)10[BC6]AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT-3'\n                                          3-'CGCAGCACATCCCTTTCTCACA-5'\n3'-TGTGAGAAAGGGATGTGCTGCGCCC:cDNA:NV(T)30(N)10[BC6]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'\n                          5'-ACACTCTTTCCCTACACGACGC-3'"
+    },
+    {
+      "step": 5,
+      "title": "Tagmentation (Nextera XT)",
+      "summary": "Full-length cDNA is fragmented and tagged with Nextera transposon ends by Tn5, enriching for 3' ends.",
+      "note": "Tn5 inserts the transposon (s7/mosaic-end) sequence at random positions; fragments retaining the barcode/UMI end are carried forward.",
+      "product": "5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC6](N)10(T)30VN-Frag-3'\n                                              3'-Frag-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'"
+    },
+    {
+      "step": 6,
+      "title": "Modified library amplification (P5NEXTPT5 + i7)",
+      "summary": "The tagmented pool is amplified with the custom P5NEXTPT5 (i5 replacement) and a standard Nextera i7 primer, adding P5, P7 and the i7 sample index.",
+      "note": "Replacing the Nextera i5 primer with P5NEXTPT5 grafts the P5 sequence next to the barcode/UMI so Read 1 reads the cell barcode + UMI; the i7 primer adds P7 and the sample index. Library is size-selected to 300-800 bp.",
+      "product": "5' AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC6](N)10(T)30VN-Frag-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG 3'\n3' TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[BC6](N)10(A)30BN-Frag-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]TAGAGCATACGGCAGAAGACGAAC 5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (cell barcode + UMI)",
+      "primer": "P5NEXTPT5 / custom Read 1 primer (5'-AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT-3')",
+      "template": "bottom",
+      "cycles": 17,
+      "note": "17 cycles read the 6 bp well/cell barcode + 10 bp UMI (16 informative nt, +1). Primer is identical to the top strand, so it anneals to the bottom strand and is extended 5'->3' rightward, reproducing the top-strand [BC6][UMI]. Filtering: first 6 bases Q>=10 matching a designed barcode, next 10 (UMI) Q>=30.",
+      "diagram": "Read 1 (BC6 + UMI): primer = P5NEXTPT5, anneals to bottom strand, reads 5'->3' -->\n5'-AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT---------------->\n5'-AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC6][UMI](T)30VN-[cDNA]...-3'  (top)\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[BC6][UMI](A)30BN-[cDNA]...-5'  (bottom = template)"
+    },
+    {
+      "read": "Index read (i7)",
+      "primer": "Nextera i7 index-read primer (5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-3')",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "8-cycle index read decodes the 8 bp i7 Nextera sample barcode. The primer is identical to the top-strand transposon sequence lying just 5' of [i7], so it anneals to the bottom strand and reads 5'->3' rightward into the index, reproducing the top-strand i7 sequence.",
+      "diagram": "i7 index read (Nextera sample index): primer anneals to bottom strand, reads 5'->3' -->\n    CTGTCTCTTATACACATCTCCGAGCCCACGAGAC---------->\n...-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG-3'  (top)\n...-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]TAGAGCATACGGCAGAAGACGAAC-5'  (bottom = template)"
+    },
+    {
+      "read": "Read 2 (cDNA)",
+      "primer": "Nextera Read 2 primer (5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG-3')",
+      "template": "top",
+      "cycles": 34,
+      "note": "34-cycle read sequences the 3' end of the cDNA fragment (assigned to RefSeq genes). The primer equals the bottom-strand sequence over the transposon end, so it anneals to the top strand and is extended 5'->3' leftward into the cDNA insert.",
+      "diagram": "Read 2 (3' cDNA): primer = Nextera R2, anneals to top strand, reads 5'->3' <--\n5'-...VN-[cDNA]-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]...-3'  (top = template)\n3'-...BN-[cDNA]-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]...-5'  (bottom)\n   <------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  (R2 primer, 3' end at left, reads leftward)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "SCRB-seq",
+  "description": "SCRB-seq (Single Cell RNA Barcoding and Sequencing) is a 3' digital gene-expression single-cell RNA-seq protocol. Single cells are FACS-sorted into 384-well plates and reverse-transcribed with a template-switching RT using a well-specific 6 bp barcode + 10 bp UMI on a poly(dT) RT primer (E3V6NEXT) and a universal template-switching oligo (E5V6NEXT). Barcoded cDNA from all 384 wells is pooled, single-primer PCR amplified, and fragmented/tagmented with Nextera XT (transposase) to enrich for 3' ends and preserve strand information. Read 1 decodes the cell barcode + UMI, an i7 index read decodes the Nextera sample index, and Read 2 sequences the 3' cDNA fragment.",
+  "reference": {
+    "kind": "paper",
+    "label": "Characterization of directed differentiation by high-throughput single-cell RNA-Seq",
+    "path": null,
+    "url": "https://doi.org/10.1101/003236",
+    "doi": "10.1101/003236"
+  },
+  "publication": {
+    "year": 2014,
+    "original_publication": {
+      "title": "Characterization of directed differentiation by high-throughput single-cell RNA-Seq",
+      "journal": "bioRxiv (preprint)",
+      "doi": "10.1101/003236",
+      "url": "https://doi.org/10.1101/003236"
+    },
+    "authors": [
+      {
+        "name": "Magali Soumillon",
+        "affiliation": "Broad Institute, Cambridge, MA; Harvard Stem Cell Institute and Department of Stem Cell and Regenerative Biology, Harvard University, Cambridge, MA"
+      },
+      {
+        "name": "Davide Cacchiarelli",
+        "affiliation": "Broad Institute, Cambridge, MA; Harvard Stem Cell Institute and Department of Stem Cell and Regenerative Biology, Harvard University, Cambridge, MA"
+      },
+      {
+        "name": "Stefan Semrau",
+        "affiliation": "Departments of Physics and Biology, MIT; Koch Institute for Integrative Cancer Research, MIT; Hubrecht Institute, Utrecht, The Netherlands"
+      },
+      {
+        "name": "Alexander van Oudenaarden",
+        "affiliation": "Hubrecht Institute, Royal Netherlands Academy of Arts and Sciences and University Medical Center Utrecht, The Netherlands"
+      },
+      {
+        "name": "Tarjei S. Mikkelsen",
+        "corresponding": true,
+        "email": "tarjei@broadinstitute.org",
+        "affiliation": "Broad Institute, Cambridge, MA; Harvard Stem Cell Institute and Department of Stem Cell and Regenerative Biology, Harvard University, Cambridge, MA"
+      }
+    ],
+    "throughput": {
+      "summary": "12,832 single-cell DGE profiles (76% of wells) from 44 x 384-well plates; ~165,000 reads/well; mean 2,602 (initial) and 3,336 (optimized) unique mRNAs per cell.",
+      "cells": "12,832 cells profiled (out of ~16,896 sorted wells; day 0-14 hASC differentiation time courses)",
+      "rna": "1,000-~10,000 unique mRNAs (UMIs) captured per cell; ~1-2% mRNA detection efficiency relative to smFISH",
+      "dna": "Not reported (RNA/DGE assay)"
+    },
+    "statistical_model": "Digital gene expression quantified as unique UMI counts per gene per well; downstream analysis by principal component analysis (PCA) on scaled UMI-normalized expression, pairwise Pearson correlation, and gene-set enrichment (GSEA), with Benjamini-Hochberg FDR control. No parametric count distribution (e.g., Poisson/negative-binomial) is fitted to the UMI counts.",
+    "other": [
+      {
+        "label": "GEO accession",
+        "value": "GSE53638"
+      },
+      {
+        "label": "Library complexity",
+        "value": "~4-fold higher mean complexity than a prior high-throughput protocol (Jaitin et al. 2014)"
+      },
+      {
+        "label": "Efficiency",
+        "value": "~2x fewer enzymatic reactions, purifications and liquid transfers than the previous high-throughput protocol"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "plate-based",
+  "data_processing": {
+    "summary": "Reads are demultiplexed by the well-specific cell barcode, aligned to RefSeq transcripts, and collapsed by UMI to yield per-cell digital gene expression (unique UMI counts per gene, 'survey-depth DGE profiles'); cell-to-cell variation is then dissected by PCA on UMI-normalized expression together with pairwise correlation and gene-set enrichment analysis (GSEA) under Benjamini-Hochberg FDR control.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplex"
+      },
+      {
+        "id": "align",
+        "label": "Alignment & QC"
+      },
+      {
+        "id": "quantify",
+        "label": "Quantification"
+      },
+      {
+        "id": "analysis",
+        "label": "Expression Analysis"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex cell barcodes",
+        "tool": "",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align to RefSeq transcripts",
+        "tool": "",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter",
+        "label": "Filter by alignment quality",
+        "tool": "",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse",
+        "label": "Collapse UMIs per gene",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dge",
+        "label": "Assemble DGE matrix",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "normalize",
+        "label": "Normalize UMI counts",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pca",
+        "label": "Run PCA",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "corr",
+        "label": "Compute pairwise correlation",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "gsea",
+        "label": "Run GSEA (BH FDR)",
+        "tool": "GSEA",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "filter",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter",
+        "to": "collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse",
+        "to": "dge",
+        "kind": "fan_in"
+      },
+      {
+        "from": "dge",
+        "to": "normalize",
+        "kind": "sequential"
+      },
+      {
+        "from": "normalize",
+        "to": "pca",
+        "kind": "sequential"
+      },
+      {
+        "from": "pca",
+        "to": "corr",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "gsea",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "PCA"
+  }
+}

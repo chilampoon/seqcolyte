@@ -1,0 +1,744 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "dr_seq",
+  "assay": "DR-Seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "supplementary_NIHMS61543-supplement-1.pdf",
+      "title": "Single-cell analysis of genome and transcriptome diversity in humans",
+      "url": "https://doi.org/10.1038/nbt.3129",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/dr_seq/supplementary_NIHMS61543-supplement-1.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "DR-seq.pdf",
+      "title": "DR-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/dr_seq/DR-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_ad1x_rt_primer",
+      "name": "Adaptor-1x (Ad-1x) barcoded RT primer",
+      "aliases": [],
+      "role": "Reverse-transcription primer: barcoded poly-T primer with a 5' Illumina adaptor and a T7 promoter overhang; primes first-strand cDNA from mRNA poly(A) tails (CEL-Seq primer, ref 13)",
+      "kind": "assembled",
+      "sequence": "[ILLUMINA_ADAPTOR][T7_PROMOTER][CELL_BARCODE](T)n",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' Illumina adaptor",
+          "sequence": "[ILLUMINA_ADAPTOR]",
+          "role": "5' Illumina adaptor overhang (exact sequence not printed in document; per CEL-Seq ref 13)"
+        },
+        {
+          "name": "T7 promoter",
+          "sequence": "[T7_PROMOTER]",
+          "role": "T7 RNA polymerase promoter enabling in vitro transcription of cDNA into aRNA"
+        },
+        {
+          "name": "Cell barcode",
+          "sequence": "[CELL_BARCODE]",
+          "role": "Cell-specific barcode identifying the cell of origin (length not stated in document)"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "(T)n",
+          "role": "Poly-T that anneals to mRNA poly(A) tail"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Exact nucleotide sequence not provided in the DR-Seq documents; described structurally per the referenced CEL-Seq primer (Hashimshony et al., Cell Reports 2012, ref 13). DR-Seq uses length-based identifiers instead of a random UMI."
+    },
+    {
+      "oligo_id": "oligo_ad2_quasilinear_primer",
+      "name": "Adaptor-2 (Ad-2) quasilinear amplification primer",
+      "aliases": [],
+      "role": "MALBAC-style random-priming amplification primer: 27-nt defined 5' sequence followed by 8 random nucleotides; randomly primes gDNA and single-stranded cDNA during quasilinear whole-genome amplification",
+      "kind": "assembled",
+      "sequence": "GTGAGTGATGGTTGAGGTAGTGTGGAGNNNNNNNN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Ad-2 common 27-nt sequence",
+          "sequence": "GTGAGTGATGGTTGAGGTAGTGTGGAG",
+          "role": "Defined 27-nt 5' common sequence (identical to primer P2; MALBAC common sequence, ref 7)"
+        },
+        {
+          "name": "Random priming octamer",
+          "sequence": "NNNNNNNN",
+          "role": "8 random nucleotides for random priming; 3' end preferentially ends in GGG or TTT"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Paper states 'defined 27-nt sequence at the 5' end followed by eight random nucleotides (Ad-2)'; the 27-nt segment matches primer P2 (GTGAGTGATGGTTGAGGTAGTGTGGAG). Supplementary Note: 3' end has sequence GGG or TTT."
+    },
+    {
+      "oligo_id": "oligo_p1_second_strand_primer",
+      "name": "P1 second-strand synthesis primer",
+      "aliases": [],
+      "role": "Primes mRNA-specific second-strand synthesis of the quasilinear-amplified cDNA (single PCR cycle) to regenerate the T7 promoter for IVT",
+      "kind": "single",
+      "sequence": "CGATTGAGGCCGGTAATAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-CGATTGAGGCCGGTAATAC-3' (Online Methods)."
+    },
+    {
+      "oligo_id": "oligo_p2_gdna_pcr_primer",
+      "name": "P2 gDNA amplification primer",
+      "aliases": [],
+      "role": "PCR primer that amplifies the gDNA-half quasilinear amplification product (21 cycles); anneals to the Ad-2 common sequence",
+      "kind": "single",
+      "sequence": "GTGAGTGATGGTTGAGGTAGTGTGGAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-GTGAGTGATGGTTGAGGTAGTGTGGAG-3', 27 nt; identical to the Ad-2 common region."
+    },
+    {
+      "oligo_id": "oligo_p3_biotin_adaptor_removal_primer",
+      "name": "P3 biotinylated adaptor-removal primer",
+      "aliases": [],
+      "role": "5'-biotinylated PCR primer used to replace/remove adaptor Ad-2 from the gDNA PCR product before Illumina library prep; biotinylated ends are captured on streptavidin beads and discarded",
+      "kind": "single",
+      "sequence": "GTGAGCTGGAGTTGAGGTAGTGTGGAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' Biotin",
+          "sequence": "/5Biosg/",
+          "role": "5' biotin modification for streptavidin capture"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-[biotin]-GTGAGCTGGAGTTGAGGTAGTGTGGAG-3' (Online Methods)."
+    },
+    {
+      "oligo_id": "oligo_3prime_illumina_adaptor",
+      "name": "3' Illumina adaptor (aRNA ligation)",
+      "aliases": [],
+      "role": "3' Illumina adaptor ligated to the IVT-generated aRNA in the mRNA branch prior to RT and PCR (CEL-Seq library prep, ref 13)",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Sequence not printed in the DR-Seq documents; library preparation performed as in CEL-Seq (ref 13), which uses Illumina TruSeq small-RNA adaptors."
+    },
+    {
+      "oligo_id": "oligo_illumina_index_primers",
+      "name": "Illumina index / library primers",
+      "aliases": [],
+      "role": "Cell-specific index primers introducing sample indices and Illumina P5/P7 flanks during final library preparation (NEBNext Ultra DNA Library Prep Kit for the gDNA library; CEL-Seq index primers for the mRNA library)",
+      "kind": "single",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Exact index/adaptor sequences not printed in the DR-Seq documents."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "5' Illumina flow-cell adapter added during Illumina library preparation",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina P5; introduced during Illumina library prep (not explicitly sequenced in the DR-Seq documents)."
+    },
+    {
+      "oligo_id": "oligo_illumina_p7",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "3' Illumina flow-cell adapter added during Illumina library preparation",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina P7 (final-library bottom-strand end is revcomp ATCTCGTATGCCGTCTTCTGCTTG); introduced during Illumina library prep (not explicitly sequenced in the DR-Seq documents)."
+    }
+  ],
+  "final_library": {
+    "source_label": "DR-Seq mRNA (transcriptome) Illumina library \u2014 CEL-Seq-style; exact internal adaptor/barcode sequences are deferred to CEL-Seq (ref 13) and not printed in these documents",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC + [Illumina Read 1 adaptor] + [CELL_BARCODE] + [CDNA] + [3' Illumina / Read 2 adaptor] + [SAMPLE_INDEX] + ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE][CDNA][SAMPLE_INDEX]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE][CDNA][SAMPLE_INDEX]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE][CDNA][SAMPLE_INDEX]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[Illumina Read 1 adaptor] = TruSeq Read 1 primer region (sequence per CEL-Seq ref 13; not printed)",
+      "[CELL_BARCODE] = Cell barcode (from Ad-1x; length not stated in document)",
+      "[CDNA] = cDNA insert (3' end of transcript; length-based identifier derived from Ad-2 priming position, no random UMI)",
+      "[3' Illumina / Read 2 adaptor] = TruSeq Read 2 adaptor region (ligated 3' Illumina adaptor; sequence not printed)",
+      "[SAMPLE_INDEX] = i7 sample index (per-cell index primer)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "DR-Seq mRNA (transcriptome) Illumina library \u2014 CEL-Seq-style; exact internal adaptor/barcode sequences are deferred to CEL-Seq (ref 13) and not printed in these documents",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina Read 1 sequencing primer",
+        "template": "top",
+        "cycles": 100,
+        "segments": [
+          {
+            "name": "Cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina Read 2 sequencing primer",
+        "template": "bottom",
+        "cycles": 100,
+        "segments": [
+          {
+            "name": "cDNA (transcript 3' end)",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Single-cell lysis & reverse transcription with barcoded Ad-1x",
+      "summary": "A hand-picked single cell is lysed and its mRNA reverse-transcribed with the barcoded poly-T primer Ad-1x, leaving intact gDNA alongside single-stranded cDNA.",
+      "note": "Arrayscript reverse transcriptase extends from the Ad-1x poly(T) annealed to mRNA poly(A); the cDNA acquires a 5' cell barcode, a 5' Illumina adaptor and a T7 promoter overhang. ERCC spike-ins are added at lysis.",
+      "product": "gDNA (unmodified double-stranded genome):\n5'- ...genomic DNA... -3'\n3'- ...genomic DNA... -5'\n\nFirst-strand cDNA (from mRNA):\n5'- [ILLUMINA_ADAPTOR][T7_PROMOTER][CELL_BARCODE](T)n[CDNA] -3'\n                                              3'- (A)n...mRNA...cap -5'"
+    },
+    {
+      "step": 2,
+      "title": "Quasilinear whole-genome amplification with Ad-2 (7 rounds)",
+      "summary": "gDNA and single-stranded cDNA are co-amplified by 7 cycles of MALBAC-style quasilinear amplification using the random-priming adaptor Ad-2.",
+      "note": "Bst large fragment + Pyrophage 3173 exo- randomly prime both templates with Ad-2 (27-nt common + 8N). Most short (0.5-2.5 kb) amplicons carry Ad-2 at both ends; a minority of cDNA-derived amplicons carry Ad-2 at one end and Ad-1x at the other. The Ad-2 priming position gives each cDNA molecule a length-based identifier.",
+      "product": "Majority amplicon (gDNA- or cDNA-derived, Ad-2 both ends):\n5'- GTGAGTGATGGTTGAGGTAGTGTGGAGNNN[insert]NNNCTCCACACTACCTCAACCATCACTCAC -3'\n\nMinority cDNA-derived amplicon (Ad-2 one end, Ad-1x other):\n5'- GTGAGTGATGGTTGAGGTAGTGTGGAGNNN[CDNA](T)n[CELL_BARCODE][T7_PROMOTER][ILLUMINA_ADAPTOR] -3'"
+    },
+    {
+      "step": 3,
+      "title": "Split sample into gDNA and mRNA halves",
+      "summary": "After 7 rounds of quasilinear amplification the reaction is divided in two, processed separately for gDNA and mRNA sequencing.",
+      "note": "No physical separation of nucleic acids occurred before amplification; the split simply routes half toward genomic-DNA library prep and half toward transcriptome (IVT) library prep.",
+      "product": "Half A -> gDNA branch (steps 4-7)\nHalf B -> mRNA branch (steps 8-11)"
+    },
+    {
+      "step": 4,
+      "title": "gDNA branch: PCR amplification with P2 (21 cycles)",
+      "summary": "The gDNA half is PCR-amplified for 21 cycles with primer P2 against the Ad-2 common sequence.",
+      "note": "Deep VentR (exo-) exponentially amplifies the Ad-2-flanked amplicons.",
+      "product": "5'- GTGAGTGATGGTTGAGGTAGTGTGGAGNNN[genomic insert]NNNCTCCACACTACCTCAACCATCACTCAC -3'\n3'- CACTCACTACCAACTCCATCACACCTCNNN[genomic insert]NNNGAGGTGTGATGGAGTTGGTAGTGAGTG -5'"
+    },
+    {
+      "step": 5,
+      "title": "gDNA branch: Ad-2 removal with biotinylated P3 PCR",
+      "summary": "A short PCR with the 5'-biotinylated primer P3 replaces adaptor Ad-2 on the gDNA products.",
+      "note": "P3 (5' biotin) primes off the Ad-2 common region; the biotin tag marks the adaptor-bearing ends for later removal.",
+      "product": "5'- [biotin]GTGAGCTGGAGTTGAGGTAGTGTGGAGNNN[genomic insert]NNNCTCCACACTACCTCAACCTCCAGCTCAC[biotin] -3'"
+    },
+    {
+      "step": 6,
+      "title": "gDNA branch: sonication & streptavidin removal of adaptor ends",
+      "summary": "Products are sheared to ~300 bp and biotinylated adaptor fragments removed on streptavidin beads, keeping internal genomic fragments.",
+      "note": "Sonication (Biorupter) to ~300 bp; Dynabeads MyOne Streptavidin C1 capture biotin-tagged Ad-2/P3 ends, and the non-biotinylated supernatant (pure genomic inserts) is retained.",
+      "product": "5'- [genomic insert ~300 bp] -3'\n3'- [genomic insert ~300 bp] -5'"
+    },
+    {
+      "step": 7,
+      "title": "gDNA branch: Illumina library preparation (NEBNext Ultra)",
+      "summary": "Sheared genomic fragments are converted into a cell-indexed Illumina library with the NEBNext Ultra DNA Library Prep Kit.",
+      "note": "End-repair, A-tailing, adapter ligation and indexing add P5, a sample index and P7 (standard TruSeq/NEBNext chemistry; exact sequences not printed).",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[Illumina R1 adaptor][CDNA/genomic insert][Illumina R2 adaptor][SAMPLE_INDEX]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    },
+    {
+      "step": 8,
+      "title": "mRNA branch: second-strand synthesis with P1",
+      "summary": "The cDNA half undergoes a single PCR cycle of mRNA-specific second-strand synthesis with primer P1.",
+      "note": "P1 (5'-CGATTGAGGCCGGTAATAC-3') generates double-stranded cDNA and restores the intact T7 promoter needed for IVT; only cDNA-derived molecules acquire this.",
+      "product": "5'- [ILLUMINA_ADAPTOR][T7_PROMOTER][CELL_BARCODE](T)n[CDNA] -3'\n3'- [ILLUMINA_ADAPTOR'][T7_PROMOTER'][CELL_BARCODE'](A)n[CDNA'] -5'"
+    },
+    {
+      "step": 9,
+      "title": "mRNA branch: in vitro transcription (IVT) to aRNA",
+      "summary": "T7 in vitro transcription linearly amplifies the double-stranded cDNA into antisense aRNA, produced only from cDNA (not gDNA).",
+      "note": "13 h T7 IVT (MessageAmp II) makes many antisense aRNA copies per cDNA; gDNA lacks a T7 promoter and is not transcribed, enriching the transcriptome fraction.",
+      "product": "aRNA (antisense, no poly-A):\n3'- [ILLUMINA_ADAPTOR][CELL_BARCODE](U)n[CDNA-antisense] -5'"
+    },
+    {
+      "step": 10,
+      "title": "mRNA branch: 3' Illumina adaptor ligation to aRNA",
+      "summary": "A 3' Illumina adaptor is ligated onto the aRNA to provide the second priming site.",
+      "note": "CEL-Seq-style ligation (ref 13) of the TruSeq small-RNA 3' adaptor to the aRNA 3' end.",
+      "product": "5'- [3' Illumina adaptor][CDNA-antisense](U)n[CELL_BARCODE][ILLUMINA_ADAPTOR] -3'   (aRNA)"
+    },
+    {
+      "step": 11,
+      "title": "mRNA branch: RT, PCR & indexed Illumina library",
+      "summary": "The adaptor-ligated aRNA is reverse-transcribed and PCR-amplified into a cell-indexed Illumina mRNA library (CEL-Seq prep).",
+      "note": "RT primes off the ligated 3' adaptor; PCR with indexed Illumina primers adds P5/P7 and a sample index, yielding the sequenceable transcriptome library.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[Illumina R1 adaptor][CELL_BARCODE][CDNA][3' Illumina/R2 adaptor][SAMPLE_INDEX]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (cell barcode; left mate)",
+      "primer": "Illumina Read 1 sequencing primer (TruSeq Read 1 region of Ad-1x; sequence per CEL-Seq ref 13, not printed)",
+      "template": "top",
+      "cycles": 100,
+      "note": "The left mate reads the cell-specific barcode carried by Ad-1x, identifying the cell of origin. The Read 1 primer anneals in the TruSeq Read 1 region and extends rightward through the barcode. 100 bp paired-end on Illumina HiSeq 2500. Internal adaptor/barcode segments are placeholders because their sequences are deferred to CEL-Seq and not printed in the DR-Seq documents; only the P5/P7 flanks are known and shown base-paired.",
+      "diagram": "                                 Illumina Read 1 sequencing primer\n                                 5'-[TruSeq Read 1]------------------------------------------->  (reads barcode)\n5'- AATGATACGGCGACCACCGAGATCTACAC[TruSeq Read 1 ][CELL_BARCODE ][cDNA insert ]...[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[TruSeq Read 1'][CELL_BARCODE'][cDNA insert']...[i7']TAGAGCATACGGCAGAAGACGAAC -5'"
+    },
+    {
+      "read": "Read 2 (cDNA / transcript 3' end; right mate)",
+      "primer": "Illumina Read 2 sequencing primer (3' TruSeq adaptor ligated to aRNA; sequence per CEL-Seq ref 13, not printed)",
+      "template": "bottom",
+      "cycles": 100,
+      "note": "The right mate reads the 3' end of the transcript. The Read 2 primer anneals in the TruSeq Read 2 region and extends leftward across the cDNA insert; residual Ad-2 sequence is trimmed computationally and the first mapped coordinate becomes the length-based identifier used to collapse PCR duplicates. 100 bp paired-end.",
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[TruSeq Read 1 ][CELL_BARCODE ][cDNA insert ][TruSeq Read 2 ]...[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[TruSeq Read 1'][CELL_BARCODE'][cDNA insert'][TruSeq Read 2']...[i7']TAGAGCATACGGCAGAAGACGAAC -5'\n(reads transcript)  <-------------------------------------[TruSeq Read 2]-5'"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "DR-Seq",
+  "description": "DR-Seq (gDNA-mRNA sequencing) simultaneously quantifies the genome and transcriptome of the same single cell without physically separating nucleic acids before amplification. A single hand-picked cell is lysed and its mRNA reverse-transcribed with a barcoded poly-T primer (Ad-1x) carrying a 5' Illumina adaptor and T7 promoter; gDNA and single-stranded cDNA are then co-amplified by MALBAC-style quasilinear whole-genome amplification with a random-priming adaptor (Ad-2). The sample is split: one half is PCR-amplified and made into a gDNA Illumina library for copy-number/SNV calling, the other is IVT-amplified (aRNA is produced only from cDNA) and made into a CEL-Seq-style mRNA library. Unique Ad-2 random-priming positions (\"length-based identifiers\") replace UMIs to remove PCR duplicates and count original cDNA molecules.",
+  "reference": {
+    "kind": "paper",
+    "label": "Single-cell analysis of genome and transcriptome diversity in humans",
+    "path": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4374170/",
+    "doi": "10.1038/nbt.3129"
+  },
+  "publication": {
+    "year": 2015,
+    "original_publication": {
+      "title": "Integrated genome and transcriptome sequencing of the same cell",
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/nbt.3129",
+      "url": "https://doi.org/10.1038/nbt.3129"
+    },
+    "authors": [
+      {
+        "name": "Siddharth S Dey",
+        "affiliation": "Hubrecht Institute-KNAW (Royal Netherlands Academy of Arts and Sciences), Utrecht, the Netherlands; University Medical Center Utrecht, Cancer Genomics Netherlands, Utrecht, the Netherlands"
+      },
+      {
+        "name": "Lennart Kester",
+        "affiliation": "Hubrecht Institute-KNAW, Utrecht, the Netherlands; University Medical Center Utrecht, Cancer Genomics Netherlands, Utrecht, the Netherlands"
+      },
+      {
+        "name": "Bastiaan Spanjaard",
+        "affiliation": "Hubrecht Institute-KNAW, Utrecht, the Netherlands; University Medical Center Utrecht, Utrecht, the Netherlands"
+      },
+      {
+        "name": "Magda Bienko",
+        "affiliation": "Hubrecht Institute-KNAW, Utrecht, the Netherlands; University Medical Center Utrecht, Utrecht, the Netherlands; present address: Science for Life Laboratory, Karolinska Institute, Stockholm, Sweden"
+      },
+      {
+        "name": "Alexander van Oudenaarden",
+        "corresponding": true,
+        "email": "a.vanoudenaarden@hubrecht.eu",
+        "affiliation": "Hubrecht Institute-KNAW, Utrecht, the Netherlands; University Medical Center Utrecht, Cancer Genomics Netherlands, Utrecht, the Netherlands"
+      }
+    ],
+    "throughput": {
+      "summary": "Low-throughput, plate/tube-based hand-picked single cells; ~70% single-cell amplification success (21/30 SK-BR-3, 13/18 E14). E14: mRNA from 13 cells, gDNA from 3 of them; SK-BR-3: mRNA from 21 cells, gDNA from 7. ~10,674 (E14) and 12,205 (SK-BR-3) genes detected; single-cell gDNA sequenced at 0.6-2.5x depth.",
+      "cells": "13 E14 + 21 SK-BR-3 single cells (integrated gDNA+mRNA from the same cell)",
+      "rna": "3' transcript counting via length-based identifiers; 66/92 ERCC spike-in species detected",
+      "dna": "Whole-genome copy-number and SNV calling at 0.6-2.5x single-cell depth"
+    },
+    "other": [
+      {
+        "label": "GEO accession",
+        "value": "GSE62952"
+      },
+      {
+        "label": "Quasilinear amplification",
+        "value": "7 rounds of MALBAC-style quasilinear whole-genome amplification (Bst large fragment + Pyrophage 3173 exo-)"
+      },
+      {
+        "label": "Amplicon size",
+        "value": "Short 0.5-2.5 kb amplicons; final DNA library ~300 bp"
+      },
+      {
+        "label": "Sequencer",
+        "value": "Illumina HiSeq 2500; cDNA libraries 100 bp paired-end, gDNA/CEL-Seq libraries 50 or 100 bp paired-end"
+      },
+      {
+        "label": "Cell lines",
+        "value": "Mouse E14 embryonic stem cells (mm10) and human SK-BR-3 breast cancer cells (hg19)"
+      }
+    ]
+  },
+  "modality": "DNA + RNA",
+  "method_type": "manual/tube",
+  "data_processing": {
+    "summary": "Two computational branches. mRNA: the left mate is demultiplexed by cell barcode, the right mate has the Ad-2 adaptor trimmed and is aligned to the transcriptome with BWA, and the first genomic coordinate of the right mate serves as a 'length-based identifier' to collapse PCR duplicates before RPM transcript counting. gDNA: reads are aligned to a coding-region-masked genome with BWA, PCR-duplicated, variable-binned, coverage-corrected and GC-corrected, segmented by circular binary segmentation (CBS), then calibrated against bulk to call integer copy numbers; SNVs are called with GATK.",
+    "stages": [
+      {
+        "id": "s_prep",
+        "label": "Read preprocessing"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment"
+      },
+      {
+        "id": "s_dedup",
+        "label": "Deduplication"
+      },
+      {
+        "id": "s_expr",
+        "label": "Expression quantification"
+      },
+      {
+        "id": "s_cnv",
+        "label": "Copy-number profiling"
+      },
+      {
+        "id": "s_snv",
+        "label": "Variant calling"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "reads",
+        "label": "Split gDNA and mRNA libraries",
+        "tool": "",
+        "stage": "s_prep",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "demux",
+        "label": "Demultiplex cell barcode",
+        "tool": "",
+        "stage": "s_prep",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim",
+        "label": "Trim Ad-2 adaptor",
+        "tool": "",
+        "stage": "s_prep",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "txome_align",
+        "label": "Align to transcriptome",
+        "tool": "BWA",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse",
+        "label": "Collapse duplicate reads",
+        "tool": "",
+        "stage": "s_dedup",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "rpm",
+        "label": "Build RPM count matrix",
+        "tool": "",
+        "stage": "s_expr",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "gdna_align",
+        "label": "Align to masked genome",
+        "tool": "BWA",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup_g",
+        "label": "Remove PCR duplicates",
+        "tool": "",
+        "stage": "s_dedup",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "bin",
+        "label": "Bin into variable-width bins",
+        "tool": "",
+        "stage": "s_cnv",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count",
+        "label": "Count reads per bin",
+        "tool": "",
+        "stage": "s_cnv",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "gc",
+        "label": "Correct GC bias",
+        "tool": "",
+        "stage": "s_cnv",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cbs",
+        "label": "Segment copy-number profile",
+        "tool": "circular binary segmentation (CBS)",
+        "stage": "s_cnv",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cnv",
+        "label": "Call integer copy number",
+        "tool": "",
+        "stage": "s_cnv",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "hc",
+        "label": "Call variants",
+        "tool": "GATK HaplotypeCaller",
+        "stage": "s_snv",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "vf",
+        "label": "Filter variants",
+        "tool": "GATK VariantFiltration",
+        "stage": "s_snv",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "reads",
+        "to": "demux",
+        "kind": "branch"
+      },
+      {
+        "from": "reads",
+        "to": "trim",
+        "kind": "branch"
+      },
+      {
+        "from": "reads",
+        "to": "gdna_align",
+        "kind": "branch"
+      },
+      {
+        "from": "trim",
+        "to": "txome_align",
+        "kind": "sequential"
+      },
+      {
+        "from": "txome_align",
+        "to": "collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "demux",
+        "to": "collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse",
+        "to": "rpm",
+        "kind": "sequential"
+      },
+      {
+        "from": "gdna_align",
+        "to": "dedup_g",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup_g",
+        "to": "bin",
+        "kind": "branch"
+      },
+      {
+        "from": "dedup_g",
+        "to": "hc",
+        "kind": "branch"
+      },
+      {
+        "from": "bin",
+        "to": "count",
+        "kind": "sequential"
+      },
+      {
+        "from": "count",
+        "to": "gc",
+        "kind": "sequential"
+      },
+      {
+        "from": "gc",
+        "to": "cbs",
+        "kind": "sequential"
+      },
+      {
+        "from": "cbs",
+        "to": "cnv",
+        "kind": "sequential"
+      },
+      {
+        "from": "hc",
+        "to": "vf",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "Circular binary segmentation (CBS) for copy-number breakpoint detection; median segment counts calibrated against a bulk reference to call integer copy numbers."
+  }
+}

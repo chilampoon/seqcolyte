@@ -1,0 +1,902 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "spear_atac",
+  "assay": "Spear-ATAC",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "Spear-ATAC_supplement.pdf",
+      "title": "Spear-ATAC Supplementary Information",
+      "url": "https://doi.org/10.1038/s41467-021-23213-w",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/spear_atac/Spear-ATAC_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "Spear-ATAC.xlsx",
+      "title": "Spear-ATAC.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/spear_atac/Spear-ATAC.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "Spear-ATAC.pdf",
+      "title": "Spear-ATAC.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/spear_atac/Spear-ATAC.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "osp737",
+      "name": "Universal Primer oSP737",
+      "aliases": [],
+      "role": "Universal forward primer for site-directed mutagenesis cloning of sgRNA spacers into pSP618 (primes the U6/backbone side)",
+      "kind": "single",
+      "sequence": "CAACAAGGTGGTTCTCCAAGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "100uM stock; used with the sgRNA-specific SDM primer to amplify pSP618 during whole-vector SDM cloning."
+    },
+    {
+      "oligo_id": "sgrna_specific_sdm_primer",
+      "name": "sgRNA-specific SDM primer",
+      "aliases": [],
+      "role": "Site-directed mutagenesis primer that inserts an individual sgRNA spacer; 3' portion anneals to the sgRNA scaffold constant region",
+      "kind": "assembled",
+      "sequence": "[SGRNA_SPACER:20]GTTTAAGAGCTAAGCTGGAAAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "sgRNA spacer",
+          "sequence": "[SGRNA_SPACER:20]",
+          "role": "20-nt guide spacer of interest (replaces the poly-N region)"
+        },
+        {
+          "name": "sgRNA scaffold (constant region cr1)",
+          "sequence": "GTTTAAGAGCTAAGCTGGAAAC",
+          "role": "start of the sgRNA constant scaffold; anneals to pSP618 backbone"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Template: 5'-NNNNNNNNNNNNNNNNNNNNgtttaagagctaagctggaaac-3'."
+    },
+    {
+      "oligo_id": "osp652",
+      "name": "Sanger sequencing primer oSP652",
+      "aliases": [],
+      "role": "Sanger sequencing primer to verify the cloned sgRNA spacer",
+      "kind": "single",
+      "sequence": "GTAATACGGTTATCCACGC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "100uM stock."
+    },
+    {
+      "oligo_id": "osp1735",
+      "name": "sgRNA-specific Reverse oligo oSP1735",
+      "aliases": [],
+      "role": "sgRNA-backbone-specific reverse primer spiked into the 10x GEM master mix to exponentially amplify the sgRNA fragment during in-GEM amplification",
+      "kind": "single",
+      "sequence": "GCTACATTTTACATGATAGGCTTGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "1.2 uL of 50 uM added to the 10x scATAC Master Mix. Acts as the Reverse oligo opposite the 10x barcoded Read1-complementary Forward oligo."
+    },
+    {
+      "oligo_id": "tenx_barcoded_forward_oligo",
+      "name": "10x barcoded Forward oligo (gel bead scATAC oligo)",
+      "aliases": [],
+      "role": "Gel-bead oligo complementary to the pre-integrated Nextera Read1 adapter; primes all ATAC (and sgRNA) fragments, adding P5 and the 10x cell barcode",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell adapter"
+        },
+        {
+          "name": "10x cell barcode",
+          "sequence": "[CELL_BARCODE:16]",
+          "role": "16-nt droplet/cell barcode from the gel bead"
+        },
+        {
+          "name": "Nextera Read 1 adapter",
+          "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+          "role": "Nextera/Tn5 Read1 (mosaic-end) sequence complementary to the pre-integrated sgRNA Read1 adapter"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Inferred 10x Genomics scATAC-seq v1 (PN-1000110) gel-bead oligo architecture; the paper states the bead carries barcoded Forward oligos complementary to the Nextera Read1 adapter. Nextera Read1 mosaic-end sequence is the canonical Tn5 adapter (named in source; sequence is standard)."
+    },
+    {
+      "oligo_id": "nextera_read1_adapter_preintegrated",
+      "name": "Pre-integrated Nextera Read1 adapter (lentiviral sgRNA)",
+      "aliases": [],
+      "role": "34-bp Nextera Read1 adapter cloned 3' of the sgRNA scaffold in pSP618 so the sgRNA amplifies with ATAC primers",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Named as a '34bp Nextera Read1 adapter' in the source; exact sequence not printed. Canonical Nextera Read1 (Tn5) adapter shown."
+    },
+    {
+      "oligo_id": "nextera_read2_adapter_preintegrated",
+      "name": "Pre-integrated Nextera Read2 adapter (lentiviral sgRNA)",
+      "aliases": [],
+      "role": "34-bp Nextera Read2 adapter cloned into a flexible region of the mouse U6 promoter (in place of the loxP site), 5' of the sgRNA spacer",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Named as a '34bp Nextera Read2 adapter' in the source; exact sequence not printed. Canonical Nextera Read2 (Tn5) adapter shown. Placed in the U6 promoter to shorten the sgRNA fragment (internal fragment 214 bp; total sgRNA fragment 362 bp)."
+    },
+    {
+      "oligo_id": "sgrna_scaffold_cr1",
+      "name": "sgRNA scaffold / constant region cr1",
+      "aliases": [],
+      "role": "Constant sgRNA scaffold (Perturb-seq cr1) between spacer and Nextera Read1 adapter; binding site for the oMCB1672 Read1 sequencing primer",
+      "kind": "single",
+      "sequence": "GTTTAAGAGCTAAGCTGGAAACAGCATAGCAAGTTTAAATAAGGCTAGTCCGTTATCAACTTGAAAAAGTGGC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reverse complement of oMCB1672; the scaffold is read (in reverse orientation) by oMCB1672 to directly sequence the adjacent spacer."
+    },
+    {
+      "oligo_id": "osp2053_bio",
+      "name": "Bio-oSP2053 (biotinylated sgRNA-specific primer)",
+      "aliases": [],
+      "role": "5' biotinylated, sgRNA-specific primer with TruSeq Read2 adapter; used for PCR1 linear amplification / biotin-tagging of sgRNA fragments out of the scATAC library",
+      "kind": "assembled",
+      "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCTAAGTATCCCTTGGAGAACCACCTTG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 2 adapter",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "Illumina TruSeq Read 2 sequence appended to the sgRNA fragment"
+        },
+        {
+          "name": "sgRNA-specific (U6/backbone)",
+          "sequence": "AAGTATCCCTTGGAGAACCACCTTG",
+          "role": "3' primer arm that anneals to the U6/backbone region adjacent to the spacer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' biotin. Run 25 cycles of linear (single-primer) amplification; enables streptavidin enrichment of sgRNA fragments."
+    },
+    {
+      "oligo_id": "osp1594",
+      "name": "oSP1594 (P5 primer)",
+      "aliases": [],
+      "role": "P5-specific forward primer for PCR2 exponential amplification of the targeted sgRNA amplicon",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Truncated P5 (matches the P5 already on the scATAC library)."
+    },
+    {
+      "oligo_id": "p7_indexed_primer",
+      "name": "Indexed P7 primer",
+      "aliases": [],
+      "role": "P7 + i7 sample-index reverse primer for PCR2; anneals to the TruSeq Read2 sequence added by oSP2053",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGTG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-nt sample index (NNNNNNNN, index of choice)"
+        },
+        {
+          "name": "TruSeq Read 2 (partial)",
+          "sequence": "GTGACTGGAGTTCAGACGTGTG",
+          "role": "anneals to the TruSeq Read2 sequence introduced by oSP2053"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Template: 5'-CAAGCAGAAGACGGCATACGAGATNNNNNNNNGTGACTGGAGTTCAGACGTGTG-3'."
+    },
+    {
+      "oligo_id": "omcb1672",
+      "name": "Custom Read1 sequencing primer oMCB1672",
+      "aliases": [],
+      "role": "Custom Read1 sequencing primer that anneals to the sgRNA scaffold and reads directly into the sgRNA spacer",
+      "kind": "single",
+      "sequence": "GCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reverse complement of the sgRNA scaffold cr1; gives a short spacer read (vs ~150 cycles if sequencing from the Nextera Read1 adapter)."
+    }
+  ],
+  "final_library": {
+    "source_label": "Spear-ATAC targeted sgRNA amplicon (final sequenceable library; sgRNA spacer + 10x cell barcode)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC[SGRNA_SPACER:20]CTGTCTCTTATACACATCTCCGAGCCCACGAGACCAAGGTGGTTCTCCAAGGGATACTTAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC[SGRNA_SPACER:20]CTGTCTCTTATACACATCTCCGAGCCCACGAGACCAAGGTGGTTCTCCAAGGGATACTTAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC[SGRNA_SPACER:20]CTGTCTCTTATACACATCTCCGAGCCCACGAGACCAAGGTGGTTCTCCAAGGGATACTTAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC[SGRNA_SPACER:20]CTGTCTCTTATACACATCTCCGAGCCCACGAGACCAAGGTGGTTCTCCAAGGGATACTTAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[CELL_BARCODE:16] = 10x cell barcode",
+      "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG = pre-integrated Nextera Read 1 adapter",
+      "GCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC = sgRNA scaffold / constant region cr1 (oMCB1672 Read 1 binding site)",
+      "[SGRNA_SPACER:20] = sgRNA spacer (perturbation identity)",
+      "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC = pre-integrated Nextera Read 2 adapter (reverse complement, embedded in U6)",
+      "CAAGGTGGTTCTCCAAGGGATACTT = U6/backbone constant (oSP2053 binding site)",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = TruSeq Read 2 adapter (appended by oSP2053)",
+      "[SAMPLE_INDEX:8] = i7 sample index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Spear-ATAC targeted sgRNA amplicon (final sequenceable library; sgRNA spacer + 10x cell barcode)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "oMCB1672 (custom sgRNA Read1 primer)",
+        "template": "bottom",
+        "cycles": 20,
+        "segments": [
+          {
+            "name": "sgRNA spacer",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 20
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Indexed P7 primer / TruSeq Read 2",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "i5 / Nextera Read 1",
+        "template": "bottom",
+        "cycles": 16,
+        "segments": [
+          {
+            "name": "10x cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 16
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Clone sgRNA spacer into pSP618 (Spear-ATAC backbone)",
+      "summary": "An individual guide spacer is inserted by site-directed mutagenesis into pSP618, whose U6-sgRNA cassette is pre-flanked with Nextera Read2 (in the U6 promoter) and Nextera Read1 (3' of the scaffold) adapters.",
+      "note": "pSP618 (derived from pMJ114; Addgene, GenBank MW852482) carries a mouse U6 promoter with a 34 bp Nextera Read2 adapter in place of the loxP site, the Perturb-seq constant region cr1, and a 34 bp Nextera Read1 adapter. Q5 whole-vector SDM with oSP737 + the sgRNA-specific primer, then KLD (kinase/ligase/DpnI).",
+      "product": "5'- [U6 promoter]--[Nextera Read2 adapter]--[SGRNA_SPACER:20]--[scaffold cr1: GTTTAAGAGCTAAGCTGGAAAC...GTGGC]--[Nextera Read1 adapter] -3'"
+    },
+    {
+      "step": 2,
+      "title": "Lentiviral transduction + FACS sort",
+      "summary": "Pooled sgRNA lentivirus is transduced at low MOI (<0.05) and sgRNA+ (BFP+) cells are FACS-sorted, giving each cell a single genome-integrated, adapter-flanked sgRNA cassette.",
+      "note": "dCas9-KRAB cell lines (K562/GM12878/MCF7). Low MOI minimizes double transduction so each cell carries one guide.",
+      "product": "genomic DNA: 5'- ...--[Nextera Read2]--[SGRNA_SPACER:20]--[scaffold cr1]--[Nextera Read1]--... -3'   (single integrant per cell)"
+    },
+    {
+      "step": 3,
+      "title": "Nuclei isolation & Tn5 transposition (scATAC)",
+      "summary": "Nuclei are isolated and hyperactive Tn5 transposes open chromatin, inserting Nextera adapters into accessible genomic DNA; the sgRNA cassette is already adapter-flanked.",
+      "note": "Standard 10x scATAC transposition; the pre-integrated adapters mean the sgRNA fragment does not depend on nearby transposition.",
+      "product": "ATAC fragment: 5'- [Nextera R1 ME][open-chromatin insert][Nextera R2 ME] -3'\nsgRNA cassette (already flanked): 5'- [Nextera R2]--[SGRNA_SPACER:20]--[scaffold cr1]--[Nextera R1] -3'"
+    },
+    {
+      "step": 4,
+      "title": "GEM generation & in-GEM amplification (15 cycles)",
+      "summary": "Nuclei are encapsulated on the 10x Controller; a bead Forward oligo (P5 + cell barcode, complementary to Nextera Read1) primes all fragments while spiked-in oSP1735 exponentially amplifies the sgRNA fragment, tagging both with the cell barcode.",
+      "note": "In-GEM linear amplification extended from 12 to 15 cycles (adds ~3 rounds of exponential sgRNA amplification). Forward oligo = P5-[CELL_BARCODE:16]-Nextera Read1; Reverse oligo = oSP1735.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG--[scaffold cr1]--[SGRNA_SPACER:20]--[U6/Read2 region] -3'\n                                                                              <-------- oSP1735 (GCTACATTTTACATGATAGGCTTGG)"
+    },
+    {
+      "step": 5,
+      "title": "Clean-ups + PCR to attach P7 / sample index (scATAC library)",
+      "summary": "After DynaBead/SPRI clean-ups, exponential PCR attaches the P7 flow-cell adapter and an i7 sample index, completing the standard 10x scATAC-seq library (which contains the barcoded sgRNA fragments).",
+      "note": "This is the finished ~150 nM scATAC-seq library; sgRNA fragments carry P5/cell barcode on the Read1 side and P7/i7 on the Read2 side.",
+      "product": "5'- P5[CELL_BARCODE:16][Nextera R1]--[scaffold cr1]--[SGRNA_SPACER:20]--[U6/Nextera R2 region]--[i7 index]--P7 -3'   (final scATAC library)"
+    },
+    {
+      "step": 6,
+      "title": "PCR1 \u2014 biotinylated linear amplification (targeted sgRNA, 25 cycles)",
+      "summary": "2.5 uL of scATAC library is split across 8 reactions and linearly amplified with the 5'-biotinylated sgRNA-specific primer oSP2053, appending a TruSeq Read2 adapter and biotin-tagging sgRNA strands.",
+      "note": "Single-primer (linear) amplification enriches sgRNA fragments before selection; 2X NEBNext, 25 cycles, MinElute clean-up.",
+      "product": "biotin-5'- GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[U6/backbone]--[SGRNA_SPACER:20]--[scaffold cr1]--[Nextera R1][CELL_BARCODE:16]P5(comp) -3'"
+    },
+    {
+      "step": 7,
+      "title": "Streptavidin enrichment / scATAC disenrichment",
+      "summary": "Biotinylated sgRNA strands are captured on Streptavidin MyOne C1 beads and washed, disenriching contaminating scATAC fragments.",
+      "note": "B&W buffer washes; beads resuspended in 40 uL ddH2O as PCR2 input. Biotin selection sharply increases targeted-amplification specificity.",
+      "product": "[bead]~biotin-5'- [TruSeq R2][U6/backbone]--[SGRNA_SPACER:20]--[scaffold cr1]--[Nextera R1][CELL_BARCODE:16]P5(comp) -3'"
+    },
+    {
+      "step": 8,
+      "title": "PCR2 \u2014 attach P5 / P7+index (targeted sgRNA amplicon, 15 cycles)",
+      "summary": "Bead-bound sgRNA fragments are exponentially amplified with oSP1594 (P5) and the indexed P7 primer (which anneals to the TruSeq Read2 added in PCR1), yielding the final targeted sgRNA sequencing library.",
+      "note": "8x100 uL reactions, 15 cycles; supernatant collected after magnet, MinElute clean-up, KAPA quant. Product = final_library.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC[SGRNA_SPACER:20]CTGTCTCTTATACACATCTCCGAGCCCACGAGACCAAGGTGGTTCTCCAAGGGATACTTAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (sgRNA spacer)",
+      "primer": "oMCB1672 (custom sgRNA Read1 primer, sequence = sgRNA scaffold cr1)",
+      "template": "bottom",
+      "cycles": 20,
+      "note": "oMCB1672 is identical to the top-strand scaffold cr1, so it anneals to the bottom strand and extends rightward directly into the 20-nt sgRNA spacer (perturbation identity). Sequencing from the Nextera Read1 adapter instead would require a much longer, more expensive ~150-cycle read.",
+      "diagram": "                     oMCB1672 (Read1 primer, = scaffold cr1)\n                     5'-GCCACTTTTT..CTTAGCTCTTAAAC------------------>  (reads spacer)\n5'- ...TGTATAAGAGACAGGCCACTTTTT..CTTAGCTCTTAAACNNNNNNNNNNNNNNNNNNNNCTGTCTCTTATACAC... -3'\n3'- ...ACATATTCTCTGTCCGGTGAAAAA..GAATCGAGAATTTGNNNNNNNNNNNNNNNNNNNNGACAGAGAATATGTG... -5'\n     [Nextera R1]     [------ sgRNA scaffold cr1 ------]|<-- spacer 20 nt -->|[Nextera R2rc]"
+    },
+    {
+      "read": "Index 1 (i7 sample index)",
+      "primer": "Index 1 sequencing primer (binds TruSeq Read 2 adapter)",
+      "template": "top",
+      "cycles": 8,
+      "note": "Reads the 8-nt sample index adjacent to P7 that identifies the Spear-ATAC sample (up to 8 samples per 10x Controller run).",
+      "diagram": "                                   Index 1 (i7) read primer -->\n                                   binds TruSeq Read 2, reads 8-nt index\n5'- ...GGGATACTTAGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...CCCTATGAATCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n       [U6]      [------ TruSeq Read 2 adapter ------]|i7 idx|[----- P7 rc -----]"
+    },
+    {
+      "read": "Index 2 (i5 / 10x cell barcode)",
+      "primer": "Cell-barcode read primer (Nextera Read 1 adapter)",
+      "template": "bottom",
+      "cycles": 16,
+      "note": "Reads the 16-nt 10x cell barcode that links each sgRNA spacer back to the matching scATAC chromatin-accessibility profile of the same nucleus. Primer = Nextera Read1 (top-strand sequence), anneals to the bottom strand and extends toward P5 across the barcode.",
+      "diagram": "                                 <-------TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-3'\n                                 (i5 cell-barcode read primer = Nextera Read 1)\n5'- AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNNNNNNNTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNNNNNNNAGCAGCCGTCGCAGTCTACACATATTCTCTGTC... -5'\n    [--------- P5 ---------]|<-- cell barcode 16 nt -->|[------ Nextera Read 1 ------]"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "Spear-ATAC",
+  "description": "Spear-ATAC (Single-cell perturbations with an accessibility read-out using scATAC-seq) is a droplet-based single-cell ATAC-seq CRISPRi screen. Cells are transduced at low MOI with a lentiviral sgRNA whose spacer is pre-flanked by Nextera Read1/Read2 adapters, then processed on the 10x Genomics scATAC-seq platform. In-GEM linear amplification tags open-chromatin fragments with a 10x cell barcode via a Read1-complementary forward oligo, while a spiked-in sgRNA-specific reverse primer (oSP1735) exponentially amplifies the integrated sgRNA fragment so the sgRNA spacer is read out directly from genomic DNA. The scATAC reads report chromatin accessibility; a separate biotin-enriched targeted amplicon reads the sgRNA spacer (perturbation identity) paired to the same cell barcode.",
+  "reference": {
+    "kind": "paper",
+    "label": "Spear-ATAC Supplementary Information",
+    "path": null,
+    "url": "https://doi.org/10.1038/s41467-021-23213-w",
+    "doi": "10.1038/s41467-021-23213-w"
+  },
+  "publication": {
+    "year": 2021,
+    "original_publication": {
+      "title": "High-throughput single-cell chromatin accessibility CRISPR screens enable unbiased identification of regulatory networks in cancer",
+      "journal": "Nature Communications",
+      "doi": "10.1038/s41467-021-23213-w",
+      "url": "https://doi.org/10.1038/s41467-021-23213-w"
+    },
+    "authors": [
+      {
+        "name": "Sarah E. Pierce",
+        "affiliation": "Department of Genetics, Stanford University School of Medicine, Stanford, CA, USA"
+      },
+      {
+        "name": "Jeffrey M. Granja",
+        "affiliation": "Department of Genetics and Center for Personal and Dynamic Regulomes, Stanford University School of Medicine, Stanford, CA, USA"
+      },
+      {
+        "name": "William J. Greenleaf",
+        "corresponding": true,
+        "email": "wjg@stanford.edu",
+        "affiliation": "Department of Genetics; Center for Personal and Dynamic Regulomes, Stanford University School of Medicine, Stanford, CA; Chan Zuckerberg Biohub, San Francisco, CA, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "Spear-ATAC profiled 104,592 cells representing 414 sgRNA knock-down populations. One 7-minute 10x Controller run processes up to 80,000 nuclei (up to 10,000 cells x 8 samples); ~35-100x higher throughput and ~20x lower cost than Perturb-ATAC (~$0.46/cell vs ~$9.80/cell).",
+      "cells": "104,592 total; pilot run captured 6,390 nuclei (48% assigned to sgRNA, n=3,045 at >80% specificity)",
+      "dna": "Paired scATAC-seq chromatin accessibility fragments + integrated sgRNA spacer fragments read from genomic DNA (no RNA readout)"
+    },
+    "statistical_model": "chromVAR background-corrected motif-accessibility deviation (Z-score) scores for TF activity; differential accessibility by binomial test (pilot/time-course, getMarkerFeatures) and Wilcoxon test (large screens); sgRNA assignment thresholded at >=20 sgRNA counts and >=0.8 specificity to the top target.",
+    "other": [
+      {
+        "label": "sgRNA readout",
+        "value": "Reads sgRNA spacer directly from genomic DNA (not RNA), unlike Perturb-ATAC/CRISPR-sciATAC"
+      },
+      {
+        "label": "Plasmid",
+        "value": "pSP618 lentiviral backbone (from pMJ114); Addgene, GenBank accession MW852482"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO GSE168851; code at github.com/GreenleafLab/SpearATAC_MS_2021"
+      },
+      {
+        "label": "sgRNA detection gain",
+        "value": "~4-fold from pre-integrated Nextera adapters; ~40-fold overall vs lentiviral integration + traditional droplet scATAC"
+      },
+      {
+        "label": "Kit",
+        "value": "10x Genomics scATAC-seq kit v1 (PN-1000110); analysis with Cell Ranger ATAC 1.2.0 and ArchR 0.9.5 on hg38"
+      }
+    ]
+  },
+  "modality": "ATAC + CRISPR",
+  "method_type": "droplet",
+  "data_processing": {
+    "summary": "Two readouts are analyzed in parallel. scATAC fragments are demultiplexed and aligned to hg38 with Cell Ranger ATAC, then processed in ArchR (tile + gene-score matrices, LSI, clustering, UMAP, chromVAR motif deviations); separately the targeted sgRNA amplicon (Read1 = spacer, Index1 = cell barcode) is aligned in R against sgRNA-spacer and cell-barcode whitelists to build a cell-by-sgRNA matrix and assign one sgRNA per cell (>=20 counts and >=0.8 specificity to the top target), and the two are joined on the shared 10x cell barcode.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment & barcode matching"
+      },
+      {
+        "id": "matrix",
+        "label": "Matrix construction"
+      },
+      {
+        "id": "qc",
+        "label": "Cell QC"
+      },
+      {
+        "id": "reduce",
+        "label": "Reduction & clustering"
+      },
+      {
+        "id": "perturb",
+        "label": "Perturbation assignment"
+      },
+      {
+        "id": "peaks",
+        "label": "Peak & motif analysis"
+      },
+      {
+        "id": "downstream",
+        "label": "Differential & enrichment"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "mkfastq",
+        "label": "Demultiplex BCL to FASTQ",
+        "tool": "Cell Ranger ATAC",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_atac",
+        "label": "Align scATAC reads to hg38",
+        "tool": "Cell Ranger ATAC",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_sgrna",
+        "label": "Match sgRNA spacer & barcode",
+        "tool": "R (ShortRead, Biostrings/PDict)",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tile",
+        "label": "Build 500-bp tile matrix",
+        "tool": "ArchR",
+        "stage": "matrix",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "genescore",
+        "label": "Build gene-score matrix",
+        "tool": "ArchR",
+        "stage": "matrix",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "sgmatrix",
+        "label": "Build cell-by-sgRNA matrix",
+        "tool": "R",
+        "stage": "matrix",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "qc",
+        "label": "Filter cells (TSS>=4, >=1k frags)",
+        "tool": "ArchR",
+        "stage": "qc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "lsi",
+        "label": "Reduce dimensions (iterative LSI)",
+        "tool": "ArchR",
+        "stage": "reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells",
+        "tool": "ArchR",
+        "stage": "reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umap",
+        "label": "Embed cells (UMAP)",
+        "tool": "ArchR/UMAP",
+        "stage": "reduce",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "assign",
+        "label": "Assign one sgRNA per cell",
+        "tool": "R",
+        "stage": "perturb",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "purity",
+        "label": "Refine assignments (PurityRatio)",
+        "tool": "ArchR",
+        "stage": "perturb",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "peakset",
+        "label": "Call reproducible peak set",
+        "tool": "ArchR",
+        "stage": "peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "peakmatrix",
+        "label": "Build peak matrix",
+        "tool": "ArchR",
+        "stage": "peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "chromvar",
+        "label": "Compute motif deviations",
+        "tool": "chromVAR",
+        "stage": "peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "diff",
+        "label": "Test differential accessibility",
+        "tool": "ArchR",
+        "stage": "downstream",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "rank",
+        "label": "Rank sgRNA:TF deviations vs sgNT",
+        "tool": "chromVAR",
+        "stage": "downstream",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "great",
+        "label": "Enrich GO/phenotype terms",
+        "tool": "GREAT",
+        "stage": "downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "network",
+        "label": "Build TF-TF motif network",
+        "tool": "",
+        "stage": "downstream",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "mkfastq",
+        "to": "align_atac",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_atac",
+        "to": "tile",
+        "kind": "branch"
+      },
+      {
+        "from": "align_atac",
+        "to": "genescore",
+        "kind": "branch"
+      },
+      {
+        "from": "tile",
+        "to": "qc",
+        "kind": "sequential"
+      },
+      {
+        "from": "qc",
+        "to": "lsi",
+        "kind": "fan_in"
+      },
+      {
+        "from": "lsi",
+        "to": "cluster",
+        "kind": "branch"
+      },
+      {
+        "from": "lsi",
+        "to": "umap",
+        "kind": "branch"
+      },
+      {
+        "from": "lsi",
+        "to": "purity",
+        "kind": "fan_in"
+      },
+      {
+        "from": "cluster",
+        "to": "peakset",
+        "kind": "sequential"
+      },
+      {
+        "from": "peakset",
+        "to": "peakmatrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "peakmatrix",
+        "to": "chromvar",
+        "kind": "branch"
+      },
+      {
+        "from": "peakmatrix",
+        "to": "diff",
+        "kind": "branch"
+      },
+      {
+        "from": "genescore",
+        "to": "diff",
+        "kind": "fan_in"
+      },
+      {
+        "from": "chromvar",
+        "to": "rank",
+        "kind": "fan_in"
+      },
+      {
+        "from": "purity",
+        "to": "rank",
+        "kind": "fan_in"
+      },
+      {
+        "from": "diff",
+        "to": "great",
+        "kind": "sequential"
+      },
+      {
+        "from": "rank",
+        "to": "network",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_sgrna",
+        "to": "sgmatrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "sgmatrix",
+        "to": "assign",
+        "kind": "sequential"
+      },
+      {
+        "from": "assign",
+        "to": "purity",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": "chromVAR background-corrected motif-deviation Z-scores; differential accessibility by binomial test (getMarkerFeatures, pilot/time-course) and Wilcoxon test (large screens); sgRNA assignment thresholded at >=20 counts and >=0.8 specificity to the top target."
+  }
+}

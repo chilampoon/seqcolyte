@@ -1,0 +1,28 @@
+{
+  "folder": "paired_seq",
+  "title": "Paired-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "Paired-seq.html",
+    "oligo_seq_recall": 0.565,
+    "oligo_seqs_matched": 13,
+    "oligo_seqs_total": 23,
+    "missed_oligos": [
+      "Barcoded_Tn5_top (BC#01 DNA)",
+      "BC#03_well_barcodes",
+      "BC#04_well_barcodes",
+      "Illumina TruSeq Read 2 primer",
+      "ME_bottom",
+      "N5XX",
+      "N7XX",
+      "Nextera Index 2 sequencing primer (i5)",
+      "RT_primer (BC#01 RNA)",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "P5 | i5(8) | Nextera-R1+ME | INSERT | ME'(NotI) | BC1(5) | linkerR1'+R02arm | BC2(7) | R02handle'+R03arm | BC3(8) | R03handle'+R04arm | BC4(7) | UMI(10) | Read2(PA-F)' | P7-linker | i7(6) | P7",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]B(pA)CCTGCAGG[CELL_BARCODE:3]GACGAATGCTCTGGCCTCTCAAGCACGTGGAT[CELL_BARCODE:7]GGTCTGAGTTCGCACACGCTCCTCGAATCC[CELL_BARCODE:7]AGTCGTACGCCGATGCGAAACATCGGCCAC[PB][CELL_BARCODE:7][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[I7_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

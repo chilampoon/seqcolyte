@@ -1,0 +1,25 @@
+{
+  "folder": "itchip_seq",
+  "title": "sc-itChIP-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "itChIP-seq.html",
+    "oligo_seq_recall": 0.3,
+    "oligo_seqs_matched": 3,
+    "oligo_seqs_total": 10,
+    "missed_oligos": [
+      "Barcoded Tn5 sequence s5",
+      "Barcoded Tn5 sequence s7",
+      "Illumina TruSeq Read 1 primer",
+      "Illumina TruSeq Read 2 primer",
+      "Indexed P7 primer",
+      "Mosaic End (ME) bottom",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "P5 [AATGATACGGCGACCACCGAGATCTACAC] - i5[SAMPLE_INDEX:8] - ConnA[TCGTCGGCAGCGTCTCCACGC] - T5[CELL_BARCODE:8] - linker+ME_A[GCGATCGAGGACGGCAGATGTGTATAAGAGACAG] - insert[CDNA] - ME_B(rc)[CTGTCTCTTATACACATCTGAGGCGGAGACGGTG] - T7[CELL_BARCODE:8] - ConnB(rc)[GGACAGGGACAGCCGAGCCCACGAGAC] - i7[SAMPLE_INDEX:8] - P7(rc)[ATCTCGTATGCCGTCTTCTGCTTG]",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTTCGTCGGCAGCGTCTCCACGC[TN5_INDEX:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[TN5_INDEX:8]GGACAGGGACAGCCGAGCCCACGAGACAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[I7_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

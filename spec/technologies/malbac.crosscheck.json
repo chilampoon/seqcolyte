@@ -1,0 +1,17 @@
+{
+  "folder": "malbac",
+  "title": "MALBAC",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "MALBAC.html",
+    "oligo_seq_recall": 1.0,
+    "oligo_seqs_matched": 2,
+    "oligo_seqs_total": 2,
+    "missed_oligos": [],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC ACACTCTTTCCCTACACGACGCTCTTCCGATCT | GTGAGTGATGGTTGAGGTAGTGTGGAG [SPACER:8] [CDNA] CTCCACACTACCTCAACCATCACTCAC | AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC [SAMPLE_INDEX:6] ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

@@ -245,7 +245,8 @@
       "note": "Inside each GEM the gel bead dissolves and releases the Beads-oligo-dT primer, whose 30 nt poly(dT)VN 3' end anneals to the poly(A) tail of a lysed cell's mRNA. Every primer from one bead carries the same 16 nt 10x Barcode; each individual primer molecule carries its own 12 nt UMI.",
       "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN\n                                                  3'- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[mRNA] -5'",
       "stage_type": "molecular_event",
-      "phase": "cdna_construction"
+      "phase": "cdna_construction",
+      "summary": "mRNA is captured on the gel-bead poly(dT) primer as GEMs form."
     },
     {
       "step": 2,
@@ -253,7 +254,8 @@
       "note": "RT Enzyme C (an MMLV-type reverse transcriptase) extends the primer along the mRNA to make barcoded first-strand cDNA. On reaching the mRNA 5' end it adds a few untemplated cytosines (CCC) to the cDNA 3' end.",
       "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCC -3'\n                                                  3'- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[mRNA] -5'",
       "stage_type": "molecular_event",
-      "phase": "cdna_construction"
+      "phase": "cdna_construction",
+      "summary": "GEM-RT makes barcoded first-strand cDNA."
     },
     {
       "step": 3,
@@ -261,7 +263,8 @@
       "note": "The three terminal riboguanosines (rGrGrG) of the Template Switch Oligo base-pair with the untemplated CCC overhang, presenting a new template for the reverse transcriptase.",
       "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCC------->\n                                                                                            GGGTACATGAGACGCAACTATGGTGACGAA -5'",
       "stage_type": "molecular_event",
-      "phase": "cdna_construction"
+      "phase": "cdna_construction",
+      "summary": "The TSO anneals to the cDNA 3' C-overhang."
     },
     {
       "step": 4,
@@ -269,7 +272,8 @@
       "note": "The reverse transcriptase switches template onto the TSO and copies it, appending the TSO complement to the cDNA 3' end. The result is full-length barcoded cDNA flanked by a partial TruSeq Read 1 handle (5') and the TSO handle (3').",
       "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT -3'",
       "stage_type": "molecular_event",
-      "phase": "cdna_construction"
+      "phase": "cdna_construction",
+      "summary": "Template switching extends the transcript with the TSO handle into full-length cDNA."
     },
     {
       "step": 5,
@@ -277,7 +281,8 @@
       "note": "GEMs are broken, cDNA is purified on Dynabeads MyOne SILANE, then amplified in bulk with the cDNA Forward primer (CTACACGACGCTCTTCCGATCT) and cDNA Reverse primer (AAGCAGTGGTATCAACGCAGAG) to build sufficient mass for library construction.",
       "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE_COMP:16][UMI_COMP:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'",
       "stage_type": "laboratory_operation",
-      "phase": "cdna_construction"
+      "phase": "cdna_construction",
+      "summary": "Bulk PCR amplifies the full-length cDNA to build mass."
     },
     {
       "step": 6,
@@ -285,7 +290,8 @@
       "phase": "ont_library_prep",
       "title": "End repair & dA-tailing (ONT end-prep, NEBNext Ultra II)",
       "note": "The full-length amplified cDNA is blunted and a single 3' dA overhang is added to each end (shown as the technical token [dA_OVERHANG], not part of the biological sequence). NO fragmentation \u2014 the molecule stays full-length.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT[dA_OVERHANG] -3'\n3'- [dA_OVERHANG]GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE_COMP:16][UMI_COMP:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT[dA_OVERHANG] -3'\n3'- [dA_OVERHANG]GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE_COMP:16][UMI_COMP:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'",
+      "summary": "End repair + 3' dA-tailing prepares the amplicon for ligation (no fragmentation)."
     },
     {
       "step": 7,
@@ -307,7 +313,8 @@
           "type": "non_sequence_component",
           "sequence": null
         }
-      }
+      },
+      "summary": "ONT sequencing adapters (SQK-LSK114) are ligated directly to the full-length cDNA."
     },
     {
       "step": 8,
@@ -315,7 +322,8 @@
       "phase": "sequencing",
       "title": "Nanopore sequencing \u2014 single-strand read, either orientation",
       "note": "An ideal full-length read spans one strand of the unfragmented 10x cDNA amplicon. Raw reads enter from either end and may be truncated, may carry only one identifiable 10x terminal flank, or may be fused/chimeric \u2014 full-length origin is expected but not guaranteed. No fragmentation, P5/P7 or i7 index.",
-      "product": "Orientation A (R1-handle-first): 5'-CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT-3'\nOrientation B (TSO-first): 5'-[TSO][CDNA_RC][NB][polyA:30][UMI_RC][CELL_BARCODE_RC:16][R1_HANDLE_RC]-3'"
+      "product": "Orientation A (R1-handle-first): 5'-CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT-3'\nOrientation B (TSO-first): 5'-[TSO][CDNA_RC][NB][polyA:30][UMI_RC][CELL_BARCODE_RC:16][R1_HANDLE_RC]-3'",
+      "summary": "Each molecule is read end-to-end on the flow cell, in either orientation."
     }
   ],
   "library_sequencing": [
@@ -662,5 +670,60 @@
       "protocol_constraint": false,
       "reason": "empirical source-data / runtime filtering, not a chemistry limit"
     }
+  },
+  "title": "sc-Nanopore 10x 3' cDNA (direct ligation)",
+  "description": "Full-length single-cell 3' cDNA sequenced on Oxford Nanopore. Amplified 10x cDNA (16 nt cell barcode + 12 nt UMI) is taken through ONT end-prep and ligation-adapter attachment and read end-to-end as one long read per molecule. This is a baseline direct-ligation simulation model; it omits the biotin-enrichment / streptavidin pull-down steps of the optimized ONT workflow.",
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "ONT SST_9198 (SQK-LSK114) + 10x CG000204",
+    "path": null,
+    "url": "https://nanoporetech.com/document/single-cell-transcriptomics-with-cdna-prepared-using-10x",
+    "doi": null
+  },
+  "publication": {
+    "year": 2023,
+    "original_publication": {
+      "title": "Single-cell multi-omics defines the cell-type-specific impact of splicing aberrations in human hematopoietic clonal outgrowths",
+      "journal": "Cell Stem Cell",
+      "doi": "10.1016/j.stem.2023.07.012",
+      "url": "https://www.cell.com/cell-stem-cell/fulltext/S1934-5909(23)00257-6"
+    },
+    "authors": [
+      {
+        "name": "Mariela Cortes-Lopez",
+        "corresponding": false,
+        "email": null,
+        "affiliation": "New York Genome Center"
+      },
+      {
+        "name": "Federico Gaiti",
+        "corresponding": true,
+        "email": "federico.gaiti@uhn.ca",
+        "affiliation": "University Health Network / New York Genome Center"
+      },
+      {
+        "name": "Dan A. Landau",
+        "corresponding": true,
+        "email": "dlandau@nygenome.org",
+        "affiliation": "New York Genome Center / Weill Cornell Medicine"
+      }
+    ],
+    "throughput": {
+      "summary": null,
+      "cells": null,
+      "rna": null,
+      "dna": null
+    },
+    "statistical_model": "Linear mixed models with sample-aware permutation testing for differential splicing; Wilcoxon rank-sum, likelihood-ratio, and Fisher's exact tests.",
+    "other": [
+      {
+        "label": "Representative study / data source",
+        "value": "GoT-Splice (Cortes-Lopez et al., 2023) - the sc-Nanopore MDS dataset used as biological template."
+      },
+      {
+        "label": "Full-length read yield (paper, enriched protocol)",
+        "value": "50.4%+/-2.7 -> 77.6%+/-2.0 with biotin enrichment; the baseline direct-ligation model does not reproduce this."
+      }
+    ]
   }
 }

@@ -1,0 +1,851 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "tang_2009",
+  "assay": "Tang single-cell mRNA-Seq (SOLiD)",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "Tang_2009_original_paper.pdf",
+      "title": "mRNA-Seq whole-transcriptome analysis of a single cell",
+      "url": "https://doi.org/10.1038/nmeth.1315",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/tang_2009/Tang_2009_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "Tang_2009_supplement.pdf",
+      "title": "Tang 2009 Supplementary Text and Figures",
+      "url": "https://doi.org/10.1038/nmeth.1315",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/tang_2009/Tang_2009_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "tang2009.pdf",
+      "title": "tang2009.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/tang_2009/tang2009.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_up1",
+      "name": "UP1 (anchored poly(dT) RT primer)",
+      "aliases": [],
+      "role": "First-strand (reverse transcription) primer; 24-nt anchor + 24-nt poly(dT) that primes RT of all poly(A) mRNAs and adds a universal UP1 tail to the cDNA 5' end",
+      "kind": "assembled",
+      "sequence": "ATATGGATCCGGCGCGCCGTCGACTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "UP1 anchor",
+          "sequence": "ATATGGATCCGGCGCGCCGTCGAC",
+          "role": "universal anchor / PCR handle"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "poly(dT) mRNA capture (24 nt)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "24-nt poly(dT) tail at 3' end anneals to mRNA poly(A); 24-nt anchor becomes the universal UP1 handle."
+    },
+    {
+      "oligo_id": "oligo_up2",
+      "name": "UP2 (anchored poly(dT) second-strand primer)",
+      "aliases": [],
+      "role": "Second-strand synthesis primer; primes on the TdT-added poly(dA) tail and adds a universal UP2 tail to the second-strand cDNA",
+      "kind": "assembled",
+      "sequence": "ATATCTCGAGGGCGCGCCGGATCCTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "UP2 anchor",
+          "sequence": "ATATCTCGAGGGCGCGCCGGATCC",
+          "role": "universal anchor / PCR handle"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "poly(dT) priming on poly(dA) tail (24 nt)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_aup1",
+      "name": "AUP1 (5'-amine-blocked UP1)",
+      "aliases": [],
+      "role": "Second-round PCR primer; 5'-NH2 (C6 linker) blocked UP1 that prevents ligation of cDNA 5'-end fragments to SOLiD P1/P2 adaptors, suppressing primer-dimer carryover",
+      "kind": "assembled",
+      "sequence": "ATATGGATCCGGCGCGCCGTCGACTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' amine block",
+          "sequence": "",
+          "role": "NH2 modification via C6 linker (chemistry marker)"
+        },
+        {
+          "name": "UP1 anchor",
+          "sequence": "ATATGGATCCGGCGCGCCGTCGAC",
+          "role": "universal anchor / PCR handle"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "poly(dT) (24 nt)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table 1 lists as (NH2)ATATGGATCCGGCGCGCCGTCGACTTTTTTTTTTTTTTTTTTTTTTTT; amine covalently linked to 5' end via C6 linker."
+    },
+    {
+      "oligo_id": "oligo_aup2",
+      "name": "AUP2 (5'-amine-blocked UP2)",
+      "aliases": [],
+      "role": "Second-round PCR primer; 5'-NH2 (C6 linker) blocked UP2 that suppresses primer-dimer ligation to SOLiD adaptors",
+      "kind": "assembled",
+      "sequence": "ATATCTCGAGGGCGCGCCGGATCCTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' amine block",
+          "sequence": "",
+          "role": "NH2 modification via C6 linker (chemistry marker)"
+        },
+        {
+          "name": "UP2 anchor",
+          "sequence": "ATATCTCGAGGGCGCGCCGGATCC",
+          "role": "universal anchor / PCR handle"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "poly(dT) (24 nt)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table 1 lists as (NH2)ATATCTCGAGGGCGCGCCGGATCCTTTTTTTTTTTTTTTTTTTTTTTT."
+    },
+    {
+      "oligo_id": "oligo_fragment_library_p1_pcr_primer",
+      "name": "Fragment Library P1 PCR Primer",
+      "aliases": [],
+      "role": "SOLiD fragment-library P1 PCR/amplification primer",
+      "kind": "single",
+      "sequence": "CCACTACGCCTCCGCTTTCCTCTCTATG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_fragment_library_p2_pcr_primer",
+      "name": "Fragment Library P2 PCR Primer",
+      "aliases": [],
+      "role": "SOLiD fragment-library P2 PCR/amplification primer",
+      "kind": "single",
+      "sequence": "CTGCCCCGGGTTCCTCATTCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_fragment_library_p1_adaptor",
+      "name": "SOLiD Fragment Library P1 Adaptor",
+      "aliases": [],
+      "role": "Double-stranded P1 adaptor ligated to one end of the sheared cDNA fragment; carries the covalently-attached-bead P1 handle for emulsion PCR and sequencing priming",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SOLiD P1 adapter (5' end / top strand)",
+          "sequence": "CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT",
+          "role": "P1 sense strand"
+        },
+        {
+          "name": "SOLiD P1 adapter (3' end / bottom strand)",
+          "sequence": "ATCACCGACTGCCCATAGAGAGGAAAGCGGAGGCGTAGTGGTT",
+          "role": "P1 antisense strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_fragment_library_p2_adaptor",
+      "name": "SOLiD Fragment Library P2 Adaptor",
+      "aliases": [],
+      "role": "Double-stranded P2 adaptor ligated to the other end of the sheared cDNA fragment",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SOLiD P2 adapter (5' end)",
+          "sequence": "AGAGAATGAGGAACCCGGGGCAGTT",
+          "role": "P2 strand"
+        },
+        {
+          "name": "SOLiD P2 adapter (3' end)",
+          "sequence": "CTGCCCCGGGTTCCTCATTCTCT",
+          "role": "P2 complementary strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_p1_adaptor_multiplex",
+      "name": "P1 Adaptor (multiplex set)",
+      "aliases": [],
+      "role": "Double-stranded P1 adaptor used with the 16-barcode multiplex P2 adaptor set",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P1-Adaptor-5-end",
+          "sequence": "ATCACCGACTGCCCATAGAGAGGTT",
+          "role": "P1 strand"
+        },
+        {
+          "name": "P1-Adaptor-3-end",
+          "sequence": "CCTCTCTATGGGCAGTCGGTGAT",
+          "role": "P1 complementary strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_p2_barcode_adaptor",
+      "name": "P2 Barcode Adaptor (16-plex, multiplexed)",
+      "aliases": [],
+      "role": "Double-stranded barcoded P2 adaptor; embeds a 6-nt sample barcode between the barcode-adaptor arm and the P2 sequence, enabling up to 16 single-cell libraries per SOLiD run",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P2-Bar 5'-end (arm + [SAMPLE_INDEX:6] + P2)",
+          "sequence": "CGCCTTGGCCGTACAGCAG[SAMPLE_INDEX:6]AGAGAATGAGGAACCCGGGGCAGTT",
+          "role": "barcoded P2 strand"
+        },
+        {
+          "name": "P2-Bar 3'-end (P2 complement + barcode complement + arm complement)",
+          "sequence": "CTGCCCCGGGTTCCTCATTCTCT[SAMPLE_INDEX:6]CTGCTGTACGGCCAAGGCG",
+          "role": "barcoded P2 complementary strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "16 barcode 5'-end/3'-end pairs from Table 1. Barcode (6 nt, from the 5'-end oligo): Bar1 GGGCTT, Bar2 GGTGTG, Bar3 AAGGGG, Bar4 CCGATG, Bar5 CAACGA, Bar6 GTGCCC, Bar7 GTCTGG, Bar8 ACGGAG, Bar9 GAAGGG, Bar10 GACCGC, Bar11 CTCAGG, Bar12 AGCGTT, Bar13 CGGGTC, Bar14 CGTCTG, Bar15 TAGCGT, Bar16 GCGTTT. Adaptor arms are CGCCTTGGCCGTACAGCAG (5'-end) and CTGCTGTACGGCCAAGGCG (3'-end); 5'-end/3'-end pairs are annealed pairwise (Box 1) before ligation."
+    },
+    {
+      "oligo_id": "oligo_16barcode_library_pcr_primer_1",
+      "name": "16Barcode Library PCR Primer-1",
+      "aliases": [],
+      "role": "Multiplex-library PCR/emulsion primer; matches the P1 adaptor",
+      "kind": "single",
+      "sequence": "CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_16barcode_library_pcr_primer_2",
+      "name": "16Barcode Library PCR Primer-2",
+      "aliases": [],
+      "role": "Multiplex-library PCR/emulsion primer used for amplification during emulsion PCR",
+      "kind": "single",
+      "sequence": "CTGCCCCGGGTTCCTCATTCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    }
+  ],
+  "final_library": {
+    "source_label": "Tang single-cell mRNA-Seq SOLiD fragment library (non-barcoded)",
+    "annotated_library_sequence": "5'- CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT [CDNA] AACTGCCCCGGGTTCCTCATTCTCT -3'",
+    "library_sequence": "CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT[CDNA]AACTGCCCCGGGTTCCTCATTCTCT",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT[CDNA]AACTGCCCCGGGTTCCTCATTCTCT",
+        "source_sequence": "CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT[CDNA]AACTGCCCCGGGTTCCTCATTCTCT"
+      }
+    ],
+    "annotation_lines": [
+      "CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT = SOLiD P1 adapter (top strand)",
+      "[CDNA] = sheared cDNA insert (80-130 bp)",
+      "AACTGCCCCGGGTTCCTCATTCTCT = SOLiD P2 adapter (top-strand orientation; reverse complement of P2 5'-end oligo AGAGAATGAGGAACCCGGGGCAGTT)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Tang single-cell mRNA-Seq SOLiD fragment library (non-barcoded)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "SOLiD P1 sequencing primer",
+        "template": "top",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 50
+          }
+        ]
+      },
+      {
+        "read": "BC",
+        "primer": "SOLiD barcode primer (multiplex libraries)",
+        "template": "bottom",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "Sample barcode",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Single-cell lysis",
+      "summary": "A single manually-picked oocyte or blastomere is lysed to release its poly(A) mRNA.",
+      "note": "Mild NP-40/DTT lysis buffer with RNase inhibitors releases mRNA without destroying RT efficiency; a no-cell negative control is run in parallel.",
+      "product": "poly(A) mRNA in lysate:\n5'- [CDNA-template mRNA] AAAAAAAAAA...A -3'"
+    },
+    {
+      "step": 2,
+      "title": "First-strand cDNA synthesis (reverse transcription)",
+      "summary": "SuperScript III + UP1 anchored poly(dT) primer reverse-transcribes mRNA into first-strand cDNA.",
+      "note": "The 24-nt poly(dT) of UP1 anneals to the mRNA poly(A) tail; the 24-nt UP1 anchor becomes the cDNA 5' universal handle. 50 C, 30 min for full-length synthesis.",
+      "product": "(RT extends from UP1 across the mRNA)\n5'- ATATGGATCCGGCGCGCCGTCGAC(T)24[CDNA]------->\n                        3'-...[mRNA](A)n -5'"
+    },
+    {
+      "step": 3,
+      "title": "Free primer removal (Exonuclease I)",
+      "summary": "Exonuclease I digests unused single-stranded UP1 primer, leaving the cDNA 5' UP1 end intact.",
+      "note": "Prevents free UP1 from priming later reactions; the double-stranded/protected 5' UP1 sequence on the cDNA is preserved.",
+      "product": "5'- ATATGGATCCGGCGCGCCGTCGAC(T)24[CDNA] -3'   (free UP1 destroyed)"
+    },
+    {
+      "step": 4,
+      "title": "3' poly(A) tailing (TdT)",
+      "summary": "Terminal deoxynucleotidyl transferase adds a poly(dA) tail to the 3' end of the first-strand cDNA.",
+      "note": "dATP + TdT create a homopolymer landing pad so the UP2 poly(dT) primer can prime second-strand synthesis; RNase H removes template RNA.",
+      "product": "5'- ATATGGATCCGGCGCGCCGTCGAC(T)24[CDNA](A)n -3'"
+    },
+    {
+      "step": 5,
+      "title": "Second-strand cDNA synthesis",
+      "summary": "UP2 anchored poly(dT) primer anneals to the poly(dA) tail and extends to make second-strand cDNA.",
+      "note": "Adds the universal UP2 handle to the other end; product per protocol is 5'-UP2-(T)n-cDNA-(A)n-UP1-3'.",
+      "product": "5'- ATATCTCGAGGGCGCGCCGGATCC(T)n[CDNA](A)n GTCGACGGCGCGCCGGATCCATAT -3'\n3'- TATAGGATCCGCGCGCCCTCGAG(A)n[CDNA](T)n CAGCTGGCCGCGCGGGATCCTATA -5'"
+    },
+    {
+      "step": 6,
+      "title": "PCR amplification (20 cycles, UP1 + UP2)",
+      "summary": "Double-stranded cDNA is evenly amplified with the UP1 and UP2 primers.",
+      "note": "20 cycles, 72 C 6 min (+6 s per cycle) to preserve up-to-3-kb full-length cDNA; product flanked by UP1 and UP2 anchors.",
+      "product": "5'- ATATGGATCCGGCGCGCCGTCGAC(T)n[CDNA](A)n GGATCCGGCGCGCCCTCGAGATAT -3'\n3'- TATACCTAGGCCGCGCGGCAGCTG(A)n[CDNA](T)n CCTAGGCCGCGCGGGAGCTCTATA -5'"
+    },
+    {
+      "step": 7,
+      "title": "Second-round PCR (9 cycles, amine-blocked AUP1 + AUP2)",
+      "summary": "A portion is re-amplified with 5'-NH2-blocked AUP1/AUP2 primers.",
+      "note": "The 5'-amine (C6) blocks prevent later ligation of cDNA 5'-end fragments to the SOLiD P1/P2 adaptors, eliminating primer-dimer carryover and end bias.",
+      "product": "5'-(NH2)- ATATGGATCCGGCGCGCCGTCGAC(T)n[CDNA](A)n GGATCCGGCGCGCCCTCGAGATAT -(NH2)3'\n(0.5-3 kb amine-capped double-stranded cDNA)"
+    },
+    {
+      "step": 8,
+      "title": "Fragmentation (Covaris sonication)",
+      "summary": "Amplified cDNA is sheared to 80-130 bp fragments.",
+      "note": "Internal fragments are blunt/near-blunt double-stranded cDNA; 5'-amine-capped terminal fragments will not ligate to adaptors.",
+      "product": "5'- [CDNA fragment, 80-130 bp] -3'\n3'- [CDNA fragment, 80-130 bp] -5'"
+    },
+    {
+      "step": 9,
+      "title": "End repair",
+      "summary": "Fragment ends are polished to blunt, ligatable ends.",
+      "note": "End-It end-repair kit blunts and phosphorylates ends for adaptor ligation.",
+      "product": "5'- [CDNA] -3'\n3'- [CDNA] -5'   (blunt, repaired)"
+    },
+    {
+      "step": 10,
+      "title": "SOLiD P1 / P2 adaptor ligation",
+      "summary": "Double-stranded P1 and P2 adaptors (or barcoded P2 for multiplexing) are ligated to the fragment ends.",
+      "note": "Yields the fragment library P1-insert-P2 (~150-200 bp after 68-bp adaptor addition); barcoded P2 adds a 6-nt sample barcode for 16-plex pooling.",
+      "product": "5'- CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT [CDNA] AACTGCCCCGGGTTCCTCATTCTCT -3'"
+    },
+    {
+      "step": 11,
+      "title": "Nick translation & library amplification",
+      "summary": "Nicks at the adaptor-insert junctions are translated, then the library is PCR-amplified with P1/P2 (or 16Barcode) library primers.",
+      "note": "DNA polymerase I seals nicks; 8-16 cycles amplify the adaptor-ligated library to emulsion-PCR-ready quantity.",
+      "product": "5'- CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT [CDNA] AACTGCCCCGGGTTCCTCATTCTCT -3'"
+    },
+    {
+      "step": 12,
+      "title": "Emulsion PCR on P1 beads",
+      "summary": "Library is clonally amplified on 1-um beads bearing covalently attached P1 primers.",
+      "note": "500 pg-2 ng library mixed with 1.6 billion P1-coated beads; each bead clonally amplifies one fragment for SOLiD sequencing.",
+      "product": "bead|--5'- CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT [CDNA] AACTGCCCCGGGTTCCTCATTCTCT -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "cDNA insert read (di-base color space)",
+      "primer": "SOLiD Fragment Library P1 sequencing primer (5'-CCACTACGCCTCCGCTTTCCTCTCTATG-3')",
+      "template": "bottom",
+      "cycles": 50,
+      "note": "The only read that carries transcript identity \u2014 there is no cell barcode and no UMI (one cell = one library). The P1 sequencing primer is identical to the P1 top-strand sequence, so it anneals to the bottom strand; the polymerase copies the bottom strand and the read reports the sense (top-strand) sequence of the P1-proximal end of the sheared cDNA insert. Collected as 50 di-base color calls.",
+      "diagram": "5'- CCACTACGCCTCCGCTTTCCTCTCTATG------->\n5'- CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT NNN\u2026[cDNA insert]\u2026NNN AACTGCCCCGGGTTCCTCATTCTCT -3'\n3'- GGTGATGCGGAGGCGAAAGGAGAGATACCCGTCAGCCACTA NNN\u2026[cDNA insert]\u2026NNN TTGACGGGGCCCAAGGAGTAAGAGA -5'"
+    },
+    {
+      "read": "Sample barcode read (16-plex multiplex libraries only)",
+      "primer": "SOLiD barcode sequencing primer (anneals to the barcoded-P2 adaptor arm 5'-CGCCTTGGCCGTACAGCAG-3')",
+      "template": "top",
+      "cycles": 6,
+      "note": "Present only for libraries built with the barcoded P2 adaptor set (up to 16 single-cell libraries per run). The barcode primer anneals to the adaptor arm immediately 3' of the 6-nt sample index (top strand as template) and reads the 6-nt barcode used to demultiplex pooled libraries. Absent from the standard single-cell (non-barcoded) library.",
+      "diagram": "5'- \u2026[cDNA] AACTGCCCCGGGTTCCTCATTCTCT NNNNNN CTGCTGTACGGCCAAGGCG -3'\n3'- \u2026[cDNA] TTGACGGGGCCCAAGGAGTAAGAGA NNNNNN GACGACATGCCGGTTCCGC -5'\n                                    <\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 CGCCTTGGCCGTACAGCAG  (barcode primer anneals to the arm; reads the 6-nt sample barcode)\n                                    \u25146 nt\u2518"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "Tang single-cell mRNA-Seq (SOLiD)",
+  "description": "The first single-cell whole-transcriptome mRNA-Seq assay (Tang et al., 2009/2010). A single manually-picked mouse oocyte or blastomere is lysed and its poly(A) mRNA is reverse-transcribed with an anchored poly(dT) primer (UP1); free primer is removed, a poly(dA) tail is added to the first-strand cDNA by TdT, and a second anchored poly(dT) primer (UP2) primes second-strand synthesis. The dsDNA is evenly PCR-amplified with UP1/UP2 (20 cycles) then re-amplified with 5'-amine-blocked AUP1/AUP2 (9 cycles) to suppress primer-dimer ligation. Amplified cDNA (0.5\u20133 kb) is sonicated to 80\u2013130 bp, end-repaired, and ligated to SOLiD P1/P2 fragment-library adaptors (optionally barcoded P2 for 16-plex multiplexing), then read as 50-base color-space reads on the Applied Biosystems SOLiD system. The read captures the cDNA insert only (digital gene expression); there is no cell barcode or UMI \u2014 one cell equals one library.",
+  "reference": {
+    "kind": "paper",
+    "label": "mRNA-Seq whole-transcriptome analysis of a single cell",
+    "path": null,
+    "url": "https://doi.org/10.1038/nmeth.1315",
+    "doi": "10.1038/nmeth.1315"
+  },
+  "publication": {
+    "year": 2009,
+    "original_publication": {
+      "title": "mRNA-Seq whole-transcriptome analysis of a single cell",
+      "journal": "Nature Methods",
+      "doi": "10.1038/nmeth.1315",
+      "url": "https://doi.org/10.1038/nmeth.1315"
+    },
+    "authors": [
+      {
+        "name": "Fuchou Tang",
+        "affiliation": "Wellcome Trust/Cancer Research UK Gurdon Institute, University of Cambridge, Cambridge, UK"
+      },
+      {
+        "name": "Catalin Barbacioru",
+        "affiliation": "Molecular Cell Biology Division, Applied Biosystems, Foster City, California, USA"
+      },
+      {
+        "name": "Yangzhou Wang",
+        "affiliation": "Molecular Cell Biology Division, Applied Biosystems, Foster City, California, USA"
+      },
+      {
+        "name": "Ellen Nordman",
+        "affiliation": "Molecular Cell Biology Division, Applied Biosystems, Foster City, California, USA"
+      },
+      {
+        "name": "Clarence Lee",
+        "affiliation": "Molecular Cell Biology Division, Applied Biosystems, Foster City, California, USA"
+      },
+      {
+        "name": "Nanlan Xu",
+        "affiliation": "Molecular Cell Biology Division, Applied Biosystems, Foster City, California, USA"
+      },
+      {
+        "name": "Xiaohui Wang",
+        "affiliation": "Molecular Cell Biology Division, Applied Biosystems, Foster City, California, USA"
+      },
+      {
+        "name": "John Bodeau",
+        "affiliation": "Molecular Cell Biology Division, Applied Biosystems, Foster City, California, USA"
+      },
+      {
+        "name": "Brian B Tuch",
+        "affiliation": "Molecular Cell Biology Division, Applied Biosystems, Foster City, California, USA"
+      },
+      {
+        "name": "Asim Siddiqui",
+        "affiliation": "Molecular Cell Biology Division, Applied Biosystems, Foster City, California, USA"
+      },
+      {
+        "name": "Kaiqin Lao",
+        "corresponding": true,
+        "email": "laokq@appliedbiosystems.com",
+        "affiliation": "Molecular Cell Biology Division, Applied Biosystems, Foster City, California, USA"
+      },
+      {
+        "name": "M Azim Surani",
+        "corresponding": true,
+        "email": "as10021@mole.bio.cam.ac.uk",
+        "affiliation": "Wellcome Trust/Cancer Research UK Gurdon Institute, University of Cambridge, Cambridge, UK"
+      }
+    ],
+    "throughput": {
+      "summary": "Single-cell resolution: one manually-picked cell (oocyte or blastomere) per library; >100 million 35-/50-base reads per cell; up to 16 single-cell libraries multiplexed per SOLiD run.",
+      "cells": "1 cell per library (single blastomere or mature oocyte); ES cells contain ~10-20 pg total RNA",
+      "rna": "20 pg-1 ng total RNA equivalent; 11,920 genes detected in one four-cell blastomere (vs 7,050 by microarray); RPKM 0.2-12,000 (~5 orders of dynamic range)",
+      "dna": "20+9 cycles of PCR yield >=200 ng gel-purified cDNA (0.5-3 kb) per single cell"
+    },
+    "statistical_model": "Digital gene-expression read counting quantified as RPKM (reads per kilobase per million mapped reads) / r.p.m., with quantile normalization for between-sample comparison and Pearson correlation for reproducibility; differential expression called by fold-change with P<0.05 and FDR<0.05.",
+    "other": [
+      {
+        "label": "GEO accession",
+        "value": "GSE14605"
+      },
+      {
+        "label": "Molecule captured",
+        "value": "poly(A) mRNA only; cannot discriminate sense vs antisense; captures up to ~3 kb from the mRNA 3' end"
+      },
+      {
+        "label": "Detailed protocol",
+        "value": "Tang F. et al., Nature Protocols 5, 516-535 (2010), doi:10.1038/nprot.2009.236"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "manual/tube",
+  "data_processing": {
+    "summary": "Each 50-base di-base (color-space) SOLiD read is split into two 25-bp halves that are independently mapped to the mm9 mouse genome with Applied Biosystems' color mapping tool (\u22642 mismatches, reads hitting >10 loci discarded); the halves are extended into each other and merged, and full-length alignments are counted over UCSC RefSeq exons/transcripts/genes and quantified as RPKM. Reads that fail to align full-length are re-mapped to an exon\u2013exon junction reference for known/novel splice-junction discovery.",
+    "stages": [
+      {
+        "id": "read_prep",
+        "label": "Read preparation"
+      },
+      {
+        "id": "alignment",
+        "label": "Genome alignment"
+      },
+      {
+        "id": "quantification",
+        "label": "Quantification"
+      },
+      {
+        "id": "splice",
+        "label": "Splice-junction discovery"
+      },
+      {
+        "id": "differential",
+        "label": "Differential expression"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "split",
+        "label": "Split read into two halves",
+        "tool": "Applied Biosystems Whole Transcriptome tools",
+        "stage": "read_prep",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "map",
+        "label": "Map half-reads to mm9",
+        "tool": "Applied Biosystems color mapping tool",
+        "stage": "alignment",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "extend",
+        "label": "Extend half-reads bidirectionally",
+        "tool": "Applied Biosystems Whole Transcriptome tools",
+        "stage": "alignment",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "merge",
+        "label": "Merge into full-length alignment",
+        "tool": "Applied Biosystems Whole Transcriptome tools",
+        "stage": "alignment",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "assign",
+        "label": "Assign reads to RefSeq features",
+        "tool": "Applied Biosystems Whole Transcriptome tools",
+        "stage": "quantification",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "rpkm",
+        "label": "Quantify expression as RPKM",
+        "tool": "Applied Biosystems Whole Transcriptome tools",
+        "stage": "quantification",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "wiggle",
+        "label": "Generate coverage track",
+        "tool": "",
+        "stage": "quantification",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "junction",
+        "label": "Remap reads to junction reference",
+        "tool": "Applied Biosystems color mapping tool",
+        "stage": "splice",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "splice",
+        "label": "Discover splice junctions",
+        "tool": "",
+        "stage": "splice",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "quantnorm",
+        "label": "Quantile-normalize between samples",
+        "tool": "",
+        "stage": "differential",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dge",
+        "label": "Call DE by fold-change",
+        "tool": "",
+        "stage": "differential",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "correlation",
+        "label": "Plot sample correlation (Pearson)",
+        "tool": "",
+        "stage": "differential",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      }
+    ],
+    "edges": [
+      {
+        "from": "split",
+        "to": "map",
+        "kind": "sequential"
+      },
+      {
+        "from": "map",
+        "to": "extend",
+        "kind": "sequential"
+      },
+      {
+        "from": "extend",
+        "to": "merge",
+        "kind": "sequential"
+      },
+      {
+        "from": "merge",
+        "to": "assign",
+        "kind": "branch"
+      },
+      {
+        "from": "merge",
+        "to": "wiggle",
+        "kind": "branch"
+      },
+      {
+        "from": "merge",
+        "to": "junction",
+        "kind": "branch"
+      },
+      {
+        "from": "assign",
+        "to": "rpkm",
+        "kind": "sequential"
+      },
+      {
+        "from": "junction",
+        "to": "splice",
+        "kind": "sequential"
+      },
+      {
+        "from": "rpkm",
+        "to": "quantnorm",
+        "kind": "sequential"
+      },
+      {
+        "from": "quantnorm",
+        "to": "dge",
+        "kind": "branch"
+      },
+      {
+        "from": "quantnorm",
+        "to": "correlation",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "Digital read counting \u2192 RPKM (no parametric count distribution); reproducibility by Pearson R on quantile-normalized counts; differential expression called by fold-change (>4\u00d7 up / <0.25\u00d7 down) at P<0.05 and FDR<0.05."
+  }
+}

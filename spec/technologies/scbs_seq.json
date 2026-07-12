@@ -1,0 +1,647 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "scbs_seq",
+  "assay": "scBS-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "scBS-seq_detailed_protocol.pdf",
+      "title": "Genome-wide base-resolution mapping of DNA methylation in single cells using scBS-seq",
+      "url": "https://doi.org/10.1038/nprot.2016.187",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scbs_seq/scBS-seq_detailed_protocol.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_NIHMS59406-supplement-Supp_Table_2.xlsx",
+      "title": "Single-cell genome-wide bisulfite sequencing for assessing epigenetic heterogeneity",
+      "url": "https://doi.org/10.1038/nmeth.3035",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scbs_seq/supplementary_NIHMS59406-supplement-Supp_Table_2.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_NIHMS59406-supplement-Supp_Table_1.xlsx",
+      "title": "Single-cell genome-wide bisulfite sequencing for assessing epigenetic heterogeneity",
+      "url": "https://doi.org/10.1038/nmeth.3035",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scbs_seq/supplementary_NIHMS59406-supplement-Supp_Table_1.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_NIHMS59406-supplement-2.pdf",
+      "title": "Single-cell genome-wide bisulfite sequencing for assessing epigenetic heterogeneity",
+      "url": "https://doi.org/10.1038/nmeth.3035",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scbs_seq/supplementary_NIHMS59406-supplement-2.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_NIHMS59406-supplement-1.doc",
+      "title": "Single-cell genome-wide bisulfite sequencing for assessing epigenetic heterogeneity",
+      "url": "https://doi.org/10.1038/nmeth.3035",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scbs_seq/supplementary_NIHMS59406-supplement-1.doc",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "scBS-seq_iPCRTag_primers.pdf",
+      "title": "scBS-seq iPCRTag primer sequences",
+      "url": "https://doi.org/10.1038/nprot.2016.187",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scbs_seq/scBS-seq_iPCRTag_primers.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "scBS-seq.pdf",
+      "title": "scBS-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scbs_seq/scBS-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "preamp_oligo",
+      "name": "Preamp Oligo (oligo 1)",
+      "aliases": [],
+      "role": "First-strand random-priming oligo carrying the P5-side Illumina adaptor (TruSeq Read 1); a 3' random hexamer anneals genome-wide to bisulfite-converted single-stranded DNA",
+      "kind": "single",
+      "sequence": "CTACACGACGCTCTTCCGATCTNNNNNN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' segment CTACACGACGCTCTTCCGATCT is the TruSeq/PE Read 1 adaptor; 3' NNNNNN is a random hexamer (25% each base). Updated protocol uses hexamers; the original scBS-seq (Smallwood 2014) used a biotinylated nonamer version (see oligo_1_original)."
+    },
+    {
+      "oligo_id": "adapter_2_oligo",
+      "name": "Adapter 2 Oligo (oligo 2)",
+      "aliases": [],
+      "role": "Second-strand random-priming oligo carrying the P7-side adaptor; a 3' random hexamer primes the first-strand product to add the second adaptor",
+      "kind": "single",
+      "sequence": "TGCTGAACCGCTCTTCCGATCTNNNNNN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' segment TGCTGAACCGCTCTTCCGATCT is the second (P7-side) adaptor; 3' NNNNNN random hexamer. Original scBS-seq used a nonamer version (see oligo_2_original)."
+    },
+    {
+      "oligo_id": "pe1_0",
+      "name": "PE1.0",
+      "aliases": [],
+      "role": "Forward library-amplification PCR primer; extends the adaptor-1 tag to the full P5 flow-cell sequence",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Illumina P5 forward primer. The 3' end (\u2026TACACGACGCTCTTCCGATCT) overlaps the Preamp Oligo adaptor. Final T is a phosphorothioate bond (denoted * in the protocol)."
+    },
+    {
+      "oligo_id": "ipcrtag",
+      "name": "iPCRTag (indexed reverse primer)",
+      "aliases": [],
+      "role": "Reverse library-amplification PCR primer; adds the P7 flow-cell sequence and an 8-bp sample index onto the adaptor-2 tag",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell binding"
+        },
+        {
+          "name": "i7 index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-bp sample/cell index (48 variants in Supplementary Table 1)"
+        },
+        {
+          "name": "linker",
+          "sequence": "GAGATCGGTCTCGGCATTCC",
+          "role": "spacer read by the custom iTag sequencing primer"
+        },
+        {
+          "name": "adapter_2_anneal",
+          "sequence": "TGCTGAACCGCTCTTCCGATCT",
+          "role": "anneals to the Adapter 2 tag; final T phosphorothioate"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "48 indexed primers (iPCRtag 1-48). Index read = reverse-complement of the 8-bp XXXXXXXX portion. Examples: iPCRtag1 index AACGTGAT -> read ATCACGTT; iPCRtag2 AAACATCG -> CGATGTTT; iPCRtag3 ATGCCTAA -> TTAGGCAT; iPCRtag4 AGTGGTCA -> TGACCACT."
+    },
+    {
+      "oligo_id": "itag_sequencing_primer",
+      "name": "iTag sequencing primer",
+      "aliases": [],
+      "role": "Custom index-read sequencing primer used to read the 8-bp iPCRTag index",
+      "kind": "single",
+      "sequence": "AAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Anneals within the adaptor-2/iPCRTag region and reads the index. Required when pooling libraries; standard Illumina i7 index primer does not sit at this position."
+    },
+    {
+      "oligo_id": "oligo_1_original",
+      "name": "Oligo 1 (original scBS-seq, biotinylated nonamer)",
+      "aliases": [],
+      "role": "First-strand random-priming oligo with 5' biotin and a 3' random nonamer (original Smallwood 2014 method)",
+      "kind": "single",
+      "sequence": "CTACACGACGCTCTTCCGATCTNNNNNNNNN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Written as (Biotin)CTACACGACGCTCTTCCGATCTNNNNNNNNN. 5' biotin enabled streptavidin capture; the updated protocol replaced capture with SPRI and uses a hexamer (see preamp_oligo)."
+    },
+    {
+      "oligo_id": "oligo_2_original",
+      "name": "Oligo 2 (original scBS-seq, nonamer)",
+      "aliases": [],
+      "role": "Second-strand random-priming oligo with a 3' random nonamer (original Smallwood 2014 method)",
+      "kind": "single",
+      "sequence": "TGCTGAACCGCTCTTCCGATCTNNNNNNNNN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Nonamer version of the adaptor-2 oligo used in the original scBS-seq publication."
+    }
+  ],
+  "final_library": {
+    "source_label": "scBS-seq final PBAT library (Clark et al. 2017 Nat Protoc; Smallwood et al. 2014 Nat Methods)",
+    "annotated_library_sequence": "P5[AATGATACGGCGACCACCGAGATCTACAC]-Read1/TruSeq[TCTTTCCCTACACGACGCTCTTCCGATCT]-[SPACER:6 random hexamer]-[CDNA bisulfite-converted genomic insert]-[SPACER:6 random hexamer]-Read2/Adapter2[AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC]-[SAMPLE_INDEX:8]-P7[ATCTCGTATGCCGTCTTCTGCTTG]",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[SPACER:6][CDNA][SPACER:6]AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "top",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[SPACER:6][CDNA][SPACER:6]AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[SPACER:6][CDNA][SPACER:6]AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "bottom",
+        "source_html": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT[SPACER:6][CDNA][SPACER:6]AGATCGGAAGAGCGGTTCAGCA...revcomp of top P5 end",
+        "source_sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT[SPACER:6][CDNA][SPACER:6]AGATCGGAAGAGCGGTTCAGCA...revcomp of top P5 end"
+      }
+    ],
+    "annotation_lines": [
+      "P5                : AATGATACGGCGACCACCGAGATCTACAC",
+      "TruSeq Read 1     : TCTTTCCCTACACGACGCTCTTCCGATCT  (from Preamp Oligo)",
+      "random hexamer    : [SPACER:6]  (random-priming site, trimmed in analysis)",
+      "insert            : [CDNA]  bisulfite-converted genomic DNA (5mC readout)",
+      "random hexamer    : [SPACER:6]  (from Adapter 2 Oligo priming)",
+      "Adapter 2 / Read2 : AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC",
+      "index (i7)        : [SAMPLE_INDEX:8]  read by custom iTag sequencing primer",
+      "P7                : ATCTCGTATGCCGTCTTCTGCTTG"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "scBS-seq final PBAT library (Clark et al. 2017 Nat Protoc; Smallwood et al. 2014 Nat Methods)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq Read 1 primer",
+        "template": "top",
+        "cycles": 100,
+        "segments": [
+          {
+            "name": "random hexamer priming site",
+            "type": "constant",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          },
+          {
+            "name": "bisulfite-converted genomic insert",
+            "type": "insert",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "iTag sequencing primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "cell/sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina Read 2 primer",
+        "template": "bottom",
+        "cycles": 100,
+        "segments": [
+          {
+            "name": "random hexamer priming site",
+            "type": "constant",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          },
+          {
+            "name": "bisulfite-converted genomic insert",
+            "type": "insert",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Single-cell collection and lysis",
+      "summary": "A single cell is collected into RLT Plus buffer, lysing it and denaturing protein in one step.",
+      "note": "FACS or mouth-pipetting into 2.5 ul Buffer RLT Plus (guanidine thiocyanate + detergent); no proteinase K needed. Optional 60 fg unmethylated lambda DNA spike-in as a bisulfite-conversion control.",
+      "product": "5'- GENOMIC DNA (double-stranded, native 5mC) -3'\n3'- GENOMIC DNA                               -5'"
+    },
+    {
+      "step": 2,
+      "title": "Bisulfite conversion",
+      "summary": "Bisulfite treatment deaminates unmethylated C to U while fragmenting the DNA into single strands.",
+      "note": "Performed directly on lysate (Zymo/Imprint reagent). Methylated C is protected; unmethylated C -> U (read as T). DNA becomes single-stranded and fragmented.",
+      "product": "5'- ...T G U T G U... (ssDNA, unmethyl-C -> U; 5mC retained) -3'"
+    },
+    {
+      "step": 3,
+      "title": "First-strand synthesis / adaptor 1 tagging (x5)",
+      "summary": "Preamp Oligo random hexamers prime the ssDNA and Klenow exo- extends, adding adaptor 1; repeated five times with heat denaturation.",
+      "note": "Five rounds of random priming+extension capture each locus multiple times and add the P5-side adaptor at the 5' end of each new strand.",
+      "product": "        5'- CTACACGACGCTCTTCCGATCT NNNNNN -------------------->\n                                          3'- ...converted genomic template... -5'\n  product: 5'- CTACACGACGCTCTTCCGATCT NNNNNN [copied genomic] -3'"
+    },
+    {
+      "step": 4,
+      "title": "Exonuclease I cleanup",
+      "summary": "Exonuclease I digests leftover single-stranded Preamp Oligos to prevent adaptor dimers.",
+      "note": "Removes unextended oligo 1 before adaptor-2 tagging.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT NNNNNN [copied genomic] -3'  (excess oligos removed)"
+    },
+    {
+      "step": 5,
+      "title": "SPRI (AMPure XP) purification",
+      "summary": "First-strand products are purified with AMPure XP beads kept in-tube ('with-bead' method).",
+      "note": "Removes short fragments/oligos; beads retained for subsequent steps.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT NNNNNN [copied genomic] -3'  (purified)"
+    },
+    {
+      "step": 6,
+      "title": "Second-strand synthesis / adaptor 2 tagging",
+      "summary": "Adapter 2 Oligo random hexamers prime the first-strand product and Klenow extends, adding the P7-side adaptor.",
+      "note": "One round of random priming on the adaptor-1-tagged strands installs the second adaptor, producing double-adaptor-tagged molecules.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT NNNNNN [genomic] NNNNNN AGATCGGAAGAGCGGTTCAGCA -3'\n3'- GATGTGCTGCGAGAAGGCTAGA NNNNNN [genomic] NNNNNN TGCTGAACCGCTCTTCCGATCT -5'"
+    },
+    {
+      "step": 7,
+      "title": "PEG/SPRI purification of double-tagged products",
+      "summary": "Double-tagged fragments are purified with PEG buffer + AMPure XP beads.",
+      "note": "Size-selects away oligo concatemers before amplification.",
+      "product": "5'- [adaptor1] NNNNNN [genomic] NNNNNN [adaptor2] -3'  (purified)"
+    },
+    {
+      "step": 8,
+      "title": "Indexed library amplification (PCR)",
+      "summary": "PE1.0 and an indexed iPCRTag primer amplify the fragments, completing P5, P7, and the 8-bp cell index.",
+      "note": "KAPA HiFi HotStart, ~10-14 cycles (13 typical for mouse). PE1.0 extends adaptor 1 to full P5; iPCRTag extends adaptor 2 to P7 + index.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT NNNNNN [CDNA] NNNNNN AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC [SAMPLE_INDEX:8] ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    },
+    {
+      "step": 9,
+      "title": "Final PEG/SPRI purification",
+      "summary": "The amplified library is purified and eluted, ready for QC and sequencing.",
+      "note": "Fragments >200 bp, mean 400-600 bp; quantified by KAPA qPCR (2-10 nM).",
+      "product": "5'- P5-[Read1]-[SPACER:6]-[CDNA]-[SPACER:6]-[Read2/Adapter2]-[SAMPLE_INDEX:8]-P7 -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "R1",
+      "primer": "Standard Illumina TruSeq Read 1 primer",
+      "template": "top",
+      "cycles": 100,
+      "note": "100-150 bp. Reads through the 6-nt random hexamer priming site (trimmed in analysis) then into the bisulfite-converted genomic insert, giving per-CpG methylation calls. Aligned single-end, non-directional.",
+      "diagram": "Read 1 primer: 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT------------------------->  (reads \u2192)\ntop:    5'-...ACACTCTTTCCCTACACGACGCTCTTCCGATCT NNNNNN [BS-converted genomic insert] ...-3'\nbottom: 3'-...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNN [BS-converted genomic insert] ...-5'\n                                            \u2191 random hexamer (trim 6 nt)  \u2192 5mC/CpG readout"
+    },
+    {
+      "read": "I1",
+      "primer": "iTag sequencing primer (custom)",
+      "template": "top",
+      "cycles": 8,
+      "note": "Reads the 8-bp iPCRTag sample/cell index (= reverse-complement of the primer's XXXXXXXX index portion) to demultiplex pooled single cells. Required only when libraries are pooled; standard i7 primer does not bind here.",
+      "diagram": "iTag primer: 5'-AAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC------->  (reads \u2192, 8 cyc)\ntop:    5'-...AAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC XXXXXXXX ATCTCGTATGCCGTCTTCTGCTTG-3'\nbottom: 3'-...TTCTCGCCAAGTCGTCCTTACGGCTCTGGCTAGAG XXXXXXXX TAGAGCATACGGCAGAAGACGAAC-5'\n                                             \u2191 8-nt i7 index          \u2191 P7"
+    },
+    {
+      "read": "R2",
+      "primer": "Standard Illumina Read 2 primer (binds the adapter-2 region)",
+      "template": "bottom",
+      "cycles": 100,
+      "note": "Paired-end read from the P7/adapter-2 side; first 6 bp random hexamer trimmed, remainder is bisulfite-converted genomic sequence. Even paired-end libraries are aligned single-end because PBAT generates hybrid fragments; R2 is merged with R1 for coverage.",
+      "diagram": "top:    5'-...NNNNNN [BS-converted genomic insert] NNNNNN AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCT [i7][P7]-3'\nbottom: 3'-...NNNNNN [BS-converted genomic insert] NNNNNN TCTAGCCTTCTCGCCAAGTCGTCCTTACGGCTCTGGCTAGA [i7][P7]-5'\nRead 2 primer:            (reads \u2190 into insert)  <------------- 5'-AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCT-3'\n                          anneals to bottom strand; 3' end at hexamer junction, extends into insert"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "scBS-seq",
+  "description": "scBS-seq (single-cell bisulfite sequencing) measures genome-wide DNA methylation (5mC) at single-CpG, base resolution in individual cells. It is a post-bisulfite adaptor tagging (PBAT) method: single cells are lysed and bisulfite-converted first (simultaneously fragmenting DNA and deaminating unmethylated cytosines to uracil/thymine), then Illumina adaptors are incorporated by five rounds of random-primed first-strand synthesis with an adaptor-1 oligo, followed by second-adaptor tagging and indexed PCR. Sequencing reads capture bisulfite-converted genomic sequence (methylation state at CpGs) flanked by random-priming sites, and an 8-bp iPCRTag index identifies each single cell. Libraries are nondirectional (OT:CTOT:CTOB:OB \u2248 2:3:3:2) and are sequenced single-end even when paired-end reads are collected.",
+  "reference": {
+    "kind": "paper",
+    "label": "Genome-wide base-resolution mapping of DNA methylation in single cells using scBS-seq",
+    "path": null,
+    "url": "https://doi.org/10.1038/nprot.2016.187",
+    "doi": "10.1038/nprot.2016.187"
+  },
+  "publication": {
+    "year": 2017,
+    "original_publication": {
+      "title": "Genome-wide base-resolution mapping of DNA methylation in single cells using single-cell bisulfite sequencing (scBS-seq)",
+      "journal": "Nature Protocols",
+      "doi": "10.1038/nprot.2016.187",
+      "url": "https://doi.org/10.1038/nprot.2016.187"
+    },
+    "authors": [
+      {
+        "name": "Stephen J Clark",
+        "corresponding": true,
+        "email": "stephen.clark@babraham.ac.uk",
+        "affiliation": "Epigenetics Programme, Babraham Institute, Cambridge, UK"
+      },
+      {
+        "name": "S\u00e9bastien A Smallwood",
+        "affiliation": "Epigenetics Programme, Babraham Institute, Cambridge, UK; present: Friedrich Miescher Institute for Biomedical Research, Basel, Switzerland"
+      },
+      {
+        "name": "Heather J Lee",
+        "affiliation": "Epigenetics Programme, Babraham Institute and Wellcome Trust Sanger Institute, Cambridge, UK; present: University of Newcastle, Australia"
+      },
+      {
+        "name": "Felix Krueger",
+        "affiliation": "Bioinformatics Group, Babraham Institute, Cambridge, UK"
+      },
+      {
+        "name": "Wolf Reik",
+        "corresponding": true,
+        "email": "wolf.reik@babraham.ac.uk",
+        "affiliation": "Epigenetics Programme, Babraham Institute; Wellcome Trust Sanger Institute; Centre for Trophoblast Research, University of Cambridge, UK"
+      },
+      {
+        "name": "Gavin Kelsey",
+        "corresponding": true,
+        "email": "gavin.kelsey@babraham.ac.uk",
+        "affiliation": "Epigenetics Programme, Babraham Institute; Centre for Trophoblast Research, University of Cambridge, UK"
+      }
+    ],
+    "throughput": {
+      "summary": "One library per single cell; up to 96 cells processed in parallel (Agilent Bravo). Recovers 10-20% of CpGs at 10-20 M reads, rising to a maximum 48.4% (mean ~17.7%) of genomic CpGs at saturating depth in mouse cells.",
+      "cells": "Single cells (1 cell/library); 12-20 cells per HiSeq lane; ~96 in parallel",
+      "rna": "",
+      "dna": "up to 10.1 million CpGs (48.4% of all CpGs) covered; mean 3.7 M CpGs per cell"
+    },
+    "statistical_model": "Per-window methylation modeled as a Binomial random variable with a Beta(1,1) prior (Bayesian maximum a posteriori rate estimate); mean methylation across cells modeled as a Gaussian with weighted maximum-likelihood mean and unbiased weighted (chi-squared CI) cell-to-cell variance.",
+    "other": [
+      {
+        "label": "BS conversion efficiency",
+        "value": "\u226597.7% (\u226598.5% by unmethylated mitochondrial chromosome); QC excludes libraries with CHH methylation >5%"
+      },
+      {
+        "label": "Model system",
+        "value": "Mouse E14 ESCs (2i vs serum) and MII oocytes (C57BL/6Babr); GEO accession GSE56879"
+      }
+    ]
+  },
+  "modality": "DNA methylation",
+  "method_type": "manual/tube",
+  "data_processing": {
+    "summary": "After the sequencing facility demultiplexes the 8-bp iPCRTag index, each single-cell library is processed independently: reads are QC'd, the 6-nt random-priming segment and read-through adapters are trimmed, and reads are aligned single-end in non-directional (PBAT) mode to a reference genome, deduplicated, and per-cytosine methylation calls extracted to coverage/bedGraph files.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "preprocess",
+        "label": "QC & Trimming"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "methylation",
+        "label": "Methylation Extraction"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex iPCRTag index",
+        "tool": "",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "fastqc",
+        "label": "Assess read quality",
+        "tool": "FastQC",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "trim_adapter",
+        "label": "Trim read-through adapters",
+        "tool": "Trim Galore!",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "clip_rp",
+        "label": "Clip 6 bp random-priming",
+        "tool": "Trim Galore!",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads non-directionally",
+        "tool": "Bismark",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Remove PCR duplicates",
+        "tool": "deduplicate_bismark",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "extract",
+        "label": "Extract per-cytosine methylation",
+        "tool": "bismark_methylation_extractor",
+        "stage": "methylation",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "bedgraph",
+        "label": "Generate bedGraph coverage",
+        "tool": "bismark_methylation_extractor",
+        "stage": "methylation",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "fastqc",
+        "kind": "branch"
+      },
+      {
+        "from": "demux",
+        "to": "trim_adapter",
+        "kind": "branch"
+      },
+      {
+        "from": "trim_adapter",
+        "to": "clip_rp",
+        "kind": "sequential"
+      },
+      {
+        "from": "clip_rp",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "extract",
+        "kind": "sequential"
+      },
+      {
+        "from": "extract",
+        "to": "bedgraph",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "null"
+  }
+}

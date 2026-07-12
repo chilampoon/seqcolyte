@@ -1,0 +1,22 @@
+{
+  "folder": "scifi_rna_seq",
+  "title": "scifi-RNA-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "scifi-RNA-seq.html",
+    "oligo_seq_recall": 0.733,
+    "oligo_seqs_matched": 11,
+    "oligo_seqs_total": 15,
+    "missed_oligos": [
+      "Bead barcode sequencing primer (i5)",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera N7 index primer",
+      "SCIFI_LIG384_{001..384}"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- AATGATACGGCGACCACCGAGATCTACAC [CELL_BARCODE:16 round2] TCGTCGGCAGCGTC ACACTCTTTCCCTACACGACGCTCTTCCGATCT [UMI:8] [CELL_BARCODE:11 round1] [CDNA] CTGTCTCTTATACACATCT CCGAGCCCACGAGAC [SAMPLE_INDEX:8 i7] ATCTCGTATGCCGTCTTCTGCTTG -3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:12]VTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

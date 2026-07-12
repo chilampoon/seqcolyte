@@ -1,0 +1,24 @@
+{
+  "folder": "ddseq_scatac_seq",
+  "title": "dscATAC-seq (ddSEQ SureCell)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "dscATAC.html",
+    "oligo_seq_recall": 0.5,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 12,
+    "missed_oligos": [
+      "ATAC Primer Mix forward",
+      "ATAC Primer Mix reverse",
+      "Bead-P5 adapter-Custom Read 1-CBC-A14 adapter",
+      "Illumina P5 adapter",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Read 1 custom SeqB primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "[P5] [CELL_BARCODE:7](BC1) [SPACER](phase 0-4) TATGCATGAC [CELL_BARCODE:7](BC2) AGTCACTGAG [CELL_BARCODE:7](BC3) TCGTCGGCAGCGTC(Read1) AGATGTGTATAAGAGACAG(ME) [CDNA](genomic) CTGTCTCTTATACACATCT(ME') CCGAGCCCACGAGAC(Read2') [SAMPLE_INDEX:8](i7') ATCTCGTATGCCGTCTTCTGCTTG(P7')",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:7][PHASE_BLOCK:4]TATGCATGAC[CELL_BARCODE:7]AGTCACTGAG[CELL_BARCODE:7]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

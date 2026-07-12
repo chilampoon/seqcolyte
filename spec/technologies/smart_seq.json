@@ -1,0 +1,727 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "smart_seq",
+  "assay": "Smart-Seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "supplementary_NIHMS379463-supplement-1.pdf",
+      "title": "Full-length mRNA-Seq from single-cell levels of RNA and individual circulating tumor cells",
+      "url": "https://doi.org/10.1038/nbt.2282",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/smart_seq/supplementary_NIHMS379463-supplement-1.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SMART-seq.pdf",
+      "title": "SMART-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/smart_seq/SMART-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_smart_cds_primer_ii_a",
+      "name": "SMART CDS Primer II A (tailed oligo-dT RT primer)",
+      "aliases": [],
+      "role": "Reverse-transcription priming oligo; anneals to the mRNA poly(A) tail and seeds first-strand cDNA synthesis",
+      "kind": "assembled",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SMART / IS PCR anchor",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "constant universal priming site"
+        },
+        {
+          "name": "Poly(dT)30VN",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+          "role": "poly(dT) with VN anchor that positions priming at the 5' end of the poly(A) tail (V = A/C/G)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reported as 5'-AAGCAGTGGTATCAACGCAGAGTACT(30)VN-3'; V represents A, C or G. Keep IUPAC letters V and N literal."
+    },
+    {
+      "oligo_id": "oligo_smarter_ii_a_tso",
+      "name": "SMARTer II A oligonucleotide (Template Switching Oligo, TSO)",
+      "aliases": [],
+      "role": "Template-switching oligo; its terminal riboG's base-pair with the nontemplated C's added by RT, extending the template so the RT appends a universal anchor to the 3' end of the first-strand cDNA",
+      "kind": "assembled",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACATGGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SMART / IS PCR anchor",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTACAT",
+          "role": "constant universal priming site"
+        },
+        {
+          "name": "Riboguanosines",
+          "sequence": "GGG",
+          "role": "3' rGrGrG that anneal to the CCC overhang on the cDNA (template switching)"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reported as 5'-AAGCAGTGGTATCAACGCAGAGTACATrGrGrG-3'; rGrGrG folded to GGG."
+    },
+    {
+      "oligo_id": "oligo_is_pcr_primer",
+      "name": "IS PCR primer (cDNA amplification primer)",
+      "aliases": [],
+      "role": "Single primer used for PCR pre-amplification of full-length cDNA; matches the IS anchor present at both ends of the template-switched cDNA",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reported as 5'-AAGCAGTGGTATCAACGCAGAGT-3'. A single primer amplifies both ends because the CDS primer and TSO share this sequence."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "Flow-cell grafting sequence at the 5' end of the final library (PE/TruSeq path)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Not printed in the documents; standard Illumina P5 for the 'Illumina PE adaptors' referenced by the PE protocol."
+    },
+    {
+      "oligo_id": "oligo_truseq_read1_primer",
+      "name": "Illumina TruSeq Read 1 primer",
+      "aliases": [],
+      "role": "Read 1 sequencing primer / 5' adapter of the final library (PE path)",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard TruSeq Read 1 sequence for the Illumina PE adaptors used in the 'PE' library protocol; exact sequence not printed in the documents."
+    },
+    {
+      "oligo_id": "oligo_truseq_read2_primer",
+      "name": "Illumina TruSeq Read 2 primer",
+      "aliases": [],
+      "role": "Read 2 sequencing primer / 3' adapter of the final library (PE path)",
+      "kind": "single",
+      "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard TruSeq Read 2 sequence for the Illumina PE adaptors; exact sequence not printed in the documents."
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "Flow-cell grafting sequence at the 3' end of the final library (appears as its reverse complement on the top strand)",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Not printed in the documents; standard Illumina P7. Top-strand 3' end is the reverse complement: ATCTCGTATGCCGTCTTCTGCTTG."
+    },
+    {
+      "oligo_id": "oligo_truseq_pe_adapter",
+      "name": "Illumina PE (TruSeq) adapter",
+      "aliases": [],
+      "role": "Y-shaped double-stranded adapter ligated to end-repaired, A-tailed cDNA fragments in the PE library protocol",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq adapter, top strand",
+          "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCA",
+          "role": "ligated strand (3' T-overhang partner)"
+        },
+        {
+          "name": "Partial TruSeq Read 1 / P5 branch",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "P5-proximal branch of the forked adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "The 'Illumina PE adaptors' named in the PE protocol; exact adapter oligos not printed in the documents. Sequences shown are the standard TruSeq PE adapter constants."
+    },
+    {
+      "oligo_id": "oligo_nextera_tn5_adapter",
+      "name": "Nextera Tn5 transposon adapter (Mosaic End)",
+      "aliases": [],
+      "role": "Adapter loaded on the Tn5 transposase in the alternative 'Tn5' tagmentation library protocol; simultaneously fragments cDNA and adds Nextera sequences",
+      "kind": "single",
+      "sequence": "AGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "The Nextera/Tn5 tagmentation path is described as an alternative to PE. Only the conserved 19-bp Mosaic End is given; full Nextera i5/i7 adapters are not printed in the documents."
+    }
+  ],
+  "final_library": {
+    "source_label": "Smart-Seq final Illumina library (PE / TruSeq path)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC + ACACTCTTTCCCTACACGACGCTCTTCCGATCT + [CDNA] + AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC + [SAMPLE_INDEX:6] + ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT = TruSeq Read 1 primer",
+      "[CDNA] = cDNA insert (full-length, randomly fragmented)",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = TruSeq Read 2 adapter",
+      "[SAMPLE_INDEX:6] = i7 sample index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Smart-Seq final Illumina library (PE / TruSeq path)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq Read 1 primer",
+        "template": "bottom",
+        "cycles": null,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Index sequencing primer",
+        "template": "top",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "Sample index (i7)",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina TruSeq Read 2 primer",
+        "template": "top",
+        "cycles": null,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "Illumina TruSeq Read 1 primer (5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3')",
+      "template": "bottom",
+      "note": "Primer is identical to the top strand, anneals to the bottom strand and reads rightward into one end of the cDNA insert. No cell barcode or UMI, so Read 1 is pure cDNA; read length varied by run (Supplementary Table 1).",
+      "diagram": "5'-AATGATACGGCGACCACCGAGATCTACACACACTCTTTCCCTACACGACGCTCTTCCGATCT[cDNA]-3'\n                                ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------> (Read 1 -> cDNA)\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGTGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[cDNA]-5'"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "i7 index sequencing primer (5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3')",
+      "template": "bottom",
+      "cycles": 6,
+      "note": "Primer is identical to the top-strand Read 2 adapter, anneals to the bottom strand and reads rightward across the i7 sample index (single index in the original TruSeq PE chemistry). The output is the top-strand i7 sequence.",
+      "diagram": "5'-[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'\n         GATCGGAAGAGCACACGTCTGAACTCCAGTCAC------> (i7 index read)\n3'-[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Illumina TruSeq Read 2 primer (5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3')",
+      "template": "top",
+      "note": "Primer anneals to the top-strand Read 2 adapter (its reverse complement) and reads leftward into the opposite end of the cDNA insert (paired-end), again pure cDNA. Shown below aligned 3'->5' under its binding site.",
+      "diagram": "5'-[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'\n <--------TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG (Read 2 <- cDNA)\n3'-[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "Smart-Seq",
+  "description": "Smart-Seq is a plate-based, full-length single-cell (or low-input, down to ~10 pg) mRNA-Seq method. Poly(A)+ RNA is captured by a tailed oligo(dT) CDS primer and reverse-transcribed by MMLV/SMARTScribe RT, which adds a few nontemplated C's at the 5' end of the mRNA; a SMARTer II A template-switching oligo then base-pairs with these C's so the RT copies the oligo, appending a universal anchor. The resulting full-length cDNA carries the same IS PCR sequence at both ends and is PCR pre-amplified (12\u201318 cycles), then converted to a standard Illumina library either by Covaris shearing + TruSeq (PE) adapter ligation or by Nextera Tn5 tagmentation. Because there is no cell barcode or UMI, each cell is one indexed library and the paired reads tile the full length of the cDNA insert, enabling isoform, allele and SNP analysis.",
+  "reference": {
+    "kind": "paper",
+    "label": "Full-length mRNA-Seq from single-cell levels of RNA and individual circulating tumor cells",
+    "path": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3467340/",
+    "doi": "10.1038/nbt.2282"
+  },
+  "publication": {
+    "year": 2012,
+    "original_publication": {
+      "title": "Full-length mRNA-Seq from single-cell levels of RNA and individual circulating tumor cells",
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/nbt.2282",
+      "url": "http://www.nature.com/doifinder/10.1038/nbt.2282"
+    },
+    "authors": [
+      {
+        "name": "Daniel Ramsk\u00f6ld",
+        "affiliation": "Ludwig Institute for Cancer Research, Stockholm, Sweden; Department of Cell and Molecular Biology, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Shujun Luo",
+        "affiliation": "Illumina, Inc., Hayward, California, USA"
+      },
+      {
+        "name": "Yu-Chieh Wang",
+        "affiliation": "Department of Chemical Physiology, Center for Regenerative Medicine, The Scripps Research Institute, San Diego, La Jolla, California, USA"
+      },
+      {
+        "name": "Robin Li",
+        "affiliation": "Illumina, Inc., Hayward, California, USA"
+      },
+      {
+        "name": "Qiaolin Deng",
+        "affiliation": "Ludwig Institute for Cancer Research, Stockholm, Sweden"
+      },
+      {
+        "name": "Omid R Faridani",
+        "affiliation": "Ludwig Institute for Cancer Research, Stockholm, Sweden"
+      },
+      {
+        "name": "Gregory A Daniels",
+        "affiliation": "Rebecca and John Moores Cancer Center, San Diego, La Jolla, California, USA"
+      },
+      {
+        "name": "Irina Khrebtukova",
+        "affiliation": "Illumina, Inc., Hayward, California, USA"
+      },
+      {
+        "name": "Jeanne F Loring",
+        "affiliation": "Department of Chemical Physiology, Center for Regenerative Medicine, The Scripps Research Institute, San Diego, La Jolla, California, USA"
+      },
+      {
+        "name": "Louise C Laurent",
+        "affiliation": "Department of Reproductive Medicine, University of California, San Diego, La Jolla, California, USA"
+      },
+      {
+        "name": "Gary P Schroth",
+        "affiliation": "Illumina, Inc., Hayward, California, USA"
+      },
+      {
+        "name": "Rickard Sandberg",
+        "corresponding": true,
+        "email": "rickard.sandberg@ki.se",
+        "affiliation": "Ludwig Institute for Cancer Research, Stockholm, Sweden; Department of Cell and Molecular Biology, Karolinska Institutet, Stockholm, Sweden"
+      }
+    ],
+    "throughput": {
+      "summary": "Plate/tube-based, one indexed library per cell; the study made Smart-Seq libraries from 42 individual human or mouse cells plus 64 total-RNA dilution libraries, each sequenced to typically >20 million uniquely mapping reads.",
+      "cells": "42 individual cells (single-cell resolution; ~8,000 genes detected per cell)",
+      "rna": "Applicable from 10 ng down to 10 pg total RNA (single-cell level)"
+    },
+    "statistical_model": "Single-cell gene expression treated as log-normally distributed (RPKM, log2); differential expression tested by one-way ANOVA with Tukey post-hoc and Benjamini-Hochberg FDR (no UMI count model, as reads are full-length and non-UMI).",
+    "other": [
+      {
+        "label": "GEO accession",
+        "value": "GSE38495"
+      },
+      {
+        "label": "Commercial kit",
+        "value": "Clontech SMARTer Ultra Low RNA Kit for Illumina sequencing"
+      },
+      {
+        "label": "RT enzyme",
+        "value": "SMARTScribe / MMLV reverse transcriptase"
+      },
+      {
+        "label": "PCR pre-amplification cycles",
+        "value": "12 (1 ng), 15 (100 pg), 18 (10 pg / single cell)"
+      },
+      {
+        "label": "Library prep options",
+        "value": "Covaris shearing + Illumina PE (TruSeq) ligation, or Nextera Tn5 tagmentation"
+      },
+      {
+        "label": "Sequencing instruments",
+        "value": "Illumina HiSeq 2000, GAIIx and MiSeq"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "plate-based",
+  "data_processing": {
+    "summary": "Reads from each single-cell (one indexed library per cell) are aligned to both genome and transcriptome, resolved to uniquely mapping positions, and quantified as per-gene RPKM; because reads are full-length and carry no UMI, there is no molecular collapsing. Downstream analyses cover differential expression, alternative-splicing (exon inclusion) and SNP/variant calling.",
+    "stages": [
+      {
+        "id": "ingest",
+        "label": "Ingest"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "quant",
+        "label": "Quantification"
+      },
+      {
+        "id": "analysis",
+        "label": "Expression Analysis"
+      },
+      {
+        "id": "variant",
+        "label": "Variant Calling"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "demultiplex indexed libraries",
+        "tool": "",
+        "stage": "ingest",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_genome",
+        "label": "align to genome",
+        "tool": "Bowtie",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_txome",
+        "label": "align to transcriptome",
+        "tool": "Bowtie",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "resolve_unique",
+        "label": "resolve unique mappings",
+        "tool": "",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "to_bam",
+        "label": "convert to BAM",
+        "tool": "Samtools",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "rpkm",
+        "label": "quantify gene expression (RPKM)",
+        "tool": "rpkmforgenes",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "anova",
+        "label": "run one-way ANOVA",
+        "tool": "R/Bioconductor",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tukey",
+        "label": "apply Tukey post-hoc",
+        "tool": "R/Bioconductor",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "bh_fdr",
+        "label": "correct FDR (Benjamini-Hochberg)",
+        "tool": "R/Bioconductor",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "miso",
+        "label": "estimate exon inclusion",
+        "tool": "MISO",
+        "stage": "analysis",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "svd",
+        "label": "reduce dimensions (SVD)",
+        "tool": "SVDMAN",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "cluster cells (Spearman)",
+        "tool": "scipy (hcluster)",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "bwa",
+        "label": "align reads for variants",
+        "tool": "BWA",
+        "stage": "variant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "rmdup",
+        "label": "remove duplicate reads",
+        "tool": "Samtools",
+        "stage": "variant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "reorder",
+        "label": "reorder BAM",
+        "tool": "Picard",
+        "stage": "variant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "gatk",
+        "label": "call variants jointly",
+        "tool": "GATK",
+        "stage": "variant",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "align_genome",
+        "kind": "branch"
+      },
+      {
+        "from": "demux",
+        "to": "align_txome",
+        "kind": "branch"
+      },
+      {
+        "from": "demux",
+        "to": "bwa",
+        "kind": "branch"
+      },
+      {
+        "from": "align_genome",
+        "to": "resolve_unique",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_txome",
+        "to": "resolve_unique",
+        "kind": "sequential"
+      },
+      {
+        "from": "resolve_unique",
+        "to": "to_bam",
+        "kind": "sequential"
+      },
+      {
+        "from": "to_bam",
+        "to": "rpkm",
+        "kind": "branch"
+      },
+      {
+        "from": "to_bam",
+        "to": "miso",
+        "kind": "branch"
+      },
+      {
+        "from": "rpkm",
+        "to": "anova",
+        "kind": "fan_in"
+      },
+      {
+        "from": "rpkm",
+        "to": "svd",
+        "kind": "fan_in"
+      },
+      {
+        "from": "anova",
+        "to": "tukey",
+        "kind": "sequential"
+      },
+      {
+        "from": "tukey",
+        "to": "bh_fdr",
+        "kind": "sequential"
+      },
+      {
+        "from": "svd",
+        "to": "cluster",
+        "kind": "sequential"
+      },
+      {
+        "from": "bwa",
+        "to": "rmdup",
+        "kind": "sequential"
+      },
+      {
+        "from": "rmdup",
+        "to": "reorder",
+        "kind": "sequential"
+      },
+      {
+        "from": "reorder",
+        "to": "gatk",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": "Log-normal gene expression (RPKM, log2); differential expression by one-way ANOVA with Tukey post-hoc and Benjamini-Hochberg FDR; no UMI/count collapsing because reads are full-length and non-UMI."
+  }
+}

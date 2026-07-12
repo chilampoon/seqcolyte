@@ -1,0 +1,24 @@
+{
+  "folder": "scrb_seq",
+  "title": "SCRB-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "SCRB-seq.html",
+    "oligo_seq_recall": 0.538,
+    "oligo_seqs_matched": 7,
+    "oligo_seqs_total": 13,
+    "missed_oligos": [
+      "E5V6NEXT primer",
+      "Illumina P5 adapter",
+      "Illumina TruSeq Read 1 primer",
+      "Nextera N/S5xx primer entry point (s5)",
+      "Nextera Tn5 binding site (19-bp Mosaic End (ME))",
+      "Nextera (XT) N7xx Index primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTAC | ACACTCTTTCCCTACACGACGCTCTTCCGATCT | [CELL_BARCODE:6] | [UMI:10] | TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT VN | [CDNA] | CTGTCTCTTATACACATCTCCGAGCCCACGAGAC | [SAMPLE_INDEX:8] | ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:6][UMI:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

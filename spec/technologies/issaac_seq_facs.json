@@ -1,0 +1,1038 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "issaac_seq_facs",
+  "assay": "ISSAAC-seq (FACS)",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "ISSAAC-seq_original_paper.pdf",
+      "title": "ISSAAC-seq enables sensitive and flexible multimodal profiling of chromatin accessibility and gene expression in single cells",
+      "url": "https://doi.org/10.1038/s41592-022-01601-4",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/issaac_seq_facs/ISSAAC-seq_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ISSAAC-seq.pdf",
+      "title": "ISSAAC-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/issaac_seq_facs/ISSAAC-seq.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ISSAAC-seq.xlsx",
+      "title": "ISSAAC-seq.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/issaac_seq_facs/ISSAAC-seq.xlsx",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "me_s5",
+      "name": "ME_S5 (Nextera S5 / Read 1 transposon adapter, top strand)",
+      "aliases": [],
+      "role": "Transferred strand of the Tn5 S5 (Nextera Read 1) transposon adapter; annealed to ME_Bottom to load Tn5",
+      "kind": "assembled",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera S5 (Read 1) handle",
+          "sequence": "TCGTCGGCAGCGTC",
+          "role": "Nextera Read 1 / S5 sequencing handle"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "19 bp Tn5 mosaic-end recognition sequence"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Nextera S5 tagmentation oligo. Dissolved to 100 uM and annealed with ME_Bottom to form S5_adaptor."
+    },
+    {
+      "oligo_id": "me_s7",
+      "name": "ME_S7 (Nextera S7 / Read 2 transposon adapter, top strand)",
+      "aliases": [],
+      "role": "Transferred strand of the Tn5 S7 (Nextera Read 2) transposon adapter; annealed to ME_Bottom to load Tn5",
+      "kind": "assembled",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera S7 (Read 2) handle",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "Nextera Read 2 / S7 sequencing handle"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "19 bp Tn5 mosaic-end recognition sequence"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Nextera S7 tagmentation oligo. Annealed with ME_Bottom to form S7_adaptor."
+    },
+    {
+      "oligo_id": "me_bottom",
+      "name": "ME_Bottom (non-transferred mosaic-end strand)",
+      "aliases": [],
+      "role": "Phosphorylated bottom (non-transferred) mosaic-end strand common to both S5 and S7 transposome adapters",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' phosphorylated (/5Phos/) in the protocol; reverse complement of the mosaic end AGATGTGTATAAGAGACAG."
+    },
+    {
+      "oligo_id": "s5_adaptor",
+      "name": "S5_adaptor (Tn5 S5 loaded adapter)",
+      "aliases": [],
+      "role": "Double-stranded Nextera S5 adapter (ME_S5 annealed to ME_Bottom) loaded onto Tn5 to make Tn5-S5/S7 and Tn5-S5/S5 transposomes",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Top strand (ME_S5)",
+          "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+          "role": "transferred S5/Read1 strand"
+        },
+        {
+          "name": "Bottom strand (ME_Bottom)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "non-transferred mosaic-end strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Annealed 98 C to 16 C ramp; used at 20 uM in transposome assembly."
+    },
+    {
+      "oligo_id": "s7_adaptor",
+      "name": "S7_adaptor (Tn5 S7 loaded adapter)",
+      "aliases": [],
+      "role": "Double-stranded Nextera S7 adapter (ME_S7 annealed to ME_Bottom) loaded onto Tn5 to make Tn5-S5/S7 and Tn5-S7/S7 transposomes",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Top strand (ME_S7)",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "transferred S7/Read2 strand"
+        },
+        {
+          "name": "Bottom strand (ME_Bottom)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "non-transferred mosaic-end strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "truseqr1_oligo_dt",
+      "name": "TruseqR1_oligo_dT (in situ RT primer, plate/FACS workflow)",
+      "aliases": [],
+      "role": "Reverse-transcription primer: partial TruSeq Read 1 handle + 10-bp UMI + poly(dT); primes mRNA in the nucleus with Maxima H- reverse transcriptase",
+      "kind": "assembled",
+      "sequence": "CTACACGACGCTCTTCCGATCT[UMI:10](T)30",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "partial Illumina TruSeq Read 1 handle"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:10]",
+          "role": "10-bp unique molecular identifier (stated in paper)"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "(T)30",
+          "role": "anchors to mRNA poly-A tail; exact T count per Supplementary Table 4"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used at 2 uM in the plate (FACS) RNA workflow. The paper states a partial TruSeq adapter, a 10-bp UMI and poly-T; exact poly(dT) length/anchor are in Supplementary Table 4 (not reproduced here)."
+    },
+    {
+      "oligo_id": "truseqr2_oligo_dt",
+      "name": "TruseqR2_oligo_dT (in situ RT primer, 10x droplet workflow)",
+      "aliases": [],
+      "role": "Reverse-transcription primer variant used in the 10x droplet workflow: partial TruSeq Read 2 handle + 10-bp UMI + poly(dT)",
+      "kind": "assembled",
+      "sequence": "AGACGTGTGCTCTTCCGATCT[UMI:10](T)30",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 2",
+          "sequence": "AGACGTGTGCTCTTCCGATCT",
+          "role": "partial Illumina TruSeq Read 2 handle"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:10]",
+          "role": "10-bp unique molecular identifier"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "(T)30",
+          "role": "anchors to mRNA poly-A tail"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Droplet-workflow analog of TruseqR1_oligo_dT (not used in the FACS library shown here). Exact sequence per Supplementary Table 4."
+    },
+    {
+      "oligo_id": "n7xx_primer",
+      "name": "N7xx primer (Nextera i7 well-barcode primer)",
+      "aliases": [],
+      "role": "Adds the per-well i7 cell barcode and the P7-side handle to the Nextera S7 end during in-well pre-amplification",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell handle"
+        },
+        {
+          "name": "i7 well barcode (Index 1)",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-bp per-well cell barcode"
+        },
+        {
+          "name": "Nextera S7 (Read 2) handle",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "anneals to the S7 transposon end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Present at 10 uM in the 384-well lysis buffer; each well carries a unique i7 index (scATAC i7 index plate). Read as Index 1."
+    },
+    {
+      "oligo_id": "truseq_s5_short",
+      "name": "Truseq_S5_short primer",
+      "aliases": [],
+      "role": "Extends the RT-primer TruSeq Read 1 stub to the full TruSeq Read 1 handle on the RNA library during pre-amplification",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Full Illumina TruSeq Read 1 primer; supplied at 10 uM in the lysis buffer."
+    },
+    {
+      "oligo_id": "nextra_s5_short",
+      "name": "Nextra_S5_short primer",
+      "aliases": [],
+      "role": "Nextera S5 (Read 1) short handle primer added during pre-amplification to prime the S5 end of the ATAC (and ATAC+RNA) library",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Nextera Read 1 / S5 handle; supplied at 10 uM. Added in the ATAC+RNA pre-PCR step."
+    },
+    {
+      "oligo_id": "rna_plate_s5xx",
+      "name": "RNA_plate_S5xx primer (final RNA library i5/plate-barcode primer)",
+      "aliases": [],
+      "role": "Adds P5 and the per-plate i5 barcode onto the TruSeq Read 1 end of the RNA gene-expression library",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell handle"
+        },
+        {
+          "name": "i5 plate barcode (Index 2)",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-bp per-plate sample barcode"
+        },
+        {
+          "name": "TruSeq Read 1",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "full TruSeq Read 1 handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "atac_plate_s5xx",
+      "name": "ATAC_plate_S5xx primer (final ATAC library i5/plate-barcode primer)",
+      "aliases": [],
+      "role": "Adds P5 and the per-plate i5 barcode onto the Nextera S5 end of the ATAC library",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell handle"
+        },
+        {
+          "name": "i5 plate barcode (Index 2)",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-bp per-plate sample barcode"
+        },
+        {
+          "name": "Nextera S5 (Read 1) handle",
+          "sequence": "TCGTCGGCAGCGTCAGATGTG",
+          "role": "anneals to the S5 transposon end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "illumina_p5",
+      "name": "Illumina P5 primer",
+      "aliases": [],
+      "role": "P5 flow-cell primer used in final library amplification",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "illumina_p7",
+      "name": "Illumina P7 primer",
+      "aliases": [],
+      "role": "P7 flow-cell primer used in final library amplification",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    }
+  ],
+  "final_library": {
+    "source_label": "ISSAAC-seq (FACS/plate-based) RNA gene-expression library",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC-[SAMPLE_INDEX:8]-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-[UMI:10]-(T)30-[CDNA]-CTGTCTCTTATACACATCT-CCGAGCCCACGAGAC-[SAMPLE_INDEX:8]-ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = Illumina P5 adapter",
+      "[SAMPLE_INDEX:8] = i5 plate/sample index (Index 2)",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT = Illumina TruSeq Read 1 primer",
+      "[UMI:10] = UMI",
+      "(T)30 = poly(dT) (RT primer, anneals transcript poly-A)",
+      "[CDNA] = cDNA insert",
+      "CTGTCTCTTATACACATCT = Tn5 mosaic end (reverse complement)",
+      "CCGAGCCCACGAGAC = Nextera Read 2 (S7) handle (reverse complement)",
+      "[SAMPLE_INDEX:8] = i7 well/cell barcode (Index 1)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of Illumina P7 adapter"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "ISSAAC-seq (FACS/plate-based) RNA gene-expression library",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq Read 1 primer",
+        "template": "bottom",
+        "cycles": 75,
+        "segments": [
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "cDNA",
+            "type": "insert",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Nextera i7 index primer",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 well/cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "Illumina i5 index primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 plate/cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Nextera Read 2 (S7) primer",
+        "template": "top",
+        "cycles": 75,
+        "segments": [
+          {
+            "name": "cDNA",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Tn5 transposome assembly",
+      "summary": "Anneal ME_S5/ME_S7 to ME_Bottom and load onto Tn5 to build Tn5-S5/S7, Tn5-S7/S7 and Tn5-S5/S5 transposomes.",
+      "note": "ME_S5 or ME_S7 (100 uM) is annealed to the phosphorylated ME_Bottom (98 C -> 16 C) to form the S5_adaptor and S7_adaptor duplexes, then mixed with purified Tn5.",
+      "product": "S5_adaptor:\n5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG -3'\n3'-               TCTACACATATTCTCTGTC -5'\n\nS7_adaptor:\n5'- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG -3'\n3'-                TCTACACATATTCTCTGTC -5'"
+    },
+    {
+      "step": 2,
+      "title": "In situ chromatin tagmentation (ATAC)",
+      "summary": "Tn5-S5/S7 tagments open chromatin in intact nuclei at 30 C, inserting Nextera S5 and S7 adapters.",
+      "note": "Open chromatin is fragmented and both ends receive a mosaic end plus an S5 or S7 handle, leaving a 9-bp gap on the non-transferred strand.",
+      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG XXXX...XXXX          CTGTCTCTTATACACATCT -3'\n3'-               TCTACACATATTCTCTGTC XXXX...XXXX GAGATGTGTATAAGAGACAGGGCTCGGGTGCTCTG -5'"
+    },
+    {
+      "step": 3,
+      "title": "In situ reverse transcription",
+      "summary": "TruseqR1_oligo_dT primes mRNA and Maxima H- RT synthesizes first-strand cDNA in the nucleus.",
+      "note": "The RT primer contributes a partial TruSeq Read 1 handle and a 10-bp UMI at the 5' end of the cDNA; poly(dT) anneals to the transcript poly-A tail. PEG8000 crowding boosts efficiency.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]------------->\n                                        3'- AAAA...mRNA -5'"
+    },
+    {
+      "step": 4,
+      "title": "RNA-DNA hybrid tagmentation (SHERRY)",
+      "summary": "A Tn5-S7/S7 homodimer tags the RNA-DNA hybrid, adding a mosaic end + S7 handle to the cDNA 3' end.",
+      "note": "The RNA/DNA hybrid is directly tagmented, appending the Nextera S7 (Read 2) adapter without full-length cDNA amplification or template switching.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]          CTGTCTCTTATACACATCT -3'\n3'-                                          [CDNA] GAGATGTGTATAAGAGACAGGGCTCGGGTGCTCTG -5'"
+    },
+    {
+      "step": 5,
+      "title": "EXO I digestion and gap fill-in",
+      "summary": "Thermolabile Exonuclease I removes excess primers and Maxima H- fills the 9-bp mosaic-end gaps to make fully duplex, adapter-flanked fragments.",
+      "note": "Applied in situ at 37 C to both ATAC and RNA-hybrid fragments before single-nucleus isolation.",
+      "product": "RNA-hybrid fragment (gap-filled):\n5'- CTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[UMI:10](A)30[CDNA]GACAGAGAATATGTGTAGACAGGGCTCGGGTGCTCTG -5'"
+    },
+    {
+      "step": 6,
+      "title": "FACS single-nucleus sorting into barcoded lysis plate",
+      "summary": "DAPI+ single nuclei are sorted into 384-well plates whose lysis buffer carries a unique i7 (N7xx) well barcode plus Truseq_S5_short and Nextra_S5_short primers.",
+      "note": "Each well is defined by a unique Nextera N7xx i7 index; SDS lysis releases the in-situ-processed fragments.",
+      "product": "Well contains: N7xx (P7-[i7:8]-S7 handle), Truseq_S5_short (full TruSeq R1), Nextra_S5_short (S5 handle)\n+ in-situ RNA-hybrid and ATAC fragments from one nucleus."
+    },
+    {
+      "step": 7,
+      "title": "Pre-amplification / well-barcode addition",
+      "summary": "Gap fill-in (72 C) then PCR with N7xx + Truseq_S5_short (RNA) and N7xx + Nextra_S5_short (ATAC) adds the per-well i7 barcode and completes the read handles.",
+      "note": "RNA fragments gain P7-i7-S7 on the Nextera end and the full TruSeq Read 1 on the RT-primer end; ATAC fragments gain P7-i7-S7 and the S5 handle.",
+      "product": "RNA pre-library (one strand):\n5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    },
+    {
+      "step": 8,
+      "title": "Pooling, purification and EXO I cleanup",
+      "summary": "All wells of a plate are pooled, column-purified, and residual primers are removed with thermolabile EXO I before final PCR.",
+      "note": "Plates are kept separate so a per-plate i5 barcode can be added next.",
+      "product": "Pooled per-plate RNA + ATAC pre-libraries (i7 well barcodes set; i5 plate barcode not yet added)."
+    },
+    {
+      "step": 9,
+      "title": "Final library amplification and plate-barcode addition",
+      "summary": "PCR with RNA_plate_S5xx + ATAC_plate_S5xx + Illumina P7 adds P5 and the per-plate i5 barcode, yielding separate RNA (gene-expression) and ATAC libraries.",
+      "note": "The RNA library carries P5-i5-TruSeq Read 1 on one end and S7-i7-P7 on the other; the ATAC library carries P5-i5-Nextera S5 and S7-i7-P7.",
+      "product": "RNA (gene-expression) library, top strand 5'->3':\n5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "Illumina TruSeq Read 1 primer",
+      "template": "bottom",
+      "cycles": 75,
+      "note": "Primes on the P5/TruSeq (i5) end, annealing to the bottom strand; the first 10 nt read the UMI, the remainder reads into the cDNA insert (through the poly-T anchor).",
+      "diagram": "Read 1 primer (TruSeq Read 1): 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3'\n       ACACTCTTTCCCTACACGACGCTCTTCCGATCT---------------------->\n5'- ...ACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNN(T)30[cDNA]... -3'\n3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNN(A)30[cDNA]... -5'\n                                        |<-UMI:10->|"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "Nextera i7 (Index 1) sequencing primer",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "Primes at the Nextera S7 (N7xx) end on the top strand and reads the 8-bp per-well i7 cell barcode off the bottom-strand template.",
+      "diagram": "       CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-------->\n5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                                         |<i7:8>|"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "Illumina i5 (Index 2) sequencing primer",
+      "template": "top",
+      "cycles": 8,
+      "note": "On the NextSeq 500 / NovaSeq 6000 the 8-bp per-plate i5 barcode is read from the top-strand template at the P5 end; Index 1 (i7 well) + Index 2 (i5 plate) together form the combinatorial cell barcode.",
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACACNNNNNNNNACACTCTTTCCCTACACGACGCTCTTCCGATCT... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNTGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA... -5'\n                                 |<i5:8>|\n                                 <--------ACACTCTTTCCCTACACGACGCTCTTCCGATCT"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Nextera Read 2 (S7) primer",
+      "template": "top",
+      "cycles": 75,
+      "note": "Primes on the Nextera S7 end, annealing to the top strand, and reads the cDNA insert from the Nextera side (opposite end from Read 1).",
+      "diagram": "5'- ...[cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]... -3'\n3'- ...[cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]... -5'\n    <--------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG\n             Read 2 primer (Nextera S7): 5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG-3', reads leftward into cDNA"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "ISSAAC-seq (FACS)",
+  "description": "ISSAAC-seq (in situ sequencing hetero RNA\u2013DNA-hybrid after ATAC-seq) is a plate-based (FACS) single-nucleus multi-omics method that jointly profiles chromatin accessibility and gene expression from the same nucleus. In situ, open chromatin is first tagmented by a Tn5-S5/S7 transposome (Nextera adapters); mRNA is then reverse-transcribed in the nucleus with an oligo-dT primer carrying a partial TruSeq Read 1 handle and a 10-bp UMI; the resulting RNA\u2013DNA hybrid is marked by a Tn5-S7/S7 homodimer (SHERRY chemistry). Single DAPI+ nuclei are FACS-sorted into a 384-well plate where a per-well i7 (Nextera N7xx) barcode is added, then a per-plate i5 barcode and P5/P7 are appended. The pool is split into an ATAC library (Nextera S5+S7 ends) and an RNA gene-expression library (TruSeq Read 1 + Nextera S7 ends). Read 1 reads the UMI followed by cDNA, Read 2 reads cDNA from the Nextera side, and the combinatorial cell barcode is formed from Index 1 (i7 well) + Index 2 (i5 plate).",
+  "reference": {
+    "kind": "paper",
+    "label": "ISSAAC-seq enables sensitive and flexible multimodal profiling of chromatin accessibility and gene expression in single cells",
+    "path": null,
+    "url": "https://doi.org/10.1038/s41592-022-01601-4",
+    "doi": "10.1038/s41592-022-01601-4"
+  },
+  "publication": {
+    "year": 2022,
+    "original_publication": {
+      "title": "ISSAAC-seq enables sensitive and flexible multimodal profiling of chromatin accessibility and gene expression in single cells",
+      "journal": "Nature Methods",
+      "doi": "10.1038/s41592-022-01601-4",
+      "url": "https://doi.org/10.1038/s41592-022-01601-4"
+    },
+    "authors": [
+      {
+        "name": "Wei Xu",
+        "affiliation": "Shenzhen Key Laboratory of Gene Regulation and Systems Biology, Department of Biology, School of Life Sciences, Southern University of Science and Technology, Shenzhen, China"
+      },
+      {
+        "name": "Weilong Yang",
+        "affiliation": "Southern University of Science and Technology, Shenzhen, China"
+      },
+      {
+        "name": "Yunlong Zhang",
+        "affiliation": "Southern University of Science and Technology, Shenzhen, China"
+      },
+      {
+        "name": "Yawen Chen",
+        "affiliation": "Brain Research Center and Department of Biology, School of Life Sciences, Southern University of Science and Technology, Shenzhen, China"
+      },
+      {
+        "name": "Ni Hong",
+        "affiliation": "Southern University of Science and Technology, Shenzhen, China"
+      },
+      {
+        "name": "Qian Zhang",
+        "affiliation": "Southern University of Science and Technology, Shenzhen, China"
+      },
+      {
+        "name": "Xuefei Wang",
+        "affiliation": "Southern University of Science and Technology, Shenzhen, China"
+      },
+      {
+        "name": "Yukun Hu",
+        "affiliation": "Southern University of Science and Technology, Shenzhen, China"
+      },
+      {
+        "name": "Kun Song",
+        "affiliation": "Brain Research Center and Department of Biology, School of Life Sciences, Southern University of Science and Technology, Shenzhen, China"
+      },
+      {
+        "name": "Wenfei Jin",
+        "corresponding": true,
+        "email": "jinwf@sustech.edu.cn",
+        "affiliation": "Southern University of Science and Technology, Shenzhen, China"
+      },
+      {
+        "name": "Xi Chen",
+        "corresponding": true,
+        "email": "chenx9@sustech.edu.cn",
+        "affiliation": "Southern University of Science and Technology, Shenzhen, China"
+      }
+    ],
+    "throughput": {
+      "summary": "Plate-based (FACS) workflow for limited cell numbers (384-well); >10,000 nuclei jointly profiled from mouse cortex across FACS + droplet. FACS doublet rate 4.2%.",
+      "cells": "384 wells per plate (FACS); 10,378 mouse-cortex nuclei recovered overall",
+      "rna": "Medians >17,000 total UMIs and >4,000 detected genes (E14 mESC, 30 C tagmentation)",
+      "dna": "Medians ~16,464 unique reads in peaks (ATAC, FACS mouse cortex)"
+    },
+    "statistical_model": "UMI-based digital counting quantified with STARsolo; ATAC processed with Cell Ranger ATAC / chromap; clustering by modularity-based community detection (Seurat/Signac).",
+    "other": [
+      {
+        "label": "Data availability",
+        "value": "ArrayExpress E-MTAB-11264"
+      },
+      {
+        "label": "Code",
+        "value": "https://github.com/dbrg77/ISSAAC-seq"
+      },
+      {
+        "label": "FACS sequencing recipe",
+        "value": "75 x 8 x 8 x 75 cycles (Read1 x i7 x i5 x Read2) on NextSeq 500 / NovaSeq 6000"
+      },
+      {
+        "label": "Key optimization",
+        "value": "Chromatin tagging at 30 C (not 37 C) increases RNA library quality 5-7x without harming ATAC complexity"
+      }
+    ]
+  },
+  "modality": "RNA + ATAC",
+  "method_type": "plate-based",
+  "data_processing": {
+    "summary": "Plate-based (FACS) reads are demultiplexed by sample, then for the RNA modality Index 1 (i7), Index 2 (i5) and the first 10 bp of Read 1 are concatenated into a cell-barcode+UMI FASTQ and quantified against the genome with STARsolo; the paired ATAC reads (Read 1 + Read 2) are aligned with BWA inside a Snakemake pipeline. Downstream, RNA is normalized and clustered in Seurat and ATAC in Signac (Cell Ranger ATAC aggr + MACS2 peaks), and cell types are assigned by label transfer from an Allen Brain scRNA-seq reference.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment & quantification"
+      },
+      {
+        "id": "rna",
+        "label": "RNA analysis"
+      },
+      {
+        "id": "atac",
+        "label": "ATAC analysis"
+      },
+      {
+        "id": "annotate",
+        "label": "Annotation & trajectory"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "bcl2fastq",
+        "label": "Generate FASTQ",
+        "tool": "bcl2fastq",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "deml",
+        "label": "Demultiplex by sample",
+        "tool": "deML",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "barcode",
+        "label": "Build barcode+UMI FASTQ",
+        "tool": "custom python",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "starsolo",
+        "label": "Align and count RNA",
+        "tool": "STARsolo",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "bwa",
+        "label": "Align ATAC reads",
+        "tool": "BWA",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "normalize",
+        "label": "Normalize RNA counts",
+        "tool": "Seurat",
+        "stage": "rna",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pca",
+        "label": "Reduce dimensions (PCA)",
+        "tool": "Seurat",
+        "stage": "rna",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster_rna",
+        "label": "Cluster cells",
+        "tool": "Seurat",
+        "stage": "rna",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umap_rna",
+        "label": "Embed with UMAP",
+        "tool": "UMAP",
+        "stage": "rna",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "aggr",
+        "label": "Aggregate ATAC libraries",
+        "tool": "Cell Ranger ATAC",
+        "stage": "atac",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "lsi",
+        "label": "Reduce dimensions (LSI)",
+        "tool": "Signac",
+        "stage": "atac",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster_atac",
+        "label": "Cluster cells",
+        "tool": "Signac",
+        "stage": "atac",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umap_atac",
+        "label": "Embed with UMAP",
+        "tool": "UMAP",
+        "stage": "atac",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "macs2",
+        "label": "Call peaks",
+        "tool": "MACS2",
+        "stage": "atac",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "homer",
+        "label": "Find enriched motifs",
+        "tool": "HOMER",
+        "stage": "atac",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "label_transfer",
+        "label": "Transfer cell-type labels",
+        "tool": "Seurat",
+        "stage": "annotate",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "monocle",
+        "label": "Order cells in pseudotime",
+        "tool": "Monocle2",
+        "stage": "annotate",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "bcl2fastq",
+        "to": "deml",
+        "kind": "sequential"
+      },
+      {
+        "from": "deml",
+        "to": "barcode",
+        "kind": "branch"
+      },
+      {
+        "from": "deml",
+        "to": "bwa",
+        "kind": "branch"
+      },
+      {
+        "from": "barcode",
+        "to": "starsolo",
+        "kind": "sequential"
+      },
+      {
+        "from": "starsolo",
+        "to": "normalize",
+        "kind": "sequential"
+      },
+      {
+        "from": "normalize",
+        "to": "pca",
+        "kind": "sequential"
+      },
+      {
+        "from": "pca",
+        "to": "cluster_rna",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "umap_rna",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "label_transfer",
+        "kind": "branch"
+      },
+      {
+        "from": "bwa",
+        "to": "aggr",
+        "kind": "sequential"
+      },
+      {
+        "from": "aggr",
+        "to": "lsi",
+        "kind": "sequential"
+      },
+      {
+        "from": "lsi",
+        "to": "cluster_atac",
+        "kind": "branch"
+      },
+      {
+        "from": "lsi",
+        "to": "umap_atac",
+        "kind": "branch"
+      },
+      {
+        "from": "cluster_atac",
+        "to": "macs2",
+        "kind": "sequential"
+      },
+      {
+        "from": "macs2",
+        "to": "homer",
+        "kind": "sequential"
+      },
+      {
+        "from": "label_transfer",
+        "to": "monocle",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "UMI-based digital gene-expression counting (STARsolo); no parametric count distribution specified"
+  }
+}

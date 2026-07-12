@@ -1,0 +1,20 @@
+{
+  "folder": "dr_seq",
+  "title": "DR-Seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "DR-seq.html",
+    "oligo_seq_recall": 0.6,
+    "oligo_seqs_matched": 3,
+    "oligo_seqs_total": 5,
+    "missed_oligos": [
+      "Barcoded RT primer",
+      "T7 promoter"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC + [Illumina Read 1 adaptor] + [CELL_BARCODE] + [CDNA] + [3' Illumina / Read 2 adaptor] + [SAMPLE_INDEX] + ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

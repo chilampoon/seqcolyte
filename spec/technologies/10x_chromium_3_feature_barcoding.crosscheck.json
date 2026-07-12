@@ -1,0 +1,20 @@
+{
+  "folder": "10x_chromium_3_feature_barcoding",
+  "title": "10x Chromium 3' Feature Barcoding (Cell Surface Protein)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "10xChromium3fb.html",
+    "oligo_seq_recall": 0.875,
+    "oligo_seqs_matched": 14,
+    "oligo_seqs_total": 16,
+    "missed_oligos": [
+      "DNA oligos from the antibody",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACACTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CELL_BARCODE:16][UMI:12]TTGCTAGGACCGGCCTTAAAGC[SPACER:9][FEATURE_BARCODE:15][SPACER:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

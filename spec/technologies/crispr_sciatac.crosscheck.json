@@ -1,0 +1,20 @@
+{
+  "folder": "crispr_sciatac",
+  "title": "CRISPR-sciATAC",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "CRISPR-sciATAC.html",
+    "oligo_seq_recall": 0.875,
+    "oligo_seqs_matched": 14,
+    "oligo_seqs_total": 16,
+    "missed_oligos": [
+      "Illumina TruSeq Read 1 primer",
+      "Staggered P5 sgRNA PCR2"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:8]TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:8]TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

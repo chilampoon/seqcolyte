@@ -1,0 +1,977 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "microsplit",
+  "assay": "microSPLiT",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "microSPLiT_original_paper.pdf",
+      "title": "Microbial single-cell RNA sequencing by split-pool barcoding",
+      "url": "https://doi.org/10.1126/science.aba5257",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/microsplit/microSPLiT_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "microSPLiT.xlsx",
+      "title": "microSPLiT.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/microsplit/microSPLiT.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "microSPLiT.pdf",
+      "title": "microSPLiT.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/microsplit/microSPLiT.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "round1_rt_polydt",
+      "name": "Round 1 RT primer (poly-dT, barcode 1)",
+      "aliases": [],
+      "role": "Barcoded reverse-transcription primer (round 1 cell barcode) \u2014 polyadenylated-mRNA capture",
+      "kind": "assembled",
+      "sequence": "ACTGTGG[CELL_BARCODE:8]TTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' phosphate + ligation linker",
+          "sequence": "ACTGTGG",
+          "role": "5'-phosphorylated overhang; ligation handle for round-2 barcode"
+        },
+        {
+          "name": "round 1 barcode (8 nt)",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "well-specific cell barcode 1 (48 poly-dT wells)"
+        },
+        {
+          "name": "poly-dT + VN anchor",
+          "sequence": "TTTTTTTTTTTTTTTVN",
+          "role": "anneals to in-cell polyadenylated mRNA 3' tail"
+        },
+        {
+          "name": "example Round1_01 (well A1)",
+          "sequence": "ACTGTGGACTCGTAATTTTTTTTTTTTTTTVN",
+          "role": "concrete example (barcode ACTCGTAA)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-phosphorylated. One of 96 round-1 primers; wells A1-D12 (48) are dt(15)VN, wells E1-H12 (48) are random hexamer. The dt and hexamer primer for corresponding wells are pooled for RT."
+    },
+    {
+      "oligo_id": "round1_rt_hexamer",
+      "name": "Round 1 RT primer (random hexamer, barcode 1)",
+      "aliases": [],
+      "role": "Barcoded reverse-transcription primer (round 1 cell barcode) \u2014 random-primed capture",
+      "kind": "assembled",
+      "sequence": "ACTGTGG[CELL_BARCODE:8]NNNNNN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' phosphate + ligation linker",
+          "sequence": "ACTGTGG",
+          "role": "5'-phosphorylated overhang; ligation handle for round-2 barcode"
+        },
+        {
+          "name": "round 1 barcode (8 nt)",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "well-specific cell barcode 1 (shares barcode set with the paired poly-dT well)"
+        },
+        {
+          "name": "random hexamer",
+          "sequence": "NNNNNN",
+          "role": "primes anywhere on RNA (captures rRNA/non-polyadenylated as well as mRNA)"
+        },
+        {
+          "name": "example Round1_49 (well E1)",
+          "sequence": "ACTGTGGCTGCTTTGTNNNNNN",
+          "role": "concrete example (barcode CTGCTTTG)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-phosphorylated. 48 random-hexamer primers (wells E1-H12) pooled 1:1 with the matching poly-dT primer for reverse transcription."
+    },
+    {
+      "oligo_id": "round2_barcode",
+      "name": "Round 2 ligation barcode (barcode 2)",
+      "aliases": [],
+      "role": "Second combinatorial cell barcode, appended by in-cell ligation",
+      "kind": "assembled",
+      "sequence": "CATCGGCGTACGACT[CELL_BARCODE:8]ATCCACGTGCTTGAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' constant / ligation handle",
+          "sequence": "CATCGGCGTACGACT",
+          "role": "5'-phosphorylated; ligates to round-3 barcode side"
+        },
+        {
+          "name": "round 2 barcode (8 nt)",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "well-specific cell barcode 2 (96 wells)"
+        },
+        {
+          "name": "3' constant",
+          "sequence": "ATCCACGTGCTTGAG",
+          "role": "hybridizes to round-2 linker/blocker to ligate onto round-1 ACTGTGG end"
+        },
+        {
+          "name": "example Round2_01 (well A1)",
+          "sequence": "CATCGGCGTACGACTAACGTGATATCCACGTGCTTGAG",
+          "role": "concrete example (barcode AACGTGAT)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-phosphorylated. 96 barcodes. Ligated to the round-1 primer 5' end using the round-2 barcode linker (BC_0335) and round-2 blocking strand (BC_0340)."
+    },
+    {
+      "oligo_id": "round3_barcode",
+      "name": "Round 3 ligation barcode + UMI (barcode 3)",
+      "aliases": [],
+      "role": "Third combinatorial cell barcode with UMI and biotin, appended by in-cell ligation",
+      "kind": "assembled",
+      "sequence": "CAGACGTGTGCTCTTCCGATCT[UMI:10][CELL_BARCODE:8]GTGGCCGATGTTTCG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' biotin + Read 2 handle",
+          "sequence": "CAGACGTGTGCTCTTCCGATCT",
+          "role": "5'-biotin (/5Biosg/); TruSeq Read 2 priming region for library capture on streptavidin and Read 2 sequencing"
+        },
+        {
+          "name": "UMI (10 nt)",
+          "sequence": "[UMI:10]",
+          "role": "unique molecular identifier"
+        },
+        {
+          "name": "round 3 barcode (8 nt)",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "well-specific cell barcode 3 (96 wells)"
+        },
+        {
+          "name": "3' constant / ligation handle",
+          "sequence": "GTGGCCGATGTTTCG",
+          "role": "hybridizes to round-3 linker/blocker to ligate onto round-2 CATCGGCGTACGACT end"
+        },
+        {
+          "name": "example Round3_01 (well A1)",
+          "sequence": "CAGACGTGTGCTCTTCCGATCTNNNNNNNNNNAACGTGATGTGGCCGATGTTTCG",
+          "role": "concrete example (barcode AACGTGAT, 10 N UMI)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-biotinylated (/5Biosg/). 96 barcodes. UMI = 10 random nt. Ligated to round-2 barcode using round-3 barcode linker (BC_0284) and round-3 blocking strand (BC_0066)."
+    },
+    {
+      "oligo_id": "bc_0335_round2_linker",
+      "name": "BC_0335 Round 2 barcode linker",
+      "aliases": [],
+      "role": "Splint/linker bridging round-1 and round-2 barcodes for ligation",
+      "kind": "single",
+      "sequence": "CCACAGTCTCAAGCACG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Anneals across the round-1 ACTGTGG end and the round-2 barcode 3' constant to template the ligation."
+    },
+    {
+      "oligo_id": "bc_0340_round2_blocker",
+      "name": "BC_0340 Round 2 blocking strand",
+      "aliases": [],
+      "role": "Blocking strand for round-2 ligation",
+      "kind": "single",
+      "sequence": "CGTGCTTGAGACTGTGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Blocks unligated ends during the round-2 ligation."
+    },
+    {
+      "oligo_id": "bc_0284_round3_linker",
+      "name": "BC_0284 Round 3 barcode linker",
+      "aliases": [],
+      "role": "Splint/linker bridging round-2 and round-3 barcodes for ligation",
+      "kind": "single",
+      "sequence": "TACGCCGATGCGAAACATCG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Anneals across the round-2 CATCGGCGTACGACT end and the round-3 barcode 3' constant to template the ligation."
+    },
+    {
+      "oligo_id": "bc_0066_round3_blocker",
+      "name": "BC_0066 Round 3 blocking strand",
+      "aliases": [],
+      "role": "Blocking strand for round-3 ligation",
+      "kind": "single",
+      "sequence": "GTGGCCGATGTTTCGCATCGGCGTACGACT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Blocks unligated ends during the round-3 ligation."
+    },
+    {
+      "oligo_id": "bc_0127_tso",
+      "name": "BC_0127 Template switch oligo (TSO)",
+      "aliases": [],
+      "role": "Template-switching primer adding the 5' cDNA PCR handle",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTGAATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "HPLC-purified (Exiqon). Terminal ...GG G = two ribonucleic guanines (rGrG) followed by a locked-nucleic-acid guanine (+G); folded here to GGG. The rG/rG/LNA-G 3' end base-pairs with the untemplated Cs added by Maxima H Minus RT for template switching."
+    },
+    {
+      "oligo_id": "adaptor_duplex",
+      "name": "Adaptor duplex (BC_0243 / BC_0244) \u2014 TruSeq Read 1 adapter",
+      "aliases": [],
+      "role": "Double-stranded sequencing adapter ligated to fragmented cDNA (adds Read 1 handle)",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "BC_0243 adaptor duplex top strand",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "Top strand; TruSeq Read 1 sequence. 3'-terminal T is phosphorothioated (...GATC*T)"
+        },
+        {
+          "name": "BC_0244 adaptor duplex bottom strand",
+          "sequence": "GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT",
+          "role": "Bottom strand (partially complementary; forms Y/forked adapter)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Pre-annealed at 100 uM in 50 uM NaCl and ligated to fragmented cDNA with WGS Ligase."
+    },
+    {
+      "oligo_id": "bc_0027_p5",
+      "name": "BC_0027 PCR primer (P5 / sublibrary amplification)",
+      "aliases": [],
+      "role": "Library PCR primer \u2014 adds P5 and TruSeq Read 1 (transcript/cDNA side)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "P5 flow-cell sequence (AATGATACGGCGACCACCGAGATCT) + TruSeq Read 1 primer (ACACTCTTTCCCTACACGACGCTCTTCCGATCT). Primes on the ligated adaptor duplex."
+    },
+    {
+      "oligo_id": "bc_0076_0083_p7",
+      "name": "BC_0076-BC_0083 PCR primer (P7 / sublibrary index i7)",
+      "aliases": [],
+      "role": "Library PCR primer \u2014 adds P7 and the 6 nt sublibrary index (barcode 4, i7)",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:6]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7 flow-cell sequence",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 grafting sequence"
+        },
+        {
+          "name": "sublibrary index i7 (6 nt)",
+          "sequence": "[SAMPLE_INDEX:6]",
+          "role": "fourth barcode; read in the 6 nt index read"
+        },
+        {
+          "name": "TruSeq Read 2 region",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "primes on the round-3 Read 2 handle (CAGACGTGTGCTCTTCCGATCT)"
+        },
+        {
+          "name": "BC_0076 (TSBC07)",
+          "sequence": "CAAGCAGAAGACGGCATACGAGATGATCTGGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "index GATCTG"
+        },
+        {
+          "name": "BC_0077 (TSBC08)",
+          "sequence": "CAAGCAGAAGACGGCATACGAGATTCAAGTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "index TCAAGT"
+        },
+        {
+          "name": "BC_0078 (TSBC09)",
+          "sequence": "CAAGCAGAAGACGGCATACGAGATCTGATCGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "index CTGATC"
+        },
+        {
+          "name": "BC_0079 (TSBC10)",
+          "sequence": "CAAGCAGAAGACGGCATACGAGATAAGCTAGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "index AAGCTA"
+        },
+        {
+          "name": "BC_0080 (TSBC11)",
+          "sequence": "CAAGCAGAAGACGGCATACGAGATGTAGCCGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "index GTAGCC"
+        },
+        {
+          "name": "BC_0081 (TSBC12)",
+          "sequence": "CAAGCAGAAGACGGCATACGAGATTACAAGGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "index TACAAG"
+        },
+        {
+          "name": "BC_0082 (TSBC13)",
+          "sequence": "CAAGCAGAAGACGGCATACGAGATTTGACTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "index TTGACT"
+        },
+        {
+          "name": "BC_0083 (TSBC14)",
+          "sequence": "CAAGCAGAAGACGGCATACGAGATGGAACTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "index GGAACT"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with BC_0027. One of BC_0076-BC_0083 per sublibrary; the 6 nt i7 index is the fourth barcode read in the index read."
+    }
+  ],
+  "final_library": {
+    "source_label": "microSPLiT sequencing-ready library (SPLiT-seq architecture: P5\u2013TruSeq R1\u2013cDNA\u2013BC1\u2013BC2\u2013BC3\u2013UMI\u2013TruSeq R2\u2013i7\u2013P7)",
+    "annotated_library_sequence": "5'- AATGATACGGCGACCACCGAGATCTACAC TCTTTCCCTACACGACGCTCTTCCGATCT [CDNA] AAAAAAAAAAAAAAA [CELL_BARCODE:8]{BC1} CCACAGTCTCAAGCACGTGGAT [CELL_BARCODE:8]{BC2} AGTCGTACGCCGATGCGAAACATCGGCCAC [CELL_BARCODE:8]{BC3} [UMI:10] AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC [SAMPLE_INDEX:6]{i7} ATCTCGTATGCCGTCTTCTGCTTG -3'",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AAAAAAAAAAAAAAA[CELL_BARCODE:8]CCACAGTCTCAAGCACGTGGAT[CELL_BARCODE:8]AGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "top (5'->3', P5 to P7)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AAAAAAAAAAAAAAA[CELL_BARCODE:8]CCACAGTCTCAAGCACGTGGAT[CELL_BARCODE:8]AGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AAAAAAAAAAAAAAA[CELL_BARCODE:8]CCACAGTCTCAAGCACGTGGAT[CELL_BARCODE:8]AGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "first-strand cDNA orientation (5'->3', barcode block on cDNA 5' end)",
+        "source_html": "CAGACGTGTGCTCTTCCGATCT[UMI:10][CELL_BARCODE:8]GTGGCCGATGTTTCGCATCGGCGTACGACT[CELL_BARCODE:8]ATCCACGTGCTTGAGACTGTGG[CELL_BARCODE:8]TTTTTTTTTTTTTTT[CDNA]",
+        "source_sequence": "CAGACGTGTGCTCTTCCGATCT[UMI:10][CELL_BARCODE:8]GTGGCCGATGTTTCGCATCGGCGTACGACT[CELL_BARCODE:8]ATCCACGTGCTTGAGACTGTGG[CELL_BARCODE:8]TTTTTTTTTTTTTTT[CDNA]"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC \u2014 P5 flow-cell sequence (from BC_0027)",
+      "TCTTTCCCTACACGACGCTCTTCCGATCT \u2014 TruSeq Read 1 primer site (Read 1 reads the transcript next)",
+      "[CDNA] \u2014 cDNA insert (Read 1)",
+      "AAAAAAAAAAAAAAA \u2014 poly-A (reverse complement of the RT poly-dT capture; absent for hexamer-primed molecules)",
+      "[CELL_BARCODE:8] {BC1} \u2014 round-1 cell barcode (in-cell RT)",
+      "CCACAGTCTCAAGCACGTGGAT \u2014 round-1/round-2 linker constant (rc of ACTGTGG + ATCCACGTGCTTGAG)",
+      "[CELL_BARCODE:8] {BC2} \u2014 round-2 cell barcode (ligation)",
+      "AGTCGTACGCCGATGCGAAACATCGGCCAC \u2014 round-2/round-3 linker constant (rc of CATCGGCGTACGACT + GTGGCCGATGTTTCG)",
+      "[CELL_BARCODE:8] {BC3} \u2014 round-3 cell barcode (ligation)",
+      "[UMI:10] \u2014 unique molecular identifier (from round-3 oligo)",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC \u2014 TruSeq Read 2 primer site (rc of GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT); Read 2 reads UMI + BC3 + BC2 + BC1",
+      "[SAMPLE_INDEX:6] {i7} \u2014 sublibrary index / barcode 4 (index read)",
+      "ATCTCGTATGCCGTCTTCTGCTTG \u2014 P7 flow-cell sequence (rc of CAAGCAGAAGACGGCATACGAGAT)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "microSPLiT sequencing-ready library (SPLiT-seq architecture: P5\u2013TruSeq R1\u2013cDNA\u2013BC1\u2013BC2\u2013BC3\u2013UMI\u2013TruSeq R2\u2013i7\u2013P7)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TruSeq Read 1 (ACACTCTTTCCCTACACGACGCTCTTCCGATCT)",
+        "template": "bottom",
+        "cycles": 74,
+        "segments": [
+          {
+            "name": "cDNA / transcript",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 74
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "TruSeq Read 2 / index primer",
+        "template": "top",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "sublibrary index (i7, barcode 4)",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "TruSeq Read 2 (GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT)",
+        "template": "top",
+        "cycles": 86,
+        "segments": [
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "round 3 barcode (BC3)",
+            "type": "barcode",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "round3/round2 linker",
+            "type": "constant",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 30
+          },
+          {
+            "name": "round 2 barcode (BC2)",
+            "type": "barcode",
+            "order": 3,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "round2/round1 linker",
+            "type": "constant",
+            "order": 4,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 22
+          },
+          {
+            "name": "round 1 barcode (BC1)",
+            "type": "barcode",
+            "order": 5,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Fixation, permeabilization & in-cell polyadenylation",
+      "summary": "Fixed bacteria are permeabilized with Tween-20/lysozyme and their mRNA is polyadenylated in-cell with E. coli Poly(A) Polymerase.",
+      "note": "Gram-positive and gram-negative cells are formaldehyde-fixed, permeabilized with mild detergent (Tween-20) plus lysozyme, and treated with PAP to add 3' poly-A tails, enriching mRNA (~2.5-fold) for downstream poly-dT capture. Bacterial mRNA is otherwise not polyadenylated.",
+      "product": "cell interior:\n5'- [mRNA] AAAAA...A -3'"
+    },
+    {
+      "step": 2,
+      "title": "Round 1 \u2014 in-cell reverse transcription (barcode 1)",
+      "summary": "In-cell RT with well-specific barcoded poly-dT and random-hexamer primers writes barcode 1 into first-strand cDNA.",
+      "note": "Cells are split into a 96-well plate; each well's RT primer carries a unique 8 nt barcode plus a 5'-phosphate/ACTGTGG ligation handle. Poly-dT and random-hexamer primers of the same well share a barcode and are pooled. Maxima H Minus RT adds untemplated Cs at the cDNA 3' end.",
+      "product": "5'- [mRNA] AAAAA...A --------3'\n            ||||||\n         3'- VN(T)15 [BC1:8] GGTGTCA -Phos-5'   (round-1 primer)\n\nfirst-strand cDNA (5'->3'):\n5'-Phos- ACTGTGG [BC1:8] TTTTTTTTTTTTTTT [cDNA] CCC -3'"
+    },
+    {
+      "step": 3,
+      "title": "Round 2 \u2014 in-cell ligation (barcode 2)",
+      "summary": "Cells are pooled, re-split, and an 8 nt barcode-2 oligo is ligated onto the cDNA 5' end via a splint linker.",
+      "note": "The round-2 barcode linker (BC_0335) and blocking strand (BC_0340) bridge the round-1 ACTGTGG end and the round-2 barcode oligo (5'-P-CATCGGCGTACGACT-[BC2]-ATCCACGTGCTTGAG) for ligation.",
+      "product": "5'-Phos- CATCGGCGTACGACT [BC2:8] ATCCACGTGCTTGAG | ACTGTGG [BC1:8] T15 [cDNA] -3'\n                                        ^ligation junction (round-2 linker splint)"
+    },
+    {
+      "step": 4,
+      "title": "Round 3 \u2014 in-cell ligation (barcode 3 + UMI + biotin)",
+      "summary": "A third ligation appends barcode 3, a 10 nt UMI, the Read 2 handle and a 5' biotin.",
+      "note": "Round-3 oligo: 5'-Biotin-CAGACGTGTGCTCTTCCGATCT-[UMI:10]-[BC3:8]-GTGGCCGATGTTTCG. The round-3 barcode linker (BC_0284) and blocker (BC_0066) template ligation onto the round-2 CATCGGCGTACGACT end. Each cell now has a unique BC1+BC2+BC3 combination.",
+      "product": "5'-Bio- CAGACGTGTGCTCTTCCGATCT [UMI:10] [BC3:8] GTGGCCGATGTTTCG | CATCGGCGTACGACT [BC2:8] ...linker... [BC1:8] T15 [cDNA] CCC -3'"
+    },
+    {
+      "step": 5,
+      "title": "Lysis, streptavidin capture & template switching",
+      "summary": "Cells are lysed, biotinylated cDNA is bound to streptavidin beads, and template switching adds the 5' cDNA PCR handle.",
+      "note": "The template-switch oligo BC_0127 (AAGCAGTGGTATCAACGCAGAGTGAATrGrG+G) anneals to the untemplated Cs at the cDNA 3' end; Maxima H Minus RT extends to append the SMART handle used for on-bead PCR amplification of full-length barcoded cDNA.",
+      "product": "5'-Bio- CAGACGTGTGCTCTTCCGATCT [UMI:10][BC3][linker][BC2][linker][BC1] T15 [cDNA] CCCATTCACTCTGCGTTGATACCACTGCTT -3'\n                                                                              (template-switch handle at cDNA 3' end)"
+    },
+    {
+      "step": 6,
+      "title": "Fragmentation & Read 1 adapter ligation",
+      "summary": "Amplified cDNA is enzymatically fragmented and a TruSeq Read 1 adaptor duplex (BC_0243/BC_0244) is ligated to the new ends.",
+      "note": "WGS fragmentation mix cuts the cDNA; double-sided SPRI size selection is followed by WGS-Ligase ligation of the pre-annealed forked adaptor, placing the TruSeq Read 1 sequence adjacent to the transcript so Read 1 will read cDNA.",
+      "product": "5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT [cDNA fragment] ...[BC1][BC2][BC3][UMI] CAGACGTGTGCTCTTCCGATCT -Bio-3'\n     (ligated TruSeq Read 1 adapter)"
+    },
+    {
+      "step": 7,
+      "title": "Indexing PCR (P5 / P7 + sublibrary index)",
+      "summary": "qPCR with BC_0027 (P5) and one of BC_0076-BC_0083 adds P5, the 6 nt sublibrary index (barcode 4) and P7 to yield the final library.",
+      "note": "BC_0027 primes on the ligated Read 1 adapter (adds P5); BC_0076-BC_0083 prime on the round-3 Read 2 handle (add the i7 sublibrary index + P7). Double-sided SPRI (0.5x-0.7x) gives the sequencing-ready library.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC TCTTTCCCTACACGACGCTCTTCCGATCT [CDNA] A15 [BC1] linker [BC2] linker [BC3] [UMI] AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC [i7:6] ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 \u2014 transcript / cDNA",
+      "primer": "TruSeq Read 1 (5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3')",
+      "template": "bottom",
+      "cycles": 74,
+      "note": "Sequences into the cDNA insert (the captured transcript). Primer anneals to the bottom strand at the TruSeq Read 1 handle and extends toward the poly-A / BC1 block.",
+      "diagram": "                Read 1 sequencing primer\n             5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------->\ntop:    5'- ...ACACTCTTTCCCTACACGACGCTCTTCCGATCT[cDNA]AAAAAAAAAAAAAAA[BC1]... -3'\nbottom: 3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[cDNA]TTTTTTTTTTTTTTT[BC1]... -5'\n               (primer = top-strand sequence; it anneals to the bottom strand,\n                which is the template, and reads 74 nt of cDNA)"
+    },
+    {
+      "read": "Index read (i7) \u2014 sublibrary barcode 4",
+      "primer": "TruSeq i7 index primer (5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3')",
+      "template": "bottom",
+      "cycles": 6,
+      "note": "Reads the 6 nt sublibrary index (the 4th barcode, added during indexing PCR). The index primer anneals to the bottom strand at the Read 2 handle, its 3' end abutting the i7, and reads toward P7.",
+      "diagram": "                              i7 index-read primer\n                  5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC------->\ntop:    5'- ...[UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\nbottom: 3'- ...[UMI']  TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7']  TAGAGCATACGGCAGAAGACGAAC -5'\n               (primer = top-strand handle sequence; anneals to the bottom strand,\n                which is the template, and reads the 6 nt i7 index toward P7)"
+    },
+    {
+      "read": "Read 2 \u2014 UMI + cell barcodes (BC3, BC2, BC1)",
+      "primer": "TruSeq Read 2 (5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3')",
+      "template": "top",
+      "cycles": 86,
+      "note": "Reads the 10 nt UMI, then BC3, BC2, BC1 (8 nt each) through the two ligation-linker constants. Primer anneals to the top-strand Read 2 handle and extends leftward (toward the cDNA end).",
+      "diagram": "top:    5'- [BC1]CCACAGTCTCAAGCACGTGGAT[BC2]AGTCGTACGCCGATGCGAAACATCGGCCAC[BC3][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7]... -3'\nbottom: 3'- [BC1]GGTGTCAGAGTTCGTGCACCTA[BC2]TCAGCATGCGGCTACGCTTTGTAGCCGGTG[BC3][UMI'] TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7]... -5'\n            <-------------------------------------------------------------- Read 2 (86 nt)\n                                                              3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\n                                                        (primer 5'-GTGACTGG...CCGATCT-3' anneals to\n                                                         the top strand = template; reads UMI+BC3+BC2+BC1)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "microSPLiT",
+  "description": "microSPLiT (Microbial Split-Pool Ligation Transcriptomics) is a high-throughput, droplet-free bacterial single-cell RNA-seq method that extends SPLiT-seq to gram-positive and gram-negative bacteria. Fixed, Tween-20/lysozyme-permeabilized cells are polyadenylated in-cell with E. coli Poly(A) Polymerase, then labeled by combinatorial barcoding: in-cell reverse transcription with barcoded poly-dT and random-hexamer primers (barcode 1), followed by two in-cell ligation rounds (barcodes 2 and 3, the last also carrying a UMI and biotin), and a fourth sublibrary index added during library preparation. Read 1 captures the transcript sequence, Read 2 captures the UMI plus the three cell barcodes, and the index read captures the sublibrary barcode, so every cell acquires a unique barcode combination.",
+  "reference": {
+    "kind": "paper",
+    "label": "Microbial single-cell RNA sequencing by split-pool barcoding",
+    "path": null,
+    "url": "https://doi.org/10.1101/869248",
+    "doi": "10.1126/science.aba5257"
+  },
+  "publication": {
+    "year": 2020,
+    "original_publication": {
+      "title": "Microbial single-cell RNA sequencing by split-pool barcoding",
+      "journal": "Science",
+      "doi": "10.1126/science.aba5257",
+      "url": "https://doi.org/10.1126/science.aba5257"
+    },
+    "authors": [
+      {
+        "name": "Anna Kuchina",
+        "corresponding": true,
+        "email": "kuchina.anna@gmail.com",
+        "affiliation": "Department of Electrical and Computer Engineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Leandra M. Brettner",
+        "affiliation": "Department of Bioengineering; Center for Microbiome Sciences and Therapeutics, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Luana Paleologu",
+        "affiliation": "Department of Microbiology; Department of Biology, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Charles M. Roco",
+        "affiliation": "Department of Bioengineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Alexander B. Rosenberg",
+        "affiliation": "Department of Electrical and Computer Engineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Alberto Carignano",
+        "affiliation": "Department of Electrical and Computer Engineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Ryan Kibler",
+        "affiliation": "Biological Physics, Structure, and Design, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Matthew Hirano",
+        "affiliation": "Department of Electrical and Computer Engineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "R. William DePaolo",
+        "affiliation": "Center for Microbiome Sciences and Therapeutics; Department of Medicine, Division of Gastroenterology, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Georg Seelig",
+        "corresponding": true,
+        "email": "gseelig@uw.edu",
+        "affiliation": "Department of Electrical and Computer Engineering; Paul G. Allen School of Computer Science and Engineering; Molecular Engineering and Sciences Institute, University of Washington, Seattle, WA, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "High-throughput, droplet-free; >25,000 B. subtilis cells profiled across a growth curve; species-mixing experiment on 2,677 cells with 99.2% unambiguous species assignment.",
+      "cells": "25,214 B. subtilis cells (combined growth-curve dataset); ~2,677 cells in the E. coli/B. subtilis species-mixing experiment; scalable toward millions of cells",
+      "rna": "median ~237 unique mRNA transcripts/cell (E. coli) and ~376/cell (B. subtilis), ~5-10% of estimated total mRNA; 3,717 genes detected for E. coli, 3,476 for B. subtilis",
+      "dna": "not applicable (RNA assay)"
+    },
+    "statistical_model": "UMI-based digital counting; Scanpy normalization/scaling, top-16-PC neighborhood graph, Louvain graph clustering, and t-SNE / UMAP embedding; cluster marker genes by Wilcoxon rank-sum test with Benjamini-Hochberg correction.",
+    "other": [
+      {
+        "label": "Method name",
+        "value": "microSPLiT = Microbial Split-Pool Ligation Transcriptomics; extends SPLiT-seq (Rosenberg et al. 2018) to bacteria"
+      },
+      {
+        "label": "mRNA enrichment",
+        "value": "In-cell polyadenylation with E. coli Poly(A) Polymerase I (PAP) \u2014 best of the tested enrichment strategies"
+      },
+      {
+        "label": "Permeabilization",
+        "value": "Mild detergent Tween-20 + lysozyme; mild sonication after RT to break aggregates"
+      },
+      {
+        "label": "Sequencing platform",
+        "value": "Illumina MiSeq or NextSeq, 150 nt kits, paired-end; R1 74 nt, R2 86 nt, index 6 nt"
+      },
+      {
+        "label": "Key enzyme",
+        "value": "Maxima H Minus Reverse Transcriptase (ThermoFisher) with a template-switch oligo (rGrG+G LNA)"
+      },
+      {
+        "label": "Biological findings",
+        "value": "Detected rare states \u2014 competence (K-state, ~4.6% of late-OD cells), PBSX prophage induction (36 cells, 0.142%), and heterogeneous myo-inositol catabolism"
+      },
+      {
+        "label": "Preprint",
+        "value": "bioRxiv 2019, doi:10.1101/869248 (posted 11 Dec 2019); Science First Release 17 Dec 2020"
+      },
+      {
+        "label": "Commercialization",
+        "value": "C. Roco, A.B. Rosenberg and G. Seelig co-founded Split Biosciences; a patent on microSPLiT was filed"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Reads are demultiplexed by the four combinatorial barcodes, aligned to the reference genome (a combined B. subtilis\u2013E. coli genome for the species-mixing experiment), and collapsed by UMI into a per-cell gene count matrix; cells are then normalized/scaled, dimensionally reduced, graph-clustered, and embedded for visualization, with cluster marker genes called statistically.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Barcode Demultiplexing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "quant",
+        "label": "Quantification"
+      },
+      {
+        "id": "norm",
+        "label": "Normalization"
+      },
+      {
+        "id": "reduce",
+        "label": "Dimensionality Reduction"
+      },
+      {
+        "id": "cluster",
+        "label": "Clustering & Embedding"
+      },
+      {
+        "id": "markers",
+        "label": "Marker Detection"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex cell barcodes",
+        "tool": "",
+        "stage": "demux",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads to genome",
+        "tool": "",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse",
+        "label": "Collapse UMIs to counts",
+        "tool": "",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "normalize",
+        "label": "Normalize expression",
+        "tool": "Scanpy",
+        "stage": "norm",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "scale",
+        "label": "Scale expression",
+        "tool": "Scanpy",
+        "stage": "norm",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pca",
+        "label": "Reduce dimensions (16 PCs)",
+        "tool": "Scanpy",
+        "stage": "reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "graph",
+        "label": "Build neighborhood graph",
+        "tool": "Scanpy",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "louvain",
+        "label": "Cluster cells (Louvain)",
+        "tool": "Scanpy",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tsne",
+        "label": "Embed with t-SNE",
+        "tool": "Scanpy",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "umap",
+        "label": "Embed with UMAP",
+        "tool": "Scanpy",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "markers",
+        "label": "Call cluster marker genes",
+        "tool": "Scanpy",
+        "stage": "markers",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse",
+        "to": "normalize",
+        "kind": "fan_in"
+      },
+      {
+        "from": "normalize",
+        "to": "scale",
+        "kind": "sequential"
+      },
+      {
+        "from": "scale",
+        "to": "pca",
+        "kind": "sequential"
+      },
+      {
+        "from": "pca",
+        "to": "graph",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "tsne",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "umap",
+        "kind": "branch"
+      },
+      {
+        "from": "graph",
+        "to": "louvain",
+        "kind": "sequential"
+      },
+      {
+        "from": "louvain",
+        "to": "markers",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "UMI-based digital counting; cluster marker genes by Wilcoxon rank-sum test with Benjamini\u2013Hochberg correction (no parametric count model specified)"
+  }
+}

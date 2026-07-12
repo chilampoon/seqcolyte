@@ -1,0 +1,787 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "cel_seq2",
+  "assay": "CEL-Seq2",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "CEL-seq2_detailed_protocol.docx",
+      "title": "CEL-Seq2 detailed protocol (Additional file 4)",
+      "url": "https://doi.org/10.1186/s13059-016-0938-8",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/cel_seq2/CEL-seq2_detailed_protocol.docx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "CEL-seq2_supp.pdf",
+      "title": "CEL-seq2_supp.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/cel_seq2/CEL-seq2_supp.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "CEL-seq2.pdf",
+      "title": "CEL-seq2.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/cel_seq2/CEL-seq2.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_cel_seq2_rt_primer",
+      "name": "CEL-Seq2 primer (barcoded RT primer)",
+      "aliases": [],
+      "role": "Barcoded reverse-transcription / capture primer with T7 promoter, Illumina 5' adapter, UMI, cell barcode and anchored poly(dT)",
+      "kind": "assembled",
+      "sequence": "GCCGGTAATACGACTCACTATAGGGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "T7 promoter",
+          "sequence": "GCCGGTAATACGACTCACTATAGGG",
+          "role": "T7 RNA polymerase promoter (transcription start at the terminal GGG); GCCGG 5' leader"
+        },
+        {
+          "name": "Partial Illumina 5' adapter (RA5)",
+          "sequence": "AGTTCTACAGTCCGACGATC",
+          "role": "Shortened Illumina small-RNA 5' adapter; becomes the Read 1 primer landing site"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:6]",
+          "role": "6-nt unique molecular identifier (NNNNNN), upstream of the barcode"
+        },
+        {
+          "name": "Cell barcode",
+          "sequence": "[CELL_BARCODE:6]",
+          "role": "6-nt sample/cell barcode (Hamming distance >=2); one per well"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "24-nt poly(dT) to prime poly(A) mRNA"
+        },
+        {
+          "name": "Anchor (V)",
+          "sequence": "V",
+          "role": "3' anchor base (A/C/G) that seats the primer at the poly(A) junction"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "82-nt primer (shortened from CEL-Seq's 92 nt). 96 barcoded variants are listed in the detailed protocol; e.g. barcode 1 = AGACTC, 4 = AGCTTC, 5 = CATGAG, 46 = TGCAGA. Recommended 10-primer pool: barcodes 1,4,5,9,10,23,25,26,31,46. 168 unique 6-nt barcodes were designed (GC 33-67%, last base != T)."
+    },
+    {
+      "oligo_id": "oligo_cel_seq2_barcode_primer_1s",
+      "name": "CEL-Seq2 primer 1s (barcode AGACTC)",
+      "aliases": [],
+      "role": "Representative fully-specified barcoded RT primer (well 1)",
+      "kind": "single",
+      "sequence": "GCCGGTAATACGACTCACTATAGGGAGTTCTACAGTCCGACGATCNNNNNNAGACTCTTTTTTTTTTTTTTTTTTTTTTTTV",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "NNNNNN = 6-nt UMI; AGACTC = 6-nt cell barcode for well 1. Concrete example of the CEL-Seq2 primer series (1s-96s) transcribed verbatim from the detailed protocol table."
+    },
+    {
+      "oligo_id": "oligo_cel_seq_original_primer",
+      "name": "CEL-Seq primer (original, 8-nt barcode)",
+      "aliases": [],
+      "role": "Original CEL-Seq barcoded RT primer (no UMI)",
+      "kind": "assembled",
+      "sequence": "CGATTGAGGCCGGTAATACGACTCACTATAGGGGTTCAGAGTTCTACAGTCCGACGATC[CELL_BARCODE:8]TTTTTTTTTTTTTTTTTTTTTTTTV",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' leader + T7 promoter",
+          "sequence": "CGATTGAGGCCGGTAATACGACTCACTATAGGG",
+          "role": "T7 promoter with extended 5' leader"
+        },
+        {
+          "name": "Illumina 5' adapter (RA5)",
+          "sequence": "GTTCAGAGTTCTACAGTCCGACGATC",
+          "role": "Full-length Illumina small-RNA 5' adapter"
+        },
+        {
+          "name": "Cell barcode",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "8-nt cell barcode (as previously published)"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "24-nt poly(dT)"
+        },
+        {
+          "name": "Anchor (V)",
+          "sequence": "V",
+          "role": "3' anchor base"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Original CEL-Seq design (Table S2); 92 nt, longer T7 promoter and 5' adapter, no UMI."
+    },
+    {
+      "oligo_id": "oligo_cel_seq_umi_primer",
+      "name": "CEL-Seq + UMI primer (5-nt UMI, 6-nt barcode)",
+      "aliases": [],
+      "role": "Intermediate CEL-Seq primer with 5-nt UMI",
+      "kind": "assembled",
+      "sequence": "CGATTGAGGCCGGTAATACGACTCACTATAGGGGTTCAGAGTTCTACAGTCCGACGATC[UMI:5][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' leader + T7 promoter",
+          "sequence": "CGATTGAGGCCGGTAATACGACTCACTATAGGG",
+          "role": "T7 promoter with extended 5' leader"
+        },
+        {
+          "name": "Illumina 5' adapter (RA5)",
+          "sequence": "GTTCAGAGTTCTACAGTCCGACGATC",
+          "role": "Full-length Illumina small-RNA 5' adapter"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:5]",
+          "role": "5-nt UMI (NNNNN)"
+        },
+        {
+          "name": "Cell barcode",
+          "sequence": "[CELL_BARCODE:6]",
+          "role": "6-nt cell barcode"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "24-nt poly(dT)"
+        },
+        {
+          "name": "Anchor (V)",
+          "sequence": "V",
+          "role": "3' anchor base"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S2; the 'CEL-Seq performed as previously described with a 5-base UMI and 6-base barcode' variant used for comparison."
+    },
+    {
+      "oligo_id": "oligo_library_rt_primer",
+      "name": "Library RT primer (randomhexRT)",
+      "aliases": [],
+      "role": "Random-hexamer RT primer with 5'-tail Illumina 3' adapter; converts fragmented aRNA back to cDNA",
+      "kind": "assembled",
+      "sequence": "GCCTTGGCACCCGAGAATTCCANNNNNN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Illumina 3' adapter (RA3, rev-comp orientation)",
+          "sequence": "GCCTTGGCACCCGAGAATTCCA",
+          "role": "5'-tail matching Illumina small-RNA 3' adapter (rev-comp of TGGAATTCTCGGGTGCCAAGGC)"
+        },
+        {
+          "name": "Random hexamer",
+          "sequence": "NNNNNN",
+          "role": "Random-priming 3' hexamer that anneals across fragmented aRNA"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "CEL-Seq2 change 5: inserts the Illumina 3' adapter at the RT step via a random hexamer, eliminating the ligation step of the original CEL-Seq. Transcribed verbatim from the protocol/Table S2."
+    },
+    {
+      "oligo_id": "oligo_rna_pcr_primer_rp1",
+      "name": "RNA PCR Primer (RP1)",
+      "aliases": [],
+      "role": "Forward library PCR primer; adds P5 and completes the Illumina 5' adapter",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell adapter"
+        },
+        {
+          "name": "Illumina 5' adapter (RA5)",
+          "sequence": "GTTCAGAGTTCTACAGTCCGACGATC",
+          "role": "Full 5' small-RNA adapter; 3' end anneals to the AGTTCTACAGTCCGACGATC tag in the fragment"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq Small-RNA RP1; the documents state 'sequences available from Illumina' and are not printed. Sequence assembled from the verified P5 constant plus the in-document 5' adapter tag."
+    },
+    {
+      "oligo_id": "oligo_rna_pcr_index_primer_rpi",
+      "name": "RNA PCR Index Primer (RPIX)",
+      "aliases": [],
+      "role": "Reverse indexed library PCR primer; adds i7 sample index and P7 via the Illumina 3' adapter",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:6]GTGACTGGAGTTCCTTGGCACCCGAGAATTCCA",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:6]",
+          "role": "6-nt sample index (read in the 7-cycle index read)"
+        },
+        {
+          "name": "Illumina 3' adapter (RA3, rev-comp)",
+          "sequence": "GTGACTGGAGTTCCTTGGCACCCGAGAATTCCA",
+          "role": "3' portion whose 3' end anneals to the RA3 tag added by the library RT primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq Small-RNA RPIX; not printed in the docs ('sequences from Illumina kit'). Assembled from the verified P7 constant, a 6-nt index, and the in-document 3' adapter. A uniquely indexed RPIX is added per pooled library."
+    },
+    {
+      "oligo_id": "oligo_illumina_ra5_adapter",
+      "name": "Illumina 5' small-RNA adapter (RA5)",
+      "aliases": [],
+      "role": "5' adapter / Read 1 primer landing region of the final library",
+      "kind": "single",
+      "sequence": "GTTCAGAGTTCTACAGTCCGACGATC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "The shortened form AGTTCTACAGTCCGACGATC is carried on the CEL-Seq2 primer; full length restored by RP1 during PCR."
+    },
+    {
+      "oligo_id": "oligo_illumina_ra3_adapter",
+      "name": "Illumina 3' small-RNA adapter (RA3)",
+      "aliases": [],
+      "role": "3' adapter / Read 2 primer landing region of the final library",
+      "kind": "single",
+      "sequence": "TGGAATTCTCGGGTGCCAAGGC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reverse complement of the library RT primer 5'-tail (GCCTTGGCACCCGAGAATTCCA)."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "P5 flow-cell binding sequence",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina constant; contributed by RP1."
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "P7 flow-cell binding sequence",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina constant; contributed by RPIX. Appears at the 3' end of the top strand as its reverse complement (ATCTCGTATGCCGTCTTCTGCTTG)."
+    }
+  ],
+  "final_library": {
+    "source_label": "CEL-Seq2 final Illumina small-RNA library (5'->3' top strand)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "GTTCAGAGTTCTACAGTCCGACGATC = Illumina 5' small-RNA adapter (RA5 / Read 1 primer site)",
+      "[UMI:6] = UMI",
+      "[CELL_BARCODE:6] = Cell barcode",
+      "TTTTTTTTTTTTTTTTTTTTTTTT = poly(dT)",
+      "V = anchor base",
+      "[CDNA] = cDNA insert",
+      "TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC = Illumina 3' small-RNA adapter (RA3 / Read 2 primer site)",
+      "[SAMPLE_INDEX:6] = i7 sample index (reverse complement)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "CEL-Seq2 final Illumina small-RNA library (5'->3' top strand)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina small-RNA Read 1 sequencing primer",
+        "template": "bottom",
+        "cycles": 15,
+        "segments": [
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          },
+          {
+            "name": "Cell barcode",
+            "type": "barcode",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          },
+          {
+            "name": "poly(dT)",
+            "type": "constant",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 3
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Illumina index sequencing primer",
+        "template": "top",
+        "cycles": 7,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina small-RNA Read 2 sequencing primer",
+        "template": "top",
+        "cycles": 36,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Anneal barcoded CEL-Seq2 primer & reverse transcription",
+      "summary": "The barcoded poly(dT) CEL-Seq2 primer captures a single cell's poly(A) mRNA and SuperScript II reverse-transcribes first-strand cDNA.",
+      "note": "Each cell/well gets a unique 6-nt barcode; the primer also carries a T7 promoter, the Illumina 5' adapter and a 6-nt UMI. SuperScript II extends from the anchored poly(dT) into the transcript body.",
+      "product": "5'- GCCGGTAATACGACTCACTATAGGGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]------->\n                                                                             3'- AAAAAAAAAAAAAAAAAAAAAAAA...(mRNA)...-5'"
+    },
+    {
+      "step": 2,
+      "title": "Second-strand synthesis (dsDNA with T7 promoter)",
+      "summary": "RNase H, E. coli DNA Pol I and DNA ligase convert the RNA:cDNA hybrid into double-stranded DNA carrying an intact T7 promoter.",
+      "note": "SuperScript II Double-Stranded cDNA Synthesis Kit reagents. Barcoded samples are then pooled and bead-purified (AMPure XP) before amplification.",
+      "product": "5'- GCCGGTAATACGACTCACTATAGGGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA] -3'\n3'- CGGCCATTATGCTGAGTGATATCCCTCAAGATGTCAGGCTGCTAG[UMI:6][CELL_BARCODE:6]AAAAAAAAAAAAAAAAAAAAAAAAB[CDNA] -5'"
+    },
+    {
+      "step": 3,
+      "title": "In vitro transcription (T7 linear amplification)",
+      "summary": "T7 RNA polymerase transcribes from the promoter, linearly amplifying each molecule into many antisense aRNA copies.",
+      "note": "IVT (MEGAscript/SuperScript II kit) avoids exponential PCR bias; transcription starts at the terminal GGG so the T7 promoter itself is not copied into the aRNA.",
+      "product": "5'- GGGAGUUCUACAGUCCGACGAUC[UMI:6][CELL_BARCODE:6]UUUUUUUUUUUUUUUUUUUUUUUUV[CDNA] -3'   (aRNA, antisense to mRNA)"
+    },
+    {
+      "step": 4,
+      "title": "aRNA fragmentation",
+      "summary": "The amplified RNA is chemically fragmented (Mg2+, heat) to ~200-500 nt.",
+      "note": "Fragmentation is stopped with EDTA and the aRNA is bead-purified (RNAClean XP). Only fragments retaining the 5' adapter + UMI + barcode end carry the demultiplexing information.",
+      "product": "5'- GGGAGUUCUACAGUCCGACGAUC[UMI:6][CELL_BARCODE:6]UUUU...V[CDNA frag] -3'   +   internal [CDNA] aRNA fragments"
+    },
+    {
+      "step": 5,
+      "title": "RT of aRNA with random-hexamer / 3'-adapter primer",
+      "summary": "A random hexamer bearing a 5'-tail Illumina 3' adapter reverse-transcribes the fragmented aRNA into cDNA, appending the 3' adapter (ligation-free).",
+      "note": "SuperScript II RT. This CEL-Seq2 change replaces the inefficient adapter ligation of the original CEL-Seq, improving read mapping (93.8% vs 60.9%).",
+      "product": "5'- ...GAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGC -3'\n                                                                            (Illumina 3' adapter from randomhexRT)"
+    },
+    {
+      "step": 6,
+      "title": "Library PCR (RP1 + RPIX) \u2014 final indexed library",
+      "summary": "Phusion PCR with RP1 (adds P5 + full 5' adapter) and a uniquely indexed RPIX (adds i7 index + P7) produces the sequenceable Illumina small-RNA library.",
+      "note": "11-15 cycles. Double AMPure XP cleanup; expected 200-400 bp peak. Handled as an Illumina Small-RNA library on HiSeq 2500 rapid mode.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "R1",
+      "primer": "Illumina small-RNA Read 1 sequencing primer (= RA5 sense; anneals to the bottom strand, extends 5'->3')",
+      "template": "bottom",
+      "cycles": 15,
+      "note": "Reads the 6-nt UMI then the 6-nt cell barcode (UMI is 5' of the barcode in the RT primer), followed by ~3 poly(dT) bases. The barcode demultiplexes wells; the UMI is carried onto the R2 molecule for counting.",
+      "diagram": "5'- GTTCAGAGTTCTACAGTCCGACGATC----------------->   Read 1 primer (= RA5)\n5'- GTTCAGAGTTCTACAGTCCGACGATCNNNNNNNNNNNNTTTTTTTTTT...V[cDNA] -3'\n3'- CAAGTCTCAAGATGTCAGGCTGCTAGNNNNNNNNNNNNAAAAAAAAAA...B[cDNA] -5'\n                              ^^^^^^^^^^^^\n                              UMI(6) + cell barcode(6)  (read 5'->3')"
+    },
+    {
+      "read": "I1",
+      "primer": "Illumina i7 index sequencing primer (anneals over the P7 region of the top strand, extends 5'->3' toward the insert)",
+      "template": "top",
+      "cycles": 7,
+      "note": "Reads the 6-nt i7 sample index (7 cycles run). The index is stored as its reverse complement on the top strand, so the read reproduces the designed index sequence.",
+      "diagram": "                     <------ i7 index read (7 cycles)\n                        3'-TAGAGCATACGGCAGAAGACGAAC-5'   i7 index primer\n5'- ...GGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...CCTTGAGGTCAGTGNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                     ^^^^^^ i7 index (6 nt; stored as rev-comp on top strand)"
+    },
+    {
+      "read": "R2",
+      "primer": "Illumina small-RNA Read 2 sequencing primer (= RA3 antisense; anneals to the RA3 region of the top strand, extends 5'->3' into the cDNA)",
+      "template": "top",
+      "cycles": 36,
+      "note": "Reads 36 bases of the 3'-biased cDNA insert (used for genome mapping); paired with the R1 UMI/barcode.",
+      "diagram": "    <--------------------------- read (36 nt, into cDNA)\n          3'-ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG-5'   Read 2 primer\n5'- ...[cDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[i7rc]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[cDNA]ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG[i7 ]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "CEL-Seq2",
+  "description": "CEL-Seq2 is a 3'-end-tag, early-barcoding single-cell RNA-seq method that linearly amplifies transcripts by in vitro transcription (IVT). A barcoded RT primer carrying a T7 promoter, a shortened Illumina 5' (small-RNA) adapter, a 6-nt UMI and a 6-nt cell barcode captures poly(A) mRNA at the reverse-transcription step. After second-strand synthesis and T7 IVT (linear amplification), the amplified antisense RNA (aRNA) is fragmented, reverse-transcribed with a random hexamer bearing the Illumina 3' adapter, and PCR-amplified with the Illumina small-RNA RP1/RPI primers into a sequenceable library. Read 1 reads the UMI + cell barcode, Read 2 reads the 3'-biased cDNA, enabling accurate molecule counting across many multiplexed cells.",
+  "reference": {
+    "kind": "paper",
+    "label": "CEL-Seq2 detailed protocol (Additional file 4)",
+    "path": null,
+    "url": "https://doi.org/10.1186/s13059-016-0938-8",
+    "doi": "10.1186/s13059-016-0938-8"
+  },
+  "publication": {
+    "year": 2016,
+    "original_publication": {
+      "title": "CEL-Seq2: sensitive highly-multiplexed single-cell RNA-Seq",
+      "journal": "Genome Biology",
+      "doi": "10.1186/s13059-016-0938-8",
+      "url": "https://doi.org/10.1186/s13059-016-0938-8"
+    },
+    "authors": [
+      {
+        "name": "Tamar Hashimshony",
+        "affiliation": "Department of Biology, Technion - Israel Institute of Technology, Haifa, Israel"
+      },
+      {
+        "name": "Naftalie Senderovich",
+        "affiliation": "Department of Biology, Technion - Israel Institute of Technology, Haifa, Israel"
+      },
+      {
+        "name": "Gal Avital",
+        "affiliation": "Department of Biology, Technion - Israel Institute of Technology, Haifa, Israel"
+      },
+      {
+        "name": "Agnes Klochendler",
+        "affiliation": "Department of Developmental Biology and Cancer Research, The Hebrew University-Hadassah Medical School, Jerusalem, Israel"
+      },
+      {
+        "name": "Yaron de Leeuw",
+        "affiliation": "Department of Biology, Technion - Israel Institute of Technology, Haifa, Israel"
+      },
+      {
+        "name": "Leon Anavy",
+        "affiliation": "Department of Biology, Technion - Israel Institute of Technology, Haifa, Israel"
+      },
+      {
+        "name": "Dave Gennert",
+        "affiliation": "Klarman Cell Observatory, Broad Institute of Harvard and MIT; Department of Biology, MIT; HHMI, Massachusetts Institute of Technology, Cambridge, MA, USA"
+      },
+      {
+        "name": "Shuqiang Li",
+        "affiliation": "Fluidigm Corporation, South San Francisco, CA, USA"
+      },
+      {
+        "name": "Kenneth J. Livak",
+        "affiliation": "Fluidigm Corporation, South San Francisco, CA, USA"
+      },
+      {
+        "name": "Orit Rozenblatt-Rosen",
+        "affiliation": "Klarman Cell Observatory, Broad Institute of Harvard and MIT; Department of Biology, MIT; HHMI, Massachusetts Institute of Technology, Cambridge, MA, USA"
+      },
+      {
+        "name": "Yuval Dor",
+        "affiliation": "Department of Developmental Biology and Cancer Research, The Hebrew University-Hadassah Medical School, Jerusalem, Israel"
+      },
+      {
+        "name": "Aviv Regev",
+        "affiliation": "Klarman Cell Observatory, Broad Institute of Harvard and MIT; Department of Biology, MIT; HHMI, Massachusetts Institute of Technology, Cambridge, MA, USA"
+      },
+      {
+        "name": "Itai Yanai",
+        "corresponding": true,
+        "email": "yanai@technion.ac.il",
+        "affiliation": "Department of Biology, Technion - Israel Institute of Technology, Haifa, Israel"
+      }
+    ],
+    "throughput": {
+      "summary": "Highly-multiplexed single cells: 24 fibroblasts (CEL-Seq), 20 (CEL-Seq2), 72 captured on the Fluidigm C1, and dendritic cells in a 384-well plate; 96 barcoded primers per run (168 6-nt barcodes designed).",
+      "cells": "Up to 96 cells per plate / C1 run (168 unique barcodes available)"
+    },
+    "statistical_model": "Binomial statistics to convert UMI counts into transcript counts (UMI-based molecule counting; efficiency estimated by linear fit on ERCC spike-in log-log plots)",
+    "other": [
+      {
+        "label": "RT/detection efficiency",
+        "value": "19.7% manual, 22% on Fluidigm C1, vs 5.8% for original CEL-Seq (ERCC spike-in estimate)"
+      },
+      {
+        "label": "Primer length",
+        "value": "Shortened from 92 nt (CEL-Seq) to 82 nt while adding a 6-nt UMI"
+      },
+      {
+        "label": "Ligation-free prep",
+        "value": "Illumina adapter inserted at RT via random hexamer; raised barcoded-read mapping from 60.9% to 93.8%"
+      },
+      {
+        "label": "GEO accession",
+        "value": "GSE78779"
+      },
+      {
+        "label": "Pipeline",
+        "value": "https://github.com/yanailab/CEL-Seq-pipeline (GPLv3); demultiplex R1 barcode/UMI, Bowtie2 map, UMI-aware htseq-count"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "plate-based",
+  "data_processing": {
+    "summary": "Read 1 is used to demultiplex the per-well cell barcode and extract the UMI; Read 2 (3'-biased cDNA) is mapped to the genome and reads are assigned to genes, then collapsed by UMI to give a per-cell molecule (UMI) count matrix.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Barcode & UMI processing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "quant",
+        "label": "Quantification"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux_bc",
+        "label": "Demultiplex by cell barcode",
+        "tool": "CEL-Seq-pipeline",
+        "stage": "demux",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "extract_umi",
+        "label": "Extract UMI",
+        "tool": "CEL-Seq-pipeline",
+        "stage": "demux",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "map_cdna",
+        "label": "Map cDNA to genome",
+        "tool": "Bowtie2",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "assign_genes",
+        "label": "Assign reads to genes",
+        "tool": "htseq-count",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse_umi",
+        "label": "Collapse duplicate UMIs",
+        "tool": "CEL-Seq-pipeline",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_matrix",
+        "label": "Build UMI count matrix",
+        "tool": "CEL-Seq-pipeline",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux_bc",
+        "to": "map_cdna",
+        "kind": "sequential"
+      },
+      {
+        "from": "map_cdna",
+        "to": "assign_genes",
+        "kind": "sequential"
+      },
+      {
+        "from": "assign_genes",
+        "to": "collapse_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "extract_umi",
+        "to": "collapse_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse_umi",
+        "to": "count_matrix",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": "Binomial (UMI-based molecule counting; observed UMIs converted to transcript counts, efficiency estimated from ERCC spike-ins)"
+  }
+}

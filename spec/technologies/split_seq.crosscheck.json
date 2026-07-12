@@ -1,0 +1,29 @@
+{
+  "folder": "split_seq",
+  "title": "SPLiT-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "SPLiT-seq.html",
+    "oligo_seq_recall": 0.522,
+    "oligo_seqs_matched": 12,
+    "oligo_seqs_total": 23,
+    "missed_oligos": [
+      "Illumina Nextera Read 1 primer",
+      "Indexed Library PCR Primer 1 (BC_0076-BC_0083)",
+      "Nextera N7xx primer entry point (s7)",
+      "Oligo-dTVN (BC0055)",
+      "Round1 barcode linker (BC0056)",
+      "Round1 barcodes",
+      "Round1 blocking strand (BC0064)",
+      "Round2 blocking strand",
+      "Round2 linker",
+      "Template Switching Oligo (TSO) with LNA",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'-[P5:AATGATACGGCGACCACCGAGATCTACAC][i5:TAGATCGC][S5:TCGTCGGCAGCGTC][ME:AGATGTGTATAAGAGACAG][CDNA][ANCHOR:2][A15:AAAAAAAAAAAAAAA][CELL_BARCODE:8 = BC1(rc)][round1-linker(rc):CGAATGCTCTGGCCTCTCAAGCACGTGGAT][CELL_BARCODE:8 = BC2(rc)][round2/3-linker(rc):AGTCGTACGCCGATGCGAAACATCGGCCAC][CELL_BARCODE:8 = BC3(rc)][UMI:10][Read2-handle(rc):AGATCGGAAGAGCACACGTCTG][AACTCCAGTCAC][SAMPLE_INDEX:6][P7:ATCTCGTATGCCGTCTTCTGCTTG]-3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTAGATCGCTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA](pA)[CELL_BARCODE:8]CGAATGCTCTGGCCTCTCAAGCACGTGGAT[CELL_BARCODE:8]AGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[I7_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "folder": "issaac_seq_droplet",
+  "title": "ISSAAC-seq (droplet)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "ISSAAC-seq.html",
+    "oligo_seq_recall": 0.429,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 14,
+    "missed_oligos": [
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera Index 2 sequencing primer (i5)",
+      "Nextera Tn5 binding site (19-bp Mosaic End (ME))",
+      "Nextera (XT) N7xx Index primer",
+      "Nextera (XT) N/S5xx Index primer",
+      "TruSeq P7 PCR index primer",
+      "TruSeq sample index sequencing primer forward",
+      "TruSeqR2_oligo_dT"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- AATGATACGGCGACCACCGAGATCTACAC [CELL_BARCODE:16] TCGTCGGCAGCGTC AGATGTGTATAAGAGACAG [CDNA] TTTTTTTTTTTTTTTTTTTT [UMI:10] AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC [SAMPLE_INDEX:8] ATCTCGTATGCCGTCTTCTGCTTG -3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

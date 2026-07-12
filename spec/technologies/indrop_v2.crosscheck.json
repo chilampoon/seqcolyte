@@ -1,0 +1,22 @@
+{
+  "folder": "indrop_v2",
+  "title": "inDrops (v2)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "inDrop.html",
+    "oligo_seq_recall": 0.8,
+    "oligo_seqs_matched": 16,
+    "oligo_seqs_total": 20,
+    "missed_oligos": [
+      "Acrydite-modified primer",
+      "Barcode 1 plates (384 of them in 384 individual wells)",
+      "Barcode 2 plates (384 of them in 384 individual wells)",
+      "Beads-oligo-dT19V"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC GGTCTC GGCATTCCTGCTGAACCGCTCTTCCGATCT [CDNA] AAAAAAAAAAAAAAAAAAA [UMI:6] [CELL_BARCODE:8] AAGGCGTCACAAGCAATCACTC [CELL_BARCODE:8] AGATCGGAAGAGCGTCGTGTAGGGAAAGAG [SAMPLE_INDEX:6] ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT[CDNA]B(pA)[UMI:6][CELL_BARCODE:8]AAGGCGTCACAAGCAATCACTC[CELL_BARCODE:8]AGATCGGAAGAGCGTCGTGTAGGGAAAGAG[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

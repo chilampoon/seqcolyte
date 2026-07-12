@@ -1,0 +1,27 @@
+{
+  "folder": "scdamid",
+  "title": "single-cell DamID (scDamID)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "scDamID.html",
+    "oligo_seq_recall": 0.25,
+    "oligo_seqs_matched": 3,
+    "oligo_seqs_total": 12,
+    "missed_oligos": [
+      "AdRb",
+      "AdRt",
+      "Illumina adaptor top",
+      "Illumina Multiplexing PCR Primer",
+      "Illumina P5 adapter",
+      "Illumina P7 adapter",
+      "Illumina PCR Primer 1.0",
+      "TruSeq Read 1 sequencing primer partial",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- ATGATACGGCGACCACCGAGATCTACAC | TCTTTCCCTACACGACGCTCTTCCGATCT | NNNN | GTGGTCGCGGCCGAGGATC | [CDNA] | GATCCTCGGCCGCGACCAC | NNNN | AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC | [SAMPLE_INDEX:8] | CTCGTATGCCGTCTTCTGCTTG -3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[VARIABLE:4]GTGGTCGCGGCCGAGGATC[GDNA]GATCCTCGGCCGCGACCAC[VARIABLE:4]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[I7_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

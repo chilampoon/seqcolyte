@@ -2,6 +2,8 @@
   "schema_version": "seqcolyte.spec.v1",
   "spec_id": "10x_3p_v3",
   "assay": "10x Chromium Single Cell 3' Gene Expression",
+  "title": "10x 3' scRNA-seq (v3)",
+  "description": "Droplet-based single-cell 3' gene-expression profiling on Illumina. Cells are partitioned into gel-bead emulsions (GEMs); mRNA is barcoded during reverse transcription with a per-cell 16 nt barcode + 12 nt UMI, and the amplified cDNA is fragmented and built into a P5/P7-indexed short-read library. Profiles the transcriptomes of thousands of single cells per run.",
   "chemistry_version": "v3/v3.1",
   "platform": "illumina",
   "platform_params": {
@@ -54,6 +56,55 @@
       "retrieved_date": null
     }
   ],
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "10x Genomics CG000204 (Chromium Next GEM Single Cell 3' v3.1 User Guide)",
+    "path": null,
+    "url": "https://www.10xgenomics.com/support/single-cell-gene-expression",
+    "doi": null
+  },
+  "publication": {
+    "year": 2017,
+    "original_publication": {
+      "title": "Massively parallel digital transcriptional profiling of single cells",
+      "journal": "Nature Communications",
+      "doi": "10.1038/ncomms14049",
+      "url": "https://www.nature.com/articles/ncomms14049"
+    },
+    "authors": [
+      {
+        "name": "Grace X. Y. Zheng",
+        "corresponding": false,
+        "email": null,
+        "affiliation": "10x Genomics"
+      },
+      {
+        "name": "Benjamin J. Hindson",
+        "corresponding": true,
+        "email": "ben@10xgenomics.com",
+        "affiliation": "10x Genomics"
+      },
+      {
+        "name": "Jason H. Bielas",
+        "corresponding": true,
+        "email": "jbielas@fredhutch.org",
+        "affiliation": "Fred Hutchinson Cancer Research Center"
+      }
+    ],
+    "throughput": {
+      "summary": "~50% cell capture efficiency; ~8,000-9,000 cells recovered per channel",
+      "cells": "~8,000-9,000 per channel",
+      "rna": null,
+      "dna": null
+    },
+    "statistical_model": "Poisson - cells are loaded at limiting dilution following Poisson statistics to minimize multiplets.",
+    "other": [
+      {
+        "label": "Partitioning",
+        "value": "GEMs (gel beads-in-emulsion)"
+      }
+    ]
+  },
   "oligos": [
     {
       "oligo_id": "oligo_beads_oligo_dt",
@@ -628,42 +679,50 @@
     {
       "step": 1,
       "title": "mRNA capture using Beads-oligo-dT in the droplets, and reverse transcription using MMLV",
-      "note": null
+      "note": null,
+      "summary": "Poly(dT) beads capture mRNA in droplets; MMLV reverse-transcribes it into barcoded cDNA."
     },
     {
       "step": 2,
       "title": "The terminal tranferase acitivity of MMLV adds extra Cs",
-      "note": null
+      "note": null,
+      "summary": "MMLV's terminal-transferase activity adds a few untemplated C's to the cDNA 3' end."
     },
     {
       "step": 3,
       "title": "Adding TSO for second strand synthesis",
-      "note": null
+      "note": null,
+      "summary": "The TSO base-pairs with the C overhang to prime second-strand synthesis."
     },
     {
       "step": 4,
       "title": "Adding cDNA Forward and Reverse primers to amplify full length cDNA",
-      "note": null
+      "note": null,
+      "summary": "cDNA Forward/Reverse primers PCR-amplify the full-length cDNA."
     },
     {
       "step": 5,
       "title": "Use Fragmentase to fragment cDNA and perform A-tailing",
-      "note": null
+      "note": null,
+      "summary": "Fragmentase shears the cDNA and A-tails the fragment ends."
     },
     {
       "step": 6,
       "title": "Add double stranded Illumina Truseq adapter (with a T overhang) for ligation",
-      "note": null
+      "note": null,
+      "summary": "A T-overhang TruSeq adapter is ligated onto the A-tailed fragments."
     },
     {
       "step": 7,
       "title": "Add Library PCR Primers 1 & 2 to amplify library",
-      "note": null
+      "note": null,
+      "summary": "Library PCR primers 1 & 2 add P5/P7 and the i7 sample index."
     },
     {
       "step": 8,
       "title": "Final library structure",
-      "note": null
+      "note": null,
+      "summary": "The final P5/P7-indexed Illumina paired-end library."
     }
   ],
   "whitelists": {

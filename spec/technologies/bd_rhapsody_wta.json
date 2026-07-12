@@ -1,0 +1,937 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "bd_rhapsody_wta",
+  "assay": "BD Rhapsody WTA",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "BD_Rhapsody_WTA_library_prep_23-24117-03.pdf",
+      "title": "BD Rhapsody System mRNA Whole Transcriptome Analysis Library Preparation Protocol (23-24117(03))",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/bd_rhapsody_wta/BD_Rhapsody_WTA_library_prep_23-24117-03.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "BD_Rhapsody.pdf",
+      "title": "BD_Rhapsody.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/bd_rhapsody_wta/BD_Rhapsody.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "universal_oligo",
+      "name": "BD Rhapsody Universal Oligo",
+      "aliases": [],
+      "role": "Bead PCR handle / Read 1 partial; forward primer for WTA RPE PCR, Sample Tag PCR1/PCR2, and AbSeq PCR1",
+      "kind": "single",
+      "sequence": "ACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Part/catalog 650000074. This is the 3' portion of the Illumina TruSeq Read 1 primer (ACACTCTTTCCCTACACGACGCTCTTCCGATCT) and is the PCR handle synthesized onto the Cell Capture Bead oligo. BD note: the AbSeq PCR1 primer and WTA amplification primer differ; the Universal Oligo is the shared forward primer."
+    },
+    {
+      "oligo_id": "bead_capture_oligo",
+      "name": "BD Rhapsody Enhanced Cell Capture Bead oligo (V3)",
+      "aliases": [],
+      "role": "Bead-bound mRNA capture / cell-indexing oligo",
+      "kind": "assembled",
+      "sequence": "ACACGACGCTCTTCCGATCT[CELL_BARCODE:9][CELL_BARCODE:9][CELL_BARCODE:9][UMI:8]TTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Universal / PCR handle (Read 1)",
+          "sequence": "ACACGACGCTCTTCCGATCT",
+          "role": "PCR handle + Read 1 primer binding site"
+        },
+        {
+          "name": "Cell Label section 1 (CLS1)",
+          "sequence": "[CELL_BARCODE:9]",
+          "role": "combinatorial cell barcode round 1"
+        },
+        {
+          "name": "Cell Label section 2 (CLS2)",
+          "sequence": "[CELL_BARCODE:9]",
+          "role": "combinatorial cell barcode round 2"
+        },
+        {
+          "name": "Cell Label section 3 (CLS3)",
+          "sequence": "[CELL_BARCODE:9]",
+          "role": "combinatorial cell barcode round 3"
+        },
+        {
+          "name": "Molecular Index (UMI)",
+          "sequence": "[UMI:8]",
+          "role": "unique molecular identifier"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTT",
+          "role": "poly(A) mRNA capture; poly(dT) length approximate (not specified in protocol)"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Structure per WTA workflow figure ('dT PCR handle Cell label UMI Poly(T) cDNA') and User Guide RT figure ('Univ CL 8MI dT'). The 27-nt Cell Label is a combinatorial (split-pool) barcode of three 9-nt sections joined by fixed linkers; exact CLS and linker sequences are not printed in these documents, so barcode segments and poly(dT) length are shown as placeholders. Molecular Index (UMI) = 8 nt ('8MI')."
+    },
+    {
+      "oligo_id": "wta_extension_primer",
+      "name": "BD Rhapsody WTA Extension Primers",
+      "aliases": [],
+      "role": "Random primers for WTA Random Priming and Extension (RPE)",
+      "kind": "single",
+      "sequence": "TCAGACGTGTGCTCTTCCGATCTNNNNNNNNN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Read 2 / extension handle",
+          "sequence": "TCAGACGTGTGCTCTTCCGATCT",
+          "role": "adds Read 2 priming region to cDNA"
+        },
+        {
+          "name": "Random 9-mer",
+          "sequence": "NNNNNNNNN",
+          "role": "random anneal to cDNA body"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Part/catalog 91-1115. 23-nt fixed handle + 9 random nucleotides."
+    },
+    {
+      "oligo_id": "wta_amplification_primer",
+      "name": "BD Rhapsody WTA Amplification Primer",
+      "aliases": [],
+      "role": "Reverse primer for WTA RPE PCR",
+      "kind": "single",
+      "sequence": "CAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Part/catalog 91-1116. Binds the extension-primer handle (subset of TCAGACGTGTGCTCTTCCGATCT). Has the same sequence as the BD AbSeq PCR1 primer / WTA amplification primer per the appendix."
+    },
+    {
+      "oligo_id": "library_forward_primer",
+      "name": "BD Rhapsody Library Forward Primer (P5 / i5)",
+      "aliases": [],
+      "role": "Forward primer for WTA/Sample Tag/AbSeq Index PCR; adds P5 + i5 + TruSeq Read 1",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTATAGCCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell adapter"
+        },
+        {
+          "name": "i5 index",
+          "sequence": "TATAGCCT",
+          "role": "i5 sample index (TATAGCCT for NovaSeq/MiSeq/HiSeq 2000/2500; AGGCTATA for iSeq/MiniSeq/NextSeq/HiSeq 3000/4000)"
+        },
+        {
+          "name": "TruSeq Read 1",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "Read 1 sequencing primer binding site"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Part/catalog 91-1085. 3' terminal linkage printed as ...CCGAT*C*T (two phosphorothioate bonds); folded to CT here."
+    },
+    {
+      "oligo_id": "library_reverse_primer_1",
+      "name": "BD Rhapsody Library Reverse Primer 1 (N709)",
+      "aliases": [],
+      "role": "Reverse primer for Index PCR; adds P7 + i7 + Read 2",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATAGCGTAGCGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 index (in primer)",
+          "sequence": "AGCGTAGC",
+          "role": "i7; sample-sheet base = GCTACGCT (reverse complement)"
+        },
+        {
+          "name": "Read 2 / handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "Read 2 primer binding + RPE handle"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Part/catalog 650000080. 3' printed ...CCGATC*T (phosphorothioate). i7 sample-sheet index GCTACGCT."
+    },
+    {
+      "oligo_id": "library_reverse_primer_2",
+      "name": "BD Rhapsody Library Reverse Primer 2 (N710)",
+      "aliases": [],
+      "role": "Reverse primer for Index PCR; adds P7 + i7 + Read 2",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCAGCCTCGGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 index (in primer)",
+          "sequence": "CAGCCTCG",
+          "role": "i7; sample-sheet base = CGAGGCTG (reverse complement)"
+        },
+        {
+          "name": "Read 2 / handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "Read 2 primer binding + RPE handle"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Part/catalog 650000091. i7 sample-sheet index CGAGGCTG."
+    },
+    {
+      "oligo_id": "library_reverse_primer_3",
+      "name": "BD Rhapsody Library Reverse Primer 3 (N711)",
+      "aliases": [],
+      "role": "Reverse primer for Index PCR; adds P7 + i7 + Read 2",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTGCCTCTTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 index (in primer)",
+          "sequence": "TGCCTCTT",
+          "role": "i7; sample-sheet base = AAGAGGCA (reverse complement)"
+        },
+        {
+          "name": "Read 2 / handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "Read 2 primer binding + RPE handle"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Part/catalog 650000092. i7 sample-sheet index AAGAGGCA."
+    },
+    {
+      "oligo_id": "library_reverse_primer_4",
+      "name": "BD Rhapsody Library Reverse Primer 4 (N712)",
+      "aliases": [],
+      "role": "Reverse primer for Index PCR; adds P7 + i7 + Read 2",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTCCTCTACGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell adapter"
+        },
+        {
+          "name": "i7 index (in primer)",
+          "sequence": "TCCTCTAC",
+          "role": "i7; sample-sheet base = GTAGAGGA (reverse complement)"
+        },
+        {
+          "name": "Read 2 / handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "Read 2 primer binding + RPE handle"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Part/catalog 650000093. i7 sample-sheet index GTAGAGGA."
+    },
+    {
+      "oligo_id": "omics_one_dual_index_fwd",
+      "name": "BD OMICS-One Dual Index Forward Primers 1-8 (i5)",
+      "aliases": [],
+      "role": "Optional unique dual-index i5 forward primers (Index PCR)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "i5 #1",
+          "sequence": "TATAGCCT",
+          "role": "iSeq/MiniSeq/NextSeq/HiSeq3000/4000: AGGCTATA"
+        },
+        {
+          "name": "i5 #2",
+          "sequence": "ATAGAGGC",
+          "role": "alt: GCCTCTAT"
+        },
+        {
+          "name": "i5 #3",
+          "sequence": "CCTATCCT",
+          "role": "alt: AGGATAGG"
+        },
+        {
+          "name": "i5 #4",
+          "sequence": "GGCTCTGA",
+          "role": "alt: TCAGAGCC"
+        },
+        {
+          "name": "i5 #5",
+          "sequence": "AGGCGAAG",
+          "role": "alt: CTTCGCCT"
+        },
+        {
+          "name": "i5 #6",
+          "sequence": "TAATCTTA",
+          "role": "alt: TAAGATTA"
+        },
+        {
+          "name": "i5 #7",
+          "sequence": "CAGGACGT",
+          "role": "alt: ACGTCCTG"
+        },
+        {
+          "name": "i5 #8",
+          "sequence": "GTACTGAC",
+          "role": "alt: GTCAGTAC"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "BD OMICS-One Dual Index Kit (571899). Only the 8-bp i5 index bases are printed; full primer scaffold assumed identical to the Library Forward Primer. First value = NovaSeq/MiSeq/HiSeq 2000/2500 sample-sheet orientation."
+    },
+    {
+      "oligo_id": "omics_one_dual_index_rev",
+      "name": "BD OMICS-One Dual Index Reverse Primers 1-8 (i7)",
+      "aliases": [],
+      "role": "Optional unique dual-index i7 reverse primers (Index PCR)",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "i7 #1",
+          "sequence": "ATTACTCG",
+          "role": "i7 sample-sheet index"
+        },
+        {
+          "name": "i7 #2",
+          "sequence": "TCCGGAGA",
+          "role": "i7 sample-sheet index"
+        },
+        {
+          "name": "i7 #3",
+          "sequence": "CGCTCATT",
+          "role": "i7 sample-sheet index"
+        },
+        {
+          "name": "i7 #4",
+          "sequence": "GAGATTCC",
+          "role": "i7 sample-sheet index"
+        },
+        {
+          "name": "i7 #5",
+          "sequence": "ATTCAGAA",
+          "role": "i7 sample-sheet index"
+        },
+        {
+          "name": "i7 #6",
+          "sequence": "GAATTCGT",
+          "role": "i7 sample-sheet index"
+        },
+        {
+          "name": "i7 #7",
+          "sequence": "CTGAAGCT",
+          "role": "i7 sample-sheet index"
+        },
+        {
+          "name": "i7 #8",
+          "sequence": "TAATGCGC",
+          "role": "i7 sample-sheet index"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "BD OMICS-One Dual Index Kit (571899). Only the 8-bp i7 sample-sheet index bases are printed (they appear reverse-complemented in the physical primer, as with Library Reverse Primers)."
+    },
+    {
+      "oligo_id": "read1_primer",
+      "name": "Read 1 sequencing primer (TruSeq Read 1)",
+      "aliases": [],
+      "role": "Sequencing primer for Read 1 (Cell Label + UMI)",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq Read 1 primer; embedded in the Library Forward Primer. Reads the Cell Label and UMI."
+    },
+    {
+      "oligo_id": "read2_primer",
+      "name": "Read 2 sequencing primer (BD custom)",
+      "aliases": [],
+      "role": "Sequencing primer for Read 2 (random-primed cDNA)",
+      "kind": "single",
+      "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Derived from the Library Reverse Primer read-2 region; reads the cDNA from the random-primed (RPE) end. Inferred sequencing primer, not separately listed in appendix."
+    }
+  ],
+  "final_library": {
+    "source_label": "BD Rhapsody WTA final indexed sequencing library (top strand, 5'->3')",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC | TATAGCCT(i5) | ACACTCTTTCCCTACACGACGCTCTTCCGATCT(Read1) | [CELL_BARCODE:9][CELL_BARCODE:9][CELL_BARCODE:9] | [UMI:8] | TTTTTTTTTTTTTTTTTT(polyT) | [CDNA] | AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC(Read2 handle) | [SAMPLE_INDEX:8](i7) | ATCTCGTATGCCGTCTTCTGCTTG(P7')",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTATAGCCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:9][CELL_BARCODE:9][CELL_BARCODE:9][UMI:8]TTTTTTTTTTTTTTTTTT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' (top/sense)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTATAGCCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:9][CELL_BARCODE:9][CELL_BARCODE:9][UMI:8]TTTTTTTTTTTTTTTTTT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTATAGCCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:9][CELL_BARCODE:9][CELL_BARCODE:9][UMI:8]TTTTTTTTTTTTTTTTTT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3'->5' (bottom/antisense)",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTGATATCGGA...[complement]...TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTGATATCGGA...[complement]...TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC  = P5 flow-cell adapter",
+      "TATAGCCT                       = i5 sample index (8 nt; from Library Forward Primer)",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT = TruSeq Read 1 primer binding site",
+      "[CELL_BARCODE:9] x3            = Cell Label (27 nt combinatorial; 3 x 9-nt sections + fixed linkers, linker seqs not in docs)",
+      "[UMI:8]                        = Molecular Index / UMI (8 nt)",
+      "TTTTTTTTTTTTTTTTTT             = poly(dT)/poly(A) junction from mRNA capture (length approximate)",
+      "[CDNA]                         = cDNA insert (random-primed transcript fragment)",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = Read 2 primer binding region (revcomp of RPE/extension handle + index-PCR extension)",
+      "[SAMPLE_INDEX:8]               = i7 sample index (8 nt; shown in sample-sheet orientation, revcomp in primer)",
+      "ATCTCGTATGCCGTCTTCTGCTTG       = P7 flow-cell adapter (reverse complement of P7 primer)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "BD Rhapsody WTA final indexed sequencing library (top strand, 5'->3')",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TruSeq Read 1",
+        "template": "bottom",
+        "cycles": 51,
+        "segments": [
+          {
+            "name": "Cell Label section 1",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 9
+          },
+          {
+            "name": "Cell Label section 2",
+            "type": "barcode",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 9
+          },
+          {
+            "name": "Cell Label section 3",
+            "type": "barcode",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 9
+          },
+          {
+            "name": "Molecular Index (UMI)",
+            "type": "umi",
+            "order": 3,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "poly(T)",
+            "type": "polyA",
+            "order": 4,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "BD custom Read 2",
+        "template": "top",
+        "cycles": 71,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Illumina i7 index primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "Illumina i5 index primer",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "On-bead capture + reverse transcription",
+      "summary": "Poly(A) mRNA from each single cell is captured on the barcoded bead oligo and reverse transcribed, encoding Cell Label + UMI onto first-strand cDNA.",
+      "note": "Performed on the instrument (cDNA Synthesis protocol): cells are co-isolated with Enhanced Cell Capture Beads in the cartridge, lysed, and mRNA hybridizes to the bead poly(dT). Reverse transcriptase extends to make cDNA carrying the Universal handle, Cell Label, and UMI; unextended oligos are removed by Exonuclease I.",
+      "product": "5'- bead-ACACGACGCTCTTCCGATCT-[CL 27]-[UMI 8]-TTTTT...-cDNA -3'\n                                                   <-------- RT ----------"
+    },
+    {
+      "step": 2,
+      "title": "Random priming & extension (RPE)",
+      "summary": "Random-9mer extension primers anneal along the cDNA and are extended, adding a second (Read 2) handle; products are denatured off the bead as ssDNA.",
+      "note": "WTA extension primer = TCAGACGTGTGCTCTTCCGATCT + NNNNNNNNN. This gives whole-transcriptome (not gene-targeted) coverage.",
+      "product": "bead-ACACGACGCTCTTCCGATCT-[CL]-[UMI]-TTT-cDNA\n                                   TCAGACGTGTGCTCTTCCGATCTNNNNNNNNN\n                                   -------->  (extension)\nRPE product (ssDNA): 5'- TCAGACGTGTGCTCTTCCGATCT-NNN...(cDNA')...-[UMI']-[CL']-AGATCGGAAGAGCGTCGTGT -3'"
+    },
+    {
+      "step": 3,
+      "title": "RPE cleanup",
+      "summary": "Single-sided AMPure XP purification removes primer dimers, leaving purified single-stranded RPE product.",
+      "note": "0.72x-style bead ratio (720 uL beads to 400 uL product).",
+      "product": "purified ssDNA RPE product (Universal handle ... cDNA ... extension handle)"
+    },
+    {
+      "step": 4,
+      "title": "RPE PCR",
+      "summary": "Universal Oligo (forward) and WTA Amplification Primer (reverse) amplify the RPE product into double-stranded DNA (~200-2000 bp).",
+      "note": "Cycle number scales with input cells (16 cycles at 100 cells down to 9 at 80,000-100,000).",
+      "product": "5'- ACACGACGCTCTTCCGATCT-[CL]-[UMI]-TTT-[cDNA]-AGATCGGAAGAGCACACGTCTGA -3'\n3'- TGTGCTGCGAGAAGGCTAGA-[CL']-[UMI']-AAA-[cDNA']-TCTAGCCTTCTCGTGTGCAGACT -5'\n     ACACGACGCTCTTCCGATCT-->                          <--CAGACGTGTGCTCTTCCGATCT"
+    },
+    {
+      "step": 5,
+      "title": "RPE PCR cleanup & QC",
+      "summary": "Single-sided AMPure XP cleanup yields purified dsDNA; Bioanalyzer/TapeStation trace should span ~200-2000 bp (200-600 bp region used for molarity).",
+      "note": "Diluted to 2 nM for the index PCR.",
+      "product": "purified dsDNA RPE PCR product (~200-2000 bp)"
+    },
+    {
+      "step": 6,
+      "title": "WTA Index PCR",
+      "summary": "Library Forward Primer (P5+i5+Read1) and a Library Reverse Primer (P7+i7+Read2) add full-length Illumina adapters and sample indices.",
+      "note": "8-9 cycles depending on input concentration. Optional OMICS-One dual-index primers give unique dual indexing.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC-TATAGCCT-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-[CL]-[UMI]-TTT-[cDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-[i7]-ATCTCGTATGCCGTCTTCTGCTTG -3'\n    P5------- i5 ---- Read1 ----------------------------- insert ------------ Read2handle ---- i7 --- P7'"
+    },
+    {
+      "step": 7,
+      "title": "Index PCR cleanup & QC",
+      "summary": "Double-sided AMPure XP cleanup produces the final adapter-ligated library (~250-1000 bp) ready to sequence.",
+      "note": "Optional additional cleanup removes ~165/270 bp adapter-dimer peaks; Qubit >1 ng/uL expected.",
+      "product": "final WTA sequencing library (P5-i5-Read1-CellLabel-UMI-cDNA-Read2-i7-P7)"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "TruSeq Read 1 (ACACTCTTTCCCTACACGACGCTCTTCCGATCT)",
+      "template": "bottom",
+      "cycles": 51,
+      "note": "Primer anneals to the bottom strand at the Read 1 handle; extension reads the 27-nt combinatorial Cell Label (3 x 9 nt) + 8-nt Molecular Index (UMI), then runs into poly(T). Recommended 51 cycles.",
+      "diagram": "                Read 1 primer (TruSeq Read 1)\n             5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT------------------------------------>\n5'-...TATAGCCT ACACTCTTTCCCTACACGACGCTCTTCCGATCT NNNNNNNNNNNNNNNNNNNNNNNNNNN NNNNNNNN TTTTTTTT[cDNA]...-3'\n               ||||||||||||||||||||||||||||||||| ||||||||||||||||||||||||||| |||||||| ||||||||\n3'-...ATATCGGA TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNNNNNNNNNNNNNNNNNNNNNN NNNNNNNN AAAAAAAA[cDNA]...-5'\n               (template = bottom strand)         |----- Cell Label 27 ----| |-UMI 8-|"
+    },
+    {
+      "read": "Read 2",
+      "primer": "BD custom Read 2 (GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT)",
+      "template": "top",
+      "cycles": 71,
+      "note": "Primer anneals to the top strand at the Read 2 / RPE-extension handle; extension reads leftward into the random-primed cDNA (gene body). Recommended 71 cycles.",
+      "diagram": "                    Read 2 primer (BD custom)  3'<---------------5'\n                    TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG\n5'-...[cDNA]--------AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-NNNNNNNN-ATCTCGTATGCCGTCTTCTGCTTG-3'  (template = top)\n                    ||||||||||||||||||||||||||||||||||\n3'-...[cDNA]--------TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-NNNNNNNN-TAGAGCATACGGCAGAAGACGAAC-5'\n            <---reads cDNA gene body |-- Read 2 / RPE handle --| (i7)"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "Illumina i7 index primer (anneals at Read 2 / RPE handle)",
+      "template": "top",
+      "cycles": 8,
+      "note": "Reads the 8-nt i7 sample index between the Read 2 handle and P7.",
+      "diagram": "                              i7 index primer -->\n5'-...GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT NNNNNNNN ATCTCGTATGCCGTCTTCTGCTTG-3'  (top = template)\n      ||||||||||||||||||||||||||||||||||                                    \n3'-...CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA NNNNNNNN TAGAGCATACGGCAGAAGACGAAC-5'\n                                         |-i7 8-|  (P7')"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "Illumina i5 index primer (anneals at TruSeq Read 1)",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "Reads the 8-nt i5 sample index between P5 and the Read 1 handle (dual-index run).",
+      "diagram": "                                <-- i5 index primer\n5'- AATGATACGGCGACCACCGAGATCTACAC NNNNNNNN ACACTCTTTCCCTACACGACGCTCTTCCGATCT...-3'\n    |||||||||||||||||||||||||||||          |||||||||||||||||||||||||||||||||\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG NNNNNNNN TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA...-5'  (bottom = template)\n    (P5)                          |-i5 8-|"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "BD Rhapsody WTA",
+  "description": "BD Rhapsody Whole Transcriptome Analysis (WTA) is a microwell-based single-cell 3'-biased whole-transcriptome assay. Single cells are co-isolated with barcoded Enhanced Cell Capture Beads in a picowell cartridge; poly(A) mRNA is captured on the bead-bound oligo (Universal PCR handle + combinatorial Cell Label + Molecular Index/UMI + poly(dT)) and reverse transcribed. Whole-transcriptome coverage is then generated on-bead by random priming and extension (RPE) rather than gene-specific PCR, followed by RPE PCR and an index PCR that adds full-length Illumina adapters. Read 1 reads the Cell Label and UMI; Read 2 reads the random-primed cDNA to identify the gene.",
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "BD Rhapsody System mRNA Whole Transcriptome Analysis Library Preparation Protocol (23-24117(03))",
+    "path": null,
+    "url": "https://scomix.bd.com/hc/en-us/articles/360023044532-BD-Rhapsody-WTA-Protocols",
+    "doi": null
+  },
+  "publication": {
+    "year": 2024,
+    "original_publication": {
+      "title": "BD Rhapsody System mRNA Whole Transcriptome Analysis (WTA) Library Preparation Protocol",
+      "journal": "BD Biosciences technical protocol (doc 23-24117-03)",
+      "url": "https://bdbiosciences.com"
+    },
+    "authors": [
+      {
+        "name": "BD Biosciences (Becton, Dickinson and Company)",
+        "affiliation": "BD Biosciences, 155 North McCarthy Boulevard, Milpitas, California 95035, USA",
+        "email": "scomix@bdscomix.bd.com",
+        "corresponding": true
+      }
+    ],
+    "throughput": {
+      "summary": "Microwell single-cell 3' WTA; cell-capture input 100 to 100,000 cells/sample (validated 100-10,000 cells sequenced); 20,000-100,000 reads/cell.",
+      "cells": "100-100,000 loaded per sample; validated sequencing range 100-10,000 cells",
+      "rna": "Whole-transcriptome (3'-biased) mRNA; recommended 20,000-100,000 reads/cell (RSEC sequencing depth >=6 for ~80% saturation)",
+      "dna": "Final library ~250-1000 bp; RPE PCR product ~200-2000 bp"
+    },
+    "statistical_model": "Poisson distribution (multiplet-rate estimation); molecular-index UMI counting corrected by Recursive Substitution Error Correction (RSEC)",
+    "other": [
+      {
+        "label": "Amplification kit",
+        "value": "BD Rhapsody WTA Amplification Kit (Cat. 633801); OMICS-One Dual Index Kit (571899)"
+      },
+      {
+        "label": "Sequencers",
+        "value": "Illumina (NextSeq, MiniSeq, NovaSeq 6000, NovaSeq X; Element AVITI per manufacturer)"
+      },
+      {
+        "label": "Note",
+        "value": "AbSeq PCR1 primer and WTA amplification primer share the same sequence per the kit appendix"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "microwell/picowell",
+  "data_processing": {
+    "summary": "The proprietary BD Rhapsody Sequence Analysis Pipeline demultiplexes the Cell Label and Molecular Index from Read 1, aligns the random-primed Read 2 cDNA to identify genes, and collapses molecular indices with Recursive Substitution Error Correction (RSEC) into a per-cell molecule count matrix; the pipeline reports sequencing saturation and RSEC sequencing depth (depth >=6 targets ~80% saturation). The protocol names RSEC and the pipeline but does not publish the individual aligner/software components.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Barcode & UMI parsing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment & gene assignment"
+      },
+      {
+        "id": "count",
+        "label": "Molecule counting"
+      },
+      {
+        "id": "qc",
+        "label": "QC reporting"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "parse_cell_label",
+        "label": "Demultiplex Cell Label",
+        "tool": "BD Rhapsody Sequence Analysis Pipeline",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "extract_umi",
+        "label": "Extract Molecular Index",
+        "tool": "BD Rhapsody Sequence Analysis Pipeline",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_cdna",
+        "label": "Align cDNA to transcriptome",
+        "tool": "BD Rhapsody Sequence Analysis Pipeline",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "assign_gene",
+        "label": "Assign gene to read",
+        "tool": "BD Rhapsody Sequence Analysis Pipeline",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "rsec_collapse",
+        "label": "Collapse UMIs with RSEC",
+        "tool": "BD Rhapsody Sequence Analysis Pipeline",
+        "stage": "count",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_matrix",
+        "label": "Build cell-by-gene count matrix",
+        "tool": "BD Rhapsody Sequence Analysis Pipeline",
+        "stage": "count",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "report_saturation",
+        "label": "Report sequencing saturation",
+        "tool": "BD Rhapsody Sequence Analysis Pipeline",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "report_depth",
+        "label": "Report RSEC sequencing depth",
+        "tool": "BD Rhapsody Sequence Analysis Pipeline",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      }
+    ],
+    "edges": [
+      {
+        "from": "parse_cell_label",
+        "to": "rsec_collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "extract_umi",
+        "to": "rsec_collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_cdna",
+        "to": "assign_gene",
+        "kind": "sequential"
+      },
+      {
+        "from": "assign_gene",
+        "to": "rsec_collapse",
+        "kind": "sequential"
+      },
+      {
+        "from": "rsec_collapse",
+        "to": "count_matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "count_matrix",
+        "to": "report_saturation",
+        "kind": "branch"
+      },
+      {
+        "from": "count_matrix",
+        "to": "report_depth",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "Recursive Substitution Error Correction (RSEC) for molecular-index (UMI) counting"
+  }
+}

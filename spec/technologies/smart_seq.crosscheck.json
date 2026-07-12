@@ -1,0 +1,26 @@
+{
+  "folder": "smart_seq",
+  "title": "Smart-Seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "SMART-seq_family.html",
+    "oligo_seq_recall": 0.429,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 14,
+    "missed_oligos": [
+      "Illumina Nextera Read 1 primer",
+      "Illumina Nextera Read 2 primer",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera Index 2 sequencing primer (i5)",
+      "Nextera N7xx primer entry point (s7)",
+      "Nextera N/S5xx primer entry point (s5)",
+      "Nextera (XT) N7xx Index primer",
+      "Nextera (XT) N/S5xx Index primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC + ACACTCTTTCCCTACACGACGCTCTTCCGATCT + [CDNA] + AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC + [SAMPLE_INDEX:6] + ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

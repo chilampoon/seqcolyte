@@ -1,0 +1,23 @@
+{
+  "folder": "strt_seq_2i",
+  "title": "STRT-seq-2i",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "STRT-seq_family.html",
+    "oligo_seq_recall": 0.545,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "Barcoded STRT-Tn5-Idx[1-96] forward (including 19-bp Mosaic End (ME))",
+      "Barcoded Tn5 reverse oligo",
+      "DI-P1A-idx[1-32]-P1B",
+      "DI-Read 1-Seq",
+      "P1B-UMI-RNA-TSO"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:5]CTACACGACGCTCTTCCGATCT[UMI:6]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:5]CTACACGACGCTCTTCCGATCT[UMI:6]GGG[CDNA]CTGTCTCTTATACACATCTGACGC[CELL_BARCODE:8]TCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

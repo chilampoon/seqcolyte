@@ -1,0 +1,630 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "strt_seq",
+  "assay": "STRT-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "STRT-seq_original_paper.pdf",
+      "title": "Characterization of the single-cell transcriptional landscape by highly multiplex RNA-seq",
+      "url": "https://doi.org/10.1101/gr.110882.110",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/strt_seq/STRT-seq_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "STRT-seq_TSO_and_plate_tables.docx",
+      "title": "STRT Supplementary Tables 1-2: TSO list and 96-well orientation",
+      "url": "https://doi.org/10.1038/nprot.2012.022",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/strt_seq/STRT-seq_TSO_and_plate_tables.docx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "STRT-seq.pdf",
+      "title": "STRT-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/strt_seq/STRT-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "strt_tso",
+      "name": "STRT template-switching oligo (TSO; STARTv2-1..96 / STRT-V2-n)",
+      "aliases": [],
+      "role": "Barcoded template-switching helper oligo; introduces the 6-bp cell/well barcode and the universal (STRT-PCR) primer sequence at the 3\u2032 end of the cDNA (5\u2032 end of mRNA) via MMLV template switching",
+      "kind": "assembled",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTGCAGTGCT[CELL_BARCODE:6]GGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "universal / STRT-PCR primer-binding sequence",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTGCAGTGCT",
+          "role": "constant upstream primer sequence (contains two deoxyuracil residues, ...GCAGUGCU..., that allow USER-enzyme degradation of the TSO before PCR)"
+        },
+        {
+          "name": "well/cell barcode (6-bp, error-correcting)",
+          "sequence": "[CELL_BARCODE:6]",
+          "role": "one of 96 error-correcting 6-bp barcodes (XXXXXX)"
+        },
+        {
+          "name": "riboguanine template-switch tail",
+          "sequence": "GGG",
+          "role": "three riboguanines (rGrGrG) that anneal to the non-templated dC tail added by reverse transcriptase"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Protocol (2012) sequence: 5\u2032-AAGCAGTGGTATCAACGCAGAGTGCAGUGCUXXXXXXrGrGrG-3\u2032 (U = deoxyuracil, folded to T here; rG folded to G). Original 2011 paper form (STRT-V2-n): 5\u2032-AAGCAGTGGTATCAACGCAGAGTGCAGTGCTXXXXXXrGrGrG-3\u2032 (no uracils). 96 error-correcting 6-bp barcodes (Supplementary Table 1): 1 TTTAGG, 2 ATTCCA, 3 GCTCAA, 4 CATCCC, 5 TTGGAC, 6 CTGTGT, 7 GGACAT, 8 CAAAGT, 9 AAGCGG, 10 AATAAA, 11 GAGGAG, 12 GGTACA, 13 AGCGAG, 14 GTCGGT, 15 ATTTGC, 16 AGGACT, 17 GCCCTC, 18 TCGTAA, 19 CCAGAC, 20 TATGTA, 21 ACAATA, 22 ATGCTT, 23 AGTTTA, 24 CACAAG, 25 ATCAAC, 26 TAGTCG, 27 TAGAGA, 28 GTCCCG, 29 TACTTC, 30 AAAGTT, 31 TAAGGG, 32 GTTGCC, 33 AAGTAC, 34 GATCTT, 35 TTAACT, 36 GCGAAT, 37 CCGCTA, 38 TGAAGC, 39 ATACAG, 40 CTTCTG, 41 GAGATC, 42 CCGACG, 43 CTCCAT, 44 AAAACG, 45 TAGCAT, 46 TCGGGT, 47 GTGGTA, 48 CCTAGA, 49 GGGTTT, 50 ATGGCG, 51 TTCATA, 52 AACGCC, 53 GGCTGC, 54 GCTGTG, 55 AGATGG, 56 GTAATG, 57 AGGGTC, 58 ATCTCT, 59 GCCTAG, 60 TCAAAG, 61 CATGAT, 62 TGTGCG, 63 GCAGGA, 64 TCTACC, 65 AGTCGT, 66 CGTGGC, 67 GCGTCC, 68 GAACGC, 69 ACTTAT, 70 TGGATG, 71 TATTGT, 72 ACGTTG, 73 GAATTA, 74 CCATCT, 75 TGATCA, 76 CGTATT, 77 CGGCAG, 78 GACACT, 79 TTCCGC, 80 CTCGCA, 81 GTATAC, 82 TGTCAC, 83 TGCGGA, 84 ACGAGC, 85 ACACCC, 86 CGCTTG, 87 TGCAAT, 88 CAACAA, 89 CTGAAA, 90 AACCTA, 91 ACCTGA, 92 TCACTT, 93 GGGCGA, 94 CGCACC, 95 CGAGTA, 96 CCTTTC."
+    },
+    {
+      "oligo_id": "strt_v3_t30vn",
+      "name": "STRT-V3-T30VN (RT oligo-dT primer)",
+      "aliases": [],
+      "role": "Biotinylated anchored oligo-dT reverse-transcription primer that captures poly(A)+ mRNA and primes first-strand cDNA synthesis",
+      "kind": "single",
+      "sequence": "TTAAGCAGTGGTATCAACGCAGAGTCGACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "2012 protocol: 5\u2032-Bio-TTAAGCAGTGGTATCAACGCAGAGTCGACT30VN-3\u2032; 2011 paper: 5\u2032-biotin-AAGCAGTGGTATCAACGCAGAGTCGACT30VN-3\u2032. 5\u2032-biotinylated to prevent template switching at its 5\u2032 end. Contains 30 dT (T30). Underlined GTCGAC is a SalI restriction site (used to release 3\u2032 fragments from beads). 3\u2032 'VN' anchor: V = A/C/G, N = any base, positions the primer at the start of the poly(A) tail."
+    },
+    {
+      "oligo_id": "strt_pcr",
+      "name": "STRT-PCR",
+      "aliases": [],
+      "role": "Biotinylated single primer used to amplify the pooled full-length barcoded cDNA (anneals to the universal sequence common to both TSO and RT primer)",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5\u2032-Bio-AAGCAGTGGTATCAACGCAGAGT-3\u2032; 5\u2032-biotin allows subsequent streptavidin-bead immobilization of the amplified cDNA."
+    },
+    {
+      "oligo_id": "solexa_adp2",
+      "name": "SOLEXA-ADP2 (Illumina P2 adapter)",
+      "aliases": [],
+      "role": "Double-stranded, forked/T-overhang adapter ligated to the A-tailed free (3\u2032/fragmented) end of the cDNA; provides the P2 sequence for the library",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "SOLEXA-ADP2U (upper strand)",
+          "sequence": "CAAGCAGAAGACGGCATACGAGCTCTTCCGATCT",
+          "role": "top adapter strand with a 3\u2032 'T' overhang that base-pairs with the cDNA 'A' overhang; carries the P2 (Solexa-P2) motif"
+        },
+        {
+          "name": "SOLEXA-ADP2L (lower strand)",
+          "sequence": "GATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG",
+          "role": "bottom adapter strand; both 5\u2032 and 3\u2032 ends phosphorylated (5\u2032-PHO for ligation, 3\u2032-PHO blocks ligation in the wrong orientation). Given in the source 3\u2032\u21925\u2032 as PHO-GTTCGTCTTCTGCCGTATGCTCGAGAAGGCTAG-PHO"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Annealed from 10 \u00b5M SOLEXA-ADP2U + 10 \u00b5M SOLEXA-ADP2L. Only adapter 2 (P2) is ligated on-bead; adapter 1 (P1) is added later by PCR to minimize adapter dimers."
+    },
+    {
+      "oligo_id": "p1_strt",
+      "name": "P1-STRT",
+      "aliases": [],
+      "role": "Library PCR forward primer; introduces the Illumina P1 flow-cell sequence via a tail appended to the STRT-PCR motif",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTAAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Solexa-P1 motif",
+          "sequence": "AATGATACGGCGACCACCGAGATCT",
+          "role": "P1 flow-cell / sequencing motif"
+        },
+        {
+          "name": "STRT-PCR motif",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+          "role": "anneals to the universal cDNA end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5\u2032-AATGATACGGCGACCACCGAGATCTAAGCAGTGGTATCAACGCAGAGT-3\u2032."
+    },
+    {
+      "oligo_id": "solexa_p2",
+      "name": "SOLEXA-P2",
+      "aliases": [],
+      "role": "Library PCR reverse primer; amplifies from the ligated P2 adapter",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5\u2032-CAAGCAGAAGACGGCATACGAG-3\u2032; matches the 5\u2032 portion of SOLEXA-ADP2U."
+    },
+    {
+      "oligo_id": "strt_seq_v3",
+      "name": "STRT-SEQ-V3 (custom sequencing primer)",
+      "aliases": [],
+      "role": "Custom Illumina sequencing primer read from the P1 side; anneals immediately upstream of the barcode so read 1 begins at the barcode",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTGCAGTGCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5\u2032-AAGCAGTGGTATCAACGCAGAGTGCAGTGCT-3\u2032. The standard Illumina sequencing primer cannot be used; this custom primer is required. Read = barcode(6) + GGG + insert."
+    }
+  ],
+  "final_library": {
+    "source_label": "STRT-seq final Illumina library (5\u2032\u21923\u2032 top strand)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCT | AAGCAGTGGTATCAACGCAGAGT | GCAGTGCT | [CELL_BARCODE:6] | GGG | [CDNA] | A\u00b7GATCGGAAGAGC(adapter2) | CTCGTATGCCGTCTTCTGCTTG(P2 revcomp)",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTAAGCAGTGGTATCAACGCAGAGTGCAGTGCT[CELL_BARCODE:6]GGG[CDNA]AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' (top / sense)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTAAGCAGTGGTATCAACGCAGAGTGCAGTGCT[CELL_BARCODE:6]GGG[CDNA]AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTAAGCAGTGGTATCAACGCAGAGTGCAGTGCT[CELL_BARCODE:6]GGG[CDNA]AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "5'->3' (bottom / antisense, reverse complement)",
+        "source_html": "CAAGCAGAAGACGGCATACGAGCTCTTCCGATCT[CDNA]CCC[CELL_BARCODE:6]AGCACTGCACTCTGCGTTGATACCACTGCTTAGATCTCGGTGGTCGCCGTATCATT",
+        "source_sequence": "CAAGCAGAAGACGGCATACGAGCTCTTCCGATCT[CDNA]CCC[CELL_BARCODE:6]AGCACTGCACTCTGCGTTGATACCACTGCTTAGATCTCGGTGGTCGCCGTATCATT"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCT  \u2014 Illumina P1 (introduced by P1-STRT in library PCR)",
+      "AAGCAGTGGTATCAACGCAGAGT    \u2014 STRT-PCR universal motif",
+      "GCAGTGCT                   \u2014 TSO tag (from ...GCAGUGCU..., copied as T)",
+      "[CELL_BARCODE:6]           \u2014 6-bp well/cell barcode (one of 96)",
+      "GGG                        \u2014 template-switch trinucleotide",
+      "[CDNA]                     \u2014 5\u2032 end of transcript (TSS-proximal cDNA insert)",
+      "A GATCGGAAGAGC...          \u2014 dA tail + ligated SOLEXA-ADP2 (P2) adapter, read-through",
+      "CTCGTATGCCGTCTTCTGCTTG     \u2014 reverse complement of Solexa-P2 (P2 end)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "STRT-seq final Illumina library (5\u2032\u21923\u2032 top strand)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "STRT-SEQ-V3",
+        "template": "top",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "cell/well barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          },
+          {
+            "name": "template-switch GGG",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 3
+          },
+          {
+            "name": "cDNA (5\u2032 end / TSS)",
+            "type": "insert",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Cell capture & lysis",
+      "summary": "Single cells are sorted one-per-well into a 96-well plate preloaded with the biotinylated oligo-dT RT primer and STRT buffer, then frozen to lyse.",
+      "note": "Each well contains 400 nM STRT-V3-T30VN plus ~2,500 molecules of 8 synthetic spike-in control mRNAs (750\u20132,000 bp) for absolute molecule calibration. Freezing on dry ice contributes to lysis.",
+      "product": "well: [ single cell lysate + spike-ins ]\n5'-Bio-TTAAGCAGTGGTATCAACGCAGAGTCGACTTTT...TTTVN-3'  (oligo-dT RT primer)\n\nmRNA:  5'- m7G-[transcript]-AAAA...AAA -3'"
+    },
+    {
+      "step": 2,
+      "title": "mRNA capture & first-strand synthesis",
+      "summary": "The anchored oligo-dT primer anneals to the poly(A) tail and Superscript II reverse transcribes the mRNA, adding 3\u20136 non-templated C's at the cDNA 3\u2032 end.",
+      "note": "Mn2+ in the RT mix improves template-switching efficiency. MMLV RT adds non-templated dC (typically CCC) at the 3\u2032 end of the completed first strand (the 5\u2032 end of the mRNA).",
+      "product": "mRNA   5'- [transcript] -AAAAAAAA -3'\n              |||||||| (reverse transcription)\ncDNA 3'-CCC-[cDNA]------TTTTTTTTVN-AGCAGTGGTATCAACGCAGAGTCGACT...-Bio-5'\n         ^^^ non-templated dC tail"
+    },
+    {
+      "step": 3,
+      "title": "Template switching & barcoding",
+      "summary": "The barcoded TSO's 3\u2032 riboG tail anneals to the dC tail; RT switches template and copies the TSO, appending the well barcode and universal primer sequence.",
+      "note": "A different TSO (barcode) is present in each of the 96 wells, so every cell's cDNA acquires a unique 6-bp barcode + universal upstream sequence at its 5\u2032 end.",
+      "product": "TSO:  5'-AAGCAGTGGTATCAACGCAGAGTGCAGUGCU-[BC6]-rGrGrG-3'\n                                            anneals ||| \ncDNA 3'-...[cDNA]-CCC-3'  --template switch-->\n\nfirst-strand cDNA (3'->5'):\n3'-...[cDNA]-CCC-[BC6 comp]-UCGUGACGUGAGACGCAACTATGGTGGACGAA-5'"
+    },
+    {
+      "step": 4,
+      "title": "Pool, USER cleavage & single-primer PCR",
+      "summary": "All 96 wells are pooled and purified; USER enzyme degrades the uracil-containing TSO, then the biotinylated STRT-PCR primer amplifies full-length barcoded cDNA (20 cycles).",
+      "note": "Single-primer PCR (both ends share the universal AAGCAGTGGTATCAACGCAGAGT sequence) reduces cell-to-cell amplification bias. USER digestion prevents leftover TSO from priming.",
+      "product": "5'-Bio-AAGCAGTGGTATCAACGCAGAGTGCAGTGCT-[BC6]-GGG-[cDNA]-AAAA...-3'\n3'-    TTCGTCACCATAGTTGCGTCTCACGTC.....-[BC6']-CCC-[cDNA]-TTTT...-5'\n   (double-stranded, barcoded, full-length cDNA; biotin at 5' ends)"
+    },
+    {
+      "step": 5,
+      "title": "Streptavidin bead immobilization",
+      "summary": "The biotinylated amplified cDNA is captured on MyOne C1 streptavidin beads.",
+      "note": "Immobilization enables subsequent on-bead fragmentation and enzymatic steps with easy washing.",
+      "product": "[strept-bead]~Bio-5'-AAGCAGTGGTATCAACGCAGAGTGCAGTGCT-[BC6]-GGG-[cDNA]-AAAA-3'\n              (dsDNA bound to bead through 5' biotin)"
+    },
+    {
+      "step": 6,
+      "title": "Fragmentation",
+      "summary": "Bead-bound cDNA is fragmented with dsDNA fragmentase, retaining the barcoded 5\u2032 end on the bead.",
+      "note": "Fragmentation shortens the molecule so that only the barcode-proximal 5\u2032 fragment is carried forward for sequencing.",
+      "product": "[bead]~Bio-5'-...GCAGTGCT-[BC6]-GGG-[cDNA 5' fragment]-3'   +  free 3' fragments (washed away)"
+    },
+    {
+      "step": 7,
+      "title": "End repair & dA-tailing",
+      "summary": "Fragment ends are blunted (end repair) and a single 3\u2032 A overhang is added with Klenow exo\u2212.",
+      "note": "The dA overhang enables T/A ligation of the P2 adapter to the free (fragmented) end.",
+      "product": "[bead]~Bio-5'-...GGG-[cDNA fragment]-A    -3'\n           3'-    ...CCC-[cDNA comp]  -   -5'  (blunt + 3'-A overhang)"
+    },
+    {
+      "step": 8,
+      "title": "P2 adapter ligation",
+      "summary": "The SOLEXA-ADP2 adapter (T overhang) is ligated to the A-tailed free end; SalI-HF simultaneously releases fragments from the bead.",
+      "note": "Only the P2 adapter is ligated here to avoid adapter dimers; SalI cleaves the SalI site in the RT-primer region to free the 3\u2032 fragments.",
+      "product": "5'-...GGG-[cDNA fragment]-A GATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG-3'\n                          T CTAGCCTTCTCGAGCATACGGCAGAAGACGAAC-5'\n                          (ligated SOLEXA-ADP2 / P2)"
+    },
+    {
+      "step": 9,
+      "title": "Library PCR (introduce P1)",
+      "summary": "P1-STRT (forward) and Solexa-P2 (reverse) primers amplify for 12 cycles, appending the Illumina P1 sequence.",
+      "note": "P1-STRT tails the universal STRT-PCR motif with the P1 flow-cell sequence, completing a sequenceable Illumina library.",
+      "product": "5'-AATGATACGGCGACCACCGAGATCT-AAGCAGTGGTATCAACGCAGAGTGCAGTGCT-[BC6]-GGG-[cDNA]-AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGA-TTCGTCACCATAGTTGCGTCTCACGTCACGA-[BC6']-CCC-[cDNA']-TCTAGCCTTCTCGAGCATACGGCAGAAGACGAAC-5'"
+    },
+    {
+      "step": 10,
+      "title": "Size selection",
+      "summary": "The library is size-selected on a 2% E-gel, recovering the 200\u2013400 bp range for sequencing.",
+      "note": "Final concentration ~1\u20132 ng/\u00b5l (~1 nM); molar concentration is used to set flow-cell cluster density.",
+      "product": "Final sequenceable library (5'->3' top strand):\n5'-AATGATACGGCGACCACCGAGATCTAAGCAGTGGTATCAACGCAGAGTGCAGTGCT[CELL_BARCODE:6]GGG[CDNA]AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG-3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (single-end)",
+      "primer": "STRT-SEQ-V3 (5'-AAGCAGTGGTATCAACGCAGAGTGCAGTGCT-3')",
+      "template": "top",
+      "cycles": 50,
+      "note": "Mandatory custom sequencing primer read from the P1 side (the standard Illumina primer does not anneal). The primer's 3' end sits immediately upstream of the barcode, so the read begins with the 6-bp well/cell barcode, then the template-switch GGG, then the 5' end (TSS) of the transcript. Original paper reported ~55-bp reads on a Genome Analyzer IIx.",
+      "diagram": "                        Read 1 (STRT-SEQ-V3, single-end from the P1 side)\n           5'-AAGCAGTGGTATCAACGCAGAGTGCAGTGCT----------------------->   (read = BC6 + GGG + cDNA 5' end)\n5'- ...GAGATCTAAGCAGTGGTATCAACGCAGAGTGCAGTGCT[BC6]GGG[cDNA]AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG -3'   (top / sense)\n3'- ...CTCTAGATTCGTCACCATAGTTGCGTCTCACGTCACGA[BC6]CCC[cDNA]TCTAGCCTTCTCGAGCATACGGCAGAAGACGAAC -5'   (bottom / antisense)\n                                              ^ read starts here (barcode)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "STRT-seq",
+  "description": "Single-cell tagged reverse transcription (STRT) is a highly multiplexed, strand-specific single-cell RNA-seq method that sequences the 5\u2032 ends of mRNAs. Ninety-six single cells are lysed in individual wells; poly(A)+ mRNA is reverse transcribed with a biotinylated tailed oligo-dT primer, and MMLV reverse transcriptase template-switching adds a well-specific 6-bp barcode plus a universal primer sequence at the 5\u2032 end of each cDNA. All 96 barcoded cDNAs are pooled, amplified by single-primer PCR, immobilized on streptavidin beads, fragmented, end-repaired/A-tailed, ligated to an Illumina P2 adapter, and library-amplified to introduce the P1 sequence. Each Illumina read starts at the barcode, followed by the template-switch GGG, followed by the 5\u2032 end of the transcript (transcription start site), yielding strand-specific, promoter-resolved quantitative expression profiles.",
+  "reference": {
+    "kind": "paper",
+    "label": "Characterization of the single-cell transcriptional landscape by highly multiplex RNA-seq",
+    "path": null,
+    "url": "https://doi.org/10.1038/nprot.2012.022",
+    "doi": "10.1101/gr.110882.110"
+  },
+  "publication": {
+    "year": 2011,
+    "original_publication": {
+      "title": "Characterization of the single-cell transcriptional landscape by highly multiplex RNA-seq",
+      "journal": "Genome Research",
+      "doi": "10.1101/gr.110882.110",
+      "url": "http://www.genome.org/cgi/doi/10.1101/gr.110882.110"
+    },
+    "statistical_model": "Read counts normalized to transcripts per million (t.p.m.) without gene-length normalization (one sequenceable fragment per input mRNA); absolute mRNA molecule numbers per cell estimated by normalizing hit counts to spiked-in synthetic control mRNAs of known concentration.",
+    "authors": [
+      {
+        "name": "Saiful Islam",
+        "affiliation": "Laboratory for Molecular Neurobiology, Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Una Kj\u00e4llquist",
+        "affiliation": "Laboratory for Molecular Neurobiology, Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Annalena Moliner",
+        "affiliation": "Department of Neuroscience, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Pawel Zajac",
+        "affiliation": "Laboratory for Molecular Neurobiology, Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Jian-Bing Fan",
+        "affiliation": "Illumina Inc., San Diego, California, USA"
+      },
+      {
+        "name": "Peter L\u00f6nnerberg",
+        "affiliation": "Laboratory for Molecular Neurobiology, Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      },
+      {
+        "name": "Sten Linnarsson",
+        "corresponding": true,
+        "email": "sten.linnarsson@ki.se",
+        "affiliation": "Laboratory for Molecular Neurobiology, Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden"
+      }
+    ],
+    "throughput": {
+      "summary": "96 single cells per library prepared in one incubation via early barcoding; two 96-cell sets prepared in parallel over ~3 days. ~110 million raw reads on 5 GAIIx lanes; ~241,000 mRNA molecules detected per cell on average.",
+      "cells": "96 single cells per library (92 cells reported: 48 ES cells, 44 MEFs, 4 empty wells; plus 96-well 10 pg RefRNA controls)",
+      "rna": "~241,000 mRNA molecules detected per cell on average (ES ~22,000; MEF ~505,000; negative controls ~812); ten-molecule limit of detection; 5\u201325% of mRNA converted to amplifiable cDNA",
+      "dna": ""
+    },
+    "other": [
+      {
+        "label": "Detailed protocol",
+        "value": "Islam et al., Nature Protocols 7:813\u2013828 (2012), doi:10.1038/nprot.2012.022 \u2014 'Highly multiplexed and strand-specific single-cell RNA 5\u2032 end sequencing'"
+      },
+      {
+        "label": "GEO accession",
+        "value": "GSE29087"
+      },
+      {
+        "label": "Spike-ins",
+        "value": "8 synthetic polyadenylated ArrayControl RNAs (750\u20132,000 bp) per well for absolute molecule counting"
+      },
+      {
+        "label": "Key advantages",
+        "value": "Strand-specific; identifies transcription start sites (single-cell CAGE); early barcoding lowers cost (~$200 per 96 cells) \u2014 but cannot resolve alternative splicing"
+      },
+      {
+        "label": "Sequencing platform",
+        "value": "Illumina Genome Analyzer IIx (also compatible with HiSeq 1000/2000, MiSeq, HiScanSQ) with custom STRT-SEQ-V3 primer"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "plate-based",
+  "data_processing": {
+    "summary": "Reads are demultiplexed by the 6-bp well barcode, trimmed, and aligned to the mouse genome with Bowtie; reads per annotated feature are counted and normalized to transcripts per million (t.p.m.), and cells are then embedded in 2D via a Bray-Curtis kNN similarity graph laid out by a force-directed algorithm. Absolute mRNA molecule counts per cell are derived by normalizing hit counts to spiked-in synthetic control mRNAs of known concentration.",
+    "stages": [
+      {
+        "id": "preprocess",
+        "label": "Preprocessing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "quantify",
+        "label": "Quantification"
+      },
+      {
+        "id": "embed",
+        "label": "Embedding"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex by well barcode",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim",
+        "label": "Trim reads",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align to genome",
+        "tool": "Bowtie",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter",
+        "label": "Discard unmapped reads",
+        "tool": "",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count",
+        "label": "Count reads per feature",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tpm",
+        "label": "Normalize to t.p.m.",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "spikein",
+        "label": "Estimate absolute molecule counts",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "braycurtis",
+        "label": "Compute Bray-Curtis similarity",
+        "tool": "",
+        "stage": "embed",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "knn",
+        "label": "Build kNN graph (k=5)",
+        "tool": "",
+        "stage": "embed",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "layout",
+        "label": "Force-directed 2D layout",
+        "tool": "",
+        "stage": "embed",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "trim",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "filter",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter",
+        "to": "count",
+        "kind": "sequential"
+      },
+      {
+        "from": "count",
+        "to": "tpm",
+        "kind": "branch"
+      },
+      {
+        "from": "count",
+        "to": "spikein",
+        "kind": "branch"
+      },
+      {
+        "from": "tpm",
+        "to": "braycurtis",
+        "kind": "fan_in"
+      },
+      {
+        "from": "braycurtis",
+        "to": "knn",
+        "kind": "sequential"
+      },
+      {
+        "from": "knn",
+        "to": "layout",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "null"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "folder": "sci_rna_seq",
+  "title": "sci-RNA-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "sci-RNA-seq_family.html",
+    "oligo_seq_recall": 0.3,
+    "oligo_seqs_matched": 3,
+    "oligo_seqs_total": 10,
+    "missed_oligos": [
+      "Barcoded RT primer",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera N7 index primer",
+      "Nextera N/S5xx primer entry point (s5)",
+      "Nextera Tn5 binding site (19-bp Mosaic End (ME))",
+      "PCR P5 primer",
+      "TruSeq i5 index sequencing primer (index2)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'-AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG-3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

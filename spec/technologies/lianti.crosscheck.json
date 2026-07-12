@@ -1,0 +1,22 @@
+{
+  "folder": "lianti",
+  "title": "LIANTI",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "LIANTI.html",
+    "oligo_seq_recall": 0.6,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 10,
+    "missed_oligos": [
+      "NEBNext Hairpin Adaptor",
+      "TruSeq i7 PCR primer",
+      "TruSeq sample index sequencing primer forward",
+      "Universal P5 PCR primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8]GGGAGATGTGTATAAGAGACAG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8]GGGAGATGTGTATAAGAGACAG[GDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[I7_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

@@ -1,0 +1,852 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "flash_seq",
+  "assay": "FLASH-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "FLASH-seq_low_amplification_protocol_v3.pdf",
+      "title": "FLASH-seq low-amplification protocol v3",
+      "url": "https://doi.org/10.17504/protocols.io.yxmvmnod5g3p/v3",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/flash_seq/FLASH-seq_low_amplification_protocol_v3.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "FLASH-seq_UMI_protocol_v3.pdf",
+      "title": "FLASH-seq UMI protocol v3",
+      "url": "https://doi.org/10.17504/protocols.io.bp2l619rdvqe/v3",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/flash_seq/FLASH-seq_UMI_protocol_v3.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "FLASH-seq_protocol_v3.pdf",
+      "title": "FLASH-seq protocol v3",
+      "url": "https://doi.org/10.17504/protocols.io.kxygxzkrwv8j/v3",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/flash_seq/FLASH-seq_protocol_v3.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "FLASH-seq.pdf",
+      "title": "FLASH-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/flash_seq/FLASH-seq.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "FLASH-seq_supp.pdf",
+      "title": "FLASH-seq_supp.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/flash_seq/FLASH-seq_supp.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "fs_dt30vn",
+      "name": "FS dT30VN (SMART dT30VN)",
+      "aliases": [],
+      "role": "Oligo-dT reverse-transcription primer carrying the ISPCR handle; primes first-strand cDNA on the mRNA poly(A) tail",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' /5Biosg/ C6-linker biotin. AAGCAGTGGTATCAACGCAGAGT = ISPCR/SMART handle (shared with the TSO). 30-nt poly(T) + VN anchor (V = A/C/G). Identical sequence to Smart-seq2 Smart dT30VN."
+    },
+    {
+      "oligo_id": "fs_tso",
+      "name": "FS TSO",
+      "aliases": [],
+      "role": "Template-switching oligonucleotide; anneals to the 3' C-tail of first-strand cDNA and templates addition of the ISPCR handle to the 5' end of the transcript",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' /5Biosg/ biotin. Terminal GGG are riboguanosines (rGrGrG, folded) \u2014 riboguanosine replaces the Smart-seq2/3 LNA-G to reduce strand-invasion artifacts. Shares the ISPCR handle with FS dT30VN."
+    },
+    {
+      "oligo_id": "tn5me_rev",
+      "name": "TN5MErev",
+      "aliases": [],
+      "role": "Mosaic-end reverse strand common to both loaded Tn5 adapters (blocked bottom strand of the transposon end)",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' /5Phos/ phosphate. Anneals to the ME of both TN5ME-A and TN5ME-B to form the transposome."
+    },
+    {
+      "oligo_id": "tn5me_a",
+      "name": "TN5ME-A",
+      "aliases": [],
+      "role": "i5-side Tn5 transposon adapter (Nextera Read-1 / ME-A top strand)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Loaded onto Tn5 by annealing with TN5MErev. AGATGTGTATAAGAGACAG = 19-nt mosaic end."
+    },
+    {
+      "oligo_id": "tn5me_b",
+      "name": "TN5ME-B",
+      "aliases": [],
+      "role": "i7-side Tn5 transposon adapter (Nextera Read-2 / ME-B top strand)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Loaded onto Tn5 by annealing with TN5MErev. AGATGTGTATAAGAGACAG = 19-nt mosaic end."
+    },
+    {
+      "oligo_id": "tn5_transposome_a",
+      "name": "Tn5 transposome A (ME-A / MErev)",
+      "aliases": [],
+      "role": "Assembled loaded transposon end that appends the i5-side adapter during tagmentation",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TN5ME-A (top)",
+          "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+          "role": "transferred strand (i5 side)"
+        },
+        {
+          "name": "TN5MErev (bottom)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "non-transferred mosaic-end strand, 5'-phosphate"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "In-house Tn5 protocol. The 19-bp ME duplex is bound by Tn5; only ME-A is covalently transferred to the 5' of the tagmented fragment."
+    },
+    {
+      "oligo_id": "tn5_transposome_b",
+      "name": "Tn5 transposome B (ME-B / MErev)",
+      "aliases": [],
+      "role": "Assembled loaded transposon end that appends the i7-side adapter during tagmentation",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TN5ME-B (top)",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "transferred strand (i7 side)"
+        },
+        {
+          "name": "TN5MErev (bottom)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "non-transferred mosaic-end strand, 5'-phosphate"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "In-house Tn5 protocol. Alternatively the Nextera XT ATM (Illumina) can be used."
+    },
+    {
+      "oligo_id": "nextera_i7",
+      "name": "Nextera N7xx (i7) index adapter",
+      "aliases": [],
+      "role": "Enrichment/indexing PCR primer that appends the i7 sample index and P7 flow-cell adapter (binds the ME-B/GTCTCGTGGGCTCGG handle)",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' /5Biosg/ biotin, phosphorothioate bond between last two nt. CAAGCAGAAGACGGCATACGAGAT = P7. 24 Nextera-XT v2 N7xx (N714\u2013N729) + 48 additional 'extra_i7' indices provided; e.g. N714 index = TCATGAGC, extra_i7_1 = GCCTATCA. Ordered at 5 \u00b5M working combos with i5."
+    },
+    {
+      "oligo_id": "nextera_i5",
+      "name": "Nextera S5xx (i5) index adapter",
+      "aliases": [],
+      "role": "Enrichment/indexing PCR primer that appends the i5 sample index and P5 flow-cell adapter (binds the ME-A/TCGTCGGCAGCGTC handle)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' /5Biosg/ biotin, phosphorothioate bond between last two nt. AATGATACGGCGACCACCGAGATCTACAC = P5. 16 Nextera-XT v2 S5xx (S502\u2013S522) + 32 additional 'extra_i5' indices provided; e.g. S502 index = CTCTCTAT, extra_i5_1 = CGACCATT."
+    },
+    {
+      "oligo_id": "strt_dt",
+      "name": "STRT-P1-T31 (STRT-dT)",
+      "aliases": [],
+      "role": "FS-UMI oligo-dT RT primer carrying a partial-P5 handle (Hochgerner et al. STRT-seq-2i); does NOT end in VN",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGATCGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' /5Biosg/ biotin. AATGATACGGCGACCACCGA = P5 handle; TCGT linker + 31-nt poly(T). Used in the FS-UMI protocol instead of FS dT30VN."
+    },
+    {
+      "oligo_id": "tso_umi",
+      "name": "TSO-UMI (TSO_CTAAC)",
+      "aliases": [],
+      "role": "FS-UMI template-switching oligo carrying an 8-nt UMI and a 5-nt spacer upstream of the riboguanosines",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT[UMI:8]CTAACGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' /5Biosg/ biotin; terminal GGG are riboguanosines. NNNNNNNN = 8-nt UMI; CTAAC = 5-nt spacer that suppresses strand invasion (recommended variant). Base FS-TSO-UMI omits the spacer (AAGCAGTGGTATCAACGCAGAGT[UMI:8]GGG); other tested spacers: CAGCA/ATAAC/ATGAC/CTGAC/AAGCA/CATCA/CGTAC."
+    },
+    {
+      "oligo_id": "tn5_ispcr_f",
+      "name": "Tn5-ISPCR forward primer",
+      "aliases": [],
+      "role": "FS-UMI RT-PCR forward primer; ME + ISPCR fusion that amplifies the internal (TSO-handle) end of the cDNA",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGAAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG (ME-A) fused to AAGCAGTGGTATCAACGCAGAGT (ISPCR handle). Added at 0.5 \u00b5M in the FS-UMI RT-PCR mix."
+    },
+    {
+      "oligo_id": "di_pcr_p1a_r",
+      "name": "DI-PCR-P1A reverse primer",
+      "aliases": [],
+      "role": "FS-UMI RT-PCR reverse primer that amplifies the oligo-dT (STRT/P5) end of the cDNA",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "P5 partial sequence (Hochgerner et al.). Added at 0.1 \u00b5M in the FS-UMI RT-PCR mix."
+    }
+  ],
+  "final_library": {
+    "source_label": "Standard FLASH-seq (Tn5/Nextera) sequencing-ready library",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC | [SAMPLE_INDEX:8](i5) | TCGTCGGCAGCGTC(ME-A handle / Read1 primer) | AGATGTGTATAAGAGACAG(mosaic end) | [CDNA] | CTGTCTCTTATACACATCT(rev mosaic end) | CCGAGCCCACGAGAC(ME-B handle, rev-comp) | [SAMPLE_INDEX:8](i7 rev-comp) | ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "top (5'->3')",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC  \u2014 P5 flow-cell adapter",
+      "[SAMPLE_INDEX:8]               \u2014 i5 sample index (S5xx)",
+      "TCGTCGGCAGCGTC                 \u2014 i5-side Tn5 adapter / Read 1 primer landing site",
+      "AGATGTGTATAAGAGACAG            \u2014 mosaic end (ME), 5' of insert",
+      "[CDNA]                         \u2014 tagmented full-length cDNA insert",
+      "CTGTCTCTTATACACATCT            \u2014 reverse mosaic end, 3' of insert",
+      "CCGAGCCCACGAGAC                \u2014 i7-side Tn5 adapter (ME-B handle, reverse complement)",
+      "[SAMPLE_INDEX:8]               \u2014 i7 sample index (N7xx, reverse complement)",
+      "ATCTCGTATGCCGTCTTCTGCTTG       \u2014 P7 flow-cell adapter"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Standard FLASH-seq (Tn5/Nextera) sequencing-ready library",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+        "template": "top",
+        "cycles": 75,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Cell lysis & oligo-dT priming",
+      "summary": "A single sorted cell is lysed and its poly(A) mRNA is captured by the biotinylated FS dT30VN oligo-dT after a 72 \u00b0C denaturation.",
+      "note": "Cells are FACS-sorted into 384-well plates with 1 \u00b5L lysis mix (Triton X-100, dNTPs, FS dT30VN, RNase inhibitor, DTT, FS TSO, dCTP, betaine); 3 min at 72 \u00b0C resolves RNA secondary structure and anneals the oligo-dT to the poly(A) tail.",
+      "product": "                          FS dT30VN (oligo-dT)\n           3'-NV(T)30-CATGAGACGCAACTATGGTGACGAA-[Bio]-5'\n                      ||||||||||\n5'-cap-XXXXXXXXXXXXXXXXXX...XXXXXXAAAAAAAAAA-3'   mRNA"
+    },
+    {
+      "step": 2,
+      "title": "Reverse transcription + template switching",
+      "summary": "SuperScript IV extends the oligo-dT into first-strand cDNA, adds a C-tail at the 5' cap, and switches to the FS TSO, appending the ISPCR handle to both cDNA ends.",
+      "note": "Excess dCTP boosts non-templated C-tailing; the rGrGrG of FS TSO base-pairs with the C-tail and RT copies the TSO. Both cDNA ends now carry the identical AAGCAGTGGTATCAACGCAGAGT handle.",
+      "product": "5'-[Bio]AAGCAGTGGTATCAACGCAGAGTAC(T)30VN----cDNA----GGG-3'\n                                                   ^ templated off FS TSO handle\n   first-strand cDNA flanked by the shared ISPCR handle at both ends"
+    },
+    {
+      "step": 3,
+      "title": "Combined RT-PCR pre-amplification",
+      "summary": "Full-length cDNA is amplified by semi-suppressive PCR in the same tube using the shared ISPCR handle as a single primer (KAPA HiFi).",
+      "note": "Because FS dT30VN and FS TSO share the 23-nt handle, one handle self-primes both ends. 10\u201321 cycles depending on cell type/variant (e.g. 19 for HEK293T, 21 for hPBMC).",
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC GGG [==== cDNA ====] (A)n GTACTCTGCGTTGATACCACTGCTT -3'\n3'- TTCGTCACCATAGTTGCGTCTCATG CCC [==== cDNA ====] (T)n CATGAGACGCAACTATGGTGACGAA -5'\n            <-------- ISPCR handle both ends -------->"
+    },
+    {
+      "step": 4,
+      "title": "cDNA cleanup & normalization (skipped in FS-LA)",
+      "summary": "Amplified cDNA is purified with 0.8x SPRI/Sera-Mag beads, QC'd, and diluted to ~100\u2013200 pg/\u00b5L.",
+      "note": "Standard FS and FS-UMI perform bead cleanup (0.6x in FS-UMI) plus Bioanalyzer/PicoGreen QC. FS-LA omits cleanup entirely and uses 1 \u00b5L of 1:10-diluted raw cDNA directly.",
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGT...[full-length cDNA]...ACTCTGCGTTGATACCACTGCTT -3'\n     (purified, normalized double-stranded cDNA, ~1.8-2.2 kb)"
+    },
+    {
+      "step": 5,
+      "title": "Tagmentation",
+      "summary": "Tn5 loaded with ME-A/ME-B adapters simultaneously fragments the cDNA and inserts mosaic-end adapters at both ends of each fragment.",
+      "note": "In-house Tn5 (TAPS-Mg/DMF) or Nextera XT ATM. Fragments receive a 9-bp gap and the transferred ME strand; SDS then strips Tn5 from the DNA.",
+      "product": "5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[==cDNA insert==]                   \n                      TCTAC   3'-gap                   CTGTCTCTTATACACATCT...B-5'\n   ME-A adapter -----[ insert ]----- ME-B adapter (both ends tagmented)"
+    },
+    {
+      "step": 6,
+      "title": "Gap-fill & enrichment (indexing) PCR",
+      "summary": "72 \u00b0C gap-fill then PCR with N7xx (i7) + S5xx (i5) primers adds the sample indices and P5/P7 flow-cell adapters.",
+      "note": "14\u201324 enrichment cycles depending on pre-amplification level. i5 primer binds the ME-A handle, i7 primer binds the ME-B handle.",
+      "product": "5'-AATGATACGGCGACCACCGAGATCTACAC[i5]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG-3'\n   P5 -- i5 -- ME-A/Read1 -- insert -- rev-ME/ME-B -- i7 -- P7"
+    },
+    {
+      "step": 7,
+      "title": "Pool & final cleanup",
+      "summary": "Indexed libraries are pooled and purified with 0.8x SPRI beads, then quantified for sequencing.",
+      "note": "Final library ~700\u20131000 bp; sequenced on any Illumina instrument (NextSeq 550 in the paper).",
+      "product": "5'-P5-[i5]-Read1/ME-[CDNA]-ME/Read2-[i7]-P7-3'\n   (sequenceable dual-indexed Nextera library)"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (cDNA insert)",
+      "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "template": "top",
+      "cycles": 75,
+      "note": "Nextera Read-1 primer (i5-side ME-A) sequences straight into the tagmented full-length cDNA. Standard FS/FS-LA read mode is 75-8-8-0 and single-end 75 bp is generally sufficient. FS-UMI switches to paired-end 100-8-8-50, in which R1 first reads the UMI block (see the FS-UMI Read 1 entry).",
+      "diagram": "   Read 1 primer (Nextera Read 1 / ME-A)\n   5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG----------->\n5'-...TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[==== full-length cDNA ====]CTGTCTCTTATACACATCT...-3'\n3'-...AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[==== full-length cDNA ====]GACAGAGAATATGTGTAGA...-5'"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "CTGTCTCTTATACACATCTCCGAGCCCACGAGAC",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "Reads the 8-nt i7 sample index (N7xx). The Index-1 primer anneals to the ME-B handle on the P7 (bottom) strand and reads the index toward P7. Region drawn flipped so the P7 strand is on top (5'->3').",
+      "diagram": "   Index 1 (i7) \u2014 read off the P7 strand (drawn 5'->3' on top)\n5'-...CAAGCAGAAGACGGCATACGAGAT[NNNNNNNN]GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG...-3'\n3'-...GTTCGTCTTCTGCCGTATGCTCTA[NNNNNNNN]CAGAGCACCCGAGCCTCTACACATATTCTCTGTC...-5'\n              i7 index  <----------[NNNNNNNN]\n                        i7 primer: 3'-CAGAGCACCCGAGCCTCTACACATATTCTCTGTC-5'"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "GACGCTGCCGACGA",
+      "template": "top",
+      "cycles": 8,
+      "note": "Reads the 8-nt i5 sample index (S5xx). On the NextSeq 550 the i5 index is read from the P5 (top) strand: the primer lands on the TCGTCGGCAGCGTC (i5-side) handle and reads the index toward P5.",
+      "diagram": "   Index 2 (i5) \u2014 read off the P5 strand (NextSeq 550)\n5'-AATGATACGGCGACCACCGAGATCTACAC[NNNNNNNN]TCGTCGGCAGCGTC...-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG[NNNNNNNN]AGCAGCCGTCGCAG...-5'\n            i5 index        <--------[NNNNNNNN]\n                              i5 primer: 3'-AGCAGCCGTCGCAG-5'"
+    },
+    {
+      "read": "Read 1 (FS-UMI: UMI + cDNA)",
+      "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "template": "top",
+      "cycles": 100,
+      "note": "FS-UMI variant only. R1 reads through the ISPCR handle, then the 8-nt UMI, the CTAAC spacer and the GGG (riboguanosine) block contributed by the TSO-UMI, before entering the 5' end of the cDNA. Read mode 100-8-8-50 (90-8-8-60 / 80-8-8-70 also work). UMIs occasionally land in R2 owing to upstream tagmentation, so umi_tools extracts from both mates.",
+      "diagram": "   Read 1 primer (Nextera Read 1 / ME-A)\n   5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG--------------->\n5'-...TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGAAGCAGTGGTATCAACGCAGAGT[NNNNNNNN]CTAACGGG[== cDNA ==]-3'\n3'-...AGCAGCCGTCGCAGTCTACACATATTCTCTGTCTTCGTCACCATAGTTGCGTCTCA[NNNNNNNN]GATTGCCC[== cDNA ==]-5'\n                                     |----ISPCR handle-----| |--UMI--| |spacer|"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "FLASH-seq",
+  "description": "FLASH-seq (FS) is a fast, high-sensitivity full-length single-cell RNA-seq method derived from Smart-seq2/3. A single cell is lysed and its polyadenylated mRNA is reverse-transcribed by SuperScript IV using a biotinylated oligo-dT (FS dT30VN); template switching onto a riboguanosine-tailed TSO (FS-TSO) appends a shared ISPCR handle to both cDNA ends, so a single combined RT-PCR pre-amplifies full-length cDNA. The cDNA is then tagmented with Tn5 and enriched with Nextera i5/i7 index primers to build the sequencing library. Reads give full-length gene-body coverage (R1 captures the cDNA insert; i7/i5 index reads identify the cell), enabling isoform and SNP analysis and, in the FS-UMI variant, UMI-based molecule counting. Variants: FS (standard), FS-LA (low-amplification, no cleanup), and FS-UMI (UMI-containing TSO).",
+  "reference": {
+    "kind": "paper",
+    "label": "FLASH-seq low-amplification protocol v3",
+    "path": null,
+    "url": "https://doi.org/10.17504/protocols.io.bp2l619rdvqe/v3",
+    "doi": "10.17504/protocols.io.yxmvmnod5g3p/v3"
+  },
+  "publication": {
+    "year": 2022,
+    "original_publication": {
+      "title": "Fast and highly sensitive full-length single-cell RNA sequencing using FLASH-seq",
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/s41587-022-01312-3",
+      "url": "https://doi.org/10.1038/s41587-022-01312-3"
+    },
+    "authors": [
+      {
+        "name": "Vincent Hahaut",
+        "affiliation": "Institute of Molecular and Clinical Ophthalmology Basel (IOB); Department of Ophthalmology, University of Basel, Basel, Switzerland"
+      },
+      {
+        "name": "Dinko Pavlinic",
+        "affiliation": "Institute of Molecular and Clinical Ophthalmology Basel (IOB); Department of Ophthalmology, University of Basel, Basel, Switzerland"
+      },
+      {
+        "name": "Walter Carbone",
+        "affiliation": "Chemical Biology and Therapeutics, Novartis Institutes for Biomedical Research, Basel, Switzerland"
+      },
+      {
+        "name": "Sven Schuierer",
+        "affiliation": "Chemical Biology and Therapeutics, Novartis Institutes for Biomedical Research, Basel, Switzerland"
+      },
+      {
+        "name": "Pierre Balmer",
+        "affiliation": "Institute of Molecular and Clinical Ophthalmology Basel (IOB); Department of Ophthalmology, University of Basel, Basel, Switzerland"
+      },
+      {
+        "name": "Mathieu Quinodoz",
+        "affiliation": "Institute of Molecular and Clinical Ophthalmology Basel (IOB); Department of Ophthalmology, University of Basel, Basel, Switzerland"
+      },
+      {
+        "name": "Magdalena Renner",
+        "affiliation": "Institute of Molecular and Clinical Ophthalmology Basel (IOB); Department of Ophthalmology, University of Basel, Basel, Switzerland"
+      },
+      {
+        "name": "Guglielmo Roma",
+        "affiliation": "Chemical Biology and Therapeutics, Novartis Institutes for Biomedical Research, Basel, Switzerland"
+      },
+      {
+        "name": "Cameron S. Cowan",
+        "affiliation": "Institute of Molecular and Clinical Ophthalmology Basel (IOB); Department of Ophthalmology, University of Basel, Basel, Switzerland"
+      },
+      {
+        "name": "Simone Picelli",
+        "corresponding": true,
+        "email": "simone.picelli@iob.ch",
+        "affiliation": "Institute of Molecular and Clinical Ophthalmology Basel (IOB); Department of Ophthalmology, University of Basel, Basel, Switzerland"
+      }
+    ],
+    "throughput": {
+      "summary": "Plate-based full-length scRNA-seq (384-well); complete FS protocol in ~4.5 h with <1 h hands-on for FS-LA. Detects ~12,000\u201313,000 genes per HEK293T cell; cost <$1/cell.",
+      "cells": "Hundreds to ~1,536 cells per experiment (384 cells/plate; multiple plates in parallel)",
+      "rna": "Full-length transcript coverage; ~8x more cDNA yield than SS2/SS3 at equal cycles; ~1.8\u20132.2 kb average cDNA",
+      "dna": "Sequencing-ready libraries ~700\u20131000 bp"
+    },
+    "statistical_model": "UMI-based molecule counting via umi_tools deduplication (FS-UMI variant); differential-expression cell-type markers called with MAST (hurdle model); group comparisons by two-sided Wilcoxon rank-sum and Dunn's tests, cell-to-cell similarity by Kendall's tau.",
+    "other": [
+      {
+        "label": "Enzymes/additives",
+        "value": "SuperScript IV RT + KAPA HiFi in a single RT-PCR mix; excess dCTP (3.3 mM) to boost C-tailing/template switching; betaine"
+      },
+      {
+        "label": "Applications",
+        "value": "Isoform detection, allele/SNP calling at single-cell level, TCR reconstruction; validated on HEK293T, hPBMCs and week-18 retinal organoids"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "plate-based",
+  "data_processing": {
+    "summary": "Reads are demultiplexed with bcl2fastq, optionally adapter/primer-trimmed with BBDuk, aligned as full-length transcripts to the genome with STAR, filtered and sorted with samtools, and assigned to genes with featureCounts to build a per-cell read-count matrix. The FS-UMI variant additionally extracts the 8-nt UMI (bounded by the ISPCR handle and the CTAAC-GGG spacer) with umi_tools, splits the 5' UMI reads from the internal full-length reads, maps them separately, and deduplicates molecules with umi_tools count. FS-UMI reconciles the fact that UMIs can appear in R1 or (rarely) R2 due to upstream tagmentation. Post-processing follows Smart-seq2 guidelines (Seurat/scanpy/OSCA).",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "preprocess",
+        "label": "Read preprocessing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "bam_process",
+        "label": "BAM processing"
+      },
+      {
+        "id": "quant",
+        "label": "Quantification"
+      },
+      {
+        "id": "matrix",
+        "label": "Matrix assembly"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex to FASTQ",
+        "tool": "bcl2fastq",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim",
+        "label": "Trim adapters and primers",
+        "tool": "BBDuk",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umi_extract",
+        "label": "Extract 8-nt UMI",
+        "tool": "umi_tools",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umi_split",
+        "label": "Split UMI and internal reads",
+        "tool": "",
+        "stage": "preprocess",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align full-length reads",
+        "tool": "STAR",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umi_align",
+        "label": "Map UMI reads separately",
+        "tool": "STAR",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter",
+        "label": "Filter primary alignments",
+        "tool": "samtools",
+        "stage": "bam_process",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "sort",
+        "label": "Sort BAM",
+        "tool": "samtools",
+        "stage": "bam_process",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "index",
+        "label": "Index BAM",
+        "tool": "samtools",
+        "stage": "bam_process",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "igv",
+        "label": "Inspect coverage",
+        "tool": "IGV",
+        "stage": "bam_process",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "fc",
+        "label": "Assign reads to genes",
+        "tool": "featureCounts",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umi_fc",
+        "label": "Assign UMI reads to genes",
+        "tool": "featureCounts",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umi_count",
+        "label": "Deduplicate and count molecules",
+        "tool": "umi_tools",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "matrix",
+        "label": "Build read-count matrix",
+        "tool": "",
+        "stage": "matrix",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "umi_matrix",
+        "label": "Build molecule-count matrix",
+        "tool": "",
+        "stage": "matrix",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "trim",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim",
+        "to": "align",
+        "kind": "branch"
+      },
+      {
+        "from": "trim",
+        "to": "umi_extract",
+        "kind": "branch"
+      },
+      {
+        "from": "umi_extract",
+        "to": "umi_split",
+        "kind": "sequential"
+      },
+      {
+        "from": "umi_split",
+        "to": "align",
+        "kind": "branch"
+      },
+      {
+        "from": "umi_split",
+        "to": "umi_align",
+        "kind": "branch"
+      },
+      {
+        "from": "align",
+        "to": "filter",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter",
+        "to": "sort",
+        "kind": "sequential"
+      },
+      {
+        "from": "sort",
+        "to": "fc",
+        "kind": "branch"
+      },
+      {
+        "from": "sort",
+        "to": "index",
+        "kind": "branch"
+      },
+      {
+        "from": "index",
+        "to": "igv",
+        "kind": "sequential"
+      },
+      {
+        "from": "fc",
+        "to": "matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "umi_align",
+        "to": "umi_fc",
+        "kind": "sequential"
+      },
+      {
+        "from": "umi_fc",
+        "to": "umi_count",
+        "kind": "sequential"
+      },
+      {
+        "from": "umi_count",
+        "to": "umi_matrix",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": "Count-based quantification with no distributional model; the FS-UMI variant applies umi_tools directional UMI deduplication for molecule counting."
+  }
+}

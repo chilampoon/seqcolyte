@@ -1,0 +1,20 @@
+{
+  "folder": "10x_chromium_3_gene_expression_v3",
+  "title": "10x Chromium 3\u2032 GEX v3",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "10xChromium3.html",
+    "oligo_seq_recall": 0.818,
+    "oligo_seqs_matched": 9,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "Beads-oligo-dT",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

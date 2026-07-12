@@ -1,0 +1,20 @@
+{
+  "folder": "scrrbs",
+  "title": "scRRBS",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "scRRBS.html",
+    "oligo_seq_recall": 0.714,
+    "oligo_seqs_matched": 5,
+    "oligo_seqs_total": 7,
+    "missed_oligos": [
+      "Illumina P5 adapter",
+      "Illumina P7 adapter"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- AATGATACGGCGACCACCGA(P5) GATCTACAC TCTTTCCCTACACGACGCTCTTCCGATCT(Rd1 primer / MspI-CG start) [CDNA = bisulfite-converted MspI genomic fragment] AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC(Rd2/index primer site) [SAMPLE_INDEX:6](i7) ATCTCGTATGCCGTCTTCTGCTTG(P7) -3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTTGG[GDNA]TG[GDNA]CG[GDNA]TTGAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

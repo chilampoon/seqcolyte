@@ -212,6 +212,8 @@ export interface SpecRead {
 export interface SpecLibStep {
   step: number;
   title: string;
+  /** one-line gist shown by default; note/product are the verbose detail behind a toggle */
+  summary?: string | null;
   note?: string | null;
   /** monospace ASCII diagram of the molecular product after this step (scg_lib_structs style) */
   product?: string | null;
@@ -231,9 +233,83 @@ export interface SpecWhitelist {
   length?: number;
   path?: string;
 }
+/** Where this spec was derived from (uploaded protocol file, vendor doc, or online paper). */
+export interface SpecReference {
+  kind?: string | null;
+  label?: string | null;
+  path?: string | null;
+  url?: string | null;
+  doi?: string | null;
+}
+export interface SpecAuthor {
+  name: string;
+  corresponding?: boolean;
+  email?: string | null;
+  affiliation?: string | null;
+}
+/** Original method publication + protocol facts. Any subset may be present. */
+export interface SpecPublication {
+  year?: number | null;
+  original_publication?: {
+    title?: string | null;
+    journal?: string | null;
+    doi?: string | null;
+    url?: string | null;
+  } | null;
+  authors?: SpecAuthor[];
+  /** cell/RNA/DNA yield / throughput */
+  throughput?: {
+    summary?: string | null;
+    cells?: string | null;
+    rna?: string | null;
+    dna?: string | null;
+  } | null;
+  /** e.g. "Poisson (Drop-seq)" — statistical model used to model the assay data */
+  statistical_model?: string | null;
+  other?: { label: string; value: string }[];
+}
+export interface DagStage {
+  id: string;
+  label: string;
+}
+export interface DagNode {
+  id: string;
+  label: string;
+  tool?: string;
+  stage?: string;
+  scope?: "per_cell" | "bulk";
+  terminal?: boolean;
+  viz_only?: boolean;
+}
+export interface DagEdge {
+  from: string;
+  to: string;
+  kind?: "sequential" | "fan_in" | "branch";
+}
+/** Computational pipeline for the assay, as a dependency DAG (best-effort, from the paper). */
+export interface SpecDataProcessing {
+  summary?: string | null;
+  /** legacy flat step list (pre-DAG); superseded by nodes/edges */
+  steps?: string[];
+  tools?: string[];
+  stages?: DagStage[];
+  nodes?: DagNode[];
+  edges?: DagEdge[];
+  statistical_model?: string | null;
+}
 export interface SpecDoc {
   spec_id?: string;
+  /** concise display title (shorter than the formal `assay`) */
+  title?: string;
   assay?: string;
+  description?: string;
+  /** what the assay measures — RNA / ATAC / RNA+ATAC (multiome) / methylation / … */
+  modality?: string;
+  /** cell-isolation / barcoding format — droplet / plate-based / microwell / combinatorial-indexing / … */
+  method_type?: string;
+  data_processing?: SpecDataProcessing;
+  reference?: SpecReference;
+  publication?: SpecPublication;
   platform?: string;
   chemistry_version?: string;
   platform_params?: Record<string, unknown>;

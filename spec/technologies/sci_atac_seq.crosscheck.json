@@ -1,0 +1,24 @@
+{
+  "folder": "sci_atac_seq",
+  "title": "sci-ATAC-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "sci-ATAC-seq_family.html",
+    "oligo_seq_recall": 0.455,
+    "oligo_seqs_matched": 5,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "ATAC index sequencing primer",
+      "Barcoded Tn5 sequence s5",
+      "Barcoded Tn5 sequence s7",
+      "P5 index primer",
+      "P7 index primer",
+      "P7 index primer entry point (s7)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "P5(AATGATACGGCGACCACCGAGATCTACAC) - [INDEX:10 PCR i5] - s5(TCGTCGGCAGCGTCTCCACGC) - [CELL_BARCODE:8 Tn5 i5] - connectorA+ME-A(GCGATCGAGGACGGCAGATGTGTATAAGAGACAG) - [CDNA genomic insert] - ME-B'+connectorB'(CTGTCTCTTATACACATCTGAGGCGGAGACGGTG) - [CELL_BARCODE:8 Tn5 i7] - s7'(GGACAGGGACAGCCGAGCCCACGAGAC) - [INDEX:10 PCR i7] - P7'(ATCTCGTATGCCGTCTTCTGCTTG)",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:10]TCGTCGGCAGCGTCTCCACGC[TN5_INDEX:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[TN5_INDEX:8]GGACAGGGACAGCCGAGCCCACGAGAC[I7_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

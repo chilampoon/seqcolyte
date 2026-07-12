@@ -1,0 +1,1456 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "itchip_seq",
+  "assay": "sc-itChIP-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "ItChIP-seq_original_paper.pdf",
+      "title": "Profiling chromatin states using single-cell itChIP-seq",
+      "url": "https://doi.org/10.1038/s41556-019-0383-5",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/itchip_seq/ItChIP-seq_original_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ItChIP-seq_supplementary_table_2.xlsx",
+      "title": "Profiling chromatin states using single-cell itChIP-seq",
+      "url": "https://doi.org/10.1038/s41556-019-0383-5",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/itchip_seq/ItChIP-seq_supplementary_table_2.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ItChIP-seq_supplementary_table_4.xlsx",
+      "title": "Profiling chromatin states using single-cell itChIP-seq",
+      "url": "https://doi.org/10.1038/s41556-019-0383-5",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/itchip_seq/ItChIP-seq_supplementary_table_4.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ItChIP-seq_supplementary_table_1.xlsx",
+      "title": "Profiling chromatin states using single-cell itChIP-seq",
+      "url": "https://doi.org/10.1038/s41556-019-0383-5",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/itchip_seq/ItChIP-seq_supplementary_table_1.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ItChIP-seq_supplementary_table_5.xlsx",
+      "title": "Profiling chromatin states using single-cell itChIP-seq",
+      "url": "https://doi.org/10.1038/s41556-019-0383-5",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/itchip_seq/ItChIP-seq_supplementary_table_5.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ItChIP-seq_supplementary_table_6.xlsx",
+      "title": "Profiling chromatin states using single-cell itChIP-seq",
+      "url": "https://doi.org/10.1038/s41556-019-0383-5",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/itchip_seq/ItChIP-seq_supplementary_table_6.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ItChIP-seq_supplementary_table_3.xlsx",
+      "title": "Profiling chromatin states using single-cell itChIP-seq",
+      "url": "https://doi.org/10.1038/s41556-019-0383-5",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/itchip_seq/ItChIP-seq_supplementary_table_3.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ItChIP-seq_supplementary_information.pdf",
+      "title": "Profiling chromatin states using single-cell itChIP-seq",
+      "url": "https://doi.org/10.1038/s41556-019-0383-5",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/itchip_seq/ItChIP-seq_supplementary_information.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ItChIP-seq_supplementary_table_7.xlsx",
+      "title": "Profiling chromatin states using single-cell itChIP-seq",
+      "url": "https://doi.org/10.1038/s41556-019-0383-5",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/itchip_seq/ItChIP-seq_supplementary_table_7.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "ItChIP-seq.pdf",
+      "title": "ItChIP-seq.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/itchip_seq/ItChIP-seq.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "tn5_t5_transposon",
+      "name": "Tn5-T5 barcoded transposon adapter",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon (transferred strand + MErev); introduces the T5 cellular barcode and Mosaic End A during tagmentation",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Tn5-T5 top (transferred) strand",
+          "sequence": "TCGTCGGCAGCGTCTCCACGC[CELL_BARCODE:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+          "role": "Transferred strand: Universal Connector A + 8-nt T5 barcode + linker + 19-bp Mosaic End (ME)"
+        },
+        {
+          "name": "MErev (5'Phos)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "Non-transferred strand (5'-phosphorylated), anneals to the ME of every T5/T7 oligo"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "24 T5 barcodes (8 nt, inserted after ...TCCACGC): T5-1 TATAGCCT, T5-2 ATAGAGGC, T5-3 CCTATCCT, T5-4 GGCTCTGA, T5-5 AGGCGAAG, T5-6 TAATCTTA, T5-7 CAGGACGT, T5-8 GTACTGAC, T5-9 TAGGTATG, T5-10 AACACCTA, T5-11 CTCCGAAC, T5-12 CAACGGCA, T5-13 CAATGTAG, T5-14 GGCTACCC, T5-15 AAAGTCCG, T5-16 TTCCGCGG, T5-17 AGGCACTT, T5-18 CTTCAGTG, T5-19 GCCGGTAG, T5-20 TTCAATCC, T5-21 CCACACAC, T5-22 ATATTATC, T5-23 CCGAAGCA, T5-24 GTATCGGT. Full example T5-1: TCGTCGGCAGCGTCTCCACGCTATAGCCTGCGATCGAGGACGGCAGATGTGTATAAGAGACAG. Assembled at 12.5 \u00b5M with homemade Tn5 (pTXB1-Tn5, Addgene 60240)."
+    },
+    {
+      "oligo_id": "tn5_t7_transposon",
+      "name": "Tn5-T7 barcoded transposon adapter",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon (transferred strand + MErev); introduces the T7 cellular barcode and Mosaic End B during tagmentation",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Tn5-T7 top (transferred) strand",
+          "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCC[CELL_BARCODE:8]CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+          "role": "Transferred strand: Universal Connector B handle + 8-nt T7 barcode + linker + 19-bp Mosaic End (ME)"
+        },
+        {
+          "name": "MErev (5'Phos)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "Non-transferred strand (5'-phosphorylated)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "25 T7 barcodes (8 nt, inserted after ...CCCTGTCC): T7-1 CGAGTAAT, T7-2 TCTCCGGA, T7-3 AATGAGCG, T7-4 GGAATCTC, T7-5 TTCTGAAT, T7-6 ACGAATTC, T7-7 AGCTTCAG, T7-8 GCGCATTA, T7-9 CATAGCCG, T7-10 TTCGCGGA, T7-11 GCGCGAGA, T7-12 CTATCGCT, T7-13 TGTCCGCG, T7-14 TTAAACTT, T7-15 ACCACAAC, T7-16 GCCTCTGG, T7-17 TCGCCCAC, T7-18 CACTAGGC, T7-19 TCGAAGCC, T7-20 GCATGTAC, T7-21 GTTCGAGT, T7-22 CCGGGCGC, T7-23 AGATTTAA, T7-24 CACCATTG, T7-25 AATAAGAC. 24\u00d725 = 600 T5/T7 combinations index single cells across 96-well plates. Full example T7-1: GTCTCGTGGGCTCGGCTGTCCCTGTCCCGAGTAATCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG."
+    },
+    {
+      "oligo_id": "merev_common",
+      "name": "TnExtMErev / common annealing primer",
+      "aliases": [],
+      "role": "5'-phosphorylated non-transferred (bottom) strand common to all Tn5 transposon assemblies",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-phosphorylated. Annealed with each T5/T7 oligo (95 \u00b0C then ramp to 75 \u00b0C) before Tn5 loading."
+    },
+    {
+      "oligo_id": "i5_index_pcr_primer",
+      "name": "i5 index library PCR primer (custom Nextera)",
+      "aliases": [],
+      "role": "P5 grafting primer; adds P5 + i5 library index to the T5 side during PCR",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used at 25 \u00b5M in the custom-recipe (Nextera) PCR."
+    },
+    {
+      "oligo_id": "i7_index_pcr_primer",
+      "name": "i7 index library PCR primer (custom Nextera)",
+      "aliases": [],
+      "role": "P7 grafting primer; adds P7 + i7 library index to the T7 side during PCR",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used at 25 \u00b5M in the custom-recipe (Nextera) PCR."
+    },
+    {
+      "oligo_id": "i5_n501",
+      "name": "i5-N501",
+      "aliases": [],
+      "role": "i5 library index PCR primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTAGATCGCTCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 index = TAGATCGC"
+    },
+    {
+      "oligo_id": "i5_n502",
+      "name": "i5-N502",
+      "aliases": [],
+      "role": "i5 library index PCR primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACCTCTCTATTCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 index = CTCTCTAT"
+    },
+    {
+      "oligo_id": "i5_n503",
+      "name": "i5-N503",
+      "aliases": [],
+      "role": "i5 library index PCR primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTATCCTCTTCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 index = TATCCTCT"
+    },
+    {
+      "oligo_id": "i5_n504",
+      "name": "i5-N504",
+      "aliases": [],
+      "role": "i5 library index PCR primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACAGAGTAGATCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 index = AGAGTAGA"
+    },
+    {
+      "oligo_id": "i5_n505",
+      "name": "i5-N505",
+      "aliases": [],
+      "role": "i5 library index PCR primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACGTAAGGAGTCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 index = GTAAGGAG"
+    },
+    {
+      "oligo_id": "i5_n506",
+      "name": "i5-N506",
+      "aliases": [],
+      "role": "i5 library index PCR primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACACTGCATATCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 index = ACTGCATA"
+    },
+    {
+      "oligo_id": "i5_n507",
+      "name": "i5-N507",
+      "aliases": [],
+      "role": "i5 library index PCR primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACAAGGAGTATCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 index = AAGGAGTA"
+    },
+    {
+      "oligo_id": "i5_n508",
+      "name": "i5-N508",
+      "aliases": [],
+      "role": "i5 library index PCR primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACCTAAGCCTTCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 index = CTAAGCCT"
+    },
+    {
+      "oligo_id": "i7_n701",
+      "name": "i7-N701",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTCGCCTTAGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = TCGCCTTA"
+    },
+    {
+      "oligo_id": "i7_n702",
+      "name": "i7-N702",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCTAGTACGGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = CTAGTACG"
+    },
+    {
+      "oligo_id": "i7_n703",
+      "name": "i7-N703",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTTCTGCCTGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = TTCTGCCT"
+    },
+    {
+      "oligo_id": "i7_n704",
+      "name": "i7-N704",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATGCTCAGGAGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = GCTCAGGA"
+    },
+    {
+      "oligo_id": "i7_n705",
+      "name": "i7-N705",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATAGGAGTCCGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = AGGAGTCC"
+    },
+    {
+      "oligo_id": "i7_n706",
+      "name": "i7-N706",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCATGCCTAGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = CATGCCTA"
+    },
+    {
+      "oligo_id": "i7_n707",
+      "name": "i7-N707",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATGTAGAGAGGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = GTAGAGAG"
+    },
+    {
+      "oligo_id": "i7_n708",
+      "name": "i7-N708",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCCTCTCTGGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = CCTCTCTG"
+    },
+    {
+      "oligo_id": "i7_n709",
+      "name": "i7-N709",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATAGCGTAGCGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = AGCGTAGC"
+    },
+    {
+      "oligo_id": "i7_n710",
+      "name": "i7-N710",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCAGCCTCGGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = CAGCCTCG"
+    },
+    {
+      "oligo_id": "i7_n711",
+      "name": "i7-N711",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTGCCTCTTGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = TGCCTCTT"
+    },
+    {
+      "oligo_id": "i7_n712",
+      "name": "i7-N712",
+      "aliases": [],
+      "role": "i7 library index PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTCCTCTACGTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 index = TCCTCTAC"
+    },
+    {
+      "oligo_id": "read1_seq_primer",
+      "name": "Custom Read 1 sequencing primer (Extended Mosaic End A)",
+      "aliases": [],
+      "role": "Read 1 sequencing primer (custom recipe); primes into the genomic insert",
+      "kind": "single",
+      "sequence": "GCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "read2_seq_primer",
+      "name": "Custom Read 2 sequencing primer (Extended Mosaic End B)",
+      "aliases": [],
+      "role": "Read 2 sequencing primer (custom recipe); primes into the genomic insert from the T7 side",
+      "kind": "single",
+      "sequence": "CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "index1_seq_primer",
+      "name": "Custom Index 1 sequencing primer (RC of Extended Mosaic End B)",
+      "aliases": [],
+      "role": "Index 1 sequencing primer (custom recipe); reads T7 barcode (first 8 bp) then i7 barcode (last 8 bp) over 43 cycles",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCTGAGGCGGAGACGGTG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "index2_seq_primer",
+      "name": "Custom Index 2 sequencing primer (Grafted P5)",
+      "aliases": [],
+      "role": "Index 2 sequencing primer (custom recipe); reads i5 barcode (first 8 bp) then T5 barcode (last 8 bp) over 37 cycles",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "truseq_connector_fwd",
+      "name": "TruSeq connector forward primer (1st PCR)",
+      "aliases": [],
+      "role": "Mosaic-TruSeq 1st-PCR forward primer; appends the TruSeq Read1 handle onto Universal Connector A",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCTTCGTCGGCAGCGTCTCCACGC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "truseq_connector_rev",
+      "name": "TruSeq connector reverse primer (1st PCR)",
+      "aliases": [],
+      "role": "Mosaic-TruSeq 1st-PCR reverse primer; appends the TruSeq Read2 handle onto the T7 handle",
+      "kind": "single",
+      "sequence": "GACTGGAGTTCAGACGTGTGCTCTTCCGATCTGTCTCGTGGGCTCGGCTGTCCCTGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "neb_universal_p5",
+      "name": "NEB universal primer (P5, 2nd PCR TruSeq)",
+      "aliases": [],
+      "role": "TruSeq 2nd-PCR P5 grafting primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "neb_index_p7",
+      "name": "NEB index primer (P7, 2nd PCR TruSeq)",
+      "aliases": [],
+      "role": "TruSeq 2nd-PCR P7 grafting + sample index primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Enables sequencing on the standard Illumina TruSeq recipe (~15-fold lower cost); [index] is an 8-nt NEBNext sample index."
+    },
+    {
+      "oligo_id": "mosaic_a_primer",
+      "name": "Mosaic-A primer (Tn5ME-A, FC-121-1030)",
+      "aliases": [],
+      "role": "Standard Nextera/ATAC transposon adapter A (used for control ATAC-seq)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "mosaic_b_primer",
+      "name": "Mosaic-B primer (Tn5ME-B, FC-121-1031)",
+      "aliases": [],
+      "role": "Standard Nextera/ATAC transposon adapter B (used for control ATAC-seq)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "spikein_fwd",
+      "name": "Spike-in library amplification primer (P5 side)",
+      "aliases": [],
+      "role": "Amplifies balancing spike-in library (variable N block replaces constant bases to balance signal per cycle)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTTGCCTAG[SPACER:21]GAATCTTAGCGATCGAGGACGGC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "21-nt random region (written NNNNNNNNNNNNNNNNNNNNN in the source)."
+    },
+    {
+      "oligo_id": "spikein_rev",
+      "name": "Spike-in library amplification primer (P7 side)",
+      "aliases": [],
+      "role": "Amplifies balancing spike-in library",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCTTGGGTA[SPACER:27]GCGAATTCCACCGTCTCCGCCTC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "27-nt random region (written NNNNNNNNNNNNNNNNNNNNNNNNNNN in the source). ~15% spike-in + 10% PhiX pooled to balance constant bases per detection cycle."
+    }
+  ],
+  "final_library": {
+    "source_label": "Single-cell itChIP-seq library (custom Nextera recipe, Illumina)",
+    "annotated_library_sequence": "P5 [AATGATACGGCGACCACCGAGATCTACAC] - i5[SAMPLE_INDEX:8] - ConnA[TCGTCGGCAGCGTCTCCACGC] - T5[CELL_BARCODE:8] - linker+ME_A[GCGATCGAGGACGGCAGATGTGTATAAGAGACAG] - insert[CDNA] - ME_B(rc)[CTGTCTCTTATACACATCTGAGGCGGAGACGGTG] - T7[CELL_BARCODE:8] - ConnB(rc)[GGACAGGGACAGCCGAGCCCACGAGAC] - i7[SAMPLE_INDEX:8] - P7(rc)[ATCTCGTATGCCGTCTTCTGCTTG]",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCTCCACGC[CELL_BARCODE:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' (top)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCTCCACGC[CELL_BARCODE:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTCTCCACGC[CELL_BARCODE:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "P5                 : AATGATACGGCGACCACCGAGATCTACAC",
+      "i5 library index   : [SAMPLE_INDEX:8]",
+      "Universal Conn. A  : TCGTCGGCAGCGTCTCCACGC",
+      "T5 cell barcode    : [CELL_BARCODE:8]",
+      "linker + ME(A)     : GCGATCGAGGACGGCAGATGTGTATAAGAGACAG   (Read1 primer binds here)",
+      "genomic ChIP insert: [CDNA]",
+      "ME(B, rc) + linker : CTGTCTCTTATACACATCTGAGGCGGAGACGGTG   (Index1 primer binds here)",
+      "T7 cell barcode    : [CELL_BARCODE:8]",
+      "Universal Conn. B  : GGACAGGGACAGCCGAGCCCACGAGAC",
+      "i7 library index   : [SAMPLE_INDEX:8]",
+      "P7 (rc)            : ATCTCGTATGCCGTCTTCTGCTTG",
+      "The two [CELL_BARCODE:8] tokens are the combinatorial T5 x T7 cell index (24 x 25 = 600 wells).",
+      "TruSeq variant: P5/ConnA junction becomes ...ACACTCTTTCCCTACACGACGCTCTTCCGATCT... and the T7/i7 end becomes ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG for the standard Illumina recipe."
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Single-cell itChIP-seq library (custom Nextera recipe, Illumina)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Custom Read 1 primer (GCGATCGAGGACGGCAGATGTGTATAAGAGACAG)",
+        "template": "top",
+        "cycles": 69,
+        "segments": [
+          {
+            "name": "genomic ChIP insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 69
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Custom Index 1 primer (CTGTCTCTTATACACATCTGAGGCGGAGACGGTG)",
+        "template": "bottom",
+        "cycles": 43,
+        "segments": [
+          {
+            "name": "T7 cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "Universal Connector B",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 27
+          },
+          {
+            "name": "i7 library index",
+            "type": "index",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "Custom Index 2 primer (AATGATACGGCGACCACCGAGATCTACAC)",
+        "template": "top",
+        "cycles": 37,
+        "segments": [
+          {
+            "name": "i5 library index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "Universal Connector A",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 21
+          },
+          {
+            "name": "T5 cell barcode",
+            "type": "barcode",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Custom Read 2 primer (CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG)",
+        "template": "bottom",
+        "cycles": 69,
+        "segments": [
+          {
+            "name": "genomic ChIP insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 69
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Cell fixation & chromatin opening",
+      "summary": "Formaldehyde-fixed cells are sorted into hypotonic buffer and opened with 0.3% SDS at 62 \u00b0C, then quenched with Triton X-100.",
+      "note": "1\u20131,000,000 cells (or one cell/well by FACS) in 5 \u00b5l hypotonic buffer (0.3% SDS, 20 mM HEPES, 10 mM KCl, 10% glycerol, 0.2% NP-40); 62 \u00b0C 10 min, 600 rpm; add 1.2 \u00b5l 10% Triton X-100, 37 \u00b0C 60 min. SDS-enhanced opening at high temperature relaxes chromatin genome-wide without disrupting protein\u2013DNA binding, enabling even (unbiased) tagmentation.",
+      "product": "5'- =========== crosslinked, SDS-opened chromatin =========== -3'\n3'- =========== (genomic DNA, proteins bound) =============== -5'"
+    },
+    {
+      "step": 2,
+      "title": "In-situ tagmentation & cellular indexing",
+      "summary": "Barcoded Tn5-T5/Tn5-T7 transposomes simultaneously fragment genomic DNA and insert T5/T7 cell-barcoded ME adapters (37 \u00b0C 1 h; single cells 55 \u00b0C 30 min).",
+      "note": "Per single cell: 2 \u00b5l 5X TMgCl-DMF, 2 \u00b5l 1.25 \u00b5M Tn5-T5, 2 \u00b5l 1.25 \u00b5M Tn5-T7, 10 ng yeast tRNA carrier, to 10 \u00b5l; stop with 250 mM EDTA. Each cell receives a unique T5xT7 combination.",
+      "product": "5'- TCGTCGGCAGCGTCTCCACGC[T5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG====INSERT====CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[T7]GGACAGGGACAGCCGAGCCCACGAGAC -3'\n3'-           <-- complementary strand (9-bp gaps filled during PCR) -->                                                                            -5'"
+    },
+    {
+      "step": 3,
+      "title": "Pool cells, release chromatin & immunoprecipitate",
+      "summary": "Indexed single cells are pooled, chromatin is released by brief sonication, and the target factor is captured by antibody + protein A beads (or streptavidin beads for biotin-tagged factors).",
+      "note": "Resuspend in releasing buffer, 30 min RT, sonicate 20% power 4x(15s on/30s off), dilute SDS, spin to collect soluble chromatin. Incubate with 0.1\u20131.0 \u00b5g antibody overnight at 4 \u00b0C, then protein A Dynabeads 2 h; low/high salt washes. bio-itChIP uses M280 streptavidin beads at 350 mM NaCl.",
+      "product": "beads-Ab~[ T5 ]--tagmented ChIP fragment--[ T7 ]  (target-enriched, still barcoded)"
+    },
+    {
+      "step": 4,
+      "title": "Reverse-crosslink & purify DNA",
+      "summary": "Elute, reverse-crosslink (70 \u00b0C, 3 h), proteinase K digest, and phenol\u2013chloroform purify the adapter-flanked ChIP DNA.",
+      "note": "Purified DNA carries the T5/T7-barcoded ME arms and is ready for PCR without end-repair/ligation.",
+      "product": "5'- TCGTCGGCAGCGTCTCCACGC[T5]...ME...====INSERT====...ME...[T7]GGACAGGGACAGCCGAGCCCACGAGAC -3'  (purified, double-stranded)"
+    },
+    {
+      "step": 5,
+      "title": "PCR amplification with i5/i7 indices (custom Nextera)",
+      "summary": "KAPA PCR (72 \u00b0C 5 min; 18\u201320 cycles) with the i5 and i7 index primers grafts P5+i5 and P7+i7 to yield the final sequenceable library.",
+      "note": "i5 primer: 5'-AATGATACGGCGACCACCGAGATCTACAC[i5]TCGTCGGCAGCGTC-3'; i7 primer: 5'-CAAGCAGAAGACGGCATACGAGAT[i7]GTCTCGTGGGCTCGG-3'. 0.5X + 0.5X AMPure XP double size-selection to 200\u20131000 bp. A second level of barcoding (i5/i7) separates pooled itChIP libraries.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5]TCGTCGGCAGCGTCTCCACGC[T5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG==INSERT==CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[T7]GGACAGGGACAGCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    },
+    {
+      "step": 6,
+      "title": "(Alternative) Mosaic-TruSeq conversion for standard Illumina recipe",
+      "summary": "Two-round Q5 PCR: round 1 connector F/R adds TruSeq Read1/Read2 handles onto the Tn5 arms; round 2 NEB universal (P5) + NEB index (P7) grafts P5/P7 to make a standard-recipe library (~15-fold cheaper sequencing).",
+      "note": "Connector F: 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCTTCGTCGGCAGCGTCTCCACGC-3'; Connector R: 5'-GACTGGAGTTCAGACGTGTGCTCTTCCGATCTGTCTCGTGGGCTCGGCTGTCCCTGT-3'; ExoI cleanup between rounds. NEB universal P5 + NEB [index] P7 in round 2 (5 cycles).",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTTCGTCGGCAGCGTCTCCACGC[T5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG==INSERT==CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[T7]GGACAGGGACAGCCGAGCCCACGAGACAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[index]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "Custom Read 1 primer / Extended Mosaic End A: 5'-GCGATCGAGGACGGCAGATGTGTATAAGAGACAG-3'",
+      "template": "top",
+      "cycles": 69,
+      "note": "Sequences the tagmented genomic (ChIP) insert from the T5 side. Primer anneals to the bottom strand across the linker+ME(A) and extends into the insert.",
+      "diagram": "                 Read 1 primer (Ext ME-A)\n                 5'-GCGATCGAGGACGGCAGATGTGTATAAGAGACAG----------->  (69 nt into insert)\ntop     5'- ...[T5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[====== genomic insert ======]... -3'\n                  ||||||||||||||||||||||||||||||||||\nbottom  3'- ...[T5]CGCTAGCTCCTGCCGTCTACACATATTCTCTGTC[====== genomic insert ======]... -5'"
+    },
+    {
+      "read": "Index 1",
+      "primer": "Custom Index 1 primer / RC of Extended ME-B: 5'-CTGTCTCTTATACACATCTGAGGCGGAGACGGTG-3'",
+      "template": "bottom",
+      "cycles": 43,
+      "note": "Decodes the cell/library index on the T7 side: first 8 bp = T7 cell barcode, then 27-bp Universal Connector B, last 8 bp = i7 library index (8 + 27 + 8 = 43).",
+      "diagram": "                              Index 1 primer (RC Ext ME-B)\n                              5'-CTGTCTCTTATACACATCTGAGGCGGAGACGGTG----------->  reads [T7:8]+ConnB(27)+[i7:8] = 43 cyc\ntop     5'- ...[insert]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[T7:8]GGACAGGGACAGCCGAGCCCACGAGAC[i7:8]... -3'\n                      ||||||||||||||||||||||||||||||||||\nbottom  3'- ...[insert]GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC[T7:8].......(ConnB comp)........[i7:8]... -5'"
+    },
+    {
+      "read": "Index 2",
+      "primer": "Custom Index 2 primer / grafted P5: 5'-AATGATACGGCGACCACCGAGATCTACAC-3'",
+      "template": "top",
+      "cycles": 37,
+      "note": "Decodes the cell/library index on the T5 side: first 8 bp = i5 library index, then 21-bp Universal Connector A, last 8 bp = T5 cell barcode (8 + 21 + 8 = 37).",
+      "diagram": "        Index 2 primer (grafted P5)\n        5'-AATGATACGGCGACCACCGAGATCTACAC----------->  reads [i5:8]+ConnA(21)+[T5:8] = 37 cyc\ntop     5'-AATGATACGGCGACCACCGAGATCTACAC[i5:8]TCGTCGGCAGCGTCTCCACGC[T5:8]... -3'\n           |||||||||||||||||||||||||||||\nbottom  3'-TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]AGCAGCCGTCGCAGAGGTGCG[T5:8]... -5'"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Custom Read 2 primer / Extended Mosaic End B: 5'-CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG-3'",
+      "template": "bottom",
+      "cycles": 69,
+      "note": "Sequences the genomic insert from the T7 side (paired end). Primer anneals to the top strand across the ME(B) region and extends leftward into the insert.",
+      "diagram": "top     5'- ...[====== genomic insert ======]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[T7]... -3'\n                                            ||||||||||||||||||||||||||||||||||\nbottom  3'- ...[====== genomic insert ======]GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC[T7]... -5'\n               <-----------GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC-5'\n               (69 nt into insert)   Read 2 primer (Ext ME-B), 5'->3' shown right-to-left"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "sc-itChIP-seq",
+  "description": "itChIP-seq (simultaneous indexing and tagmentation-based ChIP-seq) profiles histone modifications and non-histone DNA-binding proteins genome-wide from low-input samples and single cells. Fixed cells are opened with SDS at 62 \u00b0C, then tagmented in situ by barcoded Tn5 transposomes carrying combinatorial T5/T7 cellular indices; indexed chromatin from pooled single cells is immunoprecipitated with an antibody (or captured on streptavidin beads for biotin-tagged factors), reverse-crosslinked, purified, and PCR-amplified with i5/i7 library indices (custom Nextera) or, alternatively, converted to a standard TruSeq library. Paired 69-bp reads capture the tagmented genomic (ChIP) fragment, while index reads decode the T5/T7 cell barcodes and the i5/i7 library indices.",
+  "reference": {
+    "kind": "paper",
+    "label": "Profiling chromatin states using single-cell itChIP-seq",
+    "path": null,
+    "url": "https://www.nature.com/articles/s41556-019-0383-5",
+    "doi": "10.1038/s41556-019-0383-5"
+  },
+  "publication": {
+    "year": 2019,
+    "original_publication": {
+      "title": "Profiling chromatin states using single-cell itChIP-seq",
+      "journal": "Nature Cell Biology",
+      "doi": "10.1038/s41556-019-0383-5",
+      "url": "https://doi.org/10.1038/s41556-019-0383-5"
+    },
+    "authors": [
+      {
+        "name": "Shanshan Ai",
+        "affiliation": "Institute of Molecular Medicine, Beijing Key Laboratory of Cardiometabolic Molecular Medicine, Peking University, Beijing, China (co-first author)"
+      },
+      {
+        "name": "Haiqing Xiong",
+        "affiliation": "Institute of Molecular Medicine & Peking-Tsinghua Center for Life Sciences, Peking University, Beijing, China (co-first author)"
+      },
+      {
+        "name": "Chen C. Li",
+        "affiliation": "Institute of Molecular Medicine, Peking University, Beijing, China"
+      },
+      {
+        "name": "Yingjie Luo",
+        "affiliation": "Institute of Molecular Medicine & Peking-Tsinghua Center for Life Sciences, Peking University, Beijing, China"
+      },
+      {
+        "name": "Qiang Shi",
+        "affiliation": "Center for Statistical Science, Center for Bioinformatics, Peking University, Beijing, China"
+      },
+      {
+        "name": "Yaxi Liu",
+        "affiliation": "Institute of Molecular Medicine, Peking University, Beijing, China"
+      },
+      {
+        "name": "Xianhong Yu",
+        "affiliation": "Institute of Molecular Medicine & Peking-Tsinghua Center for Life Sciences, Peking University, Beijing, China"
+      },
+      {
+        "name": "Cheng Li",
+        "affiliation": "Center for Statistical Science, Center for Bioinformatics, Peking University, Beijing, China"
+      },
+      {
+        "name": "Aibin He",
+        "corresponding": true,
+        "email": "ahe@pku.edu.cn",
+        "affiliation": "Institute of Molecular Medicine, Beijing Key Laboratory of Cardiometabolic Molecular Medicine & Peking-Tsinghua Center for Life Sciences, Peking University, Beijing, China"
+      }
+    ],
+    "throughput": {
+      "summary": "Low-input (as few as 100 cells) to single cells; a pool of 1x96 to 3x96 single-cell wells processed per assay. sc-itChIP yields ~9,016 uniquely mapped reads per cell (1,869 ESC-EpiLC single cells profiled; ~8,100 reads/cell in E7.75\u2013E8.25 cardiac cells).",
+      "cells": "Tens to thousands of single cells per assay; hundreds of single cells profiled per experiment",
+      "rna": "N/A (chromatin/DNA assay; companion scRNA-seq used a modified Smart-seq2 with 8-nt cell barcode + 8-nt UMI on oligo-dT)",
+      "dna": "~9,000 unique reads per single cell; ~94% mapping rate; median FRiP ~52%; size-selected 200\u20131000 bp fragments"
+    },
+    "statistical_model": "No parametric count distribution (not Poisson/negative-binomial UMI counting). Binary present/absent binding signal per allele; enrichment quantified as ChIP signal (FPM/RPKM), accuracy assessed by ROC/AUC; single cells clustered by signature scores and ordered by Monocle2 (DDRTree) pseudotime; peaks called with MACS2 (--broad).",
+    "other": [
+      {
+        "label": "GEO accession",
+        "value": "GSE109762"
+      },
+      {
+        "label": "Code",
+        "value": "https://github.com/Helab-bioinformatics/itChIP"
+      },
+      {
+        "label": "Protocol",
+        "value": "Protocol Exchange, doi:10.21203/rs.2.11366/v1"
+      },
+      {
+        "label": "Sequencing platforms",
+        "value": "PE150 on HiSeq X-Ten / NovaSeq 6000 (TruSeq); custom recipe on HiSeq 2500 (69+43+37+69 bp)"
+      },
+      {
+        "label": "Patents",
+        "value": "Chinese patent applications 2018101211756 and 2018101428753"
+      },
+      {
+        "label": "Antibodies",
+        "value": "H3K4me3 (Millipore 04-745), H3K27me3 (Millipore 07-449), H3K27ac (Abcam ab4729), EZH2 (CST S246S), RNA Pol II CTD (Abcam ab5408)"
+      }
+    ]
+  },
+  "modality": "protein\u2013DNA (ChIP)",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Reads are demultiplexed into single cells by the combinatorial T5/T7 cell barcodes carried in Read1/Read2 (custom scripts; index reads with any mismatch discarded), adapter/quality trimmed, aligned to mm10, deduplicated, and reduced to uniquely mapped non-duplicate reads before broad peak calling; aggregated single-cell or low-input profiles are then used for coverage tracks, signature-score clustering, and Monocle2 pseudotime. There is no UMI/parametric count model \u2014 binding is scored as binary present/absent per allele.",
+    "stages": [
+      {
+        "id": "s_demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment & filtering"
+      },
+      {
+        "id": "s_peaks",
+        "label": "Peak calling & coverage"
+      },
+      {
+        "id": "s_analysis",
+        "label": "Clustering & trajectory"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Assign reads to cells",
+        "tool": "custom scripts",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim",
+        "label": "Trim adapters and quality",
+        "tool": "cutadapt",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads to mm10",
+        "tool": "Bowtie2",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_mapq",
+        "label": "Keep uniquely mapped reads",
+        "tool": "samtools",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Remove PCR duplicates",
+        "tool": "Picard",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "preseq",
+        "label": "Estimate library complexity",
+        "tool": "preseq",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "call_peaks",
+        "label": "Call broad peaks",
+        "tool": "MACS2",
+        "stage": "s_peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "coverage",
+        "label": "Generate normalized coverage tracks",
+        "tool": "deepTools",
+        "stage": "s_peaks",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "igv",
+        "label": "Visualize tracks",
+        "tool": "IGV",
+        "stage": "s_peaks",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "heatmap",
+        "label": "Plot coverage heatmaps",
+        "tool": "deepTools",
+        "stage": "s_peaks",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "qc_filter",
+        "label": "Filter cells by reads",
+        "tool": "",
+        "stage": "s_analysis",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "sig_score",
+        "label": "Score germ-layer signatures",
+        "tool": "",
+        "stage": "s_analysis",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster single cells",
+        "tool": "",
+        "stage": "s_analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "seurat_features",
+        "label": "Derive scRNA feature genes",
+        "tool": "Seurat",
+        "stage": "s_analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pseudotime",
+        "label": "Order cells in pseudotime",
+        "tool": "Monocle2",
+        "stage": "s_analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "trim",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "filter_mapq",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "preseq",
+        "kind": "branch"
+      },
+      {
+        "from": "filter_mapq",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "call_peaks",
+        "kind": "fan_in"
+      },
+      {
+        "from": "dedup",
+        "to": "coverage",
+        "kind": "fan_in"
+      },
+      {
+        "from": "dedup",
+        "to": "qc_filter",
+        "kind": "sequential"
+      },
+      {
+        "from": "coverage",
+        "to": "igv",
+        "kind": "branch"
+      },
+      {
+        "from": "coverage",
+        "to": "heatmap",
+        "kind": "branch"
+      },
+      {
+        "from": "call_peaks",
+        "to": "sig_score",
+        "kind": "sequential"
+      },
+      {
+        "from": "qc_filter",
+        "to": "sig_score",
+        "kind": "sequential"
+      },
+      {
+        "from": "sig_score",
+        "to": "cluster",
+        "kind": "fan_in"
+      },
+      {
+        "from": "cluster",
+        "to": "pseudotime",
+        "kind": "sequential"
+      },
+      {
+        "from": "seurat_features",
+        "to": "pseudotime",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "none \u2014 binary present/absent binding per allele; no UMI/parametric count model (accuracy assessed by ROC/AUC)"
+  }
+}

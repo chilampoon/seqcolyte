@@ -1,0 +1,27 @@
+{
+  "folder": "microwell_seq",
+  "title": "Microwell-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "Microwell-seq.html",
+    "oligo_seq_recall": 0.4,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 15,
+    "missed_oligos": [
+      "A1-A96 (96 of them in 96 individual wells)",
+      "B1-B96 (96 of them in 96 individual wells)",
+      "C1-C96 (96 of them in 96 individual wells)",
+      "Illumina Nextera Read 2 primer",
+      "Indexed-Beads-seqA",
+      "Indexed-Beads-seqB",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera (XT) N7xx Index primer",
+      "Template Switching Oligo (TSO) with LNA"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC(P5) GCCTGTCCGCGG(linker) AAGCAGTGGTATCAACGCAGAGT(ISPCR) ACGT [CELL_BARCODE:6](BC1) CGACTCACTACAGGG(lnk1) [CELL_BARCODE:6](BC2) TCGGTGACACGATCG(lnk2) [CELL_BARCODE:6](BC3) [UMI:6] TTTT...(30, poly-dT) [CDNA] CTGTCTCTTATACACATCT(ME) CCGAGCCCACGAGAC(i7 handle) [SAMPLE_INDEX:8](i7) ATCTCGTATGCCGTCTTCTGCTTG(P7)",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTACGT[CELL_BARCODE:6]CGACTCACTACAGGG[CELL_BARCODE:6]TCGGTGACACGATCG[CELL_BARCODE:6][UMI:6]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

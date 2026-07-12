@@ -1,0 +1,21 @@
+{
+  "folder": "scbs_seq",
+  "title": "scBS-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "scBS-seq.html",
+    "oligo_seq_recall": 0.571,
+    "oligo_seqs_matched": 4,
+    "oligo_seqs_total": 7,
+    "missed_oligos": [
+      "Illumina TruSeq Read 1 primer",
+      "Index sequencing primer",
+      "Read 2 sequencing primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "P5[AATGATACGGCGACCACCGAGATCTACAC]-Read1/TruSeq[TCTTTCCCTACACGACGCTCTTCCGATCT]-[SPACER:6 random hexamer]-[CDNA bisulfite-converted genomic insert]-[SPACER:6 random hexamer]-Read2/Adapter2[AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC]-[SAMPLE_INDEX:8]-P7[ATCTCGTATGCCGTCTTCTGCTTG]",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[GDNA]CT[GDNA]CG[GDNA]AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

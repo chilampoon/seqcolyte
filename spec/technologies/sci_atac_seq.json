@@ -1,0 +1,1197 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "sci_atac_seq",
+  "assay": "sci-ATAC-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "sci-ATAC-seq_original_paper_corrected.pdf",
+      "title": "Multiplex single-cell profiling of chromatin accessibility by combinatorial cellular indexing",
+      "url": "https://doi.org/10.1126/science.aab1601",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_atac_seq/sci-ATAC-seq_original_paper_corrected.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "sci-ATAC-seq.xlsx",
+      "title": "sci-ATAC-seq.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_atac_seq/sci-ATAC-seq.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "sci-ATAC-seq_paper.pdf",
+      "title": "sci-ATAC-seq_paper.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_atac_seq/sci-ATAC-seq_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "sci-ATAC-seq_supp.pdf",
+      "title": "sci-ATAC-seq_supp.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_atac_seq/sci-ATAC-seq_supp.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "p5_i5_1_transposon",
+      "name": "P5_i5_1_Universal_Connector_A_C15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P5/read1 side); carries transposase i5 well barcode",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCTCCACGCTATAGCCTGCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Structure = s5 connector TCGTCGGCAGCGTCTCCACGC + i5 barcode TATAGCCT + extended mosaic-end A GCGATCGAGGACGGCAGATGTGTATAAGAGACAG (ends in 19-bp ME AGATGTGTATAAGAGACAG). Annealed to pMENTS to form the transposome."
+    },
+    {
+      "oligo_id": "p5_i5_2_transposon",
+      "name": "P5_i5_2_Universal_Connector_A_C15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P5/read1 side)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCTCCACGCATAGAGGCGCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 barcode = ATAGAGGC"
+    },
+    {
+      "oligo_id": "p5_i5_3_transposon",
+      "name": "P5_i5_3_Universal_Connector_A_C15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P5/read1 side)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCTCCACGCCCTATCCTGCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 barcode = CCTATCCT"
+    },
+    {
+      "oligo_id": "p5_i5_4_transposon",
+      "name": "P5_i5_4_Universal_Connector_A_C15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P5/read1 side)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCTCCACGCGGCTCTGAGCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 barcode = GGCTCTGA"
+    },
+    {
+      "oligo_id": "p5_i5_5_transposon",
+      "name": "P5_i5_5_Universal_Connector_A_C15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P5/read1 side)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCTCCACGCAGGCGAAGGCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 barcode = AGGCGAAG"
+    },
+    {
+      "oligo_id": "p5_i5_6_transposon",
+      "name": "P5_i5_6_Universal_Connector_A_C15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P5/read1 side)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCTCCACGCTAATCTTAGCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 barcode = TAATCTTA"
+    },
+    {
+      "oligo_id": "p5_i5_7_transposon",
+      "name": "P5_i5_7_Universal_Connector_A_C15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P5/read1 side)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCTCCACGCCAGGACGTGCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 barcode = CAGGACGT"
+    },
+    {
+      "oligo_id": "p5_i5_8_transposon",
+      "name": "P5_i5_8_Universal_Connector_A_C15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P5/read1 side)",
+      "kind": "single",
+      "sequence": "TCGTCGGCAGCGTCTCCACGCGTACTGACGCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 barcode = GTACTGAC"
+    },
+    {
+      "oligo_id": "p7_i7_1_transposon",
+      "name": "P7_i7_1_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side); carries transposase i7 well barcode",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCGAGTAATCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Structure = s7 connector GTCTCGTGGGCTCGGCTGTCCCTGTCC + i7 barcode GAGTAAT (7 bp as printed) + extended mosaic-end B CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG. Annealed to pMENTS to form the transposome."
+    },
+    {
+      "oligo_id": "p7_i7_2_transposon",
+      "name": "P7_i7_2_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCTCTCCGGACACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = TCTCCGGA"
+    },
+    {
+      "oligo_id": "p7_i7_3_transposon",
+      "name": "P7_i7_3_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCAATGAGCGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = AATGAGCG"
+    },
+    {
+      "oligo_id": "p7_i7_4_transposon",
+      "name": "P7_i7_4_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCGGAATCTCCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = GGAATCTC"
+    },
+    {
+      "oligo_id": "p7_i7_5_transposon",
+      "name": "P7_i7_5_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCTTCTGAATCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = TTCTGAAT"
+    },
+    {
+      "oligo_id": "p7_i7_6_transposon",
+      "name": "P7_i7_6_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCACGAATTCCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = ACGAATTC"
+    },
+    {
+      "oligo_id": "p7_i7_7_transposon",
+      "name": "P7_i7_7_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCAGCTTCAGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = AGCTTCAG"
+    },
+    {
+      "oligo_id": "p7_i7_8_transposon",
+      "name": "P7_i7_8_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCGCGCATTACACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = GCGCATTA"
+    },
+    {
+      "oligo_id": "p7_i7_9_transposon",
+      "name": "P7_i7_9_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCCATAGCCGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = CATAGCCG"
+    },
+    {
+      "oligo_id": "p7_i7_10_transposon",
+      "name": "P7_i7_10_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCTTCGCGGACACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = TTCGCGGA"
+    },
+    {
+      "oligo_id": "p7_i7_11_transposon",
+      "name": "P7_i7_11_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCGCGCGAGACACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = GCGCGAGA"
+    },
+    {
+      "oligo_id": "p7_i7_12_transposon",
+      "name": "P7_i7_12_Universal_Connector_B_D15_ME",
+      "aliases": [],
+      "role": "Barcoded Tn5 transposon oligo, transferred strand (P7/read2 side)",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCCTATCGCTCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i7 barcode = CTATCGCT"
+    },
+    {
+      "oligo_id": "pments",
+      "name": "pMENTS",
+      "aliases": [],
+      "role": "Universal transposon oligo, non-transferred strand (mosaic-end complement); pairs with every transferred strand",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' phosphorylated (5Phos/CTGTCTCTTATACACATCT). Reverse complement of the 19-bp mosaic end AGATGTGTATAAGAGACAG; annealed to each barcoded transferred strand to load Tn5."
+    },
+    {
+      "oligo_id": "transposome_p5_i5_1",
+      "name": "P5/i5 barcoded Tn5 transposome (adapter A)",
+      "aliases": [],
+      "role": "Assembled read1-side transposome adapter loaded into Tn5",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5_i5_1 transferred strand",
+          "sequence": "TCGTCGGCAGCGTCTCCACGCTATAGCCTGCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+          "role": "transferred strand (5'->3')"
+        },
+        {
+          "name": "pMENTS non-transferred strand",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "non-transferred strand, 5'-phosphorylated (anneals to the ME)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Representative; one of 8 i5 variants. The two 19-bp ME regions anneal; only the transferred strand is covalently joined to genomic DNA during tagmentation."
+    },
+    {
+      "oligo_id": "transposome_p7_i7_1",
+      "name": "P7/i7 barcoded Tn5 transposome (adapter B)",
+      "aliases": [],
+      "role": "Assembled read2-side transposome adapter loaded into Tn5",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7_i7_1 transferred strand",
+          "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCCGAGTAATCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+          "role": "transferred strand (5'->3')"
+        },
+        {
+          "name": "pMENTS non-transferred strand",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "non-transferred strand, 5'-phosphorylated (anneals to the ME)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Representative; one of 12 i7 variants. Each Tn5 dimer within a well is loaded with one i5 and one i7 adapter, giving the well its unique transposase barcode combination."
+    },
+    {
+      "oligo_id": "read1_seq_primer",
+      "name": "Read 1 Sequencing Primer (Extended Mosaic End A)",
+      "aliases": [],
+      "role": "Custom Read 1 sequencing primer; anneals to connector A + ME and reads genomic insert",
+      "kind": "single",
+      "sequence": "GCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Read 1 begins immediately 3' of this sequence, into the transposase-accessible genomic DNA."
+    },
+    {
+      "oligo_id": "read2_seq_primer",
+      "name": "Read 2 Sequencing Primer (Extended Mosaic End B)",
+      "aliases": [],
+      "role": "Custom Read 2 sequencing primer; anneals to connector B + ME and reads genomic insert",
+      "kind": "single",
+      "sequence": "CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Read 2 begins immediately 3' of this sequence on the opposite strand."
+    },
+    {
+      "oligo_id": "index1_seq_primer",
+      "name": "Index 1 Sequencing Primer (Reverse Complement of Extended Mosaic End B)",
+      "aliases": [],
+      "role": "Custom index-read sequencing primer; reads through the i7-side transposase barcode and the PCR (library) barcode",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCTGAGGCGGAGACGGTG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "The custom MiSeq recipe uses long index reads that cover BOTH the Tn5 (transposase) barcode and the library-amplification barcode on each side."
+    },
+    {
+      "oligo_id": "pcr_primer_p5",
+      "name": "P5 indexed PCR primer (standard Nextera-style)",
+      "aliases": [],
+      "role": "Library-amplification primer adding P5 flow-cell sequence + PCR (library) i5 barcode",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[INDEX:10]TCGTCGGCAGCGTCTCCACGC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "flow-cell P5 (canonical Illumina; not printed in source, implied by 'standard Nextera library adapters')"
+        },
+        {
+          "name": "PCR i5 library barcode",
+          "sequence": "[INDEX:10]",
+          "role": "8 bp standard Nextera barcode in the first 3 experiments; switched to 10 bp thereafter"
+        },
+        {
+          "name": "s5 connector",
+          "sequence": "TCGTCGGCAGCGTCTCCACGC",
+          "role": "anneals to the 5' end of the P5/i5 transposon transferred strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Exact primer sequence not printed in the source; reconstructed from the transposon connector and the stated use of standard Nextera adapters."
+    },
+    {
+      "oligo_id": "pcr_primer_p7",
+      "name": "P7 indexed PCR primer (standard Nextera-style)",
+      "aliases": [],
+      "role": "Library-amplification primer adding P7 flow-cell sequence + PCR (library) i7 barcode",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[INDEX:10]GTCTCGTGGGCTCGGCTGTCC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "flow-cell P7 (canonical Illumina; not printed in source, implied by 'standard Nextera library adapters')"
+        },
+        {
+          "name": "PCR i7 library barcode",
+          "sequence": "[INDEX:10]",
+          "role": "8 bp standard Nextera barcode in the first 3 experiments; switched to 10 bp thereafter"
+        },
+        {
+          "name": "s7 connector",
+          "sequence": "GTCTCGTGGGCTCGGCTGTCC",
+          "role": "anneals to the 5' end of the P7/i7 transposon transferred strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Exact primer sequence not printed in the source; reconstructed from the transposon connector and the stated use of standard Nextera adapters."
+    }
+  ],
+  "final_library": {
+    "source_label": "sci-ATAC-seq final sequenceable library (top strand, 5'->3')",
+    "annotated_library_sequence": "P5(AATGATACGGCGACCACCGAGATCTACAC) - [INDEX:10 PCR i5] - s5(TCGTCGGCAGCGTCTCCACGC) - [CELL_BARCODE:8 Tn5 i5] - connectorA+ME-A(GCGATCGAGGACGGCAGATGTGTATAAGAGACAG) - [CDNA genomic insert] - ME-B'+connectorB'(CTGTCTCTTATACACATCTGAGGCGGAGACGGTG) - [CELL_BARCODE:8 Tn5 i7] - s7'(GGACAGGGACAGCCGAGCCCACGAGAC) - [INDEX:10 PCR i7] - P7'(ATCTCGTATGCCGTCTTCTGCTTG)",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[INDEX:10]TCGTCGGCAGCGTCTCCACGC[CELL_BARCODE:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' (top)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[INDEX:10]TCGTCGGCAGCGTCTCCACGC[CELL_BARCODE:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[INDEX:10]TCGTCGGCAGCGTCTCCACGC[CELL_BARCODE:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3'->5' (bottom, complement)",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTG[INDEX:10]AGCAGCCGTCGCAGAGGTGCG[CELL_BARCODE:8]CGCTAGCTCCTGCCGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGACTCCGCCTCTGCCA[CELL_BARCODE:8]CCTGTCCCTGTCGGCTCGGGTGCTCTG[INDEX:10]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTG[INDEX:10]AGCAGCCGTCGCAGAGGTGCG[CELL_BARCODE:8]CGCTAGCTCCTGCCGTCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGACTCCGCCTCTGCCA[CELL_BARCODE:8]CCTGTCCCTGTCGGCTCGGGTGCTCTG[INDEX:10]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC  = P5 flow-cell adapter (added by PCR)",
+      "[INDEX:10]                     = PCR/library i5 barcode (8 bp standard Nextera in first 3 experiments; 10 bp later)",
+      "TCGTCGGCAGCGTCTCCACGC          = s5 connector (transposon 5' end / PCR primer landing site)",
+      "[CELL_BARCODE:8]               = transposase i5 well barcode (combinatorial round 1, P5 side)",
+      "GCGATCGAGGACGGCAGATGTGTATAAGAGACAG = connector A + mosaic end A (= Read 1 sequencing primer)",
+      "[CDNA]                         = transposase-accessible genomic DNA insert",
+      "CTGTCTCTTATACACATCTGAGGCGGAGACGGTG = reverse complement of extended mosaic end B (= Index 1 sequencing primer landing site)",
+      "[CELL_BARCODE:8]               = transposase i7 well barcode (combinatorial round 1, P7 side)",
+      "GGACAGGGACAGCCGAGCCCACGAGAC    = reverse complement of s7 connector",
+      "[INDEX:10]                     = PCR/library i7 barcode",
+      "ATCTCGTATGCCGTCTTCTGCTTG       = reverse complement of P7 flow-cell adapter"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "sci-ATAC-seq final sequenceable library (top strand, 5'->3')",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "GCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+        "template": "top",
+        "cycles": 51,
+        "segments": [
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 51
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "CTGTCTCTTATACACATCTGAGGCGGAGACGGTG",
+        "template": "top",
+        "cycles": 43,
+        "segments": [
+          {
+            "name": "Tn5 i7 transposase barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "s7 connector",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 27
+          },
+          {
+            "name": "PCR i7 library barcode",
+            "type": "index",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "TCGTCGGCAGCGTCTCCACGC",
+        "template": "bottom",
+        "cycles": 37,
+        "segments": [
+          {
+            "name": "PCR i5 library barcode",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "s5 connector",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 21
+          },
+          {
+            "name": "Tn5 i5 transposase barcode",
+            "type": "barcode",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+        "template": "bottom",
+        "cycles": 51,
+        "segments": [
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 51
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Assemble barcoded Tn5 transposomes",
+      "summary": "Load Tn5 with a barcoded transferred strand (i5 on one adapter, i7 on the other) annealed to the 5'-phosphorylated pMENTS non-transferred strand.",
+      "note": "Transposase complexes are prepared as in Amini et al. 2014; each 96-well plate well receives a Tn5 loaded with a unique i5/i7 mosaic-end adapter combination (its transposase barcode).",
+      "product": "P5/i5 adapter (read1 side):\n5'- TCGTCGGCAGCGTCTCCACGC[i5:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG -3'\n                                          3'- TCTACACATATTCTCTGTC -5'(Phos)\n\nP7/i7 adapter (read2 side):\n5'- GTCTCGTGGGCTCGGCTGTCCCTGTCC[i7:8]CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG -3'\n                                                  3'- TCTACACATATTCTCTGTC -5'(Phos)"
+    },
+    {
+      "step": 2,
+      "title": "Tagmentation of nuclei in 96 wells",
+      "summary": "Distribute permeabilized nuclei across 96 wells and let barcoded Tn5 insert adapters into nucleosome-free (open) chromatin, tagging each fragment with the well's transposase barcode.",
+      "note": "2,500 nuclei per well, 2.5 uM Tn5, 30 min at 37C, stopped with 40 mM EDTA. Tagmentation leaves a 9-bp gap on each side; the transferred strands are joined to genomic DNA while the pMENTS strands are displaced.",
+      "product": "One tagmented open-chromatin fragment (transferred strands attached):\n5'- ...GCGATCGAGGACGGCAGATGTGTATAAGAGACAG =====GENOMIC===== -3'\n                          i5-tagged (P5 side)                        (9 bp gap)\n                                            3'- =====GENOMIC===== GACAGATGTGTATAAGAGACAG[i7]CCTGTCC... -5'\n                                                                          i7-tagged (P7 side)"
+    },
+    {
+      "step": 3,
+      "title": "Pool, dilute, sort, and lyse",
+      "summary": "Pool all nuclei, then sort ~15-25 nuclei into each well of a second 96-well plate and lyse; each well now holds nuclei that will share a second (PCR) barcode.",
+      "note": "For human-only mixtures nuclei were DAPI-stained and 25 sorted per well; for the human/mouse mix 15 unstained nuclei per well. Tn5 is stripped from the DNA, exposing the adapter ends for amplification.",
+      "product": "Tagmented fragment, Tn5 removed, ready for gap-fill/PCR:\n5'- TCGTCGGCAGCGTCTCCACGC[i5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG =====GENOMIC===== -3'\n3'- =====GENOMIC===== GACAGATGTGTATAAGAGACAG[i7]CCTGTCCCTGTCGGCTCGGGTGCTCTG -5'"
+    },
+    {
+      "step": 4,
+      "title": "Gap-fill and indexed PCR",
+      "summary": "Extend to fill the 9-bp gaps, then amplify 20 cycles with indexed P5/P7 primers that add the flow-cell adapters and a second (PCR/library) barcode complementary to the transposase connectors.",
+      "note": "First three experiments used standard 8-bp Nextera library barcodes; later a 10-bp barcode set (otherwise identical) was used so multiple experiments could be pooled. Each cell's identity is the full combination of transposase (i5,i7) + PCR (i5,i7) barcodes.",
+      "product": "Full sequenceable library (top strand 5'->3'):\nAATGATACGGCGACCACCGAGATCTACAC[PCR i5]TCGTCGGCAGCGTCTCCACGC[Tn5 i5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG =GENOMIC= CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[Tn5 i7]GGACAGGGACAGCCGAGCCCACGAGAC[PCR i7]ATCTCGTATGCCGTCTTCTGCTTG"
+    },
+    {
+      "step": 5,
+      "title": "Pool, purify, and sequence",
+      "summary": "Pool all PCR products, clean up, quantify, and load on the sequencer as the final library.",
+      "note": "Cleaned with a Zymo Clean & Concentrator, quantified by Qubit, QC'd on a 6% PAGE gel, and sequenced on MiSeq (v2 300-cycle kit) with a custom paired-end 51-bp recipe and custom primers.",
+      "product": "Final library molecule flanked by P5 and P7, ready for cluster generation:\nP5-[PCR i5]-[Tn5 i5]-[ME-A]-GENOMIC-[ME-B]-[Tn5 i7]-[PCR i7]-P7"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (genomic)",
+      "primer": "GCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "template": "top",
+      "cycles": 51,
+      "note": "Read 1 sequencing primer = connector A + extended mosaic end A. It anneals to the bottom strand and reads 51 bp of transposase-accessible genomic DNA on the P5/mosaic-end-A side.",
+      "diagram": "                             5'-GCGATCGAGGACGGCAGATGTGTATAAGAGACAG--------------->  (Read 1 primer; anneals to bottom strand, reads into insert)\n5'- ...TCGTCGGCAGCGTCTCCACGC[i5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[\u00b7\u00b7\u00b7\u00b7 genomic insert: Read 1 = 51 bp \u00b7\u00b7\u00b7\u00b7]... -3'\n3'- ...AGCAGCCGTCGCAGAGGTGCG[i5]CGCTAGCTCCTGCCGTCTACACATATTCTCTGTC[\u00b7\u00b7\u00b7\u00b7 genomic insert: Read 1 = 51 bp \u00b7\u00b7\u00b7\u00b7]... -5'\n         s5 connector      Tn5 i5           ME-A (= Read 1 primer)                genomic DNA"
+    },
+    {
+      "read": "Read 2 (genomic)",
+      "primer": "CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "template": "bottom",
+      "cycles": 51,
+      "note": "Read 2 sequencing primer = connector B + extended mosaic end B (reverse complement of the top-strand segment). It anneals to the top strand and reads 51 bp of genomic DNA leftward from the P7/mosaic-end-B side (paired mate of Read 1).",
+      "diagram": "(Read 2 primer; anneals to top strand)     3'-GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC-5'\n                             <-------------- |||||||||||||||||||||||||||||||||||\n5'- ...[\u00b7\u00b7\u00b7\u00b7 genomic insert: Read 2 = 51 bp \u00b7\u00b7\u00b7\u00b7]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[i7]... -3'\n3'- ...[\u00b7\u00b7\u00b7\u00b7 genomic insert: Read 2 = 51 bp \u00b7\u00b7\u00b7\u00b7]GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC[i7]... -5'\n         genomic DNA                             ME-B'+connectorB' (= Index 1 site)   Tn5 i7\n   (primer 5'->3' = CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG; shown 3'->5' to align; 3' end extends left into the insert)"
+    },
+    {
+      "read": "Index 1 (i7 barcodes: Tn5 + PCR)",
+      "primer": "CTGTCTCTTATACACATCTGAGGCGGAGACGGTG",
+      "template": "top",
+      "cycles": 43,
+      "note": "Long custom index read on the P7 side. The primer (reverse complement of extended mosaic end B) anneals to the bottom strand and reads rightward through the Tn5 i7 transposase barcode, the s7 connector, and the PCR/library i7 barcode: 8 + 27 + 8 = 43 cycles.",
+      "diagram": "                   5'-CTGTCTCTTATACACATCTGAGGCGGAGACGGTG---------------------------->  (Index 1 primer)\n5'- ...CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[Tn5 i7]GGACAGGGACAGCCGAGCCCACGAGAC[PCR i7]... -3'\n3'- ...GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC[Tn5 i7]CCTGTCCCTGTCGGCTCGGGTGCTCTG[PCR i7]... -5'\n       ME-B'+connectorB' (primer)          Tn5 i7      s7 connector (rc)        PCR i7\n   reads: Tn5 i7 (8) -> s7 connector (27) -> PCR i7 (8-10)  = 43 cycles"
+    },
+    {
+      "read": "Index 2 (i5 barcodes: PCR + Tn5)",
+      "primer": "TCGTCGGCAGCGTCTCCACGC (s5 connector)",
+      "template": "bottom",
+      "cycles": 37,
+      "note": "Long custom index read on the P5 side, using the bottom strand as template. The recipe spans both i5 barcodes: PCR/library i5 barcode, s5 connector, and Tn5 i5 transposase barcode: 8 + 21 + 8 = 37 cycles.",
+      "diagram": "5'- ...[PCR i5]TCGTCGGCAGCGTCTCCACGC[Tn5 i5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG... -3'\n3'- ...[PCR i5]AGCAGCCGTCGCAGAGGTGCG[Tn5 i5]CGCTAGCTCCTGCCGTCTACACATATTCTCTGTC... -5'\n    <----------------------------------------------  (Index 2 read; bottom-strand template)\n       PCR i5     s5 connector       Tn5 i5           ME-A\n   long i5 index read spans: PCR i5 -> s5 connector -> Tn5 i5  = 37 cycles"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "sci-ATAC-seq",
+  "description": "sci-ATAC-seq measures genome-wide chromatin accessibility in thousands of single cells using two rounds of combinatorial cellular indexing. Intact nuclei are tagmented in 96 wells with barcoded Tn5 transposase carrying Nextera-style adapters (the first, transposase, barcode), then pooled and redistributed at ~15\u201325 nuclei per well for an indexed PCR that adds a second (PCR/library) barcode plus the Illumina flow-cell adapters. Because nearly every nucleus passes through a unique combination of wells, paired-end 51-bp reads sharing the same barcode combination derive from a single cell. The two genomic reads mark transposase-accessible (open) chromatin, while the index reads capture both the transposase barcode and the library-amplification barcode.",
+  "reference": {
+    "kind": "paper",
+    "label": "Multiplex single-cell profiling of chromatin accessibility by combinatorial cellular indexing",
+    "path": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4836442/",
+    "doi": "10.1126/science.aab1601"
+  },
+  "publication": {
+    "year": 2015,
+    "original_publication": {
+      "title": "Multiplex single-cell profiling of chromatin accessibility by combinatorial cellular indexing",
+      "journal": "Science",
+      "doi": "10.1126/science.aab1601",
+      "url": "https://www.science.org/doi/10.1126/science.aab1601"
+    },
+    "authors": [
+      {
+        "name": "Darren A. Cusanovich",
+        "affiliation": "University of Washington, Department of Genome Sciences, Seattle, WA, USA"
+      },
+      {
+        "name": "Riza Daza",
+        "affiliation": "University of Washington, Department of Genome Sciences, Seattle, WA, USA"
+      },
+      {
+        "name": "Andrew Adey",
+        "affiliation": "Oregon Health and Science University, Department of Molecular and Medical Genetics, Portland, OR, USA"
+      },
+      {
+        "name": "Hannah A. Pliner",
+        "affiliation": "University of Washington, Department of Genome Sciences, Seattle, WA, USA"
+      },
+      {
+        "name": "Lena Christiansen",
+        "affiliation": "Illumina, Inc., Advanced Research Group, San Diego, CA, USA"
+      },
+      {
+        "name": "Kevin L. Gunderson",
+        "affiliation": "Illumina, Inc., Advanced Research Group, San Diego, CA, USA"
+      },
+      {
+        "name": "Frank J. Steemers",
+        "affiliation": "Illumina, Inc., Advanced Research Group, San Diego, CA, USA"
+      },
+      {
+        "name": "Cole Trapnell",
+        "affiliation": "University of Washington, Department of Genome Sciences, Seattle, WA, USA"
+      },
+      {
+        "name": "Jay Shendure",
+        "corresponding": true,
+        "email": "shendure@uw.edu",
+        "affiliation": "University of Washington, Department of Genome Sciences, Seattle, WA, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "Chromatin accessibility profiles from >15,000 single cells; ~500-1,500 cells per experiment (median depth ~1,400-3,000 reads/cell), scalable to ~17,280 cells/experiment with 384x384 barcoding.",
+      "cells": ">15,000 single cells total; ~17,280 per experiment achievable at 384x384 scale",
+      "rna": "",
+      "dna": "Open-chromatin (transposase-accessible) genomic fragments; ~2 genome equivalents per cell (near-binary accessibility)"
+    },
+    "statistical_model": "Logistic regression / binomial generalized linear model with likelihood-ratio test (VGAM in R) for differential accessibility; barcode collision rate modeled via the classic birthday problem and a Poisson simulation.",
+    "other": [
+      {
+        "label": "Estimated collision rate",
+        "value": "~11% for the experiments described"
+      },
+      {
+        "label": "Sequencer / recipe",
+        "value": "Illumina MiSeq, v2 300-cycle kit, custom paired-end 51 bp reads with custom index reads covering both barcodes"
+      },
+      {
+        "label": "PCR amplification",
+        "value": "20 cycles with indexed primers; second barcode later switched to 10 bp"
+      },
+      {
+        "label": "GEO accession",
+        "value": "GSE68103 (published Science); GSE67446 (HHS author manuscript version)"
+      }
+    ]
+  },
+  "modality": "ATAC",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Paired-end reads are demultiplexed by their Tn5 + PCR barcode combination to assign each unique combination to a single cell, aligned to the reference genome, and PCR-deduplicated; reads are then scored against a union of ENCODE DNase I hypersensitive sites to build a binary cell-by-site accessibility matrix, cells are clustered by shared site usage (Jaccard distance + MDS + latent semantic indexing), and individual sites are tested for differential accessibility with a binomial generalized linear model.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Cell Demultiplexing"
+      },
+      {
+        "id": "align",
+        "label": "Read Alignment"
+      },
+      {
+        "id": "quantify",
+        "label": "Accessibility Quantification"
+      },
+      {
+        "id": "reduce",
+        "label": "Distance & Dimensionality Reduction"
+      },
+      {
+        "id": "cluster",
+        "label": "Clustering"
+      },
+      {
+        "id": "diff",
+        "label": "Differential Accessibility"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex barcode combinations",
+        "tool": "",
+        "stage": "demux",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim",
+        "label": "Trim adapters",
+        "tool": "Trimmomatic",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads to genome",
+        "tool": "BWA",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Remove PCR duplicates",
+        "tool": "",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "score",
+        "label": "Score reads at DHS sites",
+        "tool": "BEDTools",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "matrix",
+        "label": "Build cell-by-site matrix",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "jaccard",
+        "label": "Compute Jaccard distances",
+        "tool": "",
+        "stage": "reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "lsi",
+        "label": "Reduce dimensions (LSI)",
+        "tool": "",
+        "stage": "reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "mds",
+        "label": "Embed cells (MDS)",
+        "tool": "",
+        "stage": "reduce",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells hierarchically",
+        "tool": "",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "diff",
+        "label": "Test differential accessibility",
+        "tool": "VGAM",
+        "stage": "diff",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "trim",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "score",
+        "kind": "sequential"
+      },
+      {
+        "from": "score",
+        "to": "matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "matrix",
+        "to": "jaccard",
+        "kind": "branch"
+      },
+      {
+        "from": "matrix",
+        "to": "lsi",
+        "kind": "branch"
+      },
+      {
+        "from": "matrix",
+        "to": "diff",
+        "kind": "branch"
+      },
+      {
+        "from": "jaccard",
+        "to": "mds",
+        "kind": "sequential"
+      },
+      {
+        "from": "lsi",
+        "to": "cluster",
+        "kind": "sequential"
+      },
+      {
+        "from": "cluster",
+        "to": "diff",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "Binomial generalized linear model (logistic regression) with a likelihood-ratio test for differential accessibility between cell clusters."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "folder": "scifi_atac_seq",
+  "title": "scifi-ATAC-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "scifi-ATAC-seq.html",
+    "oligo_seq_recall": 0.786,
+    "oligo_seqs_matched": 11,
+    "oligo_seqs_total": 14,
+    "missed_oligos": [
+      "Nextera Tn5 binding site (19-bp Mosaic End (ME))",
+      "Tn5-ME-A",
+      "Tn5-ME-B"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- AATGATACGGCGACCACCGAGATCTACAC [CELL_BARCODE:16] TCGTCGGCAGCGTCGATATGTGATAATGAGGAC [BARCODE:5] AGATGTGTATAAGAGACAG [CDNA] CTGTCTCTTATACACATCT [BARCODE:5] TCTGTCTTCTACACATTCACCGAGCCCACGAGAC [SAMPLE_INDEX:8] ATCTCGTATGCCGTCTTCTGCTTG -3'\n|--- P5 ---|--- 10x cell BC (i5) ---|--- Read1 / Tn5-ME-A handle ---|-Tn5 A idx-|-- ME --|-- genomic insert --|-- ME(rc) --|-Tn5 B idx-|--- Read2 / Tn5-ME-B handle (rc) ---|-- i7 --|-- P7(rc) --|",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCGATATGTGATAATGAGGAC[TN5_INDEX:5]AGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCT[TN5_INDEX:5]TCTGTCTTCTACACATTCACCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

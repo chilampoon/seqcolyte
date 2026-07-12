@@ -1,0 +1,914 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "10x_chromium_3_gene_expression_v4",
+  "assay": "10x Chromium 3' GEX v4",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "Chromium_3p_foundational_paper.pdf",
+      "title": "Massively parallel digital transcriptional profiling of single cells",
+      "url": "https://doi.org/10.1038/ncomms14049",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_3_gene_expression_v4/Chromium_3p_foundational_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "Chromium_3p_foundational_supplement.pdf",
+      "title": "Supplementary Information for massively parallel digital transcriptional profiling",
+      "url": "https://doi.org/10.1038/ncomms14049",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_3_gene_expression_v4/Chromium_3p_foundational_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "10xChromium3v4.pdf",
+      "title": "10xChromium3v4.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_3_gene_expression_v4/10xChromium3v4.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_beads_oligo_dt",
+      "name": "Beads-oligo-dT (GEM-X Single Cell 3' Gel Bead v4 primer)",
+      "aliases": [],
+      "role": "Gel-bead capture / RT primer; primes reverse transcription of polyadenylated mRNA and tags each transcript with a cell barcode and UMI",
+      "kind": "assembled",
+      "sequence": "CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "Read 1 sequencing primer binding site"
+        },
+        {
+          "name": "10x Barcode",
+          "sequence": "[CELL_BARCODE:16]",
+          "role": "16 nt cell barcode (from ~3,600,000 designed sequences)"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:12]",
+          "role": "12 nt unique molecular identifier"
+        },
+        {
+          "name": "Poly(dT)VN",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+          "role": "30 nt anchored oligo-dT that primes polyadenylated mRNA"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "From Oligonucleotide Sequences (Gel Bead Primers): 5'-CTACACGACGCTCTTCCGATCT-N16-N12-TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN-3'. v4 gel beads also carry a Capture Sequence 1 primer (Feature Barcode), not used in the 3' Gene Expression protocol."
+    },
+    {
+      "oligo_id": "oligo_template_switching_oligo_tso",
+      "name": "Template Switching Oligo (TSO) (Template Switch Oligo B)",
+      "aliases": [],
+      "role": "Template switch oligo; adds a defined sequence to the 3' end of first-strand cDNA for second-strand priming",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACATGGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TSO",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTACATGGG",
+          "role": "template switch; 3' rGrGrG (GGG) anneals to the untemplated C's of cDNA"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reagent 'Template Switch Oligo B' (PN-2001027) is named in the protocol; the sequence shown is the canonical 10x Chromium 3' TSO (terminal rGrGrG folded to GGG). The exact sequence is not printed in the supplied documents."
+    },
+    {
+      "oligo_id": "oligo_cdna_forward_primer",
+      "name": "cDNA Forward Primer (cDNA Primers, PN-2000089)",
+      "aliases": [],
+      "role": "Bulk cDNA amplification forward primer; anneals to the partial TruSeq Read 1 handle",
+      "kind": "single",
+      "sequence": "CTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "primes the gel-bead-derived Read 1 handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "cDNA Primers (PN-2000089) drive the post-GEM-RT cDNA amplification; the forward primer corresponds to the partial TruSeq Read 1 handle carried on the gel bead."
+    },
+    {
+      "oligo_id": "oligo_cdna_reverse_primer",
+      "name": "cDNA Reverse Primer (cDNA Primers, PN-2000089)",
+      "aliases": [],
+      "role": "Bulk cDNA amplification reverse primer; anneals to the TSO handle at the cDNA 3' end",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TSO handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+          "role": "primes the template-switch handle added during RT"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reverse primer of the cDNA Primers mix; matches the 5' portion of the TSO handle. Exact printed sequence not provided in the documents."
+    },
+    {
+      "oligo_id": "oligo_truseq_read1_primer",
+      "name": "Illumina TruSeq Read 1 primer",
+      "aliases": [],
+      "role": "Read 1 sequencing primer; reads the 16 bp 10x barcode + 12 bp UMI",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 1",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "standard Illumina paired-end Read 1 primer site"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Present in the Sample Index PCR product top strand immediately 3' of the i5 index."
+    },
+    {
+      "oligo_id": "oligo_truseq_read2_primer",
+      "name": "Illumina TruSeq Read 2 primer",
+      "aliases": [],
+      "role": "Read 2 sequencing primer; reads the cDNA insert",
+      "kind": "single",
+      "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 2",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "standard Illumina paired-end Read 2 primer site"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Its reverse complement (AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC) appears on the final-library top strand 3' of the cDNA insert."
+    },
+    {
+      "oligo_id": "oligo_truseq_read2_adapter",
+      "name": "TruSeq Read 2 adapter (ligated)",
+      "aliases": [],
+      "role": "Double-stranded adapter ligated after fragmentation; supplies the Read 2 primer site",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 2 adapter (top / ligated to insert)",
+          "sequence": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+          "role": "revcomp of TruSeq Read 2 primer; joins cDNA insert to the i7/P7 arm"
+        },
+        {
+          "name": "TruSeq Read 2 adapter (bottom)",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "TruSeq Read 2 primer strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Added during GEX Adaptor Ligation (step 3.3). Top-strand form matches the AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC segment in the Sample Index PCR product."
+    },
+    {
+      "oligo_id": "oligo_library_pcr_primer_p5",
+      "name": "Library PCR Primer 1 / Illumina P5 adapter",
+      "aliases": [],
+      "role": "Sample Index PCR forward primer; adds the P5 flow-cell adapter and i5 sample index",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5 flow-cell binding sequence"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplied via Dual Index Plate TT Set A (i5) + Library Amp Mix; P5 begins the final-library top strand."
+    },
+    {
+      "oligo_id": "oligo_library_pcr_primer_p7",
+      "name": "Library PCR Primer 2 / Illumina P7 adapter",
+      "aliases": [],
+      "role": "Sample Index PCR reverse primer; adds the P7 flow-cell adapter and i7 sample index",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7 flow-cell binding sequence"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplied via Dual Index Plate TT Set A (i7) + Library Amp Mix; the final-library top strand ends in the reverse complement of P7 (ATCTCGTATGCCGTCTTCTGCTTG)."
+    },
+    {
+      "oligo_id": "oligo_sample_index_i7",
+      "name": "i7 Sample Index (Dual Index TT Set A)",
+      "aliases": [],
+      "role": "i7 sample index; read as Index 1",
+      "kind": "single",
+      "sequence": "[SAMPLE_INDEX:10]",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "10 nt i7 index, unique per Dual Index Plate well"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Each Dual Index Plate TT Set A well contains one unique i7 and one unique i5. i7 index read = 10 cycles."
+    },
+    {
+      "oligo_id": "oligo_sample_index_i5",
+      "name": "i5 Sample Index (Dual Index TT Set A)",
+      "aliases": [],
+      "role": "i5 sample index; read as Index 2",
+      "kind": "single",
+      "sequence": "[SAMPLE_INDEX:10]",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "i5 sample index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "10 nt i5 index, unique per Dual Index Plate well"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "i5 index read = 10 cycles; located between P5 and TruSeq Read 1 on the top strand."
+    }
+  ],
+  "final_library": {
+    "source_label": "Chromium Single Cell 3' Gene Expression Dual Index library (Oligonucleotide Sequences, Sample Index PCR Product)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC-N10-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-N16-N12-T30-VN-cDNA_Insert-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-N10-ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC-N10-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-N16-N12-T30-VN-cDNA_Insert-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-N10-ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTG-N10-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-N16-N12-A30-BN-cDNA_Insert-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-N10-TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTG-N10-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-N16-N12-A30-BN-cDNA_Insert-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-N10-TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[SAMPLE_INDEX:10] = i5 sample index",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT = TruSeq Read 1 primer",
+      "[CELL_BARCODE:16] = 10x Barcode (cell barcode)",
+      "[UMI:12] = UMI",
+      "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT = poly(dT)",
+      "VN = anchor",
+      "[CDNA] = cDNA insert",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = TruSeq Read 2 adapter (revcomp of Read 2 primer)",
+      "[SAMPLE_INDEX:10] = i7 sample index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Chromium Single Cell 3' Gene Expression Dual Index library (Oligonucleotide Sequences, Sample Index PCR Product)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq Read 1 primer",
+        "template": "bottom",
+        "cycles": 28,
+        "segments": [
+          {
+            "name": "10x Barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 16
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 12
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "i7 index read primer",
+        "template": "top",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "i5 index read primer",
+        "template": "bottom",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina TruSeq Read 2 primer",
+        "template": "top",
+        "cycles": 90,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "GEM generation, gel-bead capture & mRNA priming",
+      "summary": "Cells are partitioned with barcoded gel beads into GEMs; released poly(dT) primers hybridize to polyadenylated mRNA.",
+      "note": "On the Chromium X, cells + RT master mix, gel beads, and Partitioning Oil B are loaded onto a GEM-X 3' chip. The gel bead dissolves, releasing barcoded poly(dT) primers whose 30 nt oligo-dT/VN anneals to the mRNA poly(A) tail.",
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN-3'\n                                                     3'- A A A A A A...XXXXXXXXX mRNA -5'"
+    },
+    {
+      "step": 2,
+      "title": "Reverse transcription (GEM-RT)",
+      "summary": "Reverse transcriptase extends the poly(dT) primer into first-strand cDNA, adding untemplated C's at the 3' end.",
+      "note": "RT Enzyme E copies the mRNA into barcoded first-strand cDNA (48 C, 45 min). At the 5' end of the transcript the enzyme adds a few untemplated C nucleotides (CCC), setting up template switching.",
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]------->CCC\n                                                     3'- A A A A...XXXXXXXXX mRNA -5'"
+    },
+    {
+      "step": 3,
+      "title": "Template switching",
+      "summary": "The TSO anneals to the untemplated C's and is copied, adding a defined handle to the cDNA 3' end.",
+      "note": "Template Switch Oligo B (TSO, ...ACATGGG with terminal rGrGrG) base-pairs with the CCC overhang; RT switches template and extends, appending the TSO handle to first-strand cDNA.",
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]CCC------->\n                                                                   GGGTACATGAGACGCAACTATGGTGACGAA -5'  (TSO)"
+    },
+    {
+      "step": 4,
+      "title": "cDNA amplification (bulk PCR)",
+      "summary": "GEMs are broken, cDNA is Silane/SPRI-purified, and full-length barcoded cDNA is PCR-amplified with the cDNA Primers.",
+      "note": "cDNA Forward (partial TruSeq Read 1 handle) and cDNA Reverse (TSO handle) primers amplify the barcoded, full-length double-stranded cDNA (Amp Mix, 11-13 cycles) to generate mass for library construction.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30BN[CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'"
+    },
+    {
+      "step": 5,
+      "title": "Fragmentation, End Repair & A-tailing",
+      "summary": "Amplified cDNA is enzymatically fragmented, end-repaired, and dA-tailed.",
+      "note": "Fragmentation Enzyme shears the cDNA to an optimal insert size (32 C, 5 min), then end repair and A-tailing (65 C) add a single 3' dA overhang for adaptor ligation.",
+      "product": "5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]  *A -3'\n3'- A*  GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30BN[CDNA]    -5'"
+    },
+    {
+      "step": 6,
+      "title": "Adaptor ligation (TruSeq Read 2)",
+      "summary": "The double-stranded TruSeq Read 2 adapter is ligated to the dA-tailed fragment ends.",
+      "note": "DNA Ligase joins the T-overhang TruSeq Read 2 adapter to the A-tailed cDNA (20 C, 15 min), supplying the Read 2 primer site for the downstream index PCR.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -3'\n3'-      GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30BN[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG -5'"
+    },
+    {
+      "step": 7,
+      "title": "Sample Index PCR (dual index) \u2192 final library",
+      "summary": "PCR with Dual Index TT Set A primers adds P5+i5 and i7+P7, producing the finished Illumina paired-end library.",
+      "note": "Library Amp Mix + a unique Dual Index TT Set A well add the P5 adapter and i5 index to the Read 1 arm and the i7 index and P7 adapter to the Read 2 arm; double-sided SPRI size selection yields the final dual-indexed 3' Gene Expression library.",
+      "product": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "Illumina TruSeq Read 1 primer (5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3')",
+      "template": "bottom",
+      "cycles": 28,
+      "note": "Primer anneals to the bottom strand and reads the 16 bp 10x cell barcode followed by the 12 bp UMI (28 cycles).",
+      "diagram": "       ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------->  (Read 1 primer, 28 cycles)\n5'- ...ACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNNNNNNNNNNNNNNNNNNNTTTTTTT...TTVN-[cDNA]... -3'\n3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNNNNNNNNNNNNNNNNNNNAAAAAAA...AABN-[cDNA]... -5'\n                                        |<---16 bp cell barcode--->|<-12 bp UMI->|"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "i7 index read primer (5'-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3', the TruSeq Read 2 adapter arm)",
+      "template": "bottom",
+      "cycles": 10,
+      "note": "Primer sits on the Read 2 adapter and reads the 10 bp i7 sample index (Index 1). Read as the reverse complement of the top-strand i7 on the P7 strand.",
+      "diagram": "              AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC------->  (i7 index read, 10 cycles)\n5'- ...[cDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[cDNA]-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                                               |<-10 bp i7->|"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "i5 index read primer (5'-AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT-3', the Read 1 adapter arm)",
+      "template": "top",
+      "cycles": 10,
+      "note": "Primer anneals to the top strand at the Read 1 handle and reads the 10 bp i5 sample index (Index 2). On reverse-complement instruments (NextSeq/NovaSeq) the i5 is read from the opposite strand.",
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNACACTCTTTCCCTACACGACGCTCTTCCGATCT... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNTGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA... -5'\n                                 <---------TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-5'  (i5 index read, 10 cycles)\n                                 |<-10 bp i5->|"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Illumina TruSeq Read 2 primer (5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3')",
+      "template": "top",
+      "cycles": 90,
+      "note": "Primer anneals to the top strand at the Read 2 adapter and reads the cDNA insert (90 cycles), extending toward the 5' end of the insert.",
+      "diagram": "              <----------------3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'  (Read 2 primer, 90 cycles)\n5'- ...[cDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNNN[i7]... -3'\n3'- ...[cDNA]-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNNN[i7]... -5'"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "10x Chromium 3' GEX v4",
+  "description": "A droplet-based single-cell 3' gene expression assay (10x Genomics Chromium GEM-X Single Cell 3' v4). Single cells are co-partitioned with barcoded gel beads into nanoliter GEMs; poly(dT) primers on the gel bead prime reverse transcription of polyadenylated mRNA, tagging each transcript with a shared 16 bp 10x cell barcode and a 12 bp UMI, and template switching adds a defined handle at the 3' end. Barcoded full-length cDNA is amplified in bulk, fragmented, and built into dual-indexed Illumina paired-end libraries. Read 1 reads the cell barcode + UMI, Read 2 reads the cDNA insert, and the i7/i5 index reads carry the sample indices, enabling digital 3' transcript counting of thousands of single cells.",
+  "reference": {
+    "kind": "paper",
+    "label": "Massively parallel digital transcriptional profiling of single cells",
+    "path": null,
+    "url": "https://doi.org/10.1038/ncomms14049",
+    "doi": "10.1038/ncomms14049"
+  },
+  "publication": {
+    "year": 2017,
+    "original_publication": {
+      "title": "Massively parallel digital transcriptional profiling of single cells",
+      "journal": "Nature Communications",
+      "doi": "10.1038/ncomms14049",
+      "url": "https://www.nature.com/articles/ncomms14049"
+    },
+    "authors": [
+      {
+        "name": "Grace X. Y. Zheng",
+        "affiliation": "10x Genomics Inc., Pleasanton, California, USA"
+      },
+      {
+        "name": "Jessica M. Terry",
+        "affiliation": "10x Genomics Inc., Pleasanton, California, USA"
+      },
+      {
+        "name": "Phillip Belgrader",
+        "affiliation": "10x Genomics Inc., Pleasanton, California, USA"
+      },
+      {
+        "name": "Paul Ryvkin",
+        "affiliation": "10x Genomics Inc., Pleasanton, California, USA"
+      },
+      {
+        "name": "Zachary W. Bent",
+        "affiliation": "10x Genomics Inc., Pleasanton, California, USA"
+      },
+      {
+        "name": "Tarjei S. Mikkelsen",
+        "affiliation": "10x Genomics Inc., Pleasanton, California, USA"
+      },
+      {
+        "name": "Benjamin J. Hindson",
+        "corresponding": true,
+        "email": "ben@10xgenomics.com",
+        "affiliation": "10x Genomics Inc., Pleasanton, California, USA"
+      },
+      {
+        "name": "Jason H. Bielas",
+        "corresponding": true,
+        "email": "jbielas@fredhutch.org",
+        "affiliation": "Translational Research Program, Public Health Sciences Division, and Human Biology Division, Fred Hutchinson Cancer Research Center, Seattle, Washington, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "Droplet system profiling thousands of single cells per channel; up to 8 samples in parallel per run at ~50% cell capture. Foundational study collected ~250k single cells across 29 samples. The GEM-X v4 protocol targets 500-20,000 cells per sample using a pool of ~3,600,000 10x barcodes.",
+      "cells": "500-20,000 cells/sample (v4); ~50% capture; ~250,000 cells across 29 samples in the original study",
+      "rna": "~1 pg RNA/cell (PBMCs) to ~15 pg RNA/cell (293T/3T3)",
+      "dna": "Minimum 20,000 read pairs per cell recommended"
+    },
+    "statistical_model": "Poisson loading of cells into GEMs (multiplet rate modeled from Poisson statistics); barcode error correction via posterior probability; genotype/chimerism inference via a binomial two-genome mixture model with Gibbs sampling",
+    "other": [
+      {
+        "label": "Original chemistry (2017 paper)",
+        "value": "14 bp barcode (~750,000 sequences), 10 bp UMI, 30 bp anchored oligo-dT; sequenced 98 bp Read1, 14 bp I7, 8 bp I5, 10 bp Read2 on NextSeq 500"
+      },
+      {
+        "label": "Sequencer compatibility (v4)",
+        "value": "MiSeq, NextSeq 500/550/2000, HiSeq 2500 (Rapid Run), HiSeq 3000/4000, NovaSeq 6000"
+      },
+      {
+        "label": "Data availability",
+        "value": "SRA accession SRP073767; https://github.com/10XGenomics/single-cell-3prime-paper"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "droplet",
+  "data_processing": {
+    "summary": "Sequencing reads are processed by the Cell Ranger pipeline: sample-index demultiplexing, cell-barcode + UMI extraction and error-correction, STAR alignment of the cDNA read, UMI deduplication by (barcode, UMI, gene), and gene-barcode matrix generation, followed by PCA / k-means / tSNE clustering. De novo SNVs (Freebayes) called on the Cell Ranger genome BAM support multiplet detection and SNV-based genotype/chimerism inference.",
+    "stages": [
+      {
+        "id": "s_demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "s_barcode",
+        "label": "Barcode Processing"
+      },
+      {
+        "id": "s_align",
+        "label": "Alignment"
+      },
+      {
+        "id": "s_quant",
+        "label": "Quantification"
+      },
+      {
+        "id": "s_variant",
+        "label": "Variant Calling"
+      },
+      {
+        "id": "s_cluster",
+        "label": "Clustering"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex sample index",
+        "tool": "Cell Ranger",
+        "stage": "s_demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "extract_bc",
+        "label": "Extract barcode and UMI",
+        "tool": "Cell Ranger",
+        "stage": "s_barcode",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "correct_bc",
+        "label": "Correct cell barcodes",
+        "tool": "Cell Ranger",
+        "stage": "s_barcode",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align cDNA read",
+        "tool": "STAR",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tag_genes",
+        "label": "Tag reads with genes",
+        "tool": "Cell Ranger",
+        "stage": "s_align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "correct_umi",
+        "label": "Correct UMIs",
+        "tool": "Cell Ranger",
+        "stage": "s_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "mark_dup",
+        "label": "Mark PCR duplicates",
+        "tool": "Cell Ranger",
+        "stage": "s_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_umi",
+        "label": "Count UMIs per cell-gene",
+        "tool": "Cell Ranger",
+        "stage": "s_quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "select_cells",
+        "label": "Select cell barcodes",
+        "tool": "Cell Ranger",
+        "stage": "s_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "gen_matrix",
+        "label": "Generate gene-barcode matrix",
+        "tool": "Cell Ranger",
+        "stage": "s_quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pca",
+        "label": "Run PCA on variable genes",
+        "tool": "Cell Ranger",
+        "stage": "s_cluster",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "kmeans",
+        "label": "Cluster cells (k-means)",
+        "tool": "Cell Ranger",
+        "stage": "s_cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "tsne",
+        "label": "Compute tSNE embedding",
+        "tool": "Cell Ranger",
+        "stage": "s_cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "call_snv",
+        "label": "Call de novo SNVs",
+        "tool": "Freebayes",
+        "stage": "s_variant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "detect_multiplet",
+        "label": "Detect multiplets",
+        "tool": "",
+        "stage": "s_variant",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "infer_genotype",
+        "label": "Infer genotype and chimerism",
+        "tool": "",
+        "stage": "s_variant",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "extract_bc",
+        "kind": "branch"
+      },
+      {
+        "from": "demux",
+        "to": "align",
+        "kind": "branch"
+      },
+      {
+        "from": "extract_bc",
+        "to": "correct_bc",
+        "kind": "sequential"
+      },
+      {
+        "from": "correct_bc",
+        "to": "correct_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "tag_genes",
+        "kind": "sequential"
+      },
+      {
+        "from": "tag_genes",
+        "to": "correct_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "correct_umi",
+        "to": "mark_dup",
+        "kind": "sequential"
+      },
+      {
+        "from": "mark_dup",
+        "to": "count_umi",
+        "kind": "branch"
+      },
+      {
+        "from": "mark_dup",
+        "to": "call_snv",
+        "kind": "branch"
+      },
+      {
+        "from": "count_umi",
+        "to": "select_cells",
+        "kind": "fan_in"
+      },
+      {
+        "from": "count_umi",
+        "to": "gen_matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "select_cells",
+        "to": "gen_matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "gen_matrix",
+        "to": "pca",
+        "kind": "sequential"
+      },
+      {
+        "from": "pca",
+        "to": "kmeans",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "tsne",
+        "kind": "branch"
+      },
+      {
+        "from": "call_snv",
+        "to": "detect_multiplet",
+        "kind": "branch"
+      },
+      {
+        "from": "call_snv",
+        "to": "infer_genotype",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "Poisson cell loading (multiplet-rate model); binomial two-genome mixture with Gibbs sampling for SNV-based genotype/chimerism inference"
+  }
+}

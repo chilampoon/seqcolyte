@@ -1,0 +1,775 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "10x_chromium_5_gene_expression_v2",
+  "assay": "10x Chromium Single Cell 5\u2032 Gene Expression v2 (Dual Index)",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "10xChromium5v2.pdf",
+      "title": "10xChromium5v2.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/10x_chromium_5_gene_expression_v2/10xChromium5v2.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_gel_bead_primer",
+      "name": "Single Cell 5' Gel Bead oligo",
+      "aliases": [],
+      "role": "Bead-bound capture/barcoding oligo; carries partial Read 1, cell barcode, UMI and the template switch oligo used for 5' template switching",
+      "kind": "assembled",
+      "sequence": "CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "read1_primer"
+        },
+        {
+          "name": "10x Barcode",
+          "sequence": "[CELL_BARCODE:16]",
+          "role": "cell_barcode"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:10]",
+          "role": "umi"
+        },
+        {
+          "name": "Template Switch Oligo (TSO)",
+          "sequence": "TTTCTTATATGGG",
+          "role": "tso"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Appendix Step 1.5: 5'-CTACACGACGCTCTTCCGATCT-N16-N10-TTTCTTATATrGrGrG-3'. rGrGrG folded to GGG. 13 nt TSO base-pairs with the untemplated C's added by RT at the transcript 5' end."
+    },
+    {
+      "oligo_id": "oligo_poly_dt_rt_primer",
+      "name": "Poly-dT RT Primer",
+      "aliases": [],
+      "role": "Reverse transcription primer that anneals to the mRNA poly(A) tail and primes first-strand cDNA synthesis",
+      "kind": "assembled",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "RT primer handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAGTAC",
+          "role": "constant"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "polyA"
+        },
+        {
+          "name": "Anchor VN",
+          "sequence": "VN",
+          "role": "spacer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "PN-2000007. Appendix Step 1.5. 30 T's followed by a VN anchor."
+    },
+    {
+      "oligo_id": "oligo_cdna_forward_primer",
+      "name": "cDNA Forward Primer",
+      "aliases": [],
+      "role": "Forward primer for bulk cDNA amplification; anneals to the partial TruSeq Read 1 handle",
+      "kind": "single",
+      "sequence": "CTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "read1_primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "cDNA Primers PN-2000089, Appendix Step 2.2."
+    },
+    {
+      "oligo_id": "oligo_cdna_reverse_primer",
+      "name": "cDNA Reverse Primer",
+      "aliases": [],
+      "role": "Reverse primer for bulk cDNA amplification; anneals to the poly-dT RT primer handle",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "RT primer handle",
+          "sequence": "AAGCAGTGGTATCAACGCAGAG",
+          "role": "constant"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "cDNA Primers PN-2000089, Appendix Step 2.2."
+    },
+    {
+      "oligo_id": "oligo_truseq_read1_primer",
+      "name": "Illumina TruSeq Read 1 primer",
+      "aliases": [],
+      "role": "Read 1 sequencing primer; reads the 16 nt cell barcode + 10 nt UMI",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 1",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "read1_primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Full TruSeq Read 1 introduced by the P5/i5 index primer (Appendix Step 5.5)."
+    },
+    {
+      "oligo_id": "oligo_truseq_read2_primer",
+      "name": "Illumina TruSeq Read 2 primer",
+      "aliases": [],
+      "role": "Read 2 sequencing primer; reads the cDNA insert (transcript 5' end)",
+      "kind": "single",
+      "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 2",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "read2_primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq Read 2 primer; its binding site (GTGACTGGAGTTCAGACGTGT partial) is introduced by the P7/i7 index primer and the ligated Read 2 adapter (Appendix Steps 5.3, 5.5)."
+    },
+    {
+      "oligo_id": "oligo_adaptor_oligos_truseq",
+      "name": "Adaptor Oligos (TruSeq Read 2 adapter)",
+      "aliases": [],
+      "role": "Double-stranded forked adapter ligated to A-tailed cDNA fragments; provides the TruSeq Read 2 priming site",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq adapter (top)",
+          "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+          "role": "read2_adapter"
+        },
+        {
+          "name": "TruSeq adapter (bottom)",
+          "sequence": "GCTCTTCCGATCT",
+          "role": "read2_adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Adaptor Oligos PN-2000094. Appendix: 5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3' / 3'-TCTAGCCTTCTCG-5' (bottom written 5'->3' = GCTCTTCCGATCT)."
+    },
+    {
+      "oligo_id": "oligo_sample_index_primer_p5_i5",
+      "name": "Sample Index PCR Forward Primer (P5 / i5)",
+      "aliases": [],
+      "role": "Dual Index PCR forward primer; adds P5 and the i5 sample index and completes TruSeq Read 1",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "p5"
+        },
+        {
+          "name": "i5 Sample Index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "sample_index"
+        },
+        {
+          "name": "Partial TruSeq Read 1",
+          "sequence": "ACACTCTTTCCCTACACGACGCTC",
+          "role": "read1_primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Dual Index Kit TT Set A PN-1000215, Appendix Step 5.5."
+    },
+    {
+      "oligo_id": "oligo_sample_index_primer_p7_i7",
+      "name": "Sample Index PCR Reverse Primer (P7 / i7)",
+      "aliases": [],
+      "role": "Dual Index PCR reverse primer; adds P7 and the i7 sample index and the TruSeq Read 2 priming site",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:10]GTGACTGGAGTTCAGACGTGT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "p7"
+        },
+        {
+          "name": "i7 Sample Index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "sample_index"
+        },
+        {
+          "name": "Partial TruSeq Read 2",
+          "sequence": "GTGACTGGAGTTCAGACGTGT",
+          "role": "read2_primer"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Dual Index Kit TT Set A PN-1000215, Appendix Step 5.5."
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "P5 flow-cell binding sequence at the 5' end of the final library",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "p5"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Introduced via the Sample Index PCR forward primer."
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "P7 flow-cell binding sequence at the 3' end of the final library",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "p7"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Introduced via the Sample Index PCR reverse primer. In the final-library top strand the P7 end appears as its reverse complement ATCTCGTATGCCGTCTTCTGCTTG."
+    }
+  ],
+  "final_library": {
+    "source_label": "Chromium Single Cell 5' Gene Expression Dual Index Library (CG000331 Rev F, Appendix Step 5.5)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:10]TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:10]TAGAGCATACGGCAGAAGACGAAC",
+        "source_sequence": "TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:10]TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:10]TAGAGCATACGGCAGAAGACGAAC"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[SAMPLE_INDEX:10] = i5 sample index",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT = TruSeq Read 1",
+      "[CELL_BARCODE:16] = 10x Barcode (cell barcode)",
+      "[UMI:10] = UMI",
+      "TTTCTTATATGGG = Template Switch Oligo (TSO)",
+      "[CDNA] = cDNA insert (transcript 5' end)",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = TruSeq Read 2 adapter",
+      "[SAMPLE_INDEX:10] = i7 sample index",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "Chromium Single Cell 5' Gene Expression Dual Index Library (CG000331 Rev F, Appendix Step 5.5)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq Read 1 primer",
+        "template": "bottom",
+        "cycles": 26,
+        "segments": [
+          {
+            "name": "10x Barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 16
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Illumina i7 index primer",
+        "template": "top",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "Illumina i5 index primer",
+        "template": "bottom",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i5 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina TruSeq Read 2 primer",
+        "template": "top",
+        "cycles": 90,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "GEM generation & barcoding",
+      "summary": "Cells, barcoded 5' gel beads and RT reagents (poly-dT RT primer) are co-partitioned into nanoliter GEMs on Chromium Next GEM Chip K.",
+      "note": "Each gel bead carries ~750,000-member-pool oligos with a common 16 nt 10x barcode: partial Read 1 + barcode + UMI + a 13 nt TSO ending in rGrGrG. The poly-dT RT primer is supplied in the master mix. Bead dissolution releases the oligos into the droplet with lysed-cell mRNA.",
+      "product": "Co-partitioned in one GEM:\n\nGel bead oligo:\n|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG -3'\n\nPoly-dT RT primer annealed to mRNA poly(A):\n5'- AAGCAGTGGTATCAACGCAGAGTAC(T)30VN -3'\n                            3'- ...(A)n-mRNA-5'cap"
+    },
+    {
+      "step": 2,
+      "title": "Reverse transcription & template switching (GEM-RT)",
+      "summary": "MMLV RT extends the poly-dT primer along the mRNA, adds untemplated C's at the 5' cap, then template-switches onto the bead TSO, appending the barcode/UMI/Read 1 to the transcript 5' end.",
+      "note": "Incubation 53 C/45 min then 85 C/5 min produces 10x-barcoded, full-length first-strand cDNA. The 5' end of every transcript now carries the cell barcode, UMI and partial Read 1 sequence.",
+      "product": "Barcoded first-strand cDNA after template switch (sense orientation shown):\n5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]GTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]CATGAGACGCAACTATGGTGACGAA -5'"
+    },
+    {
+      "step": 3,
+      "title": "cDNA amplification (PCR)",
+      "summary": "After silane cleanup, barcoded cDNA is PCR-amplified with the cDNA Forward (partial Read 1) and cDNA Reverse (RT handle) primers.",
+      "note": "Generates sufficient double-stranded, full-length cDNA mass to build the 5' gene expression library (and optionally V(D)J libraries from the same material).",
+      "product": "cDNA Forward:  5'- CTACACGACGCTCTTCCGATCT ---->\n5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]GTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]CATGAGACGCAACTATGGTGACGAA -5'\n                                                        <---- GAGACGCAACTATGGTGACGAA -5'  :cDNA Reverse"
+    },
+    {
+      "step": 4,
+      "title": "Fragmentation, End Repair & A-tailing",
+      "summary": "Amplified cDNA is enzymatically fragmented and A-tailed to optimize amplicon size for 5' GEX library construction.",
+      "note": "Only fragments retaining the barcoded 5' (Read 1) end carry the cell barcode/UMI and go on to amplify in Sample Index PCR; internal fragments lack the Read 1 handle.",
+      "product": "Barcoded 5'-end fragment (A-tailed):\n5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]*A -3'\n3'- A*GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]  -5'"
+    },
+    {
+      "step": 5,
+      "title": "Adaptor ligation",
+      "summary": "The forked TruSeq Read 2 adapter (Adaptor Oligos) is ligated to the A-tailed fragment ends.",
+      "note": "Adds the TruSeq Read 2 priming site to the fragmented (3') end of the barcoded amplicon.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]TCTAGCCTTCTCG -5'"
+    },
+    {
+      "step": 6,
+      "title": "Sample Index PCR",
+      "summary": "Dual Index TT Set A primers add P5 + i5 and P7 + i7, completing TruSeq Read 1/Read 2 and yielding the final Illumina library.",
+      "note": "P5, P7, and the 10 bp i5/i7 sample indices are added by PCR; the final library begins with P5 and ends with P7 and is ready for paired-end dual-index sequencing.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:10]TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:10]TAGAGCATACGGCAGAAGACGAAC -5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "Illumina TruSeq Read 1 primer (5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3')",
+      "template": "bottom",
+      "cycles": 26,
+      "note": "Primer anneals to the bottom strand at the TruSeq Read 1 region and reads the 16 nt 10x cell barcode followed by the 10 nt UMI.",
+      "diagram": "                Read 1 sequencing primer\n           5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT---------------------------->\n               |||||||||||||||||||||||||||||||||\n3'- ...GATCTACAC TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNNNNNNNNNNN NNNNNNNNNN AAAGAATATACCC... -5'\n                                                  <---16 nt 10x BC---><-10 nt UMI->\n                                                        (template = bottom strand)"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "i7 index sequencing primer (binds the TruSeq Read 2 adapter, 5'-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3')",
+      "template": "bottom",
+      "cycles": 10,
+      "note": "Reads the 10 bp i7 sample index; primer anneals to the top-strand Read 2 adapter and extends into the i7 index using the bottom strand as template.",
+      "diagram": "                                    i7 index sequencing primer\n5'- ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC---------->\n       ||||||||||||||||||||||||||||||||||\n3'- ...TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG NNNNNNNNNN TAGAGCATACGGCAGAAGACGAAC -5'\n                                         <-i7 (10)->\n                                         (template = bottom strand)"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "i5 index sequencing primer (binds the TruSeq Read 1 region, forward-strand workflow)",
+      "template": "top",
+      "cycles": 10,
+      "note": "Reads the 10 bp i5 sample index. On forward-strand instruments (MiSeq, HiSeq 2500, NovaSeq 6000 standard) the primer reads the i5 as shown; on reverse-complement workflow instruments (NextSeq, NovaSeq Xp) the i5 is reported as its reverse complement.",
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC NNNNNNNNNN ACACTCTTTCCCTACACGACGCTC... -3'\n                                            ||||||||||||||||||||||||\n                       <---i5 (10)---------- GAGCGTCGTGTAGGGAAAGAGTGT -5'\n                                          3' i5 index sequencing primer\n                                             (template = top strand)"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Illumina TruSeq Read 2 primer (5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3')",
+      "template": "top",
+      "cycles": 90,
+      "note": "Primer anneals to the top-strand Read 2 adapter and extends leftward, reading the cDNA insert (5' end of the transcript).",
+      "diagram": "5'- ...TTTCTTATATGGG[cDNA insert]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7]... -3'\n                                ||||||||||||||||||||||||||||||||||\n     <--------cDNA insert--------TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG -5'\n                              3' TruSeq Read 2 primer\n                                 (template = top strand)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "10x Chromium Single Cell 5\u2032 Gene Expression v2 (Dual Index)",
+  "description": "A droplet-based single-cell 5\u2032 gene expression assay. Cells are co-partitioned with barcoded gel beads into GEMs; a poly(dT) RT primer primes reverse transcription of polyadenylated mRNA, and MMLV reverse transcriptase template-switches onto a bead-bound template switch oligo (TSO), attaching a 16 nt 10x cell barcode, a 10 nt UMI and the Illumina Read 1 sequence to the 5\u2032 end of each transcript. Read 1 (26 cycles) recovers the cell barcode + UMI, while Read 2 (90 cycles) reads the cDNA insert from the 5\u2032 end of the transcript; dual i7/i5 sample indices (10 bp each) permit multiplexing. The final construct is a standard Illumina paired-end library flanked by P5 and P7.",
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "10x chromium 5 gene expression v2",
+    "path": null,
+    "url": null,
+    "doi": null
+  },
+  "publication": {
+    "year": 2024,
+    "original_publication": {
+      "title": "Chromium Next GEM Single Cell 5' Reagent Kits v2 (Dual Index) User Guide",
+      "journal": "10x Genomics Document CG000331 Rev F",
+      "url": "https://www.10xgenomics.com"
+    },
+    "authors": [
+      {
+        "name": "10x Genomics, Inc.",
+        "affiliation": "6230 Stoneridge Mall Road, Pleasanton, CA 94588 USA",
+        "email": "support@10xgenomics.com"
+      }
+    ],
+    "throughput": {
+      "summary": "500-10,000 cells per sample; ~1,700 cells loaded recovers ~1,000 cells at ~0.8% multiplet rate.",
+      "cells": "500-10,000 individual cells per reaction; ~750,000-barcode pool"
+    },
+    "other": [
+      {
+        "label": "Document",
+        "value": "CG000331 Rev F (June 2024)"
+      },
+      {
+        "label": "Recommended GEX sequencing depth",
+        "value": "20,000 read pairs per cell"
+      },
+      {
+        "label": "Compatible instruments",
+        "value": "MiSeq; NextSeq 500/550/2000; HiSeq 2500 (RR)/3000/4000; NovaSeq 6000"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "droplet",
+  "data_processing": {
+    "summary": "Sequencing produces a standard Illumina BCL folder that is processed with Cell Ranger: FASTQs are generated with cellranger mkfastq, reads are aligned and demultiplexed by 10x Barcode/UMI into a feature-barcode count matrix, and cells are clustered; running the GEX library together with V(D)J via cellranger multi improves cell calling. Results are visualized in Loupe Browser (t-SNE/UMAP).",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplex & FASTQ"
+      },
+      {
+        "id": "mapping",
+        "label": "Read alignment"
+      },
+      {
+        "id": "quant",
+        "label": "Barcode & UMI quantification"
+      },
+      {
+        "id": "analysis",
+        "label": "Clustering & DE"
+      },
+      {
+        "id": "viz",
+        "label": "Visualization"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "mkfastq",
+        "label": "Generate FASTQ",
+        "tool": "cellranger mkfastq",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align reads to reference",
+        "tool": "Cell Ranger",
+        "stage": "mapping",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "correct_bc",
+        "label": "Correct cell barcodes",
+        "tool": "Cell Ranger",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse_umi",
+        "label": "Collapse UMIs",
+        "tool": "Cell Ranger",
+        "stage": "quant",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_matrix",
+        "label": "Build count matrix",
+        "tool": "Cell Ranger",
+        "stage": "quant",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "reduce",
+        "label": "Reduce dimensions (PCA)",
+        "tool": "Cell Ranger",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells",
+        "tool": "Cell Ranger",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dge",
+        "label": "Differential gene expression",
+        "tool": "Cell Ranger",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "embed",
+        "label": "Visualize t-SNE/UMAP",
+        "tool": "Loupe Browser",
+        "stage": "viz",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      }
+    ],
+    "edges": [
+      {
+        "from": "mkfastq",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "correct_bc",
+        "kind": "sequential"
+      },
+      {
+        "from": "correct_bc",
+        "to": "collapse_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse_umi",
+        "to": "count_matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "count_matrix",
+        "to": "reduce",
+        "kind": "sequential"
+      },
+      {
+        "from": "reduce",
+        "to": "cluster",
+        "kind": "branch"
+      },
+      {
+        "from": "reduce",
+        "to": "embed",
+        "kind": "branch"
+      },
+      {
+        "from": "cluster",
+        "to": "dge",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "null"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "folder": "txci_atac_seq",
+  "title": "txci-ATAC-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "txci-ATAC-seq.html",
+    "oligo_seq_recall": 0.692,
+    "oligo_seqs_matched": 9,
+    "oligo_seqs_total": 13,
+    "missed_oligos": [
+      "Beads-oligo",
+      "Custom i7 TruSeq primer",
+      "Nextera Index 2 sequencing primer (i5)",
+      "Tn5ME-B"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT[TN5_BARCODE:8]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[GDNA]CTGTCTCTTATACACATCT[TN5_INDEX:8]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

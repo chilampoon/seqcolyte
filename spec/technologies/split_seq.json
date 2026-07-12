@@ -1,0 +1,1165 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "split_seq",
+  "assay": "SPLiT-seq",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "SPLiT-seq.xlsx",
+      "title": "SPLiT-seq.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/split_seq/SPLiT-seq.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SPLiT-seq_paper.pdf",
+      "title": "SPLiT-seq_paper.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/split_seq/SPLiT-seq_paper.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "SPLiT-seq_supp.pdf",
+      "title": "SPLiT-seq_supp.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/split_seq/SPLiT-seq_supp.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "round1_rt_primer_dt",
+      "name": "Round1 barcoded RT primer, anchored poly(dT)15 (Round1_01\u201348)",
+      "aliases": [],
+      "role": "Round-1 barcoded reverse-transcription primer (anchored oligo-dT); appends cell barcode 1",
+      "kind": "single",
+      "sequence": "AGGCCAGAGCATTCG[CELL_BARCODE:8]TTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' phosphate (/5Phos/). AGGCCAGAGCATTCG is the round-1 constant/linker region; next 8 nt = well-specific round-1 barcode; TTTTTTTTTTTTTTT = dT15; VN anchor. Example Round1_01 barcode = AACGTGAT. 48 dT primers (wells A1\u2013D12), one per well; combined with the matching random-hexamer primer for RT."
+    },
+    {
+      "oligo_id": "round1_rt_primer_hexamer",
+      "name": "Round1 barcoded RT primer, random hexamer (Round1_49\u201396)",
+      "aliases": [],
+      "role": "Round-1 barcoded reverse-transcription primer (random hexamer); appends cell barcode 1",
+      "kind": "single",
+      "sequence": "AGGCCAGAGCATTCG[CELL_BARCODE:8]NNNNNN",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' phosphate (/5Phos/). Same AGGCCAGAGCATTCG constant + 8-nt round-1 barcode, ending in a random hexamer (NNNNNN). Example Round1_49 barcode = GATAGACA. Random hexamer and dT15 primers sharing the same barcode are pooled in each RT well (e.g. E1 mixed with A1)."
+    },
+    {
+      "oligo_id": "round2_barcode",
+      "name": "Round2 barcode strand (Round2_01\u201396)",
+      "aliases": [],
+      "role": "Round-2 ligation barcode strand; appends cell barcode 2 to the 5' end of the RT primer",
+      "kind": "single",
+      "sequence": "CATCGGCGTACGACT[CELL_BARCODE:8]ATCCACGTGCTTGAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' phosphate (/5Phos/). CATCGGCGTACGACT and ATCCACGTGCTTGAG are constant ligation-junction regions; central 8 nt = round-2 barcode. Example Round2_01 barcode = AACGTGAT. Annealed to linker BC_0215 (11 \u00b5M) with 12 \u00b5M barcode before in-cell ligation."
+    },
+    {
+      "oligo_id": "round3_barcode",
+      "name": "Round3 barcode strand (Round3_01\u201396)",
+      "aliases": [],
+      "role": "Round-3 ligation barcode strand; appends UMI + cell barcode 3 + PCR handle + biotin",
+      "kind": "single",
+      "sequence": "CAGACGTGTGCTCTTCCGATCT[UMI:10][CELL_BARCODE:8]GTGGCCGATGTTTCG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5' biotin (/5Biosg/). CAGACGTGTGCTCTTCCGATCT = universal PCR/Read-2 handle; NNNNNNNNNN = 10-nt UMI; next 8 nt = round-3 barcode; GTGGCCGATGTTTCG = constant ligation-junction region. Example Round3_01 barcode = AACGTGAT. Annealed to linker BC_0060 (13 \u00b5M) with 14 \u00b5M barcode."
+    },
+    {
+      "oligo_id": "bc_0215_round2_linker",
+      "name": "BC_0215 \u2013 Round 2 barcode linker",
+      "aliases": [],
+      "role": "Bridge/linker oligo that hybridizes across the round-1/round-2 ligation junction (not incorporated into product)",
+      "kind": "single",
+      "sequence": "CGAATGCTCTGGCCTCTCAAGCACGTGGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reverse complement of blocking strand BC_0216; scaffolds ligation of round-2 barcode onto the RT primer."
+    },
+    {
+      "oligo_id": "bc_0216_round2_blocking",
+      "name": "BC_0216 \u2013 Round 2 blocking strand",
+      "aliases": [],
+      "role": "Blocking strand complementary to the 3' overhang of round-2 barcodes; prevents mislabeling",
+      "kind": "single",
+      "sequence": "ATCCACGTGCTTGAGAGGCCAGAGCATTCG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used at 26.4 \u00b5M in 2.5X T4 ligase buffer after round-2 ligation."
+    },
+    {
+      "oligo_id": "bc_0060_round3_linker",
+      "name": "BC_0060 \u2013 Round 3 barcode linker",
+      "aliases": [],
+      "role": "Bridge/linker oligo that hybridizes across the round-2/round-3 ligation junction (not incorporated)",
+      "kind": "single",
+      "sequence": "AGTCGTACGCCGATGCGAAACATCGGCCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Reverse complement of blocking strand BC_0066."
+    },
+    {
+      "oligo_id": "bc_0066_round3_blocking",
+      "name": "BC_0066 \u2013 Round 3 blocking strand",
+      "aliases": [],
+      "role": "Blocking strand complementary to the 3' overhang of round-3 barcodes; prevents mislabeling",
+      "kind": "single",
+      "sequence": "GTGGCCGATGTTTCGCATCGGCGTACGACT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used at 30.8 \u00b5M in 150 mM EDTA (terminates ligase activity) after round-3 ligation."
+    },
+    {
+      "oligo_id": "bc_0127_tso",
+      "name": "BC_0127 \u2013 Template switching primer (TSO)",
+      "aliases": [],
+      "role": "Template-switch oligo; adds a universal handle to the 3' end of first-strand cDNA",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTGAATGGG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "HPLC-purified, from Exiqon. 3' end is rG rG +G (two ribo-G followed by a locked-nucleic-acid G) \u2014 folded here to GGG. Used at 100 \u00b5M in the on-bead Maxima H Minus template-switch reaction."
+    },
+    {
+      "oligo_id": "bc_0108_pcr_fwd",
+      "name": "BC_0108 \u2013 PCR primer (TSO handle)",
+      "aliases": [],
+      "role": "cDNA-amplification PCR primer binding the template-switch handle",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with BC_0062 in the 5-cycle + qPCR amplification after template switching."
+    },
+    {
+      "oligo_id": "bc_0062_pcr_rev",
+      "name": "BC_0062 \u2013 PCR primer (Round-3 handle)",
+      "aliases": [],
+      "role": "cDNA-amplification PCR primer binding the round-3 universal PCR handle",
+      "kind": "single",
+      "sequence": "CAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with BC_0108. Same sequence serves as the Read-2 handle in the final library."
+    },
+    {
+      "oligo_id": "bc_0118_p5_n501",
+      "name": "BC_0118 \u2013 Nextera P5 primer (N501)",
+      "aliases": [],
+      "role": "P5/i5 library PCR primer added during indexing PCR after tagmentation",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTAGATCGCTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 flow-cell adapter"
+        },
+        {
+          "name": "i5 (N501)",
+          "sequence": "TAGATCGC",
+          "role": "fixed i5 index"
+        },
+        {
+          "name": "S5",
+          "sequence": "TCGTCGGCAGCGTC",
+          "role": "Nextera Read-1 primer region"
+        },
+        {
+          "name": "ME",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "Mosaic-end / transposase adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Binds the Nextera adapter on the tagmented (cDNA) end; used with one indexed P7 primer (BC_0076\u2013BC_0083)."
+    },
+    {
+      "oligo_id": "bc_0076_p7_tsbc07",
+      "name": "BC_0076 \u2013 Nextera indexed P7 primer (TSBC07, sublibrary index #1)",
+      "aliases": [],
+      "role": "Indexed P7 library PCR primer; binds the round-3 handle and adds the sublibrary (4th) barcode",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATGATCTGGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "sublibrary index",
+          "sequence": "GATCTG",
+          "role": "6-nt i7 sublibrary index (read as the 6-nt index read)"
+        },
+        {
+          "name": "handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "priming region binding round-3 PCR handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with P5 primer BC_0118. The 6-nt index is the fourth barcode read in the 6-cycle index read."
+    },
+    {
+      "oligo_id": "bc_0077_p7_tsbc08",
+      "name": "BC_0077 \u2013 Nextera indexed P7 primer (TSBC08, sublibrary index #2)",
+      "aliases": [],
+      "role": "Indexed P7 library PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTCAAGTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "sublibrary index",
+          "sequence": "TCAAGT",
+          "role": "6-nt i7 sublibrary index"
+        },
+        {
+          "name": "handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "priming region binding round-3 PCR handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with P5 primer BC_0118."
+    },
+    {
+      "oligo_id": "bc_0078_p7_tsbc09",
+      "name": "BC_0078 \u2013 Nextera indexed P7 primer (TSBC09, sublibrary index #3)",
+      "aliases": [],
+      "role": "Indexed P7 library PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCTGATCGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "sublibrary index",
+          "sequence": "CTGATC",
+          "role": "6-nt i7 sublibrary index"
+        },
+        {
+          "name": "handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "priming region binding round-3 PCR handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with P5 primer BC_0118."
+    },
+    {
+      "oligo_id": "bc_0079_p7_tsbc10",
+      "name": "BC_0079 \u2013 Nextera indexed P7 primer (TSBC10, sublibrary index #4)",
+      "aliases": [],
+      "role": "Indexed P7 library PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATAAGCTAGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "sublibrary index",
+          "sequence": "AAGCTA",
+          "role": "6-nt i7 sublibrary index"
+        },
+        {
+          "name": "handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "priming region binding round-3 PCR handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with P5 primer BC_0118."
+    },
+    {
+      "oligo_id": "bc_0080_p7_tsbc11",
+      "name": "BC_0080 \u2013 Nextera indexed P7 primer (TSBC11, sublibrary index #5)",
+      "aliases": [],
+      "role": "Indexed P7 library PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATGTAGCCGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "sublibrary index",
+          "sequence": "GTAGCC",
+          "role": "6-nt i7 sublibrary index"
+        },
+        {
+          "name": "handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "priming region binding round-3 PCR handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with P5 primer BC_0118."
+    },
+    {
+      "oligo_id": "bc_0081_p7_tsbc12",
+      "name": "BC_0081 \u2013 Nextera indexed P7 primer (TSBC12, sublibrary index #6)",
+      "aliases": [],
+      "role": "Indexed P7 library PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTACAAGGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "sublibrary index",
+          "sequence": "TACAAG",
+          "role": "6-nt i7 sublibrary index"
+        },
+        {
+          "name": "handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "priming region binding round-3 PCR handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with P5 primer BC_0118."
+    },
+    {
+      "oligo_id": "bc_0082_p7_tsbc13",
+      "name": "BC_0082 \u2013 Nextera indexed P7 primer (TSBC13, sublibrary index #7)",
+      "aliases": [],
+      "role": "Indexed P7 library PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATTTGACTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "sublibrary index",
+          "sequence": "TTGACT",
+          "role": "6-nt i7 sublibrary index"
+        },
+        {
+          "name": "handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "priming region binding round-3 PCR handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with P5 primer BC_0118."
+    },
+    {
+      "oligo_id": "bc_0083_p7_tsbc14",
+      "name": "BC_0083 \u2013 Nextera indexed P7 primer (TSBC14, sublibrary index #8)",
+      "aliases": [],
+      "role": "Indexed P7 library PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATGGAACTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adapter"
+        },
+        {
+          "name": "sublibrary index",
+          "sequence": "GGAACT",
+          "role": "6-nt i7 sublibrary index"
+        },
+        {
+          "name": "handle",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "priming region binding round-3 PCR handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Used with P5 primer BC_0118."
+    }
+  ],
+  "final_library": {
+    "source_label": "SPLiT-seq final Illumina library (after tagmentation + indexing PCR)",
+    "annotated_library_sequence": "5'-[P5:AATGATACGGCGACCACCGAGATCTACAC][i5:TAGATCGC][S5:TCGTCGGCAGCGTC][ME:AGATGTGTATAAGAGACAG][CDNA][ANCHOR:2][A15:AAAAAAAAAAAAAAA][CELL_BARCODE:8 = BC1(rc)][round1-linker(rc):CGAATGCTCTGGCCTCTCAAGCACGTGGAT][CELL_BARCODE:8 = BC2(rc)][round2/3-linker(rc):AGTCGTACGCCGATGCGAAACATCGGCCAC][CELL_BARCODE:8 = BC3(rc)][UMI:10][Read2-handle(rc):AGATCGGAAGAGCACACGTCTG][AACTCCAGTCAC][SAMPLE_INDEX:6][P7:ATCTCGTATGCCGTCTTCTGCTTG]-3'",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTAGATCGCTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA][ANCHOR:2]AAAAAAAAAAAAAAA[CELL_BARCODE:8]CGAATGCTCTGGCCTCTCAAGCACGTGGAT[CELL_BARCODE:8]AGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "top (5'->3', P5 to P7)",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACACTAGATCGCTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA][ANCHOR:2]AAAAAAAAAAAAAAA[CELL_BARCODE:8]CGAATGCTCTGGCCTCTCAAGCACGTGGAT[CELL_BARCODE:8]AGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACACTAGATCGCTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA][ANCHOR:2]AAAAAAAAAAAAAAA[CELL_BARCODE:8]CGAATGCTCTGGCCTCTCAAGCACGTGGAT[CELL_BARCODE:8]AGTCGTACGCCGATGCGAAACATCGGCCAC[CELL_BARCODE:8][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "bottom (5'->3', P7 to P5 / cDNA-barcode strand)",
+        "source_html": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:6]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[UMI:10][CELL_BARCODE:8]GTGGCCGATGTTTCGCATCGGCGTACGACT[CELL_BARCODE:8]ATCCACGTGCTTGAGAGGCCAGAGCATTCG[CELL_BARCODE:8]TTTTTTTTTTTTTTTVN[CDNA]CTGTCTCTTATACACATCTGACGCTGCCGACGAGCGATCTAGTGTAGATCTCGGTGGTCGCCGTATCATT",
+        "source_sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:6]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[UMI:10][CELL_BARCODE:8]GTGGCCGATGTTTCGCATCGGCGTACGACT[CELL_BARCODE:8]ATCCACGTGCTTGAGAGGCCAGAGCATTCG[CELL_BARCODE:8]TTTTTTTTTTTTTTTVN[CDNA]CTGTCTCTTATACACATCTGACGCTGCCGACGAGCGATCTAGTGTAGATCTCGGTGGTCGCCGTATCATT"
+      }
+    ],
+    "annotation_lines": [
+      "P5 (AATGATACGGCGACCACCGAGATCTACAC) \u2014 flow-cell binding",
+      "i5 fixed index TAGATCGC (N501) + S5 (TCGTCGGCAGCGTC) \u2014 Read-1 priming region",
+      "ME (AGATGTGTATAAGAGACAG) \u2014 Nextera mosaic end added by tagmentation",
+      "[CDNA] \u2014 transcript fragment (Read 1, 66 nt)",
+      "A15 + anchor (revcomp of dT15VN of the RT primer)",
+      "BC1 (8 nt, round-1 cell barcode) \u2014 appended during RT",
+      "round-1 linker constant (revcomp of AGGCCAGAGCATTCG + ATCCACGTGCTTGAG)",
+      "BC2 (8 nt, round-2 cell barcode) \u2014 appended by ligation",
+      "round-2/3 linker constant (revcomp of GTGGCCGATGTTTCG + CATCGGCGTACGACT)",
+      "BC3 (8 nt, round-3 cell barcode) \u2014 appended by ligation",
+      "UMI (10 nt) \u2014 part of the round-3 oligo",
+      "Read-2 handle AGATCGGAAGAGCACACGTCTG (revcomp of CAGACGTGTGCTCTTCCGATCT) \u2014 Read-2 priming region",
+      "SAMPLE_INDEX (6 nt sublibrary/4th barcode) \u2014 index read",
+      "P7 (ATCTCGTATGCCGTCTTCTGCTTG) \u2014 flow-cell binding"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "SPLiT-seq final Illumina library (after tagmentation + indexing PCR)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+        "template": "top",
+        "cycles": 66,
+        "segments": [
+          {
+            "name": "cDNA",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 66
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+        "template": "bottom",
+        "cycles": 6,
+        "segments": [
+          {
+            "name": "sublibrary index (barcode 4)",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "CAGACGTGTGCTCTTCCGATCT",
+        "template": "bottom",
+        "cycles": 94,
+        "segments": [
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "cell barcode 3",
+            "type": "barcode",
+            "order": 1,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "linker (round3/round2)",
+            "type": "constant",
+            "order": 2,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 30
+          },
+          {
+            "name": "cell barcode 2",
+            "type": "barcode",
+            "order": 3,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "linker (round2/round1)",
+            "type": "constant",
+            "order": 4,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 30
+          },
+          {
+            "name": "cell barcode 1",
+            "type": "barcode",
+            "order": 5,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "In-cell barcoded reverse transcription (barcode 1)",
+      "summary": "Fixed cells are split into up to 48 wells and in-cell RT with well-specific barcoded dT15/hexamer primers converts RNA to cDNA while appending cell barcode 1.",
+      "note": "Maxima H Minus RT in permeabilized formaldehyde-fixed cells; each well gets a pooled dT15VN + random-hexamer primer sharing the same 8-nt round-1 barcode. Cells are then pooled.",
+      "product": "5'/Phos/-AGGCCAGAGCATTCG-[CELL_BARCODE:8]-TTTTTTTTTTTTTTTVN-[CDNA]-3'"
+    },
+    {
+      "step": 2,
+      "title": "Split-pool ligation round 2 (barcode 2)",
+      "summary": "Pooled cells are re-split into a 96-well plate and an in-cell T4 ligation appends cell barcode 2 to the 5' end of the RT primer.",
+      "note": "Round-2 barcode strand is pre-annealed to linker BC_0215, which bridges the ligation junction; blocking strand BC_0216 then quenches unused barcodes before pooling.",
+      "product": "5'/Phos/-CATCGGCGTACGACT-[CELL_BARCODE:8]-ATCCACGTGCTTGAG-AGGCCAGAGCATTCG-[CELL_BARCODE:8]-TTTTTTTTTTTTTTTVN-[CDNA]-3'"
+    },
+    {
+      "step": 3,
+      "title": "Split-pool ligation round 3 (barcode 3 + UMI + handle + biotin)",
+      "summary": "A third split-pool ligation appends cell barcode 3 together with a 10-nt UMI, a universal PCR handle and a 5' biotin.",
+      "note": "Round-3 barcode strand pre-annealed to linker BC_0060; blocking strand BC_0066 in EDTA terminates ligation. The 5' biotin enables downstream streptavidin capture.",
+      "product": "5'/Biosg/-CAGACGTGTGCTCTTCCGATCT-[UMI:10]-[CELL_BARCODE:8]-GTGGCCGATGTTTCG-CATCGGCGTACGACT-[CELL_BARCODE:8]-ATCCACGTGCTTGAG-AGGCCAGAGCATTCG-[CELL_BARCODE:8]-TTTTTTTTTTTTTTTVN-[CDNA]-3'"
+    },
+    {
+      "step": 4,
+      "title": "Lysis, sublibrary split, streptavidin capture",
+      "summary": "Cells are pooled, aliquoted into sublibraries, lysed to reverse crosslinks, and the biotinylated barcoded cDNA is captured on streptavidin beads.",
+      "note": "Proteinase K + heat reverse formaldehyde crosslinks; Dynabeads MyOne Streptavidin C1 bind the 5'-biotin. The number of sublibraries sets how many 4th-barcode PCRs follow.",
+      "product": "(bead)~~biotin-5'-CAGACGTGTGCTCTTCCGATCT-[UMI:10]-[CELL_BARCODE:8]-...-[CELL_BARCODE:8]-TTTTTTTTTTTTTTTVN-[CDNA]-3'"
+    },
+    {
+      "step": 5,
+      "title": "Template switching",
+      "summary": "On-bead Maxima RT template-switches at the cDNA 3' end, adding a universal TSO handle.",
+      "note": "TSO BC_0127 (\u2026GAATGGG, rGrG+G) adds its complement to the cDNA, giving a second universal handle for PCR.",
+      "product": "5'-CAGACGTGTGCTCTTCCGATCT-[UMI:10]-[CELL_BARCODE:8]-...-[CELL_BARCODE:8]-TTTTTTTTTTTTTTTVN-[CDNA]-GGG-ACTCTGCGTTGATACCACTGCTT-3'"
+    },
+    {
+      "step": 6,
+      "title": "PCR amplification of barcoded cDNA",
+      "summary": "PCR with BC_0062 (round-3 handle) and BC_0108 (TSO handle) amplifies the full-length barcoded cDNA.",
+      "note": "5 cycles of Kapa HiFi followed by qPCR to endpoint (EvaGreen), then SPRI cleanup.",
+      "product": "5'-CAGACGTGTGCTCTTCCGATCT-[UMI:10]-[CELL_BARCODE:8]-...-[CELL_BARCODE:8]-TTTTTTTTTTTTTTTVN-[CDNA]-GGG-ACTCTGCGTTGATACCACTGCTT-3'\n3'-GTCTGCACACGAGAAGGCTAGA-...-[CDNA(c)]-CCC-TGAGACGCAACTATGGTGACGAA-5'"
+    },
+    {
+      "step": 7,
+      "title": "Nextera tagmentation",
+      "summary": "Nextera XT transposase fragments the amplified cDNA and inserts mosaic-end adapters, retaining fragments that carry the barcode/UMI end.",
+      "note": "600 pg cDNA tagmented; only fragments spanning the round-3 barcode handle and a new ME end are usable for the indexing PCR.",
+      "product": "5'-AGATGTGTATAAGAGACAG-[CDNA]-[A15][CELL_BARCODE:8]...[CELL_BARCODE:8]-[UMI:10]-AGATCGGAAGAGCACACGTCTG...-3'"
+    },
+    {
+      "step": 8,
+      "title": "Indexing PCR (barcode 4) \u2192 final library",
+      "summary": "PCR with P5 primer BC_0118 (binds the ME/S5 end) and one indexed P7 primer BC_0076\u2013BC_0083 (binds the round-3 handle) adds P5/i5 and P7/sublibrary index to yield the Illumina library.",
+      "note": "12 cycles; each sublibrary gets a distinct 6-nt i7 index (the 4th barcode). 0.7X SPRI cleanup.",
+      "product": "5'-AATGATACGGCGACCACCGAGATCTACACTAGATCGCTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-[CDNA]-[ANCHOR:2]AAAAAAAAAAAAAAA-[CELL_BARCODE:8]-CGAATGCTCTGGCCTCTCAAGCACGTGGAT-[CELL_BARCODE:8]-AGTCGTACGCCGATGCGAAACATCGGCCAC-[CELL_BARCODE:8]-[UMI:10]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-[SAMPLE_INDEX:6]-ATCTCGTATGCCGTCTTCTGCTTG-3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (cDNA)",
+      "primer": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG (Nextera Read-1)",
+      "template": "top",
+      "cycles": 66,
+      "note": "66-nt cDNA read from the tagmented end. The Nextera Read-1 primer anneals across the S5/mosaic-end region on the bottom strand and reads into the transcript fragment.",
+      "diagram": "      TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------->\n5'-...TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[cDNA]...-3'   (top strand, read)\n3'-...AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[cDNA]...-5'   (bottom strand, template)"
+    },
+    {
+      "read": "Read 2 (UMI + cell barcodes)",
+      "primer": "CAGACGTGTGCTCTTCCGATCT (Read-2 / round-3 handle)",
+      "template": "bottom",
+      "cycles": 94,
+      "note": "94-nt read = UMI(10) + BC3(8) + round3/2 linker(30) + BC2(8) + round2/1 linker(30) + BC1(8). Reads with >1 mismatch in any of the three 8-nt cell barcodes, or >1 low-quality UMI base (phred<=10), are discarded.",
+      "diagram": "      CAGACGTGTGCTCTTCCGATCT------->\n5'-...CAGACGTGTGCTCTTCCGATCT[UMI:10][BC3:8]GTGGCCGATGTTTCGCATCGGCGTACGACT[BC2:8]ATCCACGTGCTTGAGAGGCCAGAGCATTCG[BC1:8]...-3'   (bottom strand, read)\n3'-...GTCTGCACACGAGAAGGCTAGA[UMI:10][BC3:8]CACCGGCTACAAAGCGTAGCCGCATGCTGA[BC2:8]TAGGTGCACGAACTCTCCGGTCTCGTAAGC[BC1:8]...-5'   (top strand, template)"
+    },
+    {
+      "read": "Index read (i7 sublibrary barcode)",
+      "primer": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "template": "bottom",
+      "cycles": 6,
+      "note": "6-nt index read = the fourth (sublibrary) barcode introduced during the indexing PCR after tagmentation. The i7 index-read primer anneals to the top strand and reads across the 6-nt index.",
+      "diagram": "      GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT------->\n5'-...GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[i7:6]...-3'   (i7 index-read primer, extends into index)\n3'-...CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA[i7:6]...-5'   (top strand, template)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "SPLiT-seq",
+  "description": "SPLiT-seq (split-pool ligation-based transcriptome sequencing) is a combinatorial-barcoding single-cell / single-nucleus RNA-seq method that labels each transcriptome's cellular origin without ever physically isolating single cells \u2014 the fixed cells or nuclei themselves act as reaction compartments. Formaldehyde-fixed cells pass through four rounds of barcoding: an in-cell barcoded reverse-transcription round (barcode 1), two in-cell split-pool ligation rounds (barcodes 2 and 3, with the round-3 oligo also adding a UMI, a PCR handle and a biotin), and a final sublibrary-splitting PCR (barcode 4). Each cell thus receives a unique 4-barcode combination. After streptavidin capture, template switching, PCR and Nextera tagmentation, Read 1 sequences the cDNA fragment, Read 2 reads the UMI plus the three ligated cell barcodes, and the index read reads the sublibrary barcode.",
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "split seq",
+    "path": null,
+    "url": null,
+    "doi": null
+  },
+  "publication": {
+    "year": 2018,
+    "original_publication": {
+      "title": "Single-cell profiling of the developing mouse brain and spinal cord with split-pool barcoding",
+      "journal": "Science",
+      "doi": "10.1126/science.aam8999",
+      "url": "http://science.sciencemag.org/content/360/6385/176"
+    },
+    "authors": [
+      {
+        "name": "Alexander B. Rosenberg",
+        "corresponding": true,
+        "email": "alex.b.rosenberg@gmail.com",
+        "affiliation": "Department of Electrical Engineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Charles M. Roco",
+        "affiliation": "Department of Bioengineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Richard A. Muscat",
+        "affiliation": "Department of Electrical Engineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Anna Kuchina",
+        "affiliation": "Department of Electrical Engineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Paul Sample",
+        "affiliation": "Department of Electrical Engineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Zizhen Yao",
+        "affiliation": "Allen Institute for Brain Science, Seattle, WA, USA"
+      },
+      {
+        "name": "Lucas T. Graybuck",
+        "affiliation": "Allen Institute for Brain Science, Seattle, WA, USA"
+      },
+      {
+        "name": "David J. Peeler",
+        "affiliation": "Department of Bioengineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Sumit Mukherjee",
+        "affiliation": "Department of Electrical Engineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Wei Chen",
+        "affiliation": "Molecular Engineering and Sciences Institute, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Suzie H. Pun",
+        "affiliation": "Department of Bioengineering, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Drew L. Sellers",
+        "affiliation": "Department of Bioengineering; Institute for Stem Cell and Regenerative Medicine, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Bosiljka Tasic",
+        "affiliation": "Allen Institute for Brain Science, Seattle, WA, USA"
+      },
+      {
+        "name": "Georg Seelig",
+        "corresponding": true,
+        "email": "gseelig@uw.edu",
+        "affiliation": "Department of Electrical Engineering; Molecular Engineering and Sciences Institute; Paul G. Allen School of Computer Science and Engineering, University of Washington, Seattle, WA, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "156,049 single-nucleus transcriptomes profiled in one experiment; four rounds of barcoding give 21,233,664 combinations (3\u00d796-well + 24 PCR), enough to uniquely label >1 million cells, at ~$0.01\u20130.02 library-prep cost per cell.",
+      "cells": "156,049 single nuclei analyzed (P2/P11 mouse brain + spinal cord); scalable to hundreds of thousands / >1,000,000",
+      "rna": "Deep sublibrary (131 nuclei): median 4,943 UMIs / 2,055 genes per nucleus; species-mixing whole cells: median 15,365 UMIs / 5,498 genes per human cell",
+      "dna": "N/A (poly(A) mRNA / cDNA assay; no genomic DNA readout)"
+    },
+    "other": [
+      {
+        "label": "Fixation compatibility",
+        "value": "Works with formaldehyde-fixed cells or nuclei; no custom equipment (pipetting-only workflow)"
+      },
+      {
+        "label": "Barcode collisions",
+        "value": "~2.5% expected collisions at 150,000 nuclei; species-mixing purity >99%"
+      },
+      {
+        "label": "Data availability",
+        "value": "GEO accession GSE110823"
+      },
+      {
+        "label": "Sequencers",
+        "value": "Illumina MiSeq / NextSeq, 150-nt kits, paired-end"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Reads are demultiplexed by their four combinatorial barcodes and quality-filtered, the cDNA read (Read 1) is aligned with STAR and assigned to genes with the Drop-seq tools, UMIs are collapsed with Starcode to build a cell-by-gene count matrix, which is then iteratively clustered (high-variance gene selection + PCA + Jaccard-Louvain), visualized with Barnes-Hut t-SNE, and ordered into developmental lineages/pseudotime.",
+    "stages": [
+      {
+        "id": "qc",
+        "label": "Barcode QC & Demultiplex"
+      },
+      {
+        "id": "align",
+        "label": "Alignment & Quantification"
+      },
+      {
+        "id": "matrix",
+        "label": "Count Matrix"
+      },
+      {
+        "id": "dimred",
+        "label": "Dimensionality Reduction & Clustering"
+      },
+      {
+        "id": "trajectory",
+        "label": "Trajectory Inference"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "remove_dephased",
+        "label": "Remove dephased reads",
+        "tool": "",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "qc_umi",
+        "label": "Quality-filter UMI region",
+        "tool": "",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "assign_barcodes",
+        "label": "Demultiplex cell barcodes",
+        "tool": "",
+        "stage": "qc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align cDNA to genome",
+        "tool": "STAR",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tag_genes",
+        "label": "Assign reads to genes",
+        "tool": "Drop-seq tools (TagReadWithGeneExon)",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "collapse_umi",
+        "label": "Collapse UMIs",
+        "tool": "Starcode",
+        "stage": "matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "build_matrix",
+        "label": "Build cell-by-gene matrix",
+        "tool": "",
+        "stage": "matrix",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "select_hvg",
+        "label": "Select high-variance genes",
+        "tool": "",
+        "stage": "dimred",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pca",
+        "label": "Reduce dimensions (PCA)",
+        "tool": "scikit-learn (TruncatedSVD)",
+        "stage": "dimred",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells (Jaccard-Louvain)",
+        "tool": "Louvain",
+        "stage": "dimred",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "tsne",
+        "label": "Embed with Barnes-Hut t-SNE",
+        "tool": "Barnes-Hut t-SNE",
+        "stage": "dimred",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "isolate_lineage",
+        "label": "Isolate main lineage",
+        "tool": "DBSCAN",
+        "stage": "trajectory",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "pseudotime",
+        "label": "Order cells into pseudotime",
+        "tool": "Monocle 2",
+        "stage": "trajectory",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "remove_dephased",
+        "to": "qc_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "qc_umi",
+        "to": "assign_barcodes",
+        "kind": "sequential"
+      },
+      {
+        "from": "assign_barcodes",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "tag_genes",
+        "kind": "sequential"
+      },
+      {
+        "from": "tag_genes",
+        "to": "collapse_umi",
+        "kind": "sequential"
+      },
+      {
+        "from": "collapse_umi",
+        "to": "build_matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "build_matrix",
+        "to": "select_hvg",
+        "kind": "sequential"
+      },
+      {
+        "from": "select_hvg",
+        "to": "pca",
+        "kind": "sequential"
+      },
+      {
+        "from": "pca",
+        "to": "cluster",
+        "kind": "branch"
+      },
+      {
+        "from": "pca",
+        "to": "tsne",
+        "kind": "branch"
+      },
+      {
+        "from": "cluster",
+        "to": "isolate_lineage",
+        "kind": "sequential"
+      },
+      {
+        "from": "isolate_lineage",
+        "to": "pseudotime",
+        "kind": "sequential"
+      }
+    ],
+    "statistical_model": "Loess dispersion fit for high-variance gene selection; k=15 kNN Jaccard-Louvain modularity clustering; DBSCAN + Monocle 2 pseudotime ordering."
+  }
+}

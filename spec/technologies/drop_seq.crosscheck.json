@@ -1,0 +1,23 @@
+{
+  "folder": "drop_seq",
+  "title": "Drop-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "Drop-seq.html",
+    "oligo_seq_recall": 0.667,
+    "oligo_seqs_matched": 10,
+    "oligo_seqs_total": 15,
+    "missed_oligos": [
+      "Illumina Nextera Read 2 primer",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera N/S5xx primer entry point (s5)",
+      "Nextera Tn5 binding site (19-bp Mosaic End (ME))",
+      "Nextera (XT) N7xx Index primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACGCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTACGT[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

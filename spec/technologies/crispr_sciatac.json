@@ -1,0 +1,1304 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "crispr_sciatac",
+  "assay": "CRISPR-sciATAC",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "CRISPR-sciATAC_supplement.pdf",
+      "title": "CRISPR-sciATAC Supplementary Information",
+      "url": "https://doi.org/10.1038/s41587-021-00902-x",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/crispr_sciatac/CRISPR-sciATAC_supplement.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "CRISPR-sciATAC.xlsx",
+      "title": "CRISPR-sciATAC.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/crispr_sciatac/CRISPR-sciATAC.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "CRISPR-sciATAC.pdf",
+      "title": "CRISPR-sciATAC.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/crispr_sciatac/CRISPR-sciATAC.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_pment_common",
+      "name": "pMENT common oligo",
+      "aliases": [],
+      "role": "Phosphorylated mosaic-end complement oligo; anneals to the transferred strand of both T5 and T7 tagmentation oligos to form the double-stranded MEDS transposon ends",
+      "kind": "single",
+      "sequence": "/5Phos/CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-phosphorylated. Reverse complement of the 19-bp mosaic end (ME) AGATGTGTATAAGAGACAG."
+    },
+    {
+      "oligo_id": "oligo_t5_tagment_sciatac",
+      "name": "T5 tagment sciATAC (MEDS A transferred strand)",
+      "aliases": [],
+      "role": "Non-barcoded P5-side tagmentation oligo loaded into TnY (MEDS A); its 3' mosaic end is transferred to the P5 end of genomic fragments",
+      "kind": "assembled",
+      "sequence": "TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5-side PCR handle (Nextera Read 1 handle)",
+          "sequence": "TCGTCGGCAGCGTC",
+          "role": "priming site for P5i ATAC-seq PCR1 primer"
+        },
+        {
+          "name": "linker",
+          "sequence": "TCCACGCAACCAACGCACCGTCTCCGCCTC",
+          "role": "spacer / Read 1 ATACseq primer binding region"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "Tn5/TnY transferred mosaic end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_t7_tagment_sciatac_barcoded",
+      "name": "ATAC-seq barcoded tagmentation oligo (MEDS B / T7 tagment sciATAC)",
+      "aliases": [],
+      "role": "Barcoded P7-side tagmentation oligo loaded into TnY (MEDS B); carries the first-round cell barcode (BC1) and is transferred to the P7 end of genomic fragments. 96 barcoded versions.",
+      "kind": "assembled",
+      "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCC[CELL_BARCODE:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7-side PCR handle",
+          "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCC",
+          "role": "priming site for P7i ATAC-seq PCR1 primer"
+        },
+        {
+          "name": "BC1 tagmentation cell barcode",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "first-round combinatorial cell barcode (matched to RT barcode)"
+        },
+        {
+          "name": "linker",
+          "sequence": "GCGATCGAGGACGGC",
+          "role": "Read 2 / Index 1 ATACseq primer binding region"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "Tn5/TnY transferred mosaic end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Example barcode (well A1): TCTCGCGT -> GTCTCGTGGGCTCGGCTGTCCCTGTCCTCTCGCGTGCGATCGAGGACGGCAGATGTGTATAAGAGACAG. 96 barcodes provided in Supplementary Table 2."
+    },
+    {
+      "oligo_id": "oligo_meds_a",
+      "name": "MEDS A (double-stranded transposon end, P5 side)",
+      "aliases": [],
+      "role": "Assembled double-stranded mosaic-end DNA (T5 tagment sciATAC + pMENT) loaded into TnY",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "T5 tagment sciATAC (transferred strand)",
+          "sequence": "TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+          "role": "5_to_3 top strand"
+        },
+        {
+          "name": "pMENT (non-transferred strand)",
+          "sequence": "/5Phos/CTGTCTCTTATACACATCT",
+          "role": "ME complement, anneals to the 3' ME"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_meds_b",
+      "name": "MEDS B (double-stranded barcoded transposon end, P7 side)",
+      "aliases": [],
+      "role": "Assembled double-stranded mosaic-end DNA (barcoded T7 tagment sciATAC + pMENT) loaded into TnY",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "ATAC-seq barcoded tagmentation oligo (transferred strand)",
+          "sequence": "GTCTCGTGGGCTCGGCTGTCCCTGTCC[CELL_BARCODE:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+          "role": "5_to_3 top strand, carries BC1"
+        },
+        {
+          "name": "pMENT (non-transferred strand)",
+          "sequence": "/5Phos/CTGTCTCTTATACACATCT",
+          "role": "ME complement, anneals to the 3' ME"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_rti_sgrna_rt_primer",
+      "name": "RTi sgRNA RT primer",
+      "aliases": [],
+      "role": "Barcoded in-situ reverse transcription primer for the CROP-seq gRNA transcript; carries the same first-round barcode (BC1) as the matched MEDS B tagmentation oligo. 96 barcoded versions.",
+      "kind": "assembled",
+      "sequence": "CCGGGAGCTGCATGT[CELL_BARCODE:8]TTTTTCAAGTTGATAA",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "PCR handle",
+          "sequence": "CCGGGAGCTGCATGT",
+          "role": "priming site for P5i sgRNA PCR1 primer"
+        },
+        {
+          "name": "BC1 RT cell barcode",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "first-round combinatorial cell barcode (matched to tagmentation barcode)"
+        },
+        {
+          "name": "gRNA-scaffold anneal",
+          "sequence": "TTTTTCAAGTTGATAA",
+          "role": "primes within the gRNA/tracrRNA scaffold for reverse transcription"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Example barcode TCTCGCGT -> CCGGGAGCTGCATGTTCTCGCGTTTTTTCAAGTTGATAA. Same 8-bp barcode set as the tagmentation oligos."
+    },
+    {
+      "oligo_id": "oligo_p5i_atac_pcr1",
+      "name": "P5i ATAC-seq PCR1 primer",
+      "aliases": [],
+      "role": "ATAC-seq library PCR1 P5 primer; adds the P5 adapter and the second-round i5 well barcode onto the T5 handle. Indexed set (~96).",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:8]TCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5"
+        },
+        {
+          "name": "i5 well barcode (BC2)",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "second-round combinatorial cell barcode"
+        },
+        {
+          "name": "T5 handle anneal",
+          "sequence": "TCGTCGGCAGCGTC",
+          "role": "primes on the T5 tagmentation handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Example: AATGATACGGCGACCACCGAGATCTACACGGTATTGGTCGTCGGCAGCGTC (i5 = GGTATTGG)."
+    },
+    {
+      "oligo_id": "oligo_p7i_atac_pcr1",
+      "name": "P7i ATAC-seq PCR1 primer",
+      "aliases": [],
+      "role": "ATAC-seq library PCR1 P7 primer; adds the P7 adapter and the second-round i7 well barcode onto the T7 handle. Indexed set (~145).",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[CELL_BARCODE:8]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7"
+        },
+        {
+          "name": "i7 well barcode (BC3)",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "second-round combinatorial cell barcode"
+        },
+        {
+          "name": "T7 handle anneal",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "primes on the T7 tagmentation handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Example: CAAGCAGAAGACGGCATACGAGATAGTAGGTAGTCTCGTGGGCTCGG (i7 = AGTAGGTA)."
+    },
+    {
+      "oligo_id": "oligo_read1_atacseq",
+      "name": "Read 1 ATACseq",
+      "aliases": [],
+      "role": "Custom ATAC-seq Read 1 sequencing primer; anneals in the T5 handle/ME and reads the genomic insert from the P5 side",
+      "kind": "single",
+      "sequence": "CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_read2_atacseq",
+      "name": "Read 2 ATACseq",
+      "aliases": [],
+      "role": "Custom ATAC-seq Read 2 sequencing primer; anneals in the T7 handle/ME (3' of BC1) and reads the genomic insert from the P7 side",
+      "kind": "single",
+      "sequence": "GCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_index1_atacseq",
+      "name": "Index 1 ATACseq",
+      "aliases": [],
+      "role": "Custom ATAC-seq index sequencing primer; reverse complement of the Read 2 handle, reads the BC1 tagmentation cell barcode",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCTGCCGTCCTCGATCGC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_u6_outer_sgrna_pcr1",
+      "name": "U6 outer sgRNA PCR1",
+      "aliases": [],
+      "role": "gRNA PCR1 forward outer primer; anneals in the CROP-seq / U6 region upstream of the guide to define the gRNA amplicon",
+      "kind": "single",
+      "sequence": "TGCATATACGATCACAAGGCTGTTAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_p5i_sgrna_pcr1",
+      "name": "P5i sgRNA PCR1 primer",
+      "aliases": [],
+      "role": "gRNA PCR1 P5 primer; anneals to the RT-primer handle and adds the second-round i5 well barcode plus a PCR2 handle. Indexed set (~96).",
+      "kind": "assembled",
+      "sequence": "CGCCGTCCAGCTGA[CELL_BARCODE:8]CCGGGAGCTGCATGT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "PCR2 handle",
+          "sequence": "CGCCGTCCAGCTGA",
+          "role": "priming site for P5 sgRNA PCR2 primer"
+        },
+        {
+          "name": "i5 well barcode (BC2)",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "second-round combinatorial cell barcode"
+        },
+        {
+          "name": "RT-handle anneal",
+          "sequence": "CCGGGAGCTGCATGT",
+          "role": "primes on the RTi sgRNA RT-primer handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Example: CGCCGTCCAGCTGAGGTATTGGCCGGGAGCTGCATGT (i5 = GGTATTGG)."
+    },
+    {
+      "oligo_id": "oligo_p5_sgrna_pcr2",
+      "name": "P5 sgRNA PCR2",
+      "aliases": [],
+      "role": "gRNA PCR2 P5 primer; adds the full P5 adapter and TruSeq Read 1 primer onto the PCR2 handle. Staggered variants (+1/+2/+3/+8 N) add sequence diversity.",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[SPACER:0]CGCCGTCCAGCTGA",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "Illumina P5"
+        },
+        {
+          "name": "TruSeq Read 1 (partial)",
+          "sequence": "TCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "TruSeq Read 1 primer (with the preceding ACAC forms ACACTCTTTCCCTACACGACGCTCTTCCGATCT)"
+        },
+        {
+          "name": "stagger",
+          "sequence": "[SPACER:0]",
+          "role": "0/1/2/3/8-nt stagger for base diversity"
+        },
+        {
+          "name": "PCR2 handle anneal",
+          "sequence": "CGCCGTCCAGCTGA",
+          "role": "primes on the CGCCGTCCAGCTGA handle"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Staggered P5 versions: +1 ...GATCTACGCCGTCCAGCTGA; +2 ...GATCTTACGCCGTCCAGCTGA; +3 ...GATCTGTACGCCGTCCAGCTGA; +8 ...GATCTNNNNNNNNCGCCGTCCAGCTGA."
+    },
+    {
+      "oligo_id": "oligo_p7i_sgrna_pcr2",
+      "name": "P7i sgRNA PCR2 primer",
+      "aliases": [],
+      "role": "gRNA PCR2 P7 primer; anneals to the gRNA/tracrRNA scaffold and adds the second-round i7 well barcode plus the P7 adapter. Indexed set (~145).",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[CELL_BARCODE:8]TTGTGGAAAGGACGAAACAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "Illumina P7"
+        },
+        {
+          "name": "i7 well barcode (BC3)",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "second-round combinatorial cell barcode"
+        },
+        {
+          "name": "gRNA scaffold anneal",
+          "sequence": "TTGTGGAAAGGACGAAACAC",
+          "role": "primes on the sgRNA scaffold (tracrRNA GTGGAAAGGACGAAACAC)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Example: CAAGCAGAAGACGGCATACGAGATAGTAGGTATTGTGGAAAGGACGAAACAC (i7 = AGTAGGTA)."
+    },
+    {
+      "oligo_id": "oligo_spike_in_t5",
+      "name": "spike-in T5",
+      "aliases": [],
+      "role": "Spike-in transposon T5 tagmentation oligo (tagmentation control)",
+      "kind": "single",
+      "sequence": "GACGCTGCCGACGAAGGTGCGTATAGCCTCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_spike_in_t7",
+      "name": "spike-in T7",
+      "aliases": [],
+      "role": "Spike-in transposon T7 tagmentation oligo (tagmentation control)",
+      "kind": "single",
+      "sequence": "CAGAGCACCCGAGCCGACAGGGACAGGCGAGTAATGCGATCGAGGACGGCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_spike_in_p5",
+      "name": "spike-in P5",
+      "aliases": [],
+      "role": "Spike-in P5 PCR primer",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCCTACGGGACGCTGCCGACGA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_spike_in_p7",
+      "name": "spike-in P7",
+      "aliases": [],
+      "role": "Spike-in P7 PCR primer",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGATCTAAGAACCAGAGCACCCGAGCC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "Illumina P5 flow-cell adapter (5' end of the final library)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "Illumina P7 flow-cell adapter (present as reverse complement at the 3' end of the final library)",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_grna_spacer_example",
+      "name": "Guide RNA protospacer (example, non-targeting 1)",
+      "aliases": [],
+      "role": "Variable 20-nt CRISPR guide protospacer cloned into CROPseq-Guide-Puro; captured and read out as the perturbation identity",
+      "kind": "single",
+      "sequence": "ACGGAGGCTAAGCGTCGCAA",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Represents the variable [FEATURE_BARCODE:20] guide region. 318 guides across 105 genes; example shown is human non-targeting gRNA 1."
+    }
+  ],
+  "final_library": {
+    "source_label": "CRISPR-sciATAC ATAC-seq library (genomic accessibility readout)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:8]TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:8]TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:8]TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:8]TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[CELL_BARCODE:8] = i5 well barcode (BC2, second round)",
+      "TCGTCGGCAGCGTC = T5 / Nextera P5-side handle (Read 1 ATACseq binding site)",
+      "TCCACGCAACCAACGCACCGTCTCCGCCTC = linker",
+      "AGATGTGTATAAGAGACAG = Mosaic End (ME)",
+      "[CDNA] = genomic DNA insert (open-chromatin fragment)",
+      "CTGTCTCTTATACACATCT = Mosaic End (ME, T7 side)",
+      "GCCGTCCTCGATCGC = T7-side linker (Read 2 / Index 1 ATACseq binding site)",
+      "[CELL_BARCODE:8] = BC1 tagmentation barcode (first round)",
+      "GGACAGGGACAGCCGAGCCCACGAGAC = T7 / P7-side handle",
+      "[CELL_BARCODE:8] = i7 well barcode (BC3, second round)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "CRISPR-sciATAC ATAC-seq library (genomic accessibility readout)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Read 1 ATACseq",
+        "template": "bottom",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "genomic insert (open chromatin)",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Index 1 ATACseq",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "BC1 tagmentation cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "standard i5 index primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 well cell barcode (BC2)",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I3",
+        "primer": "standard i7 index primer",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 well cell barcode (BC3)",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Read 2 ATACseq",
+        "template": "top",
+        "cycles": 50,
+        "segments": [
+          {
+            "name": "genomic insert (open chromatin)",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Cell fixation, lysis and nuclei isolation",
+      "summary": "Cells are glyoxal-fixed and gently lysed to recover intact nuclei containing genomic DNA and the CROP-seq gRNA transcript.",
+      "note": "Cas9-expressing cells transduced with a lentiviral CROPseq-Guide-Puro gRNA library are fixed for 7 min in glyoxal/ethanol/acetic acid (better nuclear preservation than paraformaldehyde), washed, and lysed with Tween-20/Igepal to yield nuclei; RiboLock preserves the Pol II gRNA transcript for later RT.",
+      "product": "  [ nucleus ]\n  genomic DNA (open chromatin)  +  CROP-seq Pol II gRNA transcript"
+    },
+    {
+      "step": 2,
+      "title": "Barcoded tagmentation (plate 1, well-specific BC1)",
+      "summary": "TnY transposomes loaded with MEDS A (T5) and barcoded MEDS B (T7) fragment open chromatin and add well-specific barcode BC1.",
+      "note": "In each of 96 wells, nuclei are tagmented for 30 min at 37C by TnY (ViPar P50K/M53Q) carrying MEDS A + a unique barcoded MEDS B. Both fragment ends receive a mosaic end; the P7 end also carries the 8-bp first-round cell barcode BC1. EDTA stops the reaction.",
+      "product": "5'- TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC -3'\n       |____ T5 handle ____||________ ME ________|          |__ ME __||_linker_||__ BC1 __||____ T7 handle ____|"
+    },
+    {
+      "step": 3,
+      "title": "In-situ reverse transcription of the gRNA (same well, matched BC1)",
+      "summary": "The gRNA transcript is reverse-transcribed in situ with a barcoded RT primer carrying the same BC1 as the tagmentation oligo in that well.",
+      "note": "RevertAid RT extends the RTi sgRNA RT primer, which anneals within the gRNA/tracrRNA scaffold; the resulting cDNA carries the matched BC1 barcode and a CCGGGAGCTGCATGT handle, linking gRNA identity to the same cell barcode as the ATAC fragments.",
+      "product": "5'- CCGGGAGCTGCATGT[CELL_BARCODE:8]TTTTTCAAGTTGATAA......[FEATURE_BARCODE:20]......(U6 / CROP-seq) -3'\n                                    <------- reverse transcription (gRNA cDNA)\n3'- ......................... CROP-seq Pol II gRNA transcript ......................... -5'"
+    },
+    {
+      "step": 4,
+      "title": "Pool and resplit nuclei (plate 2)",
+      "summary": "All barcoded nuclei are pooled, counted, and redistributed at ~20 nuclei/well into a second plate to define the second combinatorial index.",
+      "note": "Pooling then resplitting means each plate-2 well contains a random mix of BC1 barcodes; the plate-2 well position supplies the second-round i5/i7 indices, so BC1 x i5 x i7 uniquely identifies each cell.",
+      "product": "  ~20 nuclei per plate-2 well  (BC1-tagged ATAC fragments + BC1-tagged gRNA cDNA)"
+    },
+    {
+      "step": 5,
+      "title": "Nuclei digestion / DNA release",
+      "summary": "Nuclei are digested with Proteinase K to release barcoded ATAC fragments and gRNA cDNA for PCR.",
+      "note": "Rapid-extract buffer + SDS/Proteinase K at 65C liberate the templates; PMSF quenches the protease before PCR.",
+      "product": "  free BC1-barcoded ATAC fragments  +  free BC1-barcoded gRNA cDNA"
+    },
+    {
+      "step": 6,
+      "title": "gRNA PCR1 (add i5 / BC2)",
+      "summary": "The gRNA cDNA is amplified with the U6 outer primer and the P5i sgRNA PCR1 primer, adding the second-round i5 barcode and a PCR2 handle.",
+      "note": "PfuX7 amplification (14-18 cycles). P5i sgRNA PCR1 primes on the RT handle and appends i5 (BC2) + CGCCGTCCAGCTGA; the U6 outer primer defines the guide-containing amplicon.",
+      "product": "5'- CGCCGTCCAGCTGA[CELL_BARCODE:8]CCGGGAGCTGCATGT[CELL_BARCODE:8]TTTTTCAAGTTGATAA...[FEATURE_BARCODE:20]...GTGGAAAGGACGAAACAC... -3'\n       |__ PCR2 handle __||__ i5(BC2) __||__ RT handle __||__ BC1 __|            guide            scaffold"
+    },
+    {
+      "step": 7,
+      "title": "gRNA PCR2 (add P5+Read1 and i7+P7) -> final gRNA library",
+      "summary": "A second PCR adds the full P5/TruSeq-Read1 (staggered) on one end and i7+P7 on the scaffold end, completing the sequenceable gRNA library.",
+      "note": "Staggered P5 sgRNA PCR2 primers (0/1/2/3/8-nt) add base diversity; P7i sgRNA PCR2 anneals on the tracrRNA scaffold and adds i7 (BC3) + P7. The final gRNA amplicon (~250 bp) reads out the perturbation and the BC1 x i5 x i7 cell barcode.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[SPACER:0]CGCCGTCCAGCTGA[CELL_BARCODE:8]CCGGGAGCTGCATGT[CELL_BARCODE:8]TTTTTCAAGTTGATAA...[FEATURE_BARCODE:20]...GTGTTTCGTCCTTTCCACAA[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n       |___ P5 ___||___ TruSeq Read 1 ___|         |PCR2 hdl||i5(BC2)||RT hdl||BC1|            guide                    |i7(BC3)||__ revcomp P7 __|"
+    },
+    {
+      "step": 8,
+      "title": "ATAC PCR1 (add P5+i5 and P7+i7) -> final ATAC library",
+      "summary": "The tagmented genomic fragments are amplified with P5i and P7i ATAC-seq PCR1 primers, adding P5+i5 and P7+i7 to complete the sequenceable ATAC library.",
+      "note": "PfuX7 amplification. P5i ATAC-seq PCR1 primes the T5 handle and adds P5 + i5 (BC2); P7i ATAC-seq PCR1 primes the T7 handle and adds P7 + i7 (BC3). Combined with BC1 from tagmentation this gives the full BC1 x i5 x i7 cell barcode. This product equals the final ATAC library.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:8]TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n       |____ P5 ____||i5(BC2)||_____ T5 handle + ME _____|          [CDNA]  |__ ME __||linker||BC1||_ T7 handle _||i7(BC3)||_ revcomp P7 _|"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (open-chromatin insert, P5/T5 side)",
+      "primer": "Read 1 ATACseq (CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG)",
+      "template": "bottom",
+      "cycles": 50,
+      "note": "Custom primer matches the T5 handle/mosaic end on the top strand, anneals to the bottom strand and synthesizes rightward into the genomic insert. Genomic read length not stated in the paper text (read lengths given only in Supplementary Fig. 1d,e); ~50 bp shown as typical.",
+      "diagram": "Read 1 primer = top-strand sequence; reads --> into insert\n    CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG------->\n5'- CACCGTCTCCGCCTCAGATGTGTATAAGAGACAGNNNN...NNNN -3'  (open chromatin)\n3'- GTGGCAGAGGCGGAGTCTACACATATTCTCTGTCNNNN...NNNN -5'"
+    },
+    {
+      "read": "Index 1 (BC1 tagmentation cell barcode)",
+      "primer": "Index 1 ATACseq (CTGTCTCTTATACACATCTGCCGTCCTCGATCGC)",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "Reverse complement of the T7 mosaic-end/linker; matches the top strand ending just 5' of BC1, anneals to the bottom strand and reads the 8-bp first-round tagmentation barcode.",
+      "diagram": "Index 1 primer = top-strand sequence; reads --> into BC1\n       ...ATACACATCTGCCGTCCTCGATCGC------->\n5'- ...ATACACATCTGCCGTCCTCGATCGCNNNNNNNNGGACAGGGACAG... -3'\n3'- ...TATGTGTAGACGGCAGGAGCTAGCGNNNNNNNNCCTGTCCCTGTC... -5'\n                             (BC1, 8 nt)"
+    },
+    {
+      "read": "Index 2 / i5 (i5 well barcode, BC2)",
+      "primer": "standard Illumina i5 index primer",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "Standard i5 index read of the 8-bp second-round well barcode added in ATAC PCR1, located between P5 and the T5 handle.",
+      "diagram": "standard i5 index read of the 8-nt i5 (BC2)\n5'- AATGATACGGCGACCACCGAGATCTACACNNNNNNNNTCGTCGGCAGCGTC -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNAGCAGCCGTCGCAG -5'\n                                 (i5, 8 nt)"
+    },
+    {
+      "read": "Index 3 / i7 (i7 well barcode, BC3)",
+      "primer": "standard Illumina i7 index primer",
+      "template": "top",
+      "cycles": 8,
+      "note": "Standard i7 index read of the 8-bp second-round well barcode added in ATAC PCR1, located between the P7 handle and the P7 adapter.",
+      "diagram": "standard i7 index read of the 8-nt i7 (BC3)\n5'- ...CCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...GGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                      (i7, 8 nt)"
+    },
+    {
+      "read": "Read 2 (open-chromatin insert, P7/T7 side)",
+      "primer": "Read 2 ATACseq (GCGATCGAGGACGGCAGATGTGTATAAGAGACAG)",
+      "template": "top",
+      "cycles": 50,
+      "note": "Custom primer equals the barcoded T7 handle/mosaic end (bottom strand, 3' of BC1); it anneals to the top strand and synthesizes leftward into the genomic insert from the opposite end. gRNA amplicons are sequenced on a separate MiSeq run using the P5/P7 sgRNA primers. Genomic read length not stated in text; ~50 bp shown as typical.",
+      "diagram": "Read 2 primer = bottom-strand sequence; reads <-- into insert\n5'- ...(insert)CTGTCTCTTATACACATCTGCCGTCCTCGATCGC... -3'\n3'- ...(insert)GACAGAGAATATGTGTAGACGGCAGGAGCTAGCG... -5'\n     <-------3'-GACAGAGAATATGTGTAGACGGCAGGAGCTAGCG-5' (Read 2 primer)"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "CRISPR-sciATAC",
+  "description": "CRISPR-sciATAC is a scalable, single-cell combinatorial-indexing assay for transposase-accessible chromatin (sciATAC) coupled to pooled CRISPR screening. Open chromatin in fixed nuclei is barcoded by in-well tagmentation with a Vibrio parahemolyticus transposase (TnY) loaded with mosaic-end adapters, while the Cas9 guide RNA (expressed from a CROP-seq Pol II transcript) is captured in the same well by barcoded in-situ reverse transcription. Nuclei are pooled, resplit, and both the ATAC fragments and the gRNA amplicons receive a second combinatorial index (i5/i7) in PCR, so a unique BC1\u00d7i5\u00d7i7 cell barcode jointly tags each cell's chromatin-accessibility fragments and its perturbing gRNA. Genomic reads report chromatin accessibility genome-wide; the gRNA read reports which perturbation each cell received.",
+  "reference": {
+    "kind": "paper",
+    "label": "CRISPR-sciATAC Supplementary Information",
+    "path": null,
+    "url": "https://doi.org/10.1038/s41587-021-00902-x",
+    "doi": "10.1038/s41587-021-00902-x"
+  },
+  "publication": {
+    "year": 2021,
+    "original_publication": {
+      "title": "Profiling the genetic determinants of chromatin accessibility with scalable single-cell CRISPR screens",
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/s41587-021-00902-x",
+      "url": "https://doi.org/10.1038/s41587-021-00902-x"
+    },
+    "authors": [
+      {
+        "name": "Noa Liscovitch-Brauer",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      },
+      {
+        "name": "Antonino Montalbano",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      },
+      {
+        "name": "Jiale Deng",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      },
+      {
+        "name": "Alejandro Mendez-Mancilla",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      },
+      {
+        "name": "Hans-Hermann Wessels",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      },
+      {
+        "name": "Nicholas G. Moss",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      },
+      {
+        "name": "Chia-Yu Kung",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      },
+      {
+        "name": "Akash Sookdeo",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      },
+      {
+        "name": "Xinyi Guo",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      },
+      {
+        "name": "Evan Geller",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      },
+      {
+        "name": "Suma Jaini",
+        "affiliation": "New York Genome Center; Technology Innovation Lab, New York Genome Center, New York, NY, USA"
+      },
+      {
+        "name": "Peter Smibert",
+        "affiliation": "New York Genome Center; Technology Innovation Lab, New York Genome Center, New York, NY, USA"
+      },
+      {
+        "name": "Neville E. Sanjana",
+        "corresponding": true,
+        "email": "neville@sanjanalab.org",
+        "affiliation": "New York Genome Center; Department of Biology, New York University, New York, NY, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "~30,000 single cells profiled for joint chromatin accessibility and CRISPR perturbation; 28,510 cells analyzed across two screens using 318 gRNAs targeting 105 genes.",
+      "cells": "28,510 cells analyzed (chromatin-modifier screen: 11,104 cells, median 1,977 unique ATAC fragments/cell; chromatin-remodeling-complex screen: 16,676 cells). ~sevenfold more cells than Perturb-ATAC.",
+      "rna": "gRNA capture via in-situ RT of the CROP-seq Pol II transcript; 15,824 cells with >=100 gRNA reads; 83% of barcodes had a single gRNA, 90% with a gRNA at >=99% purity.",
+      "dna": "sciATAC (open-chromatin) fragments; comparable yield to published sciATAC datasets; bulk-correlated accessibility profiles."
+    },
+    "statistical_model": "gRNA enrichment/dropout modeled with MAGeCK (negative binomial) plus robust rank aggregation and Bonferroni correction; differential accessibility assessed with per-cell fraction-in-peak z-scores tested by two-tailed t-test / Wilcoxon rank-sum with Benjamini-Hochberg FDR; chromVAR used for JASPAR motif deviation z-scores.",
+    "other": [
+      {
+        "label": "Transposase",
+        "value": "TnY - an easy-to-purify Vibrio parahemolyticus (ViPar) transposase (P50K, M53Q) compatible with Tn5 mosaic ends"
+      },
+      {
+        "label": "Fixation",
+        "value": "Glyoxal fixation (better nuclear preservation than paraformaldehyde)"
+      },
+      {
+        "label": "Polymerase",
+        "value": "Custom PfuX7 DNA polymerase used for all library PCR"
+      },
+      {
+        "label": "Design feature",
+        "value": "Staggered P5 sgRNA oligos introduce base diversity for the gRNA amplicon read"
+      },
+      {
+        "label": "Cost / time",
+        "value": "~20x lower reagent cost and ~14x less time than Perturb-ATAC"
+      },
+      {
+        "label": "Cell line / model",
+        "value": "K562-Cas9 (screens) and HEK293FT/NIH-3T3 species-mixing control"
+      },
+      {
+        "label": "Data availability",
+        "value": "NCBI GEO GSE161002 (BioProject PRJNA674902); code at gitlab.com/sanjanalab/crispr-sciatac"
+      }
+    ]
+  },
+  "modality": "ATAC + CRISPR",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "gRNA and ATAC reads are demultiplexed by the combinatorial BC1\u00d7i5\u00d7i7 cell barcode and aligned separately \u2014 gRNA to a custom guide reference, ATAC to the genome. After filtering and deduplication, one gRNA is assigned per cell while ATAC fragments are aggregated into a pseudobulk peak set and per-cell accessibility features, which feed differential-accessibility, motif-deviation, and gRNA-enrichment analyses.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Demultiplex"
+      },
+      {
+        "id": "align",
+        "label": "Alignment"
+      },
+      {
+        "id": "filter",
+        "label": "Filtering & dedup"
+      },
+      {
+        "id": "cellcall",
+        "label": "Cell calling"
+      },
+      {
+        "id": "features",
+        "label": "Feature quantification"
+      },
+      {
+        "id": "analysis",
+        "label": "Downstream analysis"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "demux",
+        "label": "Demultiplex cell barcodes",
+        "tool": "snATAC",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_grna",
+        "label": "Align gRNA to guide reference",
+        "tool": "bowtie",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align_atac",
+        "label": "Align ATAC to genome",
+        "tool": "bowtie2",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_atac",
+        "label": "Filter improper and mito reads",
+        "tool": "",
+        "stage": "filter",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "blacklist",
+        "label": "Remove blacklist regions",
+        "tool": "",
+        "stage": "filter",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Deduplicate reads",
+        "tool": "Picard",
+        "stage": "filter",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "assign_grna",
+        "label": "Assign single gRNA per cell",
+        "tool": "",
+        "stage": "cellcall",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "call_cells",
+        "label": "Filter cells by fragment count",
+        "tool": "",
+        "stage": "cellcall",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "call_peaks",
+        "label": "Call peaks on pseudobulk",
+        "tool": "",
+        "stage": "features",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "count_matrix",
+        "label": "Quantify per-cell accessibility",
+        "tool": "",
+        "stage": "features",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "frip",
+        "label": "Compute fraction-in-peak z-score",
+        "tool": "",
+        "stage": "features",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "fric",
+        "label": "Compute fraction-in-ChIP z-score",
+        "tool": "",
+        "stage": "features",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "chromvar",
+        "label": "Compute motif deviations",
+        "tool": "chromVAR",
+        "stage": "features",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "diff_acc",
+        "label": "Test differential accessibility",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells",
+        "tool": "",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "umap",
+        "label": "Embed cells (UMAP)",
+        "tool": "umap (R)",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "mageck",
+        "label": "Score gRNA/gene enrichment",
+        "tool": "MAGeCK",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "nucleosome",
+        "label": "Analyze nucleosome shifts",
+        "tool": "BEDTools",
+        "stage": "analysis",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "demux",
+        "to": "align_grna",
+        "kind": "branch"
+      },
+      {
+        "from": "demux",
+        "to": "align_atac",
+        "kind": "branch"
+      },
+      {
+        "from": "align_grna",
+        "to": "assign_grna",
+        "kind": "sequential"
+      },
+      {
+        "from": "align_atac",
+        "to": "filter_atac",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_atac",
+        "to": "blacklist",
+        "kind": "sequential"
+      },
+      {
+        "from": "blacklist",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "call_cells",
+        "kind": "sequential"
+      },
+      {
+        "from": "call_cells",
+        "to": "call_peaks",
+        "kind": "fan_in"
+      },
+      {
+        "from": "call_peaks",
+        "to": "count_matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "call_peaks",
+        "to": "frip",
+        "kind": "sequential"
+      },
+      {
+        "from": "call_peaks",
+        "to": "fric",
+        "kind": "sequential"
+      },
+      {
+        "from": "call_peaks",
+        "to": "chromvar",
+        "kind": "sequential"
+      },
+      {
+        "from": "count_matrix",
+        "to": "diff_acc",
+        "kind": "fan_in"
+      },
+      {
+        "from": "count_matrix",
+        "to": "cluster",
+        "kind": "fan_in"
+      },
+      {
+        "from": "count_matrix",
+        "to": "umap",
+        "kind": "branch"
+      },
+      {
+        "from": "assign_grna",
+        "to": "diff_acc",
+        "kind": "fan_in"
+      },
+      {
+        "from": "assign_grna",
+        "to": "mageck",
+        "kind": "fan_in"
+      },
+      {
+        "from": "diff_acc",
+        "to": "mageck",
+        "kind": "sequential"
+      },
+      {
+        "from": "call_peaks",
+        "to": "nucleosome",
+        "kind": "sequential"
+      },
+      {
+        "from": "assign_grna",
+        "to": "nucleosome",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": "Negative binomial (MAGeCK) for gRNA enrichment/essentiality with robust rank aggregation and Bonferroni correction; two-tailed t-test / Wilcoxon rank-sum with Benjamini\u2013Hochberg FDR for differential accessibility; label-permutation test for nucleosome peak shifts."
+  }
+}

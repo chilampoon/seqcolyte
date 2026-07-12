@@ -1,0 +1,701 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "scdamid",
+  "assay": "single-cell DamID (scDamID)",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "scDamID_indexing_primers_table.doc",
+      "title": "scDamID Tables S1-S2: indexing primers",
+      "url": "https://doi.org/10.1016/j.cell.2015.08.040",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdamid/scDamID_indexing_primers_table.doc",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "scDamID_supp.pdf",
+      "title": "scDamID_supp.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdamid/scDamID_supp.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "scDamID_paper.pdf",
+      "title": "scDamID_paper.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/scdamid/scDamID_paper.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "damid_adapter",
+      "name": "Double-stranded DamID adapter (AdR)",
+      "aliases": [],
+      "role": "Adapter ligated to blunt DpnI-cut ends of Dam-methylated GATC fragments; supplies the DamID PCR primer-binding site and, upon ligation, reconstitutes the GATC site",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "AdR top strand (ligation-end portion)",
+          "sequence": "GTGGTCGCGGCCGAGGA",
+          "role": "3' blunt ligating end; provides the DamID PCR primer-binding sequence GTGGTCGCGGCCGAG and the GA that reconstitutes GATC with the fragment's TC"
+        },
+        {
+          "name": "AdR bottom strand (ligation-end portion)",
+          "sequence": "TCCTCGGCCGCGACCAC",
+          "role": "Reverse-complement of the top-strand ligating end (blunt)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "The full adapter sequence is defined in Vogel et al., 2007 (Nat Protoc) and is NOT printed in these documents; only the ligation-end portion shown here is derivable, confirmed by the printed DamID PCR primer. Ligation of the adapter's terminal GA to the fragment's TC reconstitutes GATC, and the 15 bp GTGGTCGCGGCCGAG is the '15 bp of adapter sequence' parsed from each read."
+    },
+    {
+      "oligo_id": "damid_pcr_primer",
+      "name": "DamID PCR primer",
+      "aliases": [],
+      "role": "PCR amplification (26 cycles; 29 for Dam-only) of adapter-ligated fragments; the 4 random 5' nucleotides create diverse read-start sequences for Illumina cluster calling",
+      "kind": "single",
+      "sequence": "NNNNGTGGTCGCGGCCGAGGATC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Printed verbatim in the Single-cell DamID procedure. NNNN = 4 random nt; GTGGTCGCGGCCGAG anneals to the DamID adapter; the terminal GATC anchors the primer at the reconstituted DpnI/GATC site so amplification begins at the genomic fragment."
+    },
+    {
+      "oligo_id": "illumina_y_adapter",
+      "name": "Illumina Y-shaped (TruSeq) adapter",
+      "aliases": [],
+      "role": "Forked sequencing adapter ligated to the end-repaired, A-tailed DamID PCR product; provides Read 1 and Read 2 primer-binding sites",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Read 1 arm (constant)",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "TruSeq Read 1 primer-binding region (derived from the printed Illumina P5 primer 3' end)"
+        },
+        {
+          "name": "Read 2 arm (constant)",
+          "sequence": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+          "role": "TruSeq Read 2 / universal region (reverse complement of the printed indexing-primer 3' region GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT); carries the 3' T-overhang for TA ligation"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Referred to as the '50 uM Y-adapter' / Illumina Y-shaped adapters; the exact adapter oligos are not printed. The constant arms shown are inferred from the printed P5 and indexing primers."
+    },
+    {
+      "oligo_id": "illumina_p5_primer",
+      "name": "Illumina P5 primer",
+      "aliases": [],
+      "role": "Indexing PCR (9 cycles): adds the P5 flowcell sequence and the Read 1 (TruSeq) primer region",
+      "kind": "single",
+      "sequence": "ATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Printed verbatim in the Illumina library preparation section (5.0 uM P5 primer)."
+    },
+    {
+      "oligo_id": "illumina_indexing_primer",
+      "name": "Illumina indexing primer (i7), 96 barcodes",
+      "aliases": [],
+      "role": "Indexing PCR (9 cycles): adds the 8-nt i7 sample index and the P7 flowcell sequence for multiplexing single-cell DamID samples",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAG[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7 region",
+          "sequence": "CAAGCAGAAGACGGCATACGAG",
+          "role": "P7 flowcell-binding sequence (5' constant)"
+        },
+        {
+          "name": "i7 index",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8-nt sample barcode (96 sequences listed in Table S2)"
+        },
+        {
+          "name": "Read 2 / index-read primer region",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "TruSeq constant region 3' of the index"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Table S2 lists all 96 indexing primers. Examples (index -> full oligo): TAGCTTGT -> CAAGCAGAAGACGGCATACGAGTAGCTTGTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT; CGATGTTT -> CAAGCAGAAGACGGCATACGAGCGATGTTTGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT; GTCTTGGC -> CAAGCAGAAGACGGCATACGAGGTCTTGGCGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT. The 8-nt index sits on the P7 strand and is read in the index read."
+    }
+  ],
+  "final_library": {
+    "source_label": "single-cell DamID (scDamID) \u2014 Kind et al., Cell 2015 (indexed Illumina library)",
+    "annotated_library_sequence": "5'- ATGATACGGCGACCACCGAGATCTACAC | TCTTTCCCTACACGACGCTCTTCCGATCT | NNNN | GTGGTCGCGGCCGAGGATC | [CDNA] | GATCCTCGGCCGCGACCAC | NNNN | AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC | [SAMPLE_INDEX:8] | CTCGTATGCCGTCTTCTGCTTG -3'",
+    "library_sequence": "ATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNGTGGTCGCGGCCGAGGATC[CDNA]GATCCTCGGCCGCGACCACNNNNAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]CTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5'->3' top strand (P5 / Read 1 strand)",
+        "source_html": "ATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNGTGGTCGCGGCCGAGGATC[CDNA]GATCCTCGGCCGCGACCACNNNNAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]CTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "ATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNGTGGTCGCGGCCGAGGATC[CDNA]GATCCTCGGCCGCGACCACNNNNAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]CTCGTATGCCGTCTTCTGCTTG"
+      },
+      {
+        "direction": "5'->3' bottom strand (P7 / index strand; = indexing primer sequence at its 3' arm)",
+        "source_html": "CAAGCAGAAGACGGCATACGAG[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CDNA-revcomp]GATCCTCGGCCGCGACCACNNNNAGATCTGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCAT",
+        "source_sequence": "CAAGCAGAAGACGGCATACGAG[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CDNA-revcomp]GATCCTCGGCCGCGACCACNNNNAGATCTGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCAT"
+      }
+    ],
+    "annotation_lines": [
+      "ATGATACGGCGACCACCGAGATCTACAC \u2014 P5 flowcell adapter",
+      "TCTTTCCCTACACGACGCTCTTCCGATCT \u2014 TruSeq Read 1 primer-binding region",
+      "NNNN \u2014 4 random diversity bases (5' end of the DamID PCR primer)",
+      "GTGGTCGCGGCCGAGGATC \u2014 DamID adapter constant (15 bp = GTGGTCGCGGCCGAG) + reconstituted GATC site",
+      "[CDNA] \u2014 genomic DNA insert (the mapped read is 32 bp of gDNA beginning at GATC)",
+      "GATCCTCGGCCGCGACCAC \u2014 DamID adapter on the opposite fragment flank (reverse complement)",
+      "NNNN \u2014 4 random diversity bases (opposite DamID PCR primer flank, reverse complement)",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC \u2014 TruSeq Read 2 / universal region",
+      "[SAMPLE_INDEX:8] \u2014 i7 sample index (shown as reverse complement on the top strand)",
+      "CTCGTATGCCGTCTTCTGCTTG \u2014 P7 flowcell adapter (reverse complement of CAAGCAGAAGACGGCATACGAG)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "single-cell DamID (scDamID) \u2014 Kind et al., Cell 2015 (indexed Illumina library)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "TruSeq Read 1 primer (ACACTCTTTCCCTACACGACGCTCTTCCGATCT)",
+        "template": "top",
+        "cycles": 51,
+        "segments": [
+          {
+            "name": "random diversity bases",
+            "type": "constant",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 4
+          },
+          {
+            "name": "DamID adapter constant",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 15
+          },
+          {
+            "name": "genomic DNA (starts at GATC)",
+            "type": "insert",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 32
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Illumina index-read primer",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "In vivo Dam-LmnB1 methylation",
+      "summary": "An inducible Dam-Lamin B1 fusion methylates adenine in GATC motifs at genomic loci that contact the nuclear lamina.",
+      "note": "KBM7 clone #14 expresses PGK-DD-Dam-LmnB1 (Shield1-inducible). Fifteen hours after induction, loci near the NL accumulate N6-adenine methylation specifically within GATC sites (Gm6ATC). This is the only step that records the protein-DNA contact.",
+      "product": "                nuclear lamina (Dam-LmnB1)\n                        |  methylates A\n                        v\n5'-...G(m6A)T C..............G(m6A)T C...-3'\n3'-...C T(m6A)G..............C T(m6A)G...-5'\n     methylated GATC at NL-contacting loci"
+    },
+    {
+      "step": 2,
+      "title": "Single-cell sorting and proteinase K lysis",
+      "summary": "Individual G1/S-phase cells are FACS-sorted into a 96-well plate and lysed with proteinase K to release genomic DNA.",
+      "note": "Fucci double-positive single cells are sorted into 1 ul pick buffer + 2 ul lysis buffer with proteinase K; digestion 42 C/4 h, then heat inactivation 80 C/10 min. All subsequent enzymatic steps are done in the same well by sequential reagent addition, with no purification.",
+      "product": "released naked genomic DNA carrying m6A marks:\n5'-...G(m6A)TC...............G(m6A)TC...-3'\n3'-...CT(m6A)G...............CT(m6A)G...-5'"
+    },
+    {
+      "step": 3,
+      "title": "DpnI digestion of methylated GATC",
+      "summary": "DpnI cleaves only Dam-methylated GATC sites (Gm6A^TC), leaving blunt ends flanking NL-contacted fragments.",
+      "note": "DpnI is highly specific for Dam-methylated GATC and cuts between A and T, producing blunt fragments bounded by TC...GA. Non-methylated (interior) DNA is not cut, enriching NL-contacted DNA.",
+      "product": "5'-...G A      T C...-3'\n3'-...C T      A G...-5'\n         blunt cut at each methylated GATC"
+    },
+    {
+      "step": 4,
+      "title": "DamID adapter ligation",
+      "summary": "A double-stranded DamID adapter is ligated to the blunt DpnI ends, reconstituting the GATC site and adding the PCR primer-binding sequence.",
+      "note": "T4 ligase, 16 C overnight. Adapter terminal GA + fragment TC reconstitute GATC; the adapter supplies the GTGGTCGCGGCCGAG primer-binding sequence.",
+      "product": "  DamID adapter                                DamID adapter (rev)\n5'-GTGGTCGCGGCCGAGGATC[gDNA]GATCCTCGGCCGCGACCAC-3'\n3'-CACCAGCGCCGGCTCCTAG[gDNA]CTAGGAGCCGGCGCTGGTG-5'"
+    },
+    {
+      "step": 5,
+      "title": "DamID PCR amplification",
+      "summary": "The single DamID PCR primer amplifies adapter-flanked fragments for 26 cycles, adding 4 random bases at each end.",
+      "note": "Advantage cDNA polymerase; 26 cycles (29 for Dam-only). The primer's 4 random 5' nt make read-start sequences diverse for cluster calling; amplification is exponential only for fragments with adapters on both ends.",
+      "product": "     NNNNGTGGTCGCGGCCGAGGATC-------->\n5'-NNNNGTGGTCGCGGCCGAGGATC[gDNA]GATCCTCGGCCGCGACCACNNNN-3'\n3'-NNNNCACCAGCGCCGGCTCCTAG[gDNA]CTAGGAGCCGGCGCTGGTGNNNN-5'\n              <--------GTGGTCGCGGCCGAGGATCNNNN"
+    },
+    {
+      "step": 6,
+      "title": "End repair and A-tailing",
+      "summary": "The PCR product is blunted (End-It kit) and a single 3' dA is added with Klenow exo-.",
+      "note": "1 ug product blunted, purified; then 200 uM dATP + Klenow 3'->5' exo- at 37 C/30 min gives 3' A-overhangs for TA ligation of the Y-adapter.",
+      "product": "5'- A NNNNGTGGTCGCGGCCGAGGATC[gDNA]...NNNN   -3'\n3'-   ...NNNN[gDNA]...GGCGCTGGTGNNNN A -5'\n     (single 3' dA overhangs at both ends)"
+    },
+    {
+      "step": 7,
+      "title": "Illumina Y-adapter ligation",
+      "summary": "TruSeq Y-shaped adapters are ligated to the A-tailed ends, providing Read 1 and Read 2 primer sites.",
+      "note": "T4 ligase, 2 h at room temperature, then AMPure cleanup. The fork means the two sequencing primer sites are asymmetric and become strand-specific after the next PCR.",
+      "product": "Read1 arm                                                        Read2 arm\nACACTCTTTCCCTACACGACGCTCTTCCGATCT-NNNN...[gDNA]...NNNN-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC\n(forked / Y-shaped adapters ligated to both ends)"
+    },
+    {
+      "step": 8,
+      "title": "Indexing PCR (final library)",
+      "summary": "P5 primer and an i7 indexing primer amplify for 9 cycles, adding P5, the 8-nt sample index, and P7 to complete the sequenceable library.",
+      "note": "MyTaq, 9 cycles; 40-50 indexed single-cell samples pooled in ~equimolar ratios, column- and bead-purified, then sequenced. The i7 index distinguishes single cells.",
+      "product": "5'-ATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT\n   NNNNGTGGTCGCGGCCGAGGATC[CDNA]GATCCTCGGCCGCGACCACNNNN\n   AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]CTCGTATGCCGTCTTCTGCTTG-3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1 (genomic DNA)",
+      "primer": "TruSeq Read 1 primer (5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3')",
+      "template": "top",
+      "cycles": 51,
+      "note": "51 bp single-end read. The Read 1 primer is identical to the top strand across the P5/Read-1 junction, so it anneals to the bottom (template) strand and extends rightward, reading 4 random diversity bases + 15 bp DamID-adapter constant (GTGGTCGCGGCCGAG) + 32 bp of genomic DNA beginning at the reconstituted GATC site. Only the gDNA portion is aligned (hg19, bowtie2 --very-sensitive).",
+      "diagram": "Read 1 sequencing primer (TruSeq Read 1):\n5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT------------------------------------>   (read \u2192)\ntop:    5'- ...CCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNGTGGTCGCGGCCGAGGATC[========= 32 bp gDNA =========]... -3'\nbottom: 3'- ...GGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNCACCAGCGCCGGCTCCTAG[========= 32 bp gDNA =========]... -5'\n            read = 4 nt random (NNNN) + 15 nt DamID adapter (GTGGTCGCGGCCGAG) + 32 nt gDNA from GATC = 51 bp"
+    },
+    {
+      "read": "Index read (i7)",
+      "primer": "Illumina i7 index-read primer (5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3')",
+      "template": "bottom",
+      "cycles": 8,
+      "note": "8 bp index read that identifies each single cell (Table S2, 96 i7 barcodes; 40-50 indexed cells multiplexed per run). The index-read primer matches the top strand, anneals to the bottom (template) strand and extends into the i7, so the raw 8 nt read is the reverse complement of the top-strand [i7 revcomp] block \u2014 i.e. the Table S2 (P7-strand) index sequence.",
+      "diagram": "i7 index-read primer (Illumina Index 1):\n5'- GATCGGAAGAGCACACGTCTGAACTCCAGTCAC--------->   (read \u2192)\ntop:    5'- ...GGCCGCGACCACNNNNAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7 revcomp:8]CTCGTATGCCGTCTTCTGCTTG -3'\nbottom: 3'- ...CCGGCGCTGGTGNNNNTCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[  i7 index:8 ]GAGCATACGGCAGAAGACGAAC -5'\n                                                          |--- 8 nt i7 ---|"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "single-cell DamID (scDamID)",
+  "description": "Single-cell DamID (scDamID) maps genome\u2013nuclear lamina (NL) contacts genome-wide in individual human cells. A cell line expresses an inducible Dam\u2013Lamin B1 fusion that methylates adenine in GATC motifs (Gm6ATC) at genomic loci contacting the NL; single cells are FACS-sorted and lysed, the methylation-specific enzyme DpnI cuts only methylated GATC sites, a double-stranded DamID adapter is ligated, and the fragments are PCR-amplified, converted to an indexed Illumina library, and sequenced. Each 51 bp read consists of 4 random diversity bases, 15 bp of DamID-adapter constant sequence, and a stretch of genomic DNA beginning at the reconstituted GATC site, which is mapped to score per-cell NL contact frequency at ~100 kb resolution.",
+  "reference": {
+    "kind": "paper",
+    "label": "scDamID Tables S1-S2: indexing primers",
+    "path": null,
+    "url": "https://www.ebi.ac.uk/biostudies/studies/S-EPMC4583798",
+    "doi": "10.1016/j.cell.2015.08.040"
+  },
+  "publication": {
+    "year": 2015,
+    "original_publication": {
+      "title": "Genome-wide Maps of Nuclear Lamina Interactions in Single Human Cells",
+      "journal": "Cell",
+      "doi": "10.1016/j.cell.2015.08.040",
+      "url": "http://dx.doi.org/10.1016/j.cell.2015.08.040"
+    },
+    "authors": [
+      {
+        "name": "Jop Kind",
+        "corresponding": true,
+        "email": "j.kind@hubrecht.eu",
+        "affiliation": "Division of Gene Regulation, Netherlands Cancer Institute, Amsterdam; Hubrecht Institute-KNAW and University Medical Center Utrecht"
+      },
+      {
+        "name": "Ludo Pagie",
+        "affiliation": "Division of Gene Regulation, Netherlands Cancer Institute, Amsterdam"
+      },
+      {
+        "name": "Sandra S. de Vries",
+        "affiliation": "Division of Gene Regulation, Netherlands Cancer Institute, Amsterdam"
+      },
+      {
+        "name": "Leila Nahidiazar",
+        "affiliation": "Division of Cell Biology I, Netherlands Cancer Institute, Amsterdam"
+      },
+      {
+        "name": "Siddharth S. Dey",
+        "affiliation": "Hubrecht Institute-KNAW and University Medical Center Utrecht"
+      },
+      {
+        "name": "Magda Bienko",
+        "affiliation": "Science for Life Laboratory, Karolinska Institute, Stockholm"
+      },
+      {
+        "name": "Ye Zhan",
+        "affiliation": "Program in Systems Biology, University of Massachusetts Medical School, Worcester"
+      },
+      {
+        "name": "Bryan Lajoie",
+        "affiliation": "Program in Systems Biology, University of Massachusetts Medical School, Worcester"
+      },
+      {
+        "name": "Carolyn A. de Graaf",
+        "affiliation": "Division of Gene Regulation, Netherlands Cancer Institute, Amsterdam; present address The Walter and Eliza Hall Institute of Medical Research, Parkville"
+      },
+      {
+        "name": "Mario Amendola",
+        "affiliation": "Division of Gene Regulation, Netherlands Cancer Institute, Amsterdam"
+      },
+      {
+        "name": "Geoffrey Fudenberg",
+        "affiliation": "Graduate Program in Biophysics, Harvard University, Cambridge"
+      },
+      {
+        "name": "Maxim Imakaev",
+        "affiliation": "Department of Physics, Massachusetts Institute of Technology, Cambridge"
+      },
+      {
+        "name": "Leonid A. Mirny",
+        "affiliation": "Department of Physics and Institute for Medical Engineering and Science, Massachusetts Institute of Technology, Cambridge"
+      },
+      {
+        "name": "Kees Jalink",
+        "affiliation": "Division of Cell Biology I, Netherlands Cancer Institute, Amsterdam"
+      },
+      {
+        "name": "Job Dekker",
+        "affiliation": "Howard Hughes Medical Institute; Program in Systems Biology, University of Massachusetts Medical School, Worcester"
+      },
+      {
+        "name": "Alexander van Oudenaarden",
+        "affiliation": "Hubrecht Institute-KNAW and University Medical Center Utrecht"
+      },
+      {
+        "name": "Bas van Steensel",
+        "corresponding": true,
+        "email": "b.v.steensel@nki.nl",
+        "affiliation": "Division of Gene Regulation, Netherlands Cancer Institute, Amsterdam"
+      }
+    ],
+    "throughput": {
+      "summary": "395 single-cell NL-contact maps total (118 from KBM7 clone #14, 168 from clone #5.5, plus diploid derivatives) at ~100 kb resolution; median ~5 x 10^5 uniquely mapped reads per cell; ~92% of mapped locations begin with GATC.",
+      "cells": "Single human KBM7 cells (near-haploid myeloid leukemia line); 40-50 indexed cells multiplexed per sequencing run",
+      "rna": "",
+      "dna": "One methylation-tagged genomic DamID library per single cell; median ~5 x 10^5 unique GATC-flanked reads/cell"
+    },
+    "statistical_model": "Per 100-kb segment, an observed-over-expected (OE) read-count ratio is computed (observed unique reads normalized by genome-wide reads and by the in silico maximum mappable unique reads per segment); OE is binarized at a cutoff of 1 (null hypothesis: the genome randomly contacts the NL), and per-cell binary calls are summed across cells to give each segment a contact frequency (CF).",
+    "other": [
+      {
+        "label": "Enzyme specificity",
+        "value": "DpnI cuts only Dam-methylated GATC (Gm6A^TC), giving in vivo methylation-specific enrichment of NL-contacted DNA"
+      },
+      {
+        "label": "PCR cycles",
+        "value": "26 cycles for Dam-LmnB1 samples (29 for Dam-only controls); 9 additional cycles for indexing PCR"
+      },
+      {
+        "label": "No Dam-only normalization",
+        "value": "Unlike conventional DamID, single-cell DamID omits the Dam-only control since both profiles cannot come from the same cell"
+      },
+      {
+        "label": "Multiplexing",
+        "value": "96 i7 indexing primers (Table S2) for pooling single-cell samples"
+      },
+      {
+        "label": "Sequencer",
+        "value": "Illumina HiSeq 2000"
+      },
+      {
+        "label": "GEO accessions",
+        "value": "GSE69423, GSE69841, GSE68596"
+      }
+    ]
+  },
+  "modality": "protein\u2013DNA (DamID)",
+  "method_type": "plate-based",
+  "data_processing": {
+    "summary": "51 bp single-end reads are parsed to isolate the GATC-anchored genomic fragment, aligned to hg19, filtered to reads that precisely flank a GATC site, deduplicated per haploid position, binned at 100 kb, and converted to per-segment observed-over-expected (OE) scores that are binarized (OE>1) and summed across cells into per-locus nuclear-lamina contact frequencies (CF).",
+    "stages": [
+      {
+        "id": "parse",
+        "label": "Read parsing"
+      },
+      {
+        "id": "align",
+        "label": "Alignment & filtering"
+      },
+      {
+        "id": "gatc",
+        "label": "GATC fragment assignment"
+      },
+      {
+        "id": "quantify",
+        "label": "Binning & OE scoring"
+      },
+      {
+        "id": "aggregate",
+        "label": "Contact frequency"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "trim_div",
+        "label": "Trim diversity bases",
+        "tool": "cutadapt",
+        "stage": "parse",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "trim_adapter",
+        "label": "Trim DamID adapter",
+        "tool": "cutadapt",
+        "stage": "parse",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align gDNA to hg19",
+        "tool": "bowtie2",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "filter_unique",
+        "label": "Keep uniquely mapped reads",
+        "tool": "",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "digest",
+        "label": "Digest genome in silico",
+        "tool": "custom R (GenomicRanges)",
+        "stage": "gatc",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "assign",
+        "label": "Assign reads to GATC fragments",
+        "tool": "custom R (GenomicRanges)",
+        "stage": "gatc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "flank_filter",
+        "label": "Keep GATC-flanking reads",
+        "tool": "custom R (GenomicRanges)",
+        "stage": "gatc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Collapse PCR duplicates",
+        "tool": "",
+        "stage": "gatc",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "bin",
+        "label": "Bin reads at 100 kb",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "maxmap",
+        "label": "Compute max mappable reads",
+        "tool": "custom R (GenomicRanges)",
+        "stage": "quantify",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "oe",
+        "label": "Compute observed/expected score",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "binarize",
+        "label": "Binarize OE (>1)",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cf",
+        "label": "Sum contact calls across cells",
+        "tool": "",
+        "stage": "aggregate",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "trim_div",
+        "to": "trim_adapter",
+        "kind": "sequential"
+      },
+      {
+        "from": "trim_adapter",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "filter_unique",
+        "kind": "sequential"
+      },
+      {
+        "from": "filter_unique",
+        "to": "assign",
+        "kind": "sequential"
+      },
+      {
+        "from": "digest",
+        "to": "assign",
+        "kind": "branch"
+      },
+      {
+        "from": "digest",
+        "to": "maxmap",
+        "kind": "branch"
+      },
+      {
+        "from": "assign",
+        "to": "flank_filter",
+        "kind": "sequential"
+      },
+      {
+        "from": "flank_filter",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "bin",
+        "kind": "sequential"
+      },
+      {
+        "from": "bin",
+        "to": "oe",
+        "kind": "sequential"
+      },
+      {
+        "from": "maxmap",
+        "to": "oe",
+        "kind": "sequential"
+      },
+      {
+        "from": "oe",
+        "to": "binarize",
+        "kind": "sequential"
+      },
+      {
+        "from": "binarize",
+        "to": "cf",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": "Observed-over-expected (OE) read-count ratio per 100-kb segment, normalized by genome-wide unique reads and by in-silico maximum mappable unique reads per segment, binarized at OE>1 under the null that the genome randomly contacts the nuclear lamina; per-cell binary calls are summed to a per-locus contact frequency (CF)."
+  }
+}

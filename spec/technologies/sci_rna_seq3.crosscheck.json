@@ -1,0 +1,34 @@
+{
+  "folder": "sci_rna_seq3",
+  "title": "sci-RNA-seq3",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "sci-RNA-seq_family.html",
+    "oligo_seq_recall": 0.4,
+    "oligo_seqs_matched": 4,
+    "oligo_seqs_total": 10,
+    "missed_oligos": [
+      "Barcoded hairpin adapters",
+      "Barcoded RT primer",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera N7 index primer",
+      "PCR P5 primer",
+      "TruSeq i5 index sequencing primer (index2)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[LIGATION_BARCODE:10]CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:10]CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[I7_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {
+      "UMI": {
+        "extracted": [
+          8
+        ],
+        "groundtruth": [
+          8,
+          10
+        ]
+      }
+    },
+    "big_conflict": true
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "folder": "mars_seq_v2",
+  "title": "MARS-seq2.0",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "MARS-seq.html",
+    "oligo_seq_recall": 0.7,
+    "oligo_seqs_matched": 7,
+    "oligo_seqs_total": 10,
+    "missed_oligos": [
+      "Illumina TruSeq Read 1 primer",
+      "lig_N5X4_ix[1-32]",
+      "T7 promoter"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "5'- AATGATACGGCGACCACCGAGATCTACAC (P5) | TCTTTCCCTACACGACGCTCTTCCGATCT (TruSeq Read1/SP1) | NNNNN (5 nt random, ligation adaptor) | [SAMPLE_INDEX:4] (pool/plate barcode) | [CDNA] (3' mRNA-derived insert) | AAAAAAAAAAAAAAAAAAAA (polyA) | [UMI:8] | [CELL_BARCODE:7] | AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC (Read2/SP2) ATCTCGTATGCCGTCTTCTGCTTG (P7) -3'",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:7][CDNA](pA)[UMI:8][CELL_BARCODE:9]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {
+      "CELL_BARCODE": {
+        "extracted": [
+          7
+        ],
+        "groundtruth": [
+          7,
+          9
+        ]
+      }
+    },
+    "big_conflict": true
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "folder": "vasa_drop",
+  "title": "VASA-drop",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "VASA-seq.html",
+    "oligo_seq_recall": 0.182,
+    "oligo_seqs_matched": 2,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "Beads-oligo-dT19V",
+      "Illumina Nextera Read 1 primer",
+      "Illumina Nextera Read 2 primer",
+      "Library PCR P7 primer",
+      "Ligation adapter",
+      "Nextera Index 1 sequencing primer (i7)",
+      "Nextera Index 2 sequencing primer (i5)",
+      "Nextera (XT) N/S5xx Index primer",
+      "T7 promoter"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "P5=AATGATACGGCGACCACCGAGATCTACAC | i5=[SAMPLE_INDEX:8] | Read1/s5 handle=TCGTCGGCAGCGTC | RTP/RA3-derived=GCCTTGGCACCCGAGAATTCCA | insert=[CDNA] | poly(dT/dA)=[POLYT] | UFI=[UMI:6] | BC2=[CELL_BARCODE:8] | W1 linker=[SPACER:22] | BC1=[CELL_BARCODE:8] | inDrop handle(rc)=CTGCACCCGACACCC | i7(rc)=[SAMPLE_INDEX:8] | P7(rc)=ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]B(pA)[UMI:6][CELL_BARCODE:8]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[CELL_BARCODE:8]CTGCACCCGACACCC[I7_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": true
+  }
+}

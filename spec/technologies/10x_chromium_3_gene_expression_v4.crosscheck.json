@@ -1,0 +1,22 @@
+{
+  "folder": "10x_chromium_3_gene_expression_v4",
+  "title": "10x Chromium 3' GEX v4",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "10xChromium3v4.pdf",
+    "oligo_seq_recall": 0.636,
+    "oligo_seqs_matched": 7,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "cDNA reverse primer",
+      "Library PCR primer 1 (PN-220111)",
+      "Library PCR primer 2 (PN-220103)",
+      "TruSeq sample index sequencing primer forward"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACAC[I5_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[I7_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

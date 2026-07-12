@@ -1,0 +1,20 @@
+{
+  "folder": "quartz_seq",
+  "title": "Quartz-Seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "Quartz-seq_family.html",
+    "oligo_seq_recall": 0.833,
+    "oligo_seqs_matched": 10,
+    "oligo_seqs_total": 12,
+    "missed_oligos": [
+      "Suppression primer",
+      "TRSI (indexed oligo)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]GATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

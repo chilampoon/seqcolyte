@@ -1,0 +1,23 @@
+{
+  "folder": "10x_chromium_single_cell_multiome_atac_plus_gene_expression",
+  "title": "10x Multiome (ATAC + Gene Expression)",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "10xChromium_multiome.html",
+    "oligo_seq_recall": 0.545,
+    "oligo_seqs_matched": 6,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "cDNA reverse primer",
+      "Nextera i7 sample index primer",
+      "Nextera N7xx primer entry point (s7)",
+      "SI-PCR Primer B (PN-2000128)",
+      "Splint/Bridging oligo (presumably in the Barcoding Reagent Mix PN-2000267)"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

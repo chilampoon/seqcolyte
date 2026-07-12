@@ -1,0 +1,21 @@
+{
+  "folder": "scdam_and_t_seq",
+  "title": "scDam&T-seq",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "scDamT-seq.html",
+    "oligo_seq_recall": 0.7,
+    "oligo_seqs_matched": 7,
+    "oligo_seqs_total": 10,
+    "missed_oligos": [
+      "CEL-seq2 primer",
+      "DamID bottom oligo",
+      "Index read primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4]GA[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:3][CELL_BARCODE:4][UMI:3][CELL_BARCODE:4]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}

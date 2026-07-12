@@ -1,0 +1,818 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "s3_atac",
+  "assay": "s3-ATAC",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "supplementary_NIHMS1707134-supplement-Supplementary_Information.pdf",
+      "title": "High-content single-cell combinatorial indexing",
+      "url": "https://doi.org/10.1038/s41587-021-00962-z",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/s3_atac/supplementary_NIHMS1707134-supplement-Supplementary_Information.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "s3-ATAC.xlsx",
+      "title": "s3-ATAC.xlsx",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/s3_atac/s3-ATAC.xlsx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "s3-ATAC.pdf",
+      "title": "s3-ATAC.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/s3_atac/s3-ATAC.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "truseq_r2_sbs12_partial",
+      "name": "Truseq_R2_SBS12_partial",
+      "aliases": [],
+      "role": "partial TruSeq Read 2 / SBS12 adapter carried on the transposome (i7 side)",
+      "kind": "single",
+      "sequence": "CGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "18 nt; forms the i7/Read-2 stub incorporated at transposition. Completed to the full R2 adapter during i7 PCR."
+    },
+    {
+      "oligo_id": "u_me_mosaic_end",
+      "name": "U-ME (uracil mosaic end)",
+      "aliases": [],
+      "role": "Tn5 mosaic-end transferred strand with a blocking deoxyuridine",
+      "kind": "single",
+      "sequence": "AGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Written 5'-/ideoxyU/AGATGTGTATAAGAGACAG-3'. The 5' deoxyU immediately precedes the 19 nt Tn5 mosaic end and blocks read-through by a uracil-intolerant polymerase, protecting the barcode/adapter on the transferred strand."
+    },
+    {
+      "oligo_id": "sbs12_18_ume_sci_transposome_oligo",
+      "name": "SBS12_18_UME_sci_1..96 (transposome loaded oligo)",
+      "aliases": [],
+      "role": "indexed single-adapter oligo loaded onto Tn5 (transferred strand)",
+      "kind": "assembled",
+      "sequence": "CGTGTGCTCTTCCGATCT[CELL_BARCODE:8]AGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Truseq_R2_SBS12_partial",
+          "sequence": "CGTGTGCTCTTCCGATCT",
+          "role": "partial R2/SBS12 adapter"
+        },
+        {
+          "name": "Tn5_96plx_idx",
+          "sequence": "[CELL_BARCODE:8]",
+          "role": "8 nt transposase index (cell barcode, round-1 combinatorial index)"
+        },
+        {
+          "name": "U-ME",
+          "sequence": "/ideoxyU/AGATGTGTATAAGAGACAG",
+          "role": "blocking dU + mosaic end"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "96 variants (plate wells A1\u2013H12; Supplementary Table 2), differing only in the 8 nt Tn5 index. Example indices: A1=GAACCGCG, A2=AGGTTATA, H12=ATTGTGAA. Loaded as a single species per well (symmetric tagmentation)."
+    },
+    {
+      "oligo_id": "nextera_mosaic_end_revcomp",
+      "name": "Nextera_Mosaic_End_REVCOMP (ME')",
+      "aliases": [],
+      "role": "non-transferred / blocking bottom strand of the transposome",
+      "kind": "single",
+      "sequence": "CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-/5Phos/CTGTCTCTTATACACATCT-3'; 19 nt reverse complement of the mosaic end. Anneals to U-ME to form the double-stranded transposon."
+    },
+    {
+      "oligo_id": "s3_transposome",
+      "name": "s3 indexed transposome (Tn5 complex)",
+      "aliases": [],
+      "role": "assembled Tn5 transposome used for tagmentation",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "loaded/transferred strand (SBS12_18_UME_sci)",
+          "sequence": "CGTGTGCTCTTCCGATCT[CELL_BARCODE:8]/ideoxyU/AGATGTGTATAAGAGACAG",
+          "role": "top / transferred strand"
+        },
+        {
+          "name": "Nextera_Mosaic_End_REVCOMP (ME')",
+          "sequence": "/5Phos/CTGTCTCTTATACACATCT",
+          "role": "bottom / non-transferred blocking strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Single-adapter, single-species transposome: only the R2/SBS12+index+U-ME strand is transferred; the 5'-phosphorylated ME' is the non-transferred partner. 96 uniquely indexed complexes assembled at 2.5 \u00b5M."
+    },
+    {
+      "oligo_id": "a14_lna_me",
+      "name": "Nextera_R1_A14 / A14_ME LNA (adapter-switching oligo)",
+      "aliases": [],
+      "role": "LNA/inverted-dT template that appends the Nextera Read-1 (A14) adapter to the i5 side",
+      "kind": "assembled",
+      "sequence": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera_R1_A14",
+          "sequence": "TCGTCGGCAGCGTC",
+          "role": "Nextera Read 1 (A14) adapter"
+        },
+        {
+          "name": "U-ME (LNA, 3' blocked)",
+          "sequence": "AGATGTGTA+TA+AG+AG+AC+AG/3InvdT/",
+          "role": "LNA mosaic end with 3' inverted-dT block"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 3. '+N' = locked nucleic acid, /3InvdT/ = 3' inverted dT. LNA raises Tm so it out-competes ME' and anneals to the copied mosaic end; the library strand extends across it to copy the A14 adapter. The inverted dT prevents this oligo itself from being extended."
+    },
+    {
+      "oligo_id": "pcr_i7_primer",
+      "name": "PCR_i7_P7.S701..S708 / T-series (i7 PCR primer)",
+      "aliases": [],
+      "role": "i7 indexing PCR primer completing the P7/Read-2 side",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "i7_Flowcell_Primer (P7)",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell binding"
+        },
+        {
+          "name": "i7_pcr_idx",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8 nt i7 sample index"
+        },
+        {
+          "name": "Truseq_R2_SBS12_full",
+          "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+          "role": "full R2/SBS12 adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 4 (\u226532 variants; e.g. S701 idx=TCGCCTTA, S702=CTAGTACG). Uses NEBNext Q5U so it reads through the residual uracil. The 3' 18 nt (CGTGTGCTCTTCCGATCT) match Truseq_R2_SBS12_partial for priming."
+    },
+    {
+      "oligo_id": "pcr_i5_primer",
+      "name": "PCR_A..H_i5_A..H (i5 PCR primer)",
+      "aliases": [],
+      "role": "i5 indexing PCR primer completing the P5/Nextera Read-1 side",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:8]TCGTCGGCAGCGTC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "i5_Flowcell_Primer (P5)",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 flow-cell binding"
+        },
+        {
+          "name": "i5_pcr_idx",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "8 nt i5 sample index"
+        },
+        {
+          "name": "i5_Nextera_A14_partial",
+          "sequence": "TCGTCGGCAGCGTC",
+          "role": "Nextera A14 adapter for priming"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Supplementary Table 5 (64 variants across plates A\u2013H, wells A\u2013H; e.g. PCR_A_i5_A idx=CCTTAAGA). Primes first in PCR (Nextera i5) and extends through the uracil."
+    }
+  ],
+  "final_library": {
+    "source_label": "s3-ATAC final PCR library (Supplementary Table 1, 'Final PCR product has completed i7 side')",
+    "annotated_library_sequence": "P7[CAAGCAGAAGACGGCATACGAGAT]-i7idx[SAMPLE_INDEX:8]-R2/SBS12[GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT]-Tn5cellBC[CELL_BARCODE:8]-ME[AGATGTGTATAAGAGACAG]-genomicInsert[CDNA]-ME'[CTGTCTCTTATACACATCT]-A14rc[GACGCTGCCGACGA]-i5idx-rc[SAMPLE_INDEX:8]-P5rc[GTGTAGATCTCGGTGGTCGCCGTATCATT]",
+    "library_sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:8]AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGACGCTGCCGACGA[SAMPLE_INDEX:8]GTGTAGATCTCGGTGGTCGCCGTATCATT",
+    "strands": [
+      {
+        "direction": "5'->3' top",
+        "source_html": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:8]AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGACGCTGCCGACGA[SAMPLE_INDEX:8]GTGTAGATCTCGGTGGTCGCCGTATCATT",
+        "source_sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:8]AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGACGCTGCCGACGA[SAMPLE_INDEX:8]GTGTAGATCTCGGTGGTCGCCGTATCATT"
+      },
+      {
+        "direction": "3'->5' bottom",
+        "source_html": "GTTCGTCTTCTGCCGTATGCTCTA[SAMPLE_INDEX:8]CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA[CELL_BARCODE:8]TCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGACTGCGACGGCTGCT[SAMPLE_INDEX:8]CACATCTAGAGCCACCAGCGGCATAGTAA",
+        "source_sequence": "GTTCGTCTTCTGCCGTATGCTCTA[SAMPLE_INDEX:8]CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA[CELL_BARCODE:8]TCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGACTGCGACGGCTGCT[SAMPLE_INDEX:8]CACATCTAGAGCCACCAGCGGCATAGTAA"
+      }
+    ],
+    "annotation_lines": [
+      "CAAGCAGAAGACGGCATACGAGAT        P7 flow-cell (i7_Flowcell_Primer)",
+      "[SAMPLE_INDEX:8]               i7 PCR sample index",
+      "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT  full TruSeq Read 2 / SBS12 adapter",
+      "[CELL_BARCODE:8]              Tn5 transposase index = cell barcode (read at start of Read 2)",
+      "AGATGTGTATAAGAGACAG          Tn5 mosaic end (ME)",
+      "[CDNA]                        open-chromatin genomic insert (ATAC fragment)",
+      "CTGTCTCTTATACACATCT          reverse-complement mosaic end (ME')",
+      "GACGCTGCCGACGA               Nextera Read 1 A14 adapter (reverse complement)",
+      "[SAMPLE_INDEX:8]              i5 PCR sample index (reverse complement)",
+      "GTGTAGATCTCGGTGGTCGCCGTATCATT  P5 flow-cell (i5_Flowcell_Primer, reverse complement)"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "s3-ATAC final PCR library (Supplementary Table 1, 'Final PCR product has completed i7 side')",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Nextera Read 1 (A14-ME)",
+        "template": "bottom",
+        "cycles": 85,
+        "segments": [
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 85
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "TruSeq i7 index primer",
+        "template": "top",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i7 PCR sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "Nextera i5 index primer",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "i5 PCR sample index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "TruSeq Read 2 / SBS12",
+        "template": "top",
+        "cycles": 85,
+        "segments": [
+          {
+            "name": "Tn5 transposase cell barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "mosaic end (ME)",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 19
+          },
+          {
+            "name": "genomic insert",
+            "type": "insert",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Genomic DNA in nuclei",
+      "summary": "Isolated nuclei present accessible chromatin as the tagmentation substrate.",
+      "note": "Nuclei from frozen human cortex / mouse whole brain are dounce-isolated in NIB-HEPES; ~5,000 nuclei per 96-well tagmentation reaction.",
+      "product": "5'- .................................... -3'\n3'- .................................... -5'\n              gDNA"
+    },
+    {
+      "step": 2,
+      "title": "Single-species indexed tagmentation (SBS-U-ME Tn5)",
+      "summary": "One indexed single-adapter Tn5 transposome tagments the genome, leaving a 9 nt gap and the R2/index/U-ME stub on both ends.",
+      "note": "Each well uses a single uniquely indexed transposome (transferred strand = Truseq_R2_SBS12_partial + Tn5 index + /ideoxyU/mosaic end; blocking strand = /5Phos/ME'). 55 \u00b0C, 10 min.",
+      "product": "R2/idx/U-ME ---------------------->        gDNA(gap)                     <---------------------- U-ME/idx/R2\n5'- CGTGTGCTCTTCCGATCT[BC8]/idU/AGATGTGTATAAGAGACAG .......<GAP>....... CTGTCTCTTATACACATCT              -3'\n3'-              TCTACACATATTCTCTGTC .......<GAP>....... GACAGAGAATATGTGTAGA/idU/[BC8]TCTAGCCTTCTCGTGTGC -5'"
+    },
+    {
+      "step": 3,
+      "title": "Gap fill with uracil-sensitive polymerase (NPM)",
+      "summary": "NPM fills the 9 nt gap and copies the mosaic end, but stalls at the deoxyU so the index/adapter stay single-stranded.",
+      "note": "Uracil-intolerant gap-fill closes the top strand up to the mosaic end; the dU blocks read-through into the barcode/forward adapter, preventing premature PCR-able products.",
+      "product": "5'- CGTGTGCTCTTCCGATCT[BC8]/idU/AGATGTGTATAAGAGACAG .........  CTGTCTCTTATACACATCT              -3'\n3'-                        TCTACACATATTCTCTGTC .........  GACAGAGAATATGTGTAGA/idU/[BC8]TCTAGCCTTCTCGTGTGC -5'"
+    },
+    {
+      "step": 4,
+      "title": "Adapter switching with A14-LNA-ME oligo",
+      "summary": "The LNA/inverted-dT A14 oligo out-competes ME', anneals to the copied mosaic end, and templates copying of the Nextera A14 adapter onto the top strand.",
+      "note": "NPM extends the top strand across the LNA oligo (10 thermocycles), converting the i5 side to the Nextera Read-1 adapter. The 3' inverted dT keeps the LNA oligo itself unextended.",
+      "product": "                                                                     A14-LNA-ME (anneals)\n                                                                     <<< CTGCGACGGCTGCT[+LNA ME]/3InvdT/\n5'- CGTGTGCTCTTCCGATCT[BC8]/idU/AGATGTGTATAAGAGACAG ......... CTGTCTCTTATACACATCT >>>> GACGCTGCCGACGA -3'"
+    },
+    {
+      "step": 5,
+      "title": "Pre-PCR molecule",
+      "summary": "Top strand is now a fully PCR-able molecule with R2/index on one end and A14 on the other; bottom strand remains halted by the inverted dT.",
+      "note": "The reverse (A14/i5) adapter is present as a 5' overhang copy on the top strand; only the top strand can be amplified until PCR.",
+      "product": "5'- CGTGTGCTCTTCCGATCT[BC8]/idU/AGATGTGTATAAGAGACAG ......... CTGTCTCTTATACACATCT GACGCTGCCGACGA -3'"
+    },
+    {
+      "step": 6,
+      "title": "Indexing PCR with Q5U (i5 then i7)",
+      "summary": "Uracil-tolerant Q5U PCR: the Nextera i5 primer primes first and reads through the uracil, then the i7 primer completes the P7/R2 side, adding both PCR sample indices.",
+      "note": "16\u201318 cycles. i5 primer = P5+i5idx+A14; i7 primer = P7+i7idx+full SBS12/R2. Q5U passes the uracil blockage that halted earlier polymerases.",
+      "product": "i5 primer >>>  AATGATACGGCGACCACCGAGATCTACAC[i5idx]TCGTCGGCAGCGTC ...\ni7 primer >>>  CAAGCAGAAGACGGCATACGAGAT[i7idx]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT ..."
+    },
+    {
+      "step": 7,
+      "title": "Final dual-indexed PCR product",
+      "summary": "Completed library: P7\u2013i7idx\u2013R2\u2013Tn5 cell barcode\u2013ME\u2013insert\u2013ME'\u2013A14\u2013i5idx\u2013P5, ready for standard Illumina sequencing.",
+      "note": "cellID = i5_PCR_idx + i7_PCR_idx + Tn5_idx. Size-selected 100\u20131,000 bp and sequenced on NextSeq 500 / NovaSeq.",
+      "product": "5'- CAAGCAGAAGACGGCATACGAGAT[i7idx]GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[BC8]AGATGTGTATAAGAGACAG.....insert.....CTGTCTCTTATACACATCTGACGCTGCCGACGA[i5idx]GTGTAGATCTCGGTGGTCGCCGTATCATT -3'\n3'- GTTCGTCTTCTGCCGTATGCTCTA[i7idx]CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA[BC8]TCTACACATATTCTCTGTC.....insert.....GACAGAGAATATGTGTAGACTGCGACGGCTGCT[i5idx]CACATCTAGAGCCACCAGCGGCATAGTAA -5'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "R1",
+      "primer": "Nextera Read 1 (A14): 5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-3'",
+      "template": "top",
+      "cycles": 85,
+      "note": "Read 1 primer anneals to the ME'/A14 region on the top strand and reads the open-chromatin genomic insert from the i5/Nextera side.",
+      "diagram": "Nextera Read 1 primer (A14): 5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-3'\n\n5'- ...[genomic insert] CTGTCTCTTATACACATCTGACGCTGCCGACGA [i5rc:8] GTGTAGATCTCGGTGGTCGCCGTATCATT -3'\n                       |||||||||||||||||||||||||||||||||\n3'- ...[genomic insert] GACAGAGAATATGTGTAGACTGCGACGGCTGCT [i5:8]  CACATCTAGAGCCACCAGCGGCATAGTAA -5'\n      <--------------- GACAGAGAATATGTGTAGACTGCGACGGCTGCT\n                       (primer binds ME'+A14 on top strand; reads the insert, 85 nt)"
+    },
+    {
+      "read": "I1 (i7)",
+      "primer": "TruSeq index-read-1 primer (anneals to the R2/SBS12 region)",
+      "template": "top",
+      "cycles": 10,
+      "note": "Reads the 8 nt i7 PCR sample index adjacent to the P7 adapter; run as a 10-cycle index read.",
+      "diagram": "i7 index read (TruSeq index read 1) - primer anneals to the SBS12/R2 region:\n\n5'- ...CAAGCAGAAGACGGCATACGAGAT [i7:8] GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT... -3'\n      ||||||||||||||||||||||||        |||||||||||||||||||||||||||||||||||\n3'- ...GTTCGTCTTCTGCCGTATGCTCTA [i7':8] CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA... -5'\n                       <--- reads i7 sample index (8 nt), 10-cycle index read"
+    },
+    {
+      "read": "I2 (i5)",
+      "primer": "Nextera index-read-2 primer (A14): 5'-TCGTCGGCAGCGTC...-3'",
+      "template": "bottom",
+      "cycles": 10,
+      "note": "Reads the 8 nt i5 PCR sample index adjacent to the P5 adapter; run as a 10-cycle index read.",
+      "diagram": "i5 index read (Nextera index read 2) - primer anneals to the A14 region:\n\n5'- ...GACGCTGCCGACGA [i5:8]  GTGTAGATCTCGGTGGTCGCCGTATCATT -3'\n      ||||||||||||||         |||||||||||||||||||||||||||||\n3'- ...CTGCGACGGCTGCT [i5':8] CACATCTAGAGCCACCAGCGGCATAGTAA -5'\n      TCGTCGGCAGCGTC ---> reads i5 sample index (8 nt), 10-cycle index read"
+    },
+    {
+      "read": "R2",
+      "primer": "TruSeq Read 2 / SBS12: 5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3'",
+      "template": "bottom",
+      "cycles": 85,
+      "note": "Read 2 primer anneals to the bottom strand at the SBS12/R2 region and reads the 8 nt Tn5 transposase cell barcode, then the 19 nt mosaic end, then the genomic insert.",
+      "diagram": "TruSeq Read 2 / SBS12 primer:\n                                 GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT --------------->\n5'- ...GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT [Tn5BC:8] AGATGTGTATAAGAGACAG [insert]... -3'\n      ||||||||||||||||||||||||||||||||||\n3'- ...CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA [Tn5BC':8] TCTACACATATTCTCTGTC [insert]... -5'\n      reads Tn5 cell barcode (8 nt) -> mosaic end (19 nt) -> genomic insert, 85 nt"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "s3-ATAC",
+  "description": "s3-ATAC (symmetrical strand single-cell combinatorial indexing ATAC-seq) profiles single-cell chromatin accessibility. Nuclei are tagmented in 96 wells with single-adapter, uracil-containing indexed Tn5 transposomes; a uracil-intolerant gap-fill plus an LNA-templated adapter-switch reaction converts every tagmented fragment (not just the 50% that get two different adapters) into a dual-adapter, PCR-able molecule, boosting usable reads/cell 6\u201313\u00d7 over other scATAC methods. Reads capture the open-chromatin genomic insert plus three indices (a transposase/Tn5 cell barcode read at the start of Read 2, and i7/i5 PCR sample indices) whose concatenation uniquely labels each cell.",
+  "reference": {
+    "kind": "paper",
+    "label": "High-content single-cell combinatorial indexing",
+    "path": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8678206/",
+    "doi": "10.1038/s41587-021-00962-z"
+  },
+  "publication": {
+    "year": 2021,
+    "original_publication": {
+      "title": "High-content single-cell combinatorial indexing",
+      "journal": "Nature Biotechnology",
+      "doi": "10.1038/s41587-021-00962-z",
+      "url": "https://doi.org/10.1038/s41587-021-00962-z"
+    },
+    "authors": [
+      {
+        "name": "Ryan M. Mulqueen",
+        "affiliation": "Department of Molecular and Medical Genetics, Oregon Health and Science University, Portland, OR, USA"
+      },
+      {
+        "name": "Dmitry Pokholok",
+        "affiliation": "Scale Bio, Berkeley, CA, USA"
+      },
+      {
+        "name": "Brendan L. O'Connell",
+        "affiliation": "Oregon Health and Science University, Portland, OR, USA"
+      },
+      {
+        "name": "Casey A. Thornton",
+        "affiliation": "Oregon Health and Science University, Portland, OR, USA"
+      },
+      {
+        "name": "Fan Zhang",
+        "affiliation": "Scale Bio, Berkeley, CA, USA"
+      },
+      {
+        "name": "Brian J. O'Roak",
+        "affiliation": "Department of Molecular and Medical Genetics, Oregon Health and Science University, Portland, OR, USA"
+      },
+      {
+        "name": "Jason Link",
+        "affiliation": "Knight Cancer Institute / Brendan Colson Center for Pancreatic Care, Oregon Health and Science University, Portland, OR, USA"
+      },
+      {
+        "name": "Galip G\u00fcrkan Yard\u0131mc\u0131",
+        "affiliation": "Knight Cancer Institute / Cancer Early Detection Advanced Research Center, Oregon Health and Science University, Portland, OR, USA"
+      },
+      {
+        "name": "Rosalie C. Sears",
+        "affiliation": "Oregon Health and Science University, Portland, OR, USA"
+      },
+      {
+        "name": "Frank J. Steemers",
+        "affiliation": "Scale Bio, Berkeley, CA, USA"
+      },
+      {
+        "name": "Andrew C. Adey",
+        "corresponding": true,
+        "email": "adey@ohsu.edu",
+        "affiliation": "Department of Molecular and Medical Genetics, Oregon Health and Science University, Portland, OR, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "2,175 human cortex + 837 mouse whole-brain single-cell ATAC-seq profiles across 4 PCR plates; median unique reads per cell ~100,280\u2013178,069 (mean up to ~258,859). 6\u201313-fold more usable reads/cell than snATAC, 10x scATAC and dscATAC.",
+      "cells": "3,012 s3-ATAC single cells passing QC (2,175 human, 837 mouse); scalable to 10^4\u201310^5 cells by expanding transposome/PCR index sets",
+      "rna": "not applicable (chromatin accessibility assay)",
+      "dna": "median ~100k\u2013178k unique passing reads per cell; TSS enrichment 13.4 (human)/13.5 (mouse); FRiP ~31.95%/29.15%"
+    },
+    "statistical_model": "Latent Dirichlet allocation topic modeling (cisTopic) of the peak-by-cell accessibility matrix for dimensionality reduction/clustering; Welch's two-sample t-test for cross-method read-count comparisons; Fisher's exact (hypergeometric) test for marker gene-set enrichment.",
+    "other": [
+      {
+        "label": "Core innovation",
+        "value": "Uracil-based adapter switching ('s3') converts >50% of tagmented fragments into dual-adapter libraries via a uracil-block + LNA-templated extension, overcoming the 50% yield limit of standard tagmentation."
+      },
+      {
+        "label": "Cross-cell collision rate",
+        "value": "5.53% pre-tagmentation mixing; 0% post-tagmentation (no crosstalk during adapter switching or PCR)."
+      },
+      {
+        "label": "Compatible variants",
+        "value": "Same chemistry extended to s3-WGS (148-fold usable-read improvement vs sci-DNA-seq) and s3-GCC whole-genome + chromatin conformation (14.8-fold vs sci-HiC)."
+      }
+    ]
+  },
+  "modality": "ATAC",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "Paired-end reads are demultiplexed by concatenating the Tn5 transposase index with the i7/i5 PCR indices into a per-cell barcode (cellID), aligned to a hg38/mm10 hybrid reference, deduplicated, species-assigned (barnyard), then reduced to a peak-by-cell accessibility matrix that is factorized by LDA topic modeling (cisTopic) and clustered for cell-type discovery.",
+    "stages": [
+      {
+        "id": "demux",
+        "label": "Basecall & demultiplex"
+      },
+      {
+        "id": "align",
+        "label": "Align & filter"
+      },
+      {
+        "id": "quantify",
+        "label": "Peak calling & quantification"
+      },
+      {
+        "id": "reduce",
+        "label": "Dimensionality reduction"
+      },
+      {
+        "id": "cluster",
+        "label": "Clustering & annotation"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "bcl2fastq",
+        "label": "Convert BCL to FASTQ",
+        "tool": "bcl2fastq",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "demux",
+        "label": "Assign reads to cellID (HD<=2)",
+        "tool": "scitools",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "align",
+        "label": "Align to hybrid genome",
+        "tool": "bwa mem",
+        "stage": "align",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "dedup",
+        "label": "Deduplicate reads per cell",
+        "tool": "scitools",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "barnyard",
+        "label": "Assign species per cell",
+        "tool": "scitools",
+        "stage": "align",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "peaks",
+        "label": "Call peaks on pseudobulk",
+        "tool": "macs2",
+        "stage": "quantify",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "matrix",
+        "label": "Build peak-by-cell matrix",
+        "tool": "scitools",
+        "stage": "quantify",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "frip",
+        "label": "Compute FRiP per cell",
+        "tool": "",
+        "stage": "quantify",
+        "scope": "per_cell",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "cistopic",
+        "label": "Reduce by LDA topic modeling",
+        "tool": "cisTopic",
+        "stage": "reduce",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "cluster",
+        "label": "Cluster cells on graph",
+        "tool": "Signac",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "umap",
+        "label": "Project cells with UMAP",
+        "tool": "uwot (UMAP)",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": true
+      },
+      {
+        "id": "celltype",
+        "label": "Assign cell types",
+        "tool": "Signac",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "diffacc",
+        "label": "Test differential accessibility",
+        "tool": "Signac",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      },
+      {
+        "id": "cicero",
+        "label": "Compute peak co-accessibility",
+        "tool": "cicero",
+        "stage": "cluster",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "bcl2fastq",
+        "to": "demux",
+        "kind": "sequential"
+      },
+      {
+        "from": "demux",
+        "to": "align",
+        "kind": "sequential"
+      },
+      {
+        "from": "align",
+        "to": "dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "dedup",
+        "to": "barnyard",
+        "kind": "sequential"
+      },
+      {
+        "from": "barnyard",
+        "to": "peaks",
+        "kind": "fan_in"
+      },
+      {
+        "from": "barnyard",
+        "to": "matrix",
+        "kind": "fan_in"
+      },
+      {
+        "from": "peaks",
+        "to": "matrix",
+        "kind": "sequential"
+      },
+      {
+        "from": "matrix",
+        "to": "frip",
+        "kind": "branch"
+      },
+      {
+        "from": "matrix",
+        "to": "cistopic",
+        "kind": "branch"
+      },
+      {
+        "from": "cistopic",
+        "to": "cluster",
+        "kind": "branch"
+      },
+      {
+        "from": "cistopic",
+        "to": "umap",
+        "kind": "branch"
+      },
+      {
+        "from": "cluster",
+        "to": "celltype",
+        "kind": "sequential"
+      },
+      {
+        "from": "celltype",
+        "to": "diffacc",
+        "kind": "branch"
+      },
+      {
+        "from": "celltype",
+        "to": "cicero",
+        "kind": "branch"
+      }
+    ],
+    "statistical_model": "Latent Dirichlet allocation topic modeling (cisTopic); Fisher's exact / hypergeometric test for marker gene-set enrichment; Welch's two-sample t-test for cross-method read-count comparisons"
+  }
+}

@@ -1,0 +1,877 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "sci_rna_seq3",
+  "assay": "sci-RNA-seq3",
+  "chemistry_version": "",
+  "platform": "illumina",
+  "platform_params": {
+    "read_type": "short"
+  },
+  "source_docs": [
+    {
+      "doc_id": "sci-RNA-seq3_optimized_protocol.pdf",
+      "title": "Optimized single-nucleus transcriptional profiling by combinatorial indexing",
+      "url": "https://doi.org/10.1038/s41596-022-00752-0",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_rna_seq3/sci-RNA-seq3_optimized_protocol.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_NIHMS1518381-supplement-SI_Guide.docx",
+      "title": "The single-cell transcriptional landscape of mammalian organogenesis",
+      "url": "https://doi.org/10.1038/s41586-019-0969-x",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_rna_seq3/supplementary_NIHMS1518381-supplement-SI_Guide.docx",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "supplementary_NIHMS1518381-supplement-Supplement_note_1.pdf",
+      "title": "The single-cell transcriptional landscape of mammalian organogenesis",
+      "url": "https://doi.org/10.1038/s41586-019-0969-x",
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_rna_seq3/supplementary_NIHMS1518381-supplement-Supplement_note_1.pdf",
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "sci-RNA-seq3.pdf",
+      "title": "sci-RNA-seq3.pdf",
+      "url": null,
+      "path": "/Users/seqmachines/playground/protocols-test/protocols/sci_rna_seq3/sci-RNA-seq3.pdf",
+      "retrieved_date": null
+    }
+  ],
+  "oligos": [
+    {
+      "oligo_id": "oligo_rt_primer",
+      "name": "Indexed oligo-dT RT primer",
+      "aliases": [],
+      "role": "Barcoded reverse-transcription primer; introduces index 1 (RT barcode) and the UMI, and primes first-strand cDNA synthesis on the polyA tail",
+      "kind": "assembled",
+      "sequence": "/5Phos/CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "5' Phosphate",
+          "sequence": "/5Phos/",
+          "role": "5' phosphate for downstream ligation"
+        },
+        {
+          "name": "Linker (CAGAGC)",
+          "sequence": "CAGAGC",
+          "role": "6-bp constant linker; template for ligation-primer annealing"
+        },
+        {
+          "name": "UMI",
+          "sequence": "[UMI:8]",
+          "role": "unique molecular identifier (random N8)"
+        },
+        {
+          "name": "RT barcode",
+          "sequence": "[RT_BARCODE:10]",
+          "role": "index 1 (reverse-transcription cell barcode)"
+        },
+        {
+          "name": "Poly(dT)",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+          "role": "poly(dT) mRNA-capture / RT priming"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "From the optimized protocol: 5'-/5Phos/CAGAGCNNNNNNNN[10bp RT index]TTTT...(30 T)-3'. The 8 N's are the UMI; CAGAGC is the 6-bp linker used for the downstream ligation. Ordered as 96-384 indexed primers."
+    },
+    {
+      "oligo_id": "oligo_ligation_primer",
+      "name": "Indexed ligation (hairpin) primer",
+      "aliases": [],
+      "role": "Hairpin ligation adaptor; introduces index 2 (ligation barcode) and the Read 1 primer region, ligated to the phosphorylated 5' end of the RT primer",
+      "kind": "assembled",
+      "sequence": "GCTCTG[LIGATION_BARCODE:10]TACGACGCTCTTCCGATCT[LIGATION_BARCODE:10]",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Anti-linker splint (GCTCTG)",
+          "sequence": "GCTCTG",
+          "role": "reverse complement of CAGAGC; anneals to RT-primer linker"
+        },
+        {
+          "name": "Ligation barcode",
+          "sequence": "[LIGATION_BARCODE:10]",
+          "role": "index 2 (9- or 10-bp ligation cell barcode)"
+        },
+        {
+          "name": "Partial TruSeq Read 1 (hairpin loop)",
+          "sequence": "TACGACGCTCTTCCGATCT",
+          "role": "Read 1 primer binding region"
+        },
+        {
+          "name": "Ligation barcode (reverse complement)",
+          "sequence": "[LIGATION_BARCODE:10]",
+          "role": "hairpin stem (reverse complement of ligation barcode)"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-GCTCTG[9- or 10-bp ligation index]TACGACGCTCTTCCGATCT[reverse complement of ligation index]-3'. GCTCTG is the reverse complement of the CAGAGC linker and anneals to it; the 3' copy of the barcode is its reverse complement and folds back to form the hairpin stem. The original sci-RNA-seq3 (Cao 2019) placed a /dideoxyU/ at the T before ACGACG and required a USER step; the optimized protocol removed the deoxyU and the USER step."
+    },
+    {
+      "oligo_id": "oligo_pcr_p7_primer",
+      "name": "Indexed PCR P7 primer",
+      "aliases": [],
+      "role": "Library PCR primer; introduces index 3 (i7 PCR barcode) and the P7 flow-cell adaptor on the Tn5/Nextera side",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:10]GTCTCGTGGGCTCGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adaptor"
+        },
+        {
+          "name": "i7 sample index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "index 3 (i7 PCR barcode)"
+        },
+        {
+          "name": "Nextera N7 (partial)",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "anneals to the N7 tagmentation adaptor"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-CAAGCAGAAGACGGCATACGAGAT[PCR P7 index]GTCTCGTGGGCTCGG-3'. 96-384 indexed primers. GTCTCGTGGGCTCGG is the 5' portion of the Tn5-N7 adaptor."
+    },
+    {
+      "oligo_id": "oligo_pcr_p5_primer",
+      "name": "PCR P5 (TruSeq) primer",
+      "aliases": [],
+      "role": "Library PCR primer; adds the P5 flow-cell adaptor, an optional i5 plate index, and the full TruSeq Read 1 sequence on the RT/ligation side",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 flow-cell adaptor"
+        },
+        {
+          "name": "i5 sample/plate index",
+          "sequence": "[SAMPLE_INDEX:10]",
+          "role": "optional i5 PCR/plate index"
+        },
+        {
+          "name": "TruSeq Read 1",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "Illumina TruSeq Read 1 primer sequence"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-AATGATACGGCGACCACCGAGATCTACAC[PCR P5 index]ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3'. The P5 index is optional: a single P5 primer suffices for one plate of PCR, or a full 96-384 set enables fully dual-indexed PCR / plate indexing."
+    },
+    {
+      "oligo_id": "oligo_tn5_n7",
+      "name": "Tn5-N7 oligo",
+      "aliases": [],
+      "role": "Non-transferred strand of the N7 transposome; carries the Nextera N7 / Read 2 primer region and the mosaic end",
+      "kind": "assembled",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera N7 / Read 2 primer",
+          "sequence": "GTCTCGTGGGCTCGG",
+          "role": "P7-side adaptor / Read 2 primer region"
+        },
+        {
+          "name": "Mosaic End (ME)",
+          "sequence": "AGATGTGTATAAGAGACAG",
+          "role": "Tn5 mosaic-end recognition sequence"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG-3' (high-purity salt-free). Annealed 1:1 with the ME oligo and loaded onto unloaded Tn5."
+    },
+    {
+      "oligo_id": "oligo_mosaic_end_me",
+      "name": "Mosaic End (ME) oligo",
+      "aliases": [],
+      "role": "Transferred (phosphorylated) strand of the N7 transposome; the ME sequence appended to fragmented cDNA during tagmentation",
+      "kind": "single",
+      "sequence": "/5Phos/CTGTCTCTTATACACATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Mosaic End (reverse strand)",
+          "sequence": "CTGTCTCTTATACACATCT",
+          "role": "phosphorylated transferred mosaic-end strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "5'-/5Phos/CTGTCTCTTATACACATCT-3' (high-purity salt-free). Reverse complement of the AGATGTGTATAAGAGACAG mosaic end."
+    },
+    {
+      "oligo_id": "oligo_n7_tn5_adapter",
+      "name": "Annealed N7 Tn5 adaptor",
+      "aliases": [],
+      "role": "Double-stranded transposon adaptor loaded onto Tn5 for tagmentation of the double-stranded cDNA",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Tn5-N7 (non-transferred strand)",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "top strand / 5_to_3"
+        },
+        {
+          "name": "ME (transferred strand)",
+          "sequence": "/5Phos/CTGTCTCTTATACACATCT",
+          "role": "phosphorylated transferred strand / 3_to_5"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Tn5-N7 and ME resuspended to 100 uM in annealing buffer (50 mM NaCl, 40 mM Tris-HCl pH 8.0), mixed 1:1 to a 50 uM working stock, and annealed (95 C 5 min, cool to 65 C, 65 C 5 min, cool to 4 C)."
+    },
+    {
+      "oligo_id": "oligo_truseq_read1_primer",
+      "name": "Illumina TruSeq Read 1 primer",
+      "aliases": [],
+      "role": "Sequencing primer for Read 1 (cell barcode + UMI); standard Illumina primer matching the P5-side of the library",
+      "kind": "single",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq Read 1",
+          "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+          "role": "Read 1 sequencing primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina TruSeq Read 1 primer; its sequence is built into the library by the PCR P5 primer. Read 1 = 34 cycles."
+    },
+    {
+      "oligo_id": "oligo_nextera_read2_primer",
+      "name": "Illumina Nextera Read 2 primer",
+      "aliases": [],
+      "role": "Sequencing primer for Read 2 (cDNA insert); standard Illumina Nextera primer matching the P7/N7 side of the library",
+      "kind": "single",
+      "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Nextera Read 2",
+          "sequence": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+          "role": "Read 2 sequencing primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Standard Illumina Nextera/N7 Read 2 primer; sequence built into the library by the Tn5-N7 adaptor. Read 2 = 48 cycles (optimized) / 52 cycles (original 2019)."
+    },
+    {
+      "oligo_id": "oligo_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "P5 flow-cell binding adaptor (5' end of the final library)",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P5",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "P5 flow-cell adaptor"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Introduced by the PCR P5 (TruSeq) primer."
+    },
+    {
+      "oligo_id": "oligo_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "P7 flow-cell binding adaptor (3' end of the final library)",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "P7",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "P7 flow-cell adaptor"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "llm_extracted_from_docs",
+      "evidence": [
+        {
+          "source_doc": "protocol_docs",
+          "locator": "oligo / final library",
+          "method": "claude_llm_extraction"
+        }
+      ],
+      "notes": "Introduced by the PCR P7 primer; appears as its reverse complement (ATCTCGTATGCCGTCTTCTGCTTG) at the 3' end of the top strand."
+    }
+  ],
+  "final_library": {
+    "source_label": "sci-RNA-seq3 (optimized protocol, Martin et al. 2023)",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[LIGATION_BARCODE:10]CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[LIGATION_BARCODE:10]CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[LIGATION_BARCODE:10]CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG",
+        "source_sequence": "AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[LIGATION_BARCODE:10]CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG"
+      }
+    ],
+    "annotation_lines": [
+      "AATGATACGGCGACCACCGAGATCTACAC = P5",
+      "[SAMPLE_INDEX:10] = i5 sample/plate index (optional)",
+      "ACACTCTTTCCCTACACGACGCTCTTCCGATCT = Illumina TruSeq Read 1",
+      "[LIGATION_BARCODE:10] = Ligation barcode (index 2, part of cell barcode; read as reverse complement)",
+      "CAGAGC = Linker",
+      "[UMI:8] = UMI",
+      "[RT_BARCODE:10] = RT barcode (index 1, part of cell barcode)",
+      "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT = poly(dT)",
+      "[CDNA] = cDNA insert",
+      "CTGTCTCTTATACACATCT = Mosaic End (Read 2 / Nextera junction)",
+      "CCGAGCCCACGAGAC = Nextera N7 (reverse complement of GTCTCGTGGGCTCGG)",
+      "[SAMPLE_INDEX:10] = i7 sample index (index 3, reverse complement)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = reverse complement of P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "protocol_docs",
+        "locator": "sci-RNA-seq3 (optimized protocol, Martin et al. 2023)",
+        "method": "claude_llm_extraction"
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq Read 1 primer",
+        "template": "bottom",
+        "cycles": 34,
+        "segments": [
+          {
+            "name": "Ligation barcode",
+            "type": "barcode",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          },
+          {
+            "name": "Linker (CAGAGC)",
+            "type": "constant",
+            "order": 1,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 6
+          },
+          {
+            "name": "UMI",
+            "type": "umi",
+            "order": 2,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 8
+          },
+          {
+            "name": "RT barcode",
+            "type": "barcode",
+            "order": 3,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Nextera i7 index primer",
+        "template": "top",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i7 PCR index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "I2",
+        "primer": "TruSeq i5 index primer",
+        "template": "bottom",
+        "cycles": 10,
+        "segments": [
+          {
+            "name": "i5 PCR/plate index",
+            "type": "index",
+            "order": 0,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null,
+            "length": 10
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina Nextera Read 2 primer",
+        "template": "top",
+        "cycles": 48,
+        "segments": [
+          {
+            "name": "cDNA insert",
+            "type": "insert",
+            "order": 0,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "Indexed reverse transcription (index 1)",
+      "summary": "Barcoded oligo-dT RT primers capture polyadenylated mRNA in fixed nuclei and make first-strand cDNA, adding the RT barcode and UMI.",
+      "note": "Superscript IV reverse transcriptase extends the anchored oligo-dT primer along the mRNA. The primer carries a 5' phosphate, the CAGAGC linker, an 8-bp UMI, a 10-bp well-specific RT barcode, and a 30-nt poly(dT). Performed in-well across a 96-/384-well plate so nuclei from different samples get distinct RT barcodes.",
+      "product": "(1) First-strand cDNA after indexed RT:\n\n5'- /5Phos/CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]--------> -3'\n                                       ||||||||||\n                                  3'- AAAAAAAAAA......[mRNA] -5'\n(mRNA template is nicked and used to prime second-strand synthesis in step 3)"
+    },
+    {
+      "step": 2,
+      "title": "Hairpin ligation (index 2)",
+      "summary": "After pooling and re-splitting, a hairpin ligation primer anneals to the CAGAGC linker and T4 DNA ligase joins the ligation barcode onto the 5' end of the RT primer.",
+      "note": "The ligation primer's GCTCTG overhang is the reverse complement of the CAGAGC linker; its 3' arm folds back (barcode / reverse-complement barcode) into a hairpin, presenting a recessed 3'-OH that is ligated to the phosphorylated 5' end of the RT primer. This adds index 2 and the Read 1 primer sequence.",
+      "product": "(2) After ligation of the hairpin barcode adaptor:\n\n5'- GCTCTG[LIGATION_BARCODE:10]TACGACGCTCTTCCGATCT[LIGATION_BARCODE:10]CAGAGC[UMI:8][RT_BARCODE:10](T)30[CDNA] -3'\n     ^GCTCTG anneals to the CAGAGC linker; T4 DNA ligase seals the 5'-phosphate;\n      the 3' [LIGATION_BARCODE:10] is the reverse complement forming the hairpin stem"
+    },
+    {
+      "step": 3,
+      "title": "Second-strand synthesis",
+      "summary": "The RNA is nicked and used to prime synthesis of the second strand, opening the hairpin and yielding double-stranded cDNA.",
+      "note": "NEBNext mRNA second-strand synthesis module (DNA Polymerase I) performs RNA-primed nick-translation, converting the barcoded first-strand product into blunt double-stranded DNA and resolving the ligation hairpin.",
+      "product": "(3) Double-stranded, fully barcoded cDNA:\n\n5'- ...TACGACGCTCTTCCGATCT[LIGATION_BARCODE:10]CAGAGC[UMI:8][RT_BARCODE:10](T)30[CDNA] -3'\n3'- ...ATGCTGCGAGAAGGCTAGA[.................]GTCTCG[......][..........](A)30[CDNA] -5'"
+    },
+    {
+      "step": 4,
+      "title": "Protease digestion + Tn5 (N7) tagmentation",
+      "summary": "Nuclei are digested with a heat-inactivatable protease, then N7-loaded Tn5 fragments the double-stranded cDNA and inserts the Nextera N7 adaptor.",
+      "note": "Qiagen protease frees the DNA for Tn5 access (replacing the original bead cleanup). Tn5 loaded only with the N7 (mosaic-end) adaptor tagments the dsDNA, appending the mosaic end and Read 2 / N7 sequence. Only the read-1-proximal fragment that retains the cell barcodes is amplifiable in the next step.",
+      "product": "(4) Barcode-bearing fragment after N7 tagmentation:\n\n5'- ...[LIGATION_BARCODE:10]CAGAGC[UMI:8][RT_BARCODE:10](T)30[CDNA]CTGTCTCTTATACACATCT -3'\n3'- ...[..................].....[......][..........](A)30[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG -5'"
+    },
+    {
+      "step": 5,
+      "title": "Indexed PCR (index 3) and final adaptors",
+      "summary": "PCR with an indexed P7 primer and a (optionally indexed) P5/TruSeq primer adds index 3, the full TruSeq Read 1, and the P5 and P7 flow-cell adaptors, completing the sequenceable library.",
+      "note": "The P5 primer anneals to the Read 1 region and adds P5 + optional i5 + full TruSeq Read 1; the P7 primer anneals to the N7 region and adds the i7 barcode + P7. 16 cycles with a 70 C pre-extension. Library is gel size-selected to ~250-600 bp.",
+      "product": "(5) Final sequenceable library (= final_library):\n\n5'- AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10]ACACTCTTTCCCTACACGACGCTCTTCCGATCT[LIGATION_BARCODE:10]CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[SAMPLE_INDEX:10]ATCTCGTATGCCGTCTTCTGCTTG -3'"
+    }
+  ],
+  "library_sequencing": [
+    {
+      "read": "Read 1",
+      "primer": "Illumina TruSeq Read 1 primer (ACACTCTTTCCCTACACGACGCTCTTCCGATCT)",
+      "template": "bottom",
+      "cycles": 34,
+      "note": "Reads the cell barcode + UMI: 10-bp ligation barcode + CAGAGC linker (6) + 8-bp UMI + 10-bp RT barcode = 34 bp. Primer is identical to the top-strand TruSeq R1 region, anneals to the bottom strand, and reads rightward.",
+      "diagram": "Read 1 (34 cycles) - Illumina TruSeq Read 1 primer:\n\n   Read 1 primer 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT------------------------------------>\n5'-...ACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNCAGAGCNNNNNNNNNNNNNNNNNNTTTTTTTTTT...-3'\n3'-...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNGTCTCGNNNNNNNNNNNNNNNNNNAAAAAAAAAA...-5'\n                                     |-Lig BC(10)-|link||-UMI(8)-||- RT BC(10)-|"
+    },
+    {
+      "read": "Read 2",
+      "primer": "Illumina Nextera Read 2 primer (GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG)",
+      "template": "top",
+      "cycles": 48,
+      "note": "Reads into the cDNA insert from the Tn5/N7 (P7) side. Primer anneals to the top-strand ME/N7 region and extends leftward into the cDNA. 48 cycles (optimized); 52 in the original 2019 protocol.",
+      "diagram": "Read 2 (48 cycles) - Illumina Nextera Read 2 primer:\n\n Read 2 primer 3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n              <-------------------------------------\n5'-...XXXXXXXCTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNNNATCTCGTATGCC...-3'\n3'-...XXXXXXXGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNNNTAGAGCATACGG...-5'\n     |-cDNA-||------ME + N7 (rc) junction------||-i7(10)-|"
+    },
+    {
+      "read": "Index 1 (i7)",
+      "primer": "Nextera Index 1 / i7 primer (CTGTCTCTTATACACATCTCCGAGCCCACGAGAC)",
+      "template": "bottom",
+      "cycles": 10,
+      "note": "Reads index 3 / the PCR P7 barcode (10 bp). Primer is identical to the top-strand ME/N7 region, anneals to the bottom strand, and reads rightward into the i7 index.",
+      "diagram": "Index read 1 / i7 (10 cycles) - Nextera Index 1 primer:\n\n   i7 primer 5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC---------->\n5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNNNATCTCGTATGCC...-3'\n3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNNNTAGAGCATACGG...-5'\n                                       |- i7 (10)-|"
+    },
+    {
+      "read": "Index 2 (i5)",
+      "primer": "TruSeq Index 2 / i5 primer (P5 side)",
+      "template": "top",
+      "cycles": 10,
+      "note": "Optional PCR P5 / plate index (10 bp), present only when the P5 primer is indexed. On the NextSeq/NovaSeq platforms used here it is read as the reverse complement: the primer anneals to the top-strand TruSeq R1 region and extends leftward into the i5 index.",
+      "diagram": "Index read 2 / i5 (10 cycles, optional plate index) - read as reverse complement on NextSeq/NovaSeq:\n\n                 i5 primer 3'-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-5'\n                          <-------------------------------------\n5'-AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNACACTCTTTCCCTACACGACGCTCTTCCGATCT...-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNTGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA...-5'\n     |------- P5 --------------||-i5(10)-||-------- TruSeq Read 1 ---------|"
+    }
+  ],
+  "whitelists": {},
+  "build": {
+    "builder_version": "llm-generic-1.0",
+    "deterministic": false,
+    "source_html_sha256": null,
+    "extraction_method": "claude_llm_generic",
+    "model": "claude-opus-4-8"
+  },
+  "title": "sci-RNA-seq3",
+  "description": "sci-RNA-seq3 is a three-level single-cell combinatorial-indexing RNA-seq method that profiles the transcriptomes of hundreds of thousands to millions of single nuclei in one experiment, without droplets or a commercial kit. Fixed nuclei are split across 96-/384-well plates and labeled by three successive in-well barcoding reactions: a barcoded oligo-dT reverse-transcription primer that also carries a UMI (index 1), a ligated hairpin barcode (index 2), and an indexed PCR (index 3), so each nucleus receives a unique RT + ligation + PCR barcode combination. After second-strand synthesis and Tn5 (N7) tagmentation, the hybrid TruSeq(P5)/Nextera(P7) library is sequenced on Illumina: Read 1 recovers the ligation barcode, UMI and RT barcode (together the cell barcode), Read 2 reads the cDNA insert, and the i7/i5 index reads recover the PCR barcodes.",
+  "reference": {
+    "kind": "paper",
+    "label": "Optimized single-nucleus transcriptional profiling by combinatorial indexing",
+    "path": null,
+    "url": "https://doi.org/10.1038/s41596-022-00752-0",
+    "doi": "10.1038/s41596-022-00752-0"
+  },
+  "publication": {
+    "year": 2023,
+    "original_publication": {
+      "title": "Optimized single-nucleus transcriptional profiling by combinatorial indexing",
+      "journal": "Nature Protocols",
+      "doi": "10.1038/s41596-022-00752-0",
+      "url": "https://doi.org/10.1038/s41596-022-00752-0"
+    },
+    "authors": [
+      {
+        "name": "Beth K. Martin",
+        "corresponding": true,
+        "email": "martin91@uw.edu",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Chengxiang Qiu",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Eva Nichols",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Melissa Phung",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA; Department of Biology, Case Western Reserve University, Cleveland, OH, USA"
+      },
+      {
+        "name": "Rula Green-Gladden",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA; Division of Hematology/Oncology, Seattle Children's Hospital, Seattle, WA, USA"
+      },
+      {
+        "name": "Sanjay Srivatsan",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA; Medical Scientist Training Program, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Ronnie Blecher-Gonen",
+        "affiliation": "The Crown Genomics Institute of the Nancy and Stephen Grand Israel National Center for Personalized Medicine, Weizmann Institute of Science, Rehovot, Israel"
+      },
+      {
+        "name": "Brian J. Beliveau",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA"
+      },
+      {
+        "name": "Cole Trapnell",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA; Brotman Baty Institute for Precision Medicine, Seattle, WA, USA; Allen Discovery Center for Cell Lineage Tracing, Seattle, WA, USA"
+      },
+      {
+        "name": "Junyue Cao",
+        "affiliation": "Laboratory of Single-Cell Genomics and Population Dynamics, The Rockefeller University, New York, NY, USA"
+      },
+      {
+        "name": "Jay Shendure",
+        "corresponding": true,
+        "email": "shendure@uw.edu",
+        "affiliation": "Department of Genome Sciences, University of Washington, Seattle, WA, USA; Brotman Baty Institute for Precision Medicine; Allen Discovery Center for Cell Lineage Tracing; Howard Hughes Medical Institute, Seattle, WA, USA"
+      }
+    ],
+    "throughput": {
+      "summary": "A one-plate 96x96x96 experiment typically nets ~100,000 nuclei; scaling to 96x96x384 gives ~400,000 and a four-plate 384x384x384 experiment yields one to several million nuclei per run. Reagent cost is on the order of 1 cent per cell or less.",
+      "cells": "~100,000 (96x96x96) up to >1,000,000 (384x384x384); showcase E16.5 mouse embryo run recovered 381,888 high-quality nuclei (median 2,648 UMIs and 1,493 genes per cell)",
+      "rna": "single-nucleus mRNA (3' UMI counting); nuclear RNA, ~59% intronic",
+      "dna": "not applicable (RNA assay; the cDNA library is the sequenced product)"
+    },
+    "statistical_model": "Negative binomial generalized linear model for UMI counts (Monocle differentialGeneTest / spline fits); Poisson-like combinatorial-indexing collision model; Scrublet for doublet detection",
+    "other": [
+      {
+        "label": "sci-RNA-seq3 original publication",
+        "value": "Cao, J. et al. The single-cell transcriptional landscape of mammalian organogenesis. Nature 566, 496-502 (2019). doi:10.1038/s41586-019-0969-x (MOCA: ~2 million nuclei from 61 mouse embryos, E9.5-E13.5)"
+      },
+      {
+        "label": "sci-RNA-seq original method",
+        "value": "Cao, J. et al. Comprehensive single-cell transcriptional profiling of a multicellular organism. Science 357, 661-667 (2017)"
+      },
+      {
+        "label": "Barcode combinatorial capacity",
+        "value": "384 RT x 384 ligation x 768 PCR barcodes = ~113 million possible combinations (Cao 2019)"
+      },
+      {
+        "label": "Key optimizations vs. original",
+        "value": "DEPC RNase inactivation, DSP/methanol fixation, T4 DNA ligase (not Quick Ligase), protease digestion instead of bead cleanup, and removal of the deoxyU / USER step"
+      },
+      {
+        "label": "Analysis pipeline",
+        "value": "https://github.com/JunyueC/sci-RNA-seq3_pipeline (demultiplex on PCR i5/i7, filter RT + ligation indexes, STAR alignment, UMI dedup)"
+      },
+      {
+        "label": "Data availability",
+        "value": "GSE186824 (optimized E16.5 mouse embryo); GSE119945 (original MOCA atlas)"
+      },
+      {
+        "label": "Sequencing platforms",
+        "value": "NextSeq 550 / NextSeq 2000 P2 for one-plate runs; NovaSeq 6000 S4 for large (four-plate) experiments"
+      }
+    ]
+  },
+  "modality": "RNA",
+  "method_type": "combinatorial indexing",
+  "data_processing": {
+    "summary": "A custom, non-droplet pipeline (JunyueC/sci-RNA-seq3_pipeline) converts base calls to FASTQ, demultiplexes on the PCR i5/i7 indexes, attaches and filters the in-well RT and ligation barcodes, aligns to the genome with STAR, splits reads into single cells by the RT + ligation index, and collapses UMIs to build a cell-by-gene digital expression matrix. It is qsub/HPC-oriented and produces large (3-4x) intermediate files.",
+    "stages": [
+      {
+        "id": "basecalling",
+        "label": "Base calling"
+      },
+      {
+        "id": "demux",
+        "label": "Demultiplexing"
+      },
+      {
+        "id": "barcode",
+        "label": "Barcode processing"
+      },
+      {
+        "id": "alignment",
+        "label": "Alignment"
+      },
+      {
+        "id": "cell_assignment",
+        "label": "Cell assignment"
+      },
+      {
+        "id": "quantification",
+        "label": "Quantification"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "n_bcl",
+        "label": "Convert base calls to FASTQ",
+        "tool": "",
+        "stage": "basecalling",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_demux",
+        "label": "Demultiplex by i5/i7 indexes",
+        "tool": "JunyueC/sci-RNA-seq3_pipeline",
+        "stage": "demux",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_attach",
+        "label": "Attach RT + ligation barcodes",
+        "tool": "JunyueC/sci-RNA-seq3_pipeline",
+        "stage": "barcode",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_filter",
+        "label": "Filter valid barcode reads",
+        "tool": "JunyueC/sci-RNA-seq3_pipeline",
+        "stage": "barcode",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_align",
+        "label": "Align reads to genome",
+        "tool": "STAR",
+        "stage": "alignment",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_split",
+        "label": "Split reads into cells",
+        "tool": "JunyueC/sci-RNA-seq3_pipeline",
+        "stage": "cell_assignment",
+        "scope": "bulk",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_dedup",
+        "label": "Deduplicate reads by UMI",
+        "tool": "JunyueC/sci-RNA-seq3_pipeline",
+        "stage": "quantification",
+        "scope": "per_cell",
+        "terminal": false,
+        "viz_only": false
+      },
+      {
+        "id": "n_matrix",
+        "label": "Build cell-by-gene matrix",
+        "tool": "JunyueC/sci-RNA-seq3_pipeline",
+        "stage": "quantification",
+        "scope": "bulk",
+        "terminal": true,
+        "viz_only": false
+      }
+    ],
+    "edges": [
+      {
+        "from": "n_bcl",
+        "to": "n_demux",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_demux",
+        "to": "n_attach",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_attach",
+        "to": "n_filter",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_filter",
+        "to": "n_align",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_align",
+        "to": "n_split",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_split",
+        "to": "n_dedup",
+        "kind": "sequential"
+      },
+      {
+        "from": "n_dedup",
+        "to": "n_matrix",
+        "kind": "fan_in"
+      }
+    ],
+    "statistical_model": "null"
+  }
+}

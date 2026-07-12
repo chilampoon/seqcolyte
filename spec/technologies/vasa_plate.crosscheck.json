@@ -1,0 +1,21 @@
+{
+  "folder": "vasa_plate",
+  "title": "VASA-plate",
+  "crosscheck": {
+    "status": "checked",
+    "source_html_file": "VASA-seq.html",
+    "oligo_seq_recall": 0.727,
+    "oligo_seqs_matched": 8,
+    "oligo_seqs_total": 11,
+    "missed_oligos": [
+      "Barcoded RT primer",
+      "Illumina RPI primers",
+      "Index read primer"
+    ],
+    "annotated_library_exact_match": false,
+    "annotated_library_got": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:8]TTTTTTTTTTTTTTTTTTTTTTTT[CDNA]TGGAATTCTCGGGTGCCAAGGGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "annotated_library_expected": "AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:8]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[SAMPLE_INDEX:6]ATCTCGTATGCCGTCTTCTGCTTG",
+    "barcode_umi_length_diffs": {},
+    "big_conflict": false
+  }
+}
