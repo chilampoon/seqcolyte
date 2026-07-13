@@ -128,25 +128,8 @@ export default async function Home() {
       <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="mx-auto grid w-full max-w-6xl gap-6 px-6 py-8 lg:grid-cols-[1fr_20rem]">
           <div className="space-y-8">
-            {demos.length > 0 && (
-              <section>
-                <h2 className="text-foreground mb-1 text-sm font-semibold tracking-wide uppercase">
-                  Examples
-                </h2>
-                <p className="text-muted-foreground mb-3 text-xs">
-                  Worked cases across platforms — open any to see the extracted spec, the QC run, and the
-                  diagnosis with its root cause and suggested fix.
-                </p>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {demos.map((project) => (
-                    <DemoCard key={project.id} project={project} />
-                  ))}
-                </div>
-              </section>
-            )}
-
             <section>
-              <h2 className="text-muted-foreground mb-3 text-xs font-medium tracking-wide uppercase">
+              <h2 className="text-foreground mb-3 text-sm font-semibold tracking-wide uppercase">
                 Projects
               </h2>
               {rest.length === 0 ? (
@@ -170,6 +153,23 @@ export default async function Home() {
                 </div>
               )}
             </section>
+
+            {demos.length > 0 && (
+              <section>
+                <h2 className="text-foreground mb-1 text-sm font-semibold tracking-wide uppercase">
+                  Examples
+                </h2>
+                <p className="text-muted-foreground mb-3 text-xs">
+                  Worked cases across platforms — open any to see the extracted spec, the QC run, and the
+                  diagnosis with its root cause and suggested fix.
+                </p>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {demos.map((project) => (
+                    <DemoCard key={project.id} project={project} />
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
 
         <aside>

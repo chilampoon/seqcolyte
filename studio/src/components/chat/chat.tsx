@@ -21,6 +21,47 @@ import { AnalysisTrace } from "@/components/trace/analysis-trace";
 
 const UPLOAD_ACCEPT = ".pdf,.txt,.md,.csv,.tsv,.xlsx,.xls,.fastq,.fq,.fastq.gz,.fq.gz,.gz";
 
+const fmtMB = (bytes: number) => (bytes / 1e6).toFixed(1);
+const uploadPct = (u: { loaded: number; total: number }) =>
+  u.total > 0 ? Math.min(100, Math.round((100 * u.loaded) / u.total)) : 0;
+
+/**
+ * Stream a file to the server as a raw `application/octet-stream` body (name in
+ * the `x-filename` header) and report progress. Two wins over `fetch(FormData)`:
+ * `fetch` can't surface upload progress at all, and multipart forces the server
+ * to buffer the whole file before writing — the raw body streams straight to
+ * disk. `xhr.upload.onprogress` gives bytes-sent; `xhr.send(file)` streams the
+ * File without materializing it. Same-origin, so cached Basic-auth credentials
+ * ride along automatically.
+ */
+function xhrUpload(
+  url: string,
+  file: File,
+  onProgress: (loaded: number, total: number) => void,
+): Promise<{ ok: boolean; data: { error?: string; filename?: string; extract?: boolean } }> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", url);
+    xhr.setRequestHeader("Content-Type", "application/octet-stream");
+    xhr.setRequestHeader("x-filename", encodeURIComponent(file.name));
+    xhr.upload.onprogress = (ev) => {
+      if (ev.lengthComputable) onProgress(ev.loaded, ev.total);
+    };
+    xhr.onload = () => {
+      let data = {};
+      try {
+        data = JSON.parse(xhr.responseText || "{}");
+      } catch {
+        /* non-JSON body (e.g. proxy error) — leave data empty */
+      }
+      resolve({ ok: xhr.status >= 200 && xhr.status < 300, data });
+    };
+    xhr.onerror = () => reject(new Error("network error"));
+    xhr.onabort = () => reject(new Error("aborted"));
+    xhr.send(file);
+  });
+}
+
 type AnyPart = {
   type: string;
   text?: string;
@@ -125,6 +166,7 @@ export function Chat({
 }) {
   const [input, setInput] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [upload, setUpload] = useState<{ name: string; loaded: number; total: number } | null>(null);
   const [extract, setExtract] = useState<{ status: string; log: string; doc: string } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -205,26 +247,24 @@ export function Chat({
     e.target.value = "";
     if (!file) return;
     setUploading(true);
+    setUpload({ name: file.name, loaded: 0, total: file.size });
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch(`/api/projects/${projectId}/inputs/upload`, {
-        method: "POST",
-        body: fd,
-      });
-      const data = (await res.json().catch(() => ({}))) as {
-        error?: string;
-        filename?: string;
-        extract?: boolean;
-      };
-      if (!res.ok) {
+      const { ok, data } = await xhrUpload(
+        `/api/projects/${projectId}/inputs/upload`,
+        file,
+        (loaded, total) => setUpload({ name: file.name, loaded, total }),
+      );
+      if (!ok) {
         toast.error(data.error ?? "Upload failed");
         return;
       }
       await hydrate();
       if (data.extract) streamExtract(data.filename ?? file.name);
+    } catch {
+      toast.error("Upload failed");
     } finally {
       setUploading(false);
+      setUpload(null);
     }
   }
 
@@ -286,6 +326,25 @@ export function Chat({
       </div>
 
       <div className="border-border/60 shrink-0 border-t p-3">
+        {upload && (
+          <div className="mx-auto mb-2 max-w-3xl">
+            <div className="text-muted-foreground mb-1 flex items-center gap-2 text-xs">
+              <Loader2 className="size-3 shrink-0 animate-spin" />
+              <span className="truncate font-mono">{upload.name}</span>
+              <span className="ml-auto shrink-0 tabular-nums">
+                {upload.loaded >= upload.total && upload.total > 0
+                  ? "finishing…"
+                  : `${fmtMB(upload.loaded)} / ${fmtMB(upload.total)} MB · ${uploadPct(upload)}%`}
+              </span>
+            </div>
+            <div className="bg-muted h-1.5 w-full overflow-hidden rounded-full">
+              <div
+                className="bg-primary h-full rounded-full transition-[width] duration-150 ease-out"
+                style={{ width: `${uploadPct(upload)}%` }}
+              />
+            </div>
+          </div>
+        )}
         <form onSubmit={submit} className="mx-auto flex max-w-3xl items-end gap-2">
           <input
             ref={fileRef}
