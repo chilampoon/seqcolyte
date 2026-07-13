@@ -67,7 +67,12 @@ def extract_text(doc_path: str | Path, *, include_text_layer: bool = True) -> st
     if suffix in _PLAINTEXT_SUFFIXES:
         return path.read_text()
     if suffix == ".pdf":
-        md = docling_markdown(path)
+        try:
+            md = docling_markdown(path)
+        except ImportError:
+            # Lean deployments (e.g. the HF container) omit docling's heavy ML stack; fall back to the
+            # pypdfium2 text layer alone — no table reconstruction, but the LLM extractor still gets the text.
+            return text_layer(path)
         if include_text_layer:
             md += _TEXT_LAYER_HEADER + text_layer(path)
         return md

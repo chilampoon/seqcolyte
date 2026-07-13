@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { runPreflight } from "@/lib/preflight";
-import { listProjects, listRuns } from "@/lib/store";
+import { listProjects } from "@/lib/store";
 import { PreflightPanel } from "@/components/preflight-panel";
 import { NewProjectButton } from "@/components/new-project-button";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -12,44 +12,25 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import type { ProjectManifest, Verdict } from "@/lib/types";
+import type { ProjectManifest } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-function DemoCard({ project, overall }: { project: ProjectManifest; overall: Verdict | null }) {
-  const pass = overall === "pass";
+function DemoCard({ project }: { project: ProjectManifest }) {
+  const platform = /nanopore/i.test(project.assay) ? "Nanopore · long-read" : "Illumina · short-read";
   return (
     <Link href={`/projects/${project.id}`} className="group block">
-      <Card
-        className={cn(
-          "h-full transition-colors",
-          pass ? "group-hover:border-emerald-500/60" : "group-hover:border-red-500/60",
-        )}
-      >
+      <Card className="group-hover:border-primary/50 h-full transition-colors">
         <CardHeader>
-          <div className="flex items-start justify-between gap-2">
-            <CardTitle className="text-base leading-tight">{project.name}</CardTitle>
-            {overall && (
-              <span
-                className={cn(
-                  "shrink-0 rounded-md border px-2 py-0.5 text-xs font-semibold uppercase",
-                  pass
-                    ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-500"
-                    : "border-red-500/40 bg-red-500/10 text-red-500",
-                )}
-              >
-                {overall}
-              </span>
-            )}
+          <CardTitle className="text-base leading-tight">{project.name}</CardTitle>
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            <Badge variant="secondary" className="text-[10px]">
+              {platform}
+            </Badge>
           </div>
-          <CardDescription className="line-clamp-2">{project.assay}</CardDescription>
-          <p className="text-muted-foreground mt-1 text-xs">
-            {project.demoBlurb ??
-              (pass
-                ? "Clean control — every QC check passes."
-                : "Failures injected — QC catches them (recall 1.0).")}
-          </p>
+          {project.demoBlurb && (
+            <CardDescription className="line-clamp-3 pt-1">{project.demoBlurb}</CardDescription>
+          )}
         </CardHeader>
       </Card>
     </Link>
@@ -91,24 +72,17 @@ function ProjectCard({ project }: { project: ProjectManifest }) {
   );
 }
 
-async function latestVerdict(projectId: string): Promise<Verdict | null> {
-  try {
-    const runs = await listRuns(projectId);
-    return runs.find((r) => r.overall)?.overall ?? runs[0]?.overall ?? null;
-  } catch {
-    return null;
-  }
-}
+// curated example order: Illumina clean → Illumina problem → Nanopore problem
+const EXAMPLE_ORDER = ["healthy-library", "adapter-dimer", "tso-concatemer"];
+const exampleRank = (id: string) => {
+  const i = EXAMPLE_ORDER.findIndex((k) => id.includes(k));
+  return i < 0 ? 99 : i;
+};
 
 export default async function Home() {
   const [preflight, projects] = await Promise.all([runPreflight(), listProjects()]);
-  const demos = projects.filter((p) => p.demo);
+  const demos = projects.filter((p) => p.demo).sort((a, b) => exampleRank(a.id) - exampleRank(b.id));
   const rest = projects.filter((p) => !p.demo);
-  const demoCards = await Promise.all(
-    demos.map(async (p) => ({ project: p, overall: await latestVerdict(p.id) })),
-  );
-  // healthy (pass) first for a clean → problematic reading order
-  demoCards.sort((a, b) => (a.overall === "pass" ? -1 : b.overall === "pass" ? 1 : 0));
 
   return (
     <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -128,7 +102,7 @@ export default async function Home() {
             <div>
               <h1 className="text-lg font-semibold tracking-tight">Seqcolyte Studio</h1>
               <p className="text-muted-foreground text-sm">
-                Protocol-aware sequencing QC — inputs, pipeline, results, and a grounded assistant.
+                Root cause analysis for genomic sequencing runs.
               </p>
             </div>
           </div>
@@ -154,19 +128,18 @@ export default async function Home() {
       <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="mx-auto grid w-full max-w-6xl gap-6 px-6 py-8 lg:grid-cols-[1fr_20rem]">
           <div className="space-y-8">
-            {demoCards.length > 0 && (
+            {demos.length > 0 && (
               <section>
                 <h2 className="text-foreground mb-1 text-sm font-semibold tracking-wide uppercase">
-                  Demos
+                  Examples
                 </h2>
                 <p className="text-muted-foreground mb-3 text-xs">
-                  The same protocol-aware QC across modalities — Illumina short-read and Nanopore
-                  long-read — each on a healthy vs. a problematic library. Open any to see the spec,
-                  the run trace, and the report.
+                  Worked cases across platforms — open any to see the extracted spec, the QC run, and the
+                  diagnosis with its root cause and suggested fix.
                 </p>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  {demoCards.map(({ project, overall }) => (
-                    <DemoCard key={project.id} project={project} overall={overall} />
+                  {demos.map((project) => (
+                    <DemoCard key={project.id} project={project} />
                   ))}
                 </div>
               </section>

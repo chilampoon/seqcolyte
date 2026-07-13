@@ -489,7 +489,7 @@
       "template": "bottom",
       "cycles": 98,
       "note": "Read 1 primer anneals to the bottom strand at the partial Read 1 handle; its 3' end sits at the cDNA junction and reads 98 nt of the cDNA insert (shorter reads reduce alignment rate).",
-      "diagram": "                Read 1 primer (TruSeq R1)\n     5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------->   reads cDNA (98 nt)\ntop  5'-...........CTACACGACGCTCTTCCGATCT[======  cDNA insert  ======](A)30...-3'\nbot  3'-...........GATGTGCTGCGAGAAGGCTAGA[=== cDNA rev-complement ===](T)30...-5'\n                                        (bottom strand = template)"
+      "diagram": "                Read 1 primer (TruSeq R1)\n     5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------->   reads cDNA (98 nt)\ntop  5'-...........CTACACGACGCTCTTCCGATCT[======  cDNA insert  ======](A)30...-3'\nbot  3'-...........GATGTGCTGCGAGAAGGCTAGA[======  cDNA insert  ======](T)30...-5'\n                                        (bottom strand = template)"
     },
     {
       "read": "i7 Index (I1, cell barcode)",
@@ -497,7 +497,7 @@
       "template": "top",
       "cycles": 14,
       "note": "The i7 index read reads the 14 bp 10x cell barcode, which lies immediately 5' of the Read 2 (P7-proximal) constant handle on the top strand.",
-      "diagram": "                  i7 index primer anneals at the R2/P7-proximal handle\ntop 5'-...(A)30 [UMI:10] NNNNNNNNNNNNNN AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC ATCTCG...-3'\n                                     3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\nbot 3'-...(T)30 [UMIrc]  NNNNNNNNNNNNNN TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG TAGAGC...-5'\n                       <------------- read = 14 bp cell barcode (i7)"
+      "diagram": "                  i7 index primer anneals at the R2/P7-proximal handle\ntop 5'-...(A)30 [UMI:10] NNNNNNNNNNNNNN AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC ATCTCG...-3'\n                                     3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\nbot 3'-...(T)30 [UMI:10] NNNNNNNNNNNNNN TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG TAGAGC...-5'\n                       <------------- read = 14 bp cell barcode (i7)"
     },
     {
       "read": "i5 Index (I2, sample index)",
@@ -513,7 +513,7 @@
       "template": "top",
       "cycles": 10,
       "note": "Read 2 primer anneals to the top strand at the Read 2 handle (reverse complement) and reads the 10 bp UMI attached during reverse transcription; the 14 bp barcode is captured separately as the i7 index. Some early v1 libraries used a 5 bp UMI (5 bp Read 2).",
-      "diagram": "                    Read 2 primer (TruSeq R2) anneals to top strand\ntop 5'-...(A)30 [UMI:10] [BC:14] AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC ATCTCG...-3'\n                              3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\nbot 3'-...(T)30 [UMIrc]  [BCrc]  TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG TAGAGC...-5'\n            <--- read 2 = 10 bp UMI"
+      "diagram": "                    Read 2 primer (TruSeq R2) anneals to top strand\ntop 5'-...(A)30 [UMI:10] [BC:14] AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC ATCTCG...-3'\n                              3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\nbot 3'-...(T)30 [UMI:10] [BC:14] TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG TAGAGC...-5'\n            <--- read 2 = 10 bp UMI"
     }
   ],
   "whitelists": {},

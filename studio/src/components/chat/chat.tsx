@@ -19,7 +19,7 @@ import type { StepStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { AnalysisTrace } from "@/components/trace/analysis-trace";
 
-const UPLOAD_ACCEPT = ".pdf,.txt,.md,.csv,.tsv,.xlsx,.xls";
+const UPLOAD_ACCEPT = ".pdf,.txt,.md,.csv,.tsv,.xlsx,.xls,.fastq,.fq,.fastq.gz,.fq.gz,.gz";
 
 type AnyPart = {
   type: string;

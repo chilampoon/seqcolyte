@@ -24,13 +24,14 @@ RUN npm run build
 FROM node:22-bookworm-slim AS runtime
 
 # System deps (as root): Python + the Claude CLI + wget for the whitelist.
-# docling is omitted (lazy-imported, PDF-extract only).
+# docling's heavy ML stack is omitted; pypdfium2 gives a lightweight PDF text layer so uploaded
+# protocol PDFs still extract (extract/pdf_text.py falls back to it when docling is absent).
 RUN apt-get update \
  && apt-get install -y --no-install-recommends python3 python3-pip ca-certificates git \
  && rm -rf /var/lib/apt/lists/* \
  && npm install -g @anthropic-ai/claude-code \
  && pip3 install --no-cache-dir --break-system-packages \
-      numpy pyyaml jsonschema beautifulsoup4 lxml
+      numpy pyyaml jsonschema beautifulsoup4 lxml pypdfium2
 
 # HF Spaces require UID 1000 at runtime. The node base image already provides the
 # `node` user at UID 1000, so reuse it (creating a new UID-1000 user would collide).

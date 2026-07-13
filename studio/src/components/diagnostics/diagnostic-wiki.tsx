@@ -131,7 +131,14 @@ function IssueDetail({
             if (!c) return <div key={cid}>{cid}</div>;
             return (
               <div key={cid} className="border-border/60 rounded-md border p-3">
-                <span className="font-medium">{c.title}</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-medium">{c.title}</span>
+                  {c.workflow_stage && (
+                    <Badge variant="secondary" className="text-[10px]">
+                      {c.workflow_stage.replace(/_/g, " ")}
+                    </Badge>
+                  )}
+                </div>
                 <p className="text-muted-foreground mt-1 text-sm">{c.mechanism}</p>
               </div>
             );

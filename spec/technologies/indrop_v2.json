@@ -594,14 +594,14 @@
       "title": "Linear amplification by IVT (T7)",
       "summary": "HiScribe T7 RNA polymerase transcribes from the T7 promoter to linearly amplify the barcoded library as antisense RNA (aRNA).",
       "note": "CEL-seq-style linear amplification; each cDNA molecule yields many antisense RNA copies, preserving the barcode/UMI end.",
-      "product": "aRNA (antisense, 5'->3'):\n5'- [CDNA-antisense]AAAA...[UMI:6-rc][CELL_BARCODE:8]UUCCGCAGUGUUCGUUAGUGA[CELL_BARCODE:8]AGAGCGUCGUGUAGGGAAAGAGCCAUGG... -3'"
+      "product": "aRNA (antisense, 5'->3'):\n5'- [CDNA-antisense]AAAA...[UMI:6][CELL_BARCODE:8]UUCCGCAGUGUUCGUUAGUGA[CELL_BARCODE:8]AGAGCGUCGUGUAGGGAAAGAGCCAUGG... -3'"
     },
     {
       "step": 6,
       "title": "Fragmentation of amplified RNA",
       "summary": "Zinc-catalyzed hydrolysis fragments the aRNA to sequenceable size.",
       "note": "RNA Fragmentation Reagents (70 \u00b0C, ~3 min); only fragments retaining the barcode/UMI (T7-proximal) end will ultimately be amplifiable.",
-      "product": "aRNA fragments (~200-400 nt), including the barcode/UMI-bearing 3' fragment:\n5'- ...[UMI:6-rc][CELL_BARCODE:8]UUCCGCAGUGUUCGUUAGUGA[CELL_BARCODE:8]AGAGCGUCGUGUAGGGAAAGAG... -3'"
+      "product": "aRNA fragments (~200-400 nt), including the barcode/UMI-bearing 3' fragment:\n5'- ...[UMI:6][CELL_BARCODE:8]UUCCGCAGUGUUCGUUAGUGA[CELL_BARCODE:8]AGAGCGUCGUGUAGGGAAAGAG... -3'"
     },
     {
       "step": 7,

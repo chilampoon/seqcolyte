@@ -23,14 +23,18 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
     return NextResponse.json({ error: "no extracted spec to confirm" }, { status: 400 });
   }
 
+  // Run on the user's uploaded reads if both mates are present, else the labeled example dataset.
+  const fq = project.inputs.fastq;
+  const hasUpload = fq?.source === "upload" && !!fq.r1 && !!fq.r2;
+  const source: "upload" | "sim" = hasUpload ? "upload" : "sim";
+
   await updateProject(id, {
     specConfirmed: true,
     phase: "spec_confirmed",
-    inputs: { ...project.inputs, reads: "demo" },
+    inputs: { ...project.inputs, reads: hasUpload ? "uploaded" : "demo" },
   });
 
-  // Analysis runs on the labeled demo dataset (enables the eval / confusion matrix).
-  const result = await startQcRun(id, { useLlm: true, fastqSource: "sim" });
+  const result = await startQcRun(id, { useLlm: true, fastqSource: source });
   if ("error" in result) {
     await updateProject(id, { phase: "awaiting_spec_review" });
     return NextResponse.json({ error: result.error }, { status: 400 });
@@ -41,8 +45,9 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
     {
       role: "assistant",
       text:
-        "Spec confirmed ✓ — running the QC pipeline on the labeled demo dataset now. " +
-        "I'll stream each stage below; the ranked diagnosis and evidence chain land when it finishes.",
+        `Spec confirmed ✓ — running the QC pipeline on ${
+          hasUpload ? "**your uploaded reads**" : "the labeled example dataset"
+        } now. I'll stream each stage below; the ranked diagnosis and evidence chain land when it finishes.`,
       ts: new Date().toISOString(),
     },
   ]);

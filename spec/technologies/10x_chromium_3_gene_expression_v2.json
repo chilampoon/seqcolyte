@@ -478,21 +478,21 @@
       "title": "Full-length cDNA amplification (cDNA Fwd + Rev primers)",
       "summary": "After the emulsion is broken, pooled barcoded cDNA is PCR-amplified with primers against the Read 1 handle and the TSO handle.",
       "note": "cDNA Forward primer (CTACACGACGCTCTTCCGATCT) + cDNA Reverse primer (AAGCAGTGGTATCAACGCAGAG) generate double-stranded full-length cDNA (14 cycles typical).",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]   (dT)30VNXXX...XXXCCCATGTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CB_rc:16]       [UMI_rc:10](pA)30BNXXX...XXXGGGTACATGAGACGCAACTATGGTGACGAA -5'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXXCCCATGTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10](pA)30BNXXX...XXXGGGTACATGAGACGCAACTATGGTGACGAA -5'"
     },
     {
       "step": 5,
       "title": "Enzymatic fragmentation, end repair & A-tailing",
       "summary": "Full-length cDNA is sheared (~200 bp) and the fragment ends are repaired and A-tailed.",
       "note": "Only fragments carrying the 5' barcode handle and internal cDNA fragments enter the library; a single 3' A overhang is added for adaptor ligation.",
-      "product": "5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]   (dT)30VNXXX...XXX*A -3'\n3'-A*GATGTGCTGCGAGAAGGCTAGA[CB_rc:16]       [UMI_rc:10](pA)30BNXXX...XXX   -5'"
+      "product": "5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXX*A -3'\n3'-A*GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10](pA)30BNXXX...XXX   -5'"
     },
     {
       "step": 6,
       "title": "Adaptor ligation (TruSeq Read 2 adapter)",
       "summary": "The T-overhang double-stranded TruSeq adapter is ligated onto the A-tailed fragment ends, adding the Read 2 primer site.",
       "note": "Adaptor Mix (PN 220026) ligated by DNA Ligase.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXXAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -3'\n3'-                  ...GAGAAGGCTAGA[CB_rc][UMI_rc](pA)30BNXXX...XXXTCTAGCCTTCTCG                      -5'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXXAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -3'\n3'-        ...GAGAAGGCTAGA[CELL_BARCODE:16][UMI:10](pA)30BNXXX...XXXTCTAGCCTTCTCG                      -5'"
     },
     {
       "step": 7,

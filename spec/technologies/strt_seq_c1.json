@@ -292,7 +292,7 @@
       "title": "Tagmentation with barcoded Tn5",
       "summary": "Amplified cDNA is fragmented and tagged in one step by well-specific Tn5 transposomes carrying P7 + 8 bp barcode + mosaic end.",
       "note": "Each of 96 wells uses a distinct barcoded transposome (C1-TN5-x annealed to C1-TN5-U); the mosaic end is inserted internally, adding the read-2/P7 adapter and cell barcode.",
-      "product": "5'- AATGA...CCGAT NNNNN GGG [CDNA] CTGTCTCTTATACACATCTGACGC [BC-rc] TCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACT...GGCTA NNNNN CCC [CDNA] GACAGAGAATATGTGTAGACTGCG [BC]    AGCATACGGCAGAAGACGGAAC -5'"
+      "product": "5'- AATGA...CCGAT NNNNN GGG [CDNA] CTGTCTCTTATACACATCTGACGC [BC] TCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACT...GGCTA NNNNN CCC [CDNA] GACAGAGAATATGTGTAGACTGCG [BC] AGCATACGGCAGAAGACGGAAC -5'"
     },
     {
       "step": 5,
@@ -306,7 +306,7 @@
       "title": "PvuI digestion (remove 3' fragments)",
       "summary": "PvuI-HF cleaves the CGATCG site present only in the oligo(dT)-derived 3' fragments, releasing them.",
       "note": "The T31 primer end contains ...CCGATCG... (PvuI); the TSO 5' end does not, so only the desired 5'-most fragments remain on the beads.",
-      "product": "retained 5' fragment:\n[bead]~Bio-AATGATACGGCGACCACCGAT NNNNN GGG [CDNA] CTGTCTCTTATACACATCTGACGC [BC-rc] TCGTATGCCGTCTTCTGCTTG"
+      "product": "retained 5' fragment:\n[bead]~Bio-AATGATACGGCGACCACCGAT NNNNN GGG [CDNA] CTGTCTCTTATACACATCTGACGC [BC] TCGTATGCCGTCTTCTGCTTG"
     },
     {
       "step": 7,

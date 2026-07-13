@@ -183,11 +183,14 @@ function issueCard(f: QcFinding): string {
 /** A compact one-line row for a passing / descriptive check. */
 function otherRow(f: QcFinding): string {
   const mark = f.verdict === "pass" ? "✓" : "·";
-  return `<div class="orow"><span class="ok">${mark}</span><span class="oname">${esc(
+  const detail = cleanDetail(f.detail);
+  return `<details class="orow"><summary><span class="ok">${mark}</span><span class="oname">${esc(
     f.title,
-  )}</span><span class="mono muted oval">${fmtValue(f)}</span><span class="muted small odetail">${esc(
-    cleanDetail(f.detail),
-  )}</span></div>`;
+  )}</span><span class="mono muted oval">${fmtValue(f)}</span></summary>
+    <div class="odetail-body">
+      ${detail ? `<div class="sec-h">What was measured</div><p class="muted small">${esc(detail)}</p>` : ""}
+      <div class="muted xsmall">Passing threshold: <span class="mono">${esc(f.threshold)}</span></div>
+    </div></details>`;
 }
 
 /** Render a QC report (qc_report.json) as a self-contained, theme-aware HTML document. */
@@ -293,12 +296,17 @@ export function renderQcReportHtml(
   .sec-h2 { font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:600; margin-bottom:4px; }
   .refs { margin:0; padding-left:18px; } .refs li { margin:3px 0; font-size:12px; }
   .refs a { text-decoration:underline; text-underline-offset:2px; }
-  .orow { display:flex; align-items:baseline; gap:10px; padding:6px 0; border-bottom:1px solid var(--border); }
-  .orow:last-child { border-bottom:0; }
+  details.orow { border-bottom:1px solid var(--border); }
+  details.orow:last-child { border-bottom:0; }
+  details.orow > summary { display:flex; align-items:baseline; gap:10px; padding:9px 0; cursor:pointer; list-style:none; }
+  details.orow > summary::-webkit-details-marker { display:none; }
+  details.orow > summary::before { content:"▸"; color:var(--muted); font-size:10px; flex-shrink:0; transition:transform .12s; }
+  details.orow[open] > summary::before { transform:rotate(90deg); }
   .ok { color:#10b981; width:12px; flex-shrink:0; }
-  .oname { font-weight:500; flex-shrink:0; }
-  .oval { flex-shrink:0; } .odetail { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  @media (max-width:560px) { .odetail { display:none; } }
+  .oname { font-weight:500; flex:1; min-width:0; }
+  .oval { flex-shrink:0; }
+  .odetail-body { padding:0 0 12px 24px; }
+  .odetail-body p { margin:2px 0 8px; }
 </style>
 </head>
 <body>${body}</body>

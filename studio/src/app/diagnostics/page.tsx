@@ -18,8 +18,12 @@ export default async function DiagnosticsPage() {
           <div>
             <h1 className="text-lg font-semibold tracking-tight">Diagnostic wiki</h1>
             <p className="text-muted-foreground text-sm">
-              Metric &rarr; signal &rarr; issue &rarr; root cause &rarr; test &rarr; action. Browse the
-              diagnostic families, candidate causes, and confirmatory tests behind single-cell QC.
+              How to read this: a <strong className="text-foreground font-medium">metric</strong> feeds a{" "}
+              <strong className="text-foreground font-medium">signal</strong>, signals point to an{" "}
+              <strong className="text-foreground font-medium">issue</strong>, each issue has candidate{" "}
+              <strong className="text-foreground font-medium">root causes</strong>, and every cause has a
+              confirmatory <strong className="text-foreground font-medium">test</strong> and a{" "}
+              <strong className="text-foreground font-medium">fix</strong>. Pick an issue family to explore.
             </p>
           </div>
         </div>

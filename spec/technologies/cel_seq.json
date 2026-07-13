@@ -360,7 +360,7 @@
       "title": "Second-strand synthesis",
       "summary": "RNaseH + DNA Pol I convert the cDNA:mRNA hybrid into double-stranded cDNA carrying a functional T7 promoter.",
       "note": "Standard second-strand reaction at 16C yields dsDNA; the T7 promoter is now double-stranded and transcription-competent.",
-      "product": "5'- CGATTGAGGCCGGTAATACGACTCACTATAGGGGTTCAGAGTTCTACAGTCCGACGATC[CELL_BARCODE:8]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA] -3'\n3'- GCTAACTCCGGCCATTATGCTGAGTGATATCCCCAAGTCTCAAGATGTCAGGCTGCTAG[BC-comp]AAAAAAAAAAAAAAAAAAAAAAAAB[CDNA-comp] -5'"
+      "product": "5'- CGATTGAGGCCGGTAATACGACTCACTATAGGGGTTCAGAGTTCTACAGTCCGACGATC[CELL_BARCODE:8]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA] -3'\n3'- GCTAACTCCGGCCATTATGCTGAGTGATATCCCCAAGTCTCAAGATGTCAGGCTGCTAG[CELL_BARCODE:8]AAAAAAAAAAAAAAAAAAAAAAAAB[CDNA] -5'"
     },
     {
       "step": 3,
@@ -395,7 +395,7 @@
       "title": "Reverse transcription (RTP primer)",
       "summary": "The RNA RT primer (RTP) anneals to the ligated RA3 adapter and SuperScript II copies the adapter-flanked RNA into cDNA.",
       "note": "RTP is complementary to RA3; RT at 50C generates a cDNA copy that is now the PCR template.",
-      "product": "RNA:  5'- ...GTTCAGAGTTCTACAGTCCGACGATC[CELL_BARCODE:8](T)24[frag]TGGAATTCTCGGGTGCCAAGG -3'\nRTP:                                                          3'- ACCTTAAGAGCCCACGGTTCCG -5'\ncDNA: 3'- ...CAAGTCTCAAGATGTCAGGCTGCTAG[BC-comp](A)24[frag-comp]ACCTTAAGAGCCCACGGTTCCG -5'"
+      "product": "RNA:  5'- ...GTTCAGAGTTCTACAGTCCGACGATC[CELL_BARCODE:8](T)24[frag]TGGAATTCTCGGGTGCCAAGG -3'\nRTP:                                                              3'- ACCTTAAGAGCCCACGGTTCCG -5'\ncDNA: 3'- ...CAAGTCTCAAGATGTCAGGCTGCTAG[CELL_BARCODE:8](A)24[frag]ACCTTAAGAGCCCACGGTTCCG -5'"
     },
     {
       "step": 8,

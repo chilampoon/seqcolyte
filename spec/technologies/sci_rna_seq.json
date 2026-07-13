@@ -364,7 +364,7 @@
       "title": "Second-strand synthesis",
       "summary": "mRNA Second Strand Synthesis converts the RT product into double-stranded cDNA.",
       "note": "NEB mRNA Second Strand Synthesis buffer + enzyme, 16C 150 min, stop 75C 20 min.",
-      "product": "double-stranded cDNA\n5'-    ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTT...[CDNA] -3'\n3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[UMI:8comp][CELL_BARCODE:10comp]AAAA...[CDNAcomp] -5'"
+      "product": "double-stranded cDNA\n5'-    ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTT...[CDNA] -3'\n3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[UMI:8][CELL_BARCODE:10]AAAA...[CDNA] -5'"
     },
     {
       "step": 5,

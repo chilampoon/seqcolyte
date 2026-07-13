@@ -1,7 +1,7 @@
 {
   "schemaVersion": "studio.project.v1",
   "id": "10x-pbmc-3-adapter-dimer-qc-demo-d13261",
-  "name": "10x PBMC 3\u2032 \u2014 Adapter-dimer library (demo)",
+  "name": "10x Chromium 3\u2032 \u2014 adapter dimers",
   "assay": "10x Chromium Single Cell 3' Gene Expression",
   "specId": "10x_3p_v3",
   "createdAt": "2026-07-09T00:09:57.059Z",
@@ -24,5 +24,5 @@
   "phase": "complete",
   "demo": true,
   "specConfirmed": true,
-  "demoBlurb": "Illumina short-read: adapter-dimer failures injected \u2014 QC catches them (recall 1.0)."
+  "demoBlurb": "A 10x short-read library with adapter dimers \u2014 QC flags the TSO-at-R2 and poly-G signatures and explains the fix."
 }

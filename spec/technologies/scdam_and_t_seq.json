@@ -578,7 +578,7 @@
       "step": 11,
       "title": "Library-prep reverse transcription (randomhexRT)",
       "note": "Fragmented aRNA is reverse-transcribed with the randomhexRT primer, which installs the Illumina TruSeq small-RNA 3' (RA3)/P7 priming handle at the insert 3' end.",
-      "product": "first-strand library cDNA:\n5'- [insert fragment] ... -3'\n3'- [insert fragment complement] NNNNNN ACCTTAAGAGCCCACGGTTCCG -5'\n                                (random hexamer)  (RA3 / P7 handle, from randomhexRT primer)"
+      "product": "first-strand library cDNA:\n5'- [insert fragment] ... -3'\n3'- [insert fragment] NNNNNN ACCTTAAGAGCCCACGGTTCCG -5'\n                     (random hexamer)  (RA3 / P7 handle, from randomhexRT primer)"
     },
     {
       "step": 12,

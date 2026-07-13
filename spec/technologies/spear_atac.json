@@ -495,7 +495,7 @@
       "template": "bottom",
       "cycles": 20,
       "note": "oMCB1672 is identical to the top-strand scaffold cr1, so it anneals to the bottom strand and extends rightward directly into the 20-nt sgRNA spacer (perturbation identity). Sequencing from the Nextera Read1 adapter instead would require a much longer, more expensive ~150-cycle read.",
-      "diagram": "                  oMCB1672 (Read1 primer, = scaffold cr1)\n                  5'-GCCACTTTTT..CTTAGCTCTTAAAC------------------>  (reads spacer)\n5'- ...TGTATAAGAGACAGGCCACTTTTT..CTTAGCTCTTAAACNNNNNNNNNNNNNNNNNNNNCTGTCTCTTATACAC... -3'\n3'- ...ACATATTCTCTGTCCGGTGAAAAA..GAATCGAGAATTTGNNNNNNNNNNNNNNNNNNNNGACAGAGAATATGTG... -5'\n     [Nextera R1]    [------ sgRNA scaffold cr1 ------]|<-- spacer 20 nt -->|[Nextera R2rc]"
+      "diagram": "                  oMCB1672 (Read1 primer, = scaffold cr1)\n                  5'-GCCACTTTTT..CTTAGCTCTTAAAC------------------>  (reads spacer)\n5'- ...TGTATAAGAGACAGGCCACTTTTT..CTTAGCTCTTAAACNNNNNNNNNNNNNNNNNNNNCTGTCTCTTATACAC... -3'\n3'- ...ACATATTCTCTGTCCGGTGAAAAA..GAATCGAGAATTTGNNNNNNNNNNNNNNNNNNNNGACAGAGAATATGTG... -5'\n     [Nextera R1]    [------ sgRNA scaffold cr1 ------]|<-- spacer 20 nt -->|[Nextera R2]"
     },
     {
       "read": "Index 1 (i7 sample index)",
@@ -503,7 +503,7 @@
       "template": "top",
       "cycles": 8,
       "note": "Reads the 8-nt sample index adjacent to P7 that identifies the Spear-ATAC sample (up to 8 samples per 10x Controller run).",
-      "diagram": "                                   Index 1 (i7) read primer -->\n                                   binds TruSeq Read 2, reads 8-nt index\n5'- ...GGGATACTTAGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...CCCTATGAATCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n       [U6]  [------ TruSeq Read 2 adapter ------]|i7 idx|[----- P7 rc -----]"
+      "diagram": "                                   Index 1 (i7) read primer -->\n                                   binds TruSeq Read 2, reads 8-nt index\n5'- ...GGGATACTTAGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...CCCTATGAATCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n       [U6]  [------ TruSeq Read 2 adapter ------]|i7 idx|[----- P7 -----]"
     },
     {
       "read": "Index 2 (i5 / 10x cell barcode)",

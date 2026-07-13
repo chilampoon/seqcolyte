@@ -1,7 +1,7 @@
 {
   "schemaVersion": "studio.project.v1",
   "id": "10x-pbmc-3-healthy-library-demo-9ec7eb",
-  "name": "10x PBMC 3\u2032 \u2014 Healthy library (demo)",
+  "name": "10x Chromium 3\u2032 \u2014 clean library",
   "assay": "10x Chromium Single Cell 3' Gene Expression",
   "specId": "10x_3p_v3",
   "createdAt": "2026-07-10T03:16:53.342Z",
@@ -24,5 +24,5 @@
     "20260710T031653Z-82a2fa"
   ],
   "demo": true,
-  "demoBlurb": "Illumina short-read: clean 10x PBMC v3 control \u2014 every QC check passes."
+  "demoBlurb": "A clean 10x PBMC v3 short-read library \u2014 every QC check lands in range. The baseline for comparison."
 }

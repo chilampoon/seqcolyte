@@ -564,21 +564,21 @@
       "title": "Round 2 ligation \u2014 N7 barcode (split-pool)",
       "summary": "A second splint bridges each ME-B end to a well-specific N7 barcode oligo, ligated on as the second combinatorial index.",
       "note": "Nuclei are re-split across 384 wells; T7 DNA ligase seals the N7 oligo 3'-OH (...GACTTGTC) to the ME-B 5'-phosphate on the opposite strand, guided by the N7 splint (CACGAGACGACAAGT/3ddC). The first and second ligations can also be performed simultaneously for a 2-level design.",
-      "product": "5'- CACCGCACGAGAGGT[N5]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic] CTGTCTCTTATACACATCTCCGAGCCCACGAGACGACAAGTC[N7rc]AGTCTCGCCGTGCTG -3'\n3'- GTGGCGTGCTCTCCA[N5rc]CATTAGTCAGCAGCCGTCGCAGTCTACACATATTCTCTGTC [genomic] GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG...GACTTGTC[N7]CAGCACGGCGAGACT -5'\n(N5 barcode on the ME-A end; N7 barcode on the ME-B end)"
+      "product": "5'- CACCGCACGAGAGGT[N5]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic] CTGTCTCTTATACACATCTCCGAGCCCACGAGACGACAAGTC[N7]AGTCTCGCCGTGCTG -3'\n3'- GTGGCGTGCTCTCCA[N5]CATTAGTCAGCAGCCGTCGCAGTCTACACATATTCTCTGTC [genomic] GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG...GACTTGTC[N7]CAGCACGGCGAGACT -5'\n(N5 barcode on the ME-A end; N7 barcode on the ME-B end)"
     },
     {
       "step": 5,
       "title": "Reverse cross-linking",
       "summary": "Nuclei are diluted to ~100-300 per uL across plates and reverse-crosslinked to release barcoded fragments.",
       "note": "EB buffer + Proteinase K + 1% SDS, 65C for 16 h. 1,000-3,000 nuclei per well define the third-level (PCR) compartments.",
-      "product": "released double-stranded fragment:\n5'- CACCGCACGAGAGGT[N5]GTAATCAG-ME-A-[genomic]-ME-B(rc)-GACAAGTC[N7rc]-AGTCTCGCCGTGCTG -3'"
+      "product": "released double-stranded fragment:\n5'- CACCGCACGAGAGGT[N5]GTAATCAG-ME-A-[genomic]-ME-B(rc)-GACAAGTC[N7]-AGTCTCGCCGTGCTG -3'"
     },
     {
       "step": 6,
       "title": "Round 3 indexed PCR (P5 + P7)",
       "summary": "Indexed P5 and P7 primers amplify each well, adding the i5/i7 third-level barcodes and the P5/P7 flow-cell adapters.",
       "note": "NEBNext/NPM PCR with well-specific 3LV2_P5_PCR (anneals to CACCGCACGAGAGGT) and 3LV2_P7_PCR (anneals to CAGCACGGCGAGACT), 11-13 cycles (cycle number set by qPCR test). Products are cleaned with Zymo DCC-5 then 1X AMPure and quantified on TapeStation.",
-      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5]CACCGCACGAGAGGT[N5]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[genomic]CTGTCTCTTATACACATCTCCGAGCCCACGAGACGACAAGTC[N7rc]AGTCTCGCCGTGCTG[i7rc]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5rc]GTGGCGTGCTCTCCA[N5rc]CATTAGTCAGCAGCCGTCGCAGTCTACACATATTCTCTGTC[genomic]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGCTGTTCAG[N7]TCAGAGCGGCACGAC[i7]TAGAGCATACGGCAGAAGACGAAC -5'"
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5]CACCGCACGAGAGGT[N5]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[genomic]CTGTCTCTTATACACATCTCCGAGCCCACGAGACGACAAGTC[N7]AGTCTCGCCGTGCTG[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5]GTGGCGTGCTCTCCA[N5]CATTAGTCAGCAGCCGTCGCAGTCTACACATATTCTCTGTC[genomic]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGCTGTTCAG[N7]TCAGAGCGGCACGAC[i7]TAGAGCATACGGCAGAAGACGAAC -5'"
     }
   ],
   "library_sequencing": [

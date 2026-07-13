@@ -552,7 +552,7 @@
       "title": "Reverse transcription with RTP primer",
       "summary": "The RTP primer anneals to the ligated RA3 adapter and SuperScript III copies the aRNA back into cDNA.",
       "note": "RTP (GCCTTGGCACCCGAGAATTCCA) primes on RA3; RT (50 C, 1 h) generates cDNA spanning RA3 -> gene -> cell barcode -> UMI -> Read 1 region. RNaseA then removes residual RNA before PCR.",
-      "product": "(9) cDNA after RTP-primed RT:\n\n5'- GCCTTGGCACCCGAGAATTCCA[gene][CELL_BARCODE:8-rc][UMI:6-rc]GATCGTCGGACTGTAGAACT... -3'"
+      "product": "(9) cDNA after RTP-primed RT:\n\n5'- GCCTTGGCACCCGAGAATTCCA[gene][CELL_BARCODE:8][UMI:6]GATCGTCGGACTGTAGAACT... -3'"
     },
     {
       "step": 10,

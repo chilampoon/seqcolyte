@@ -21,7 +21,7 @@ async function fileExists(p: string): Promise<boolean> {
  */
 export async function startQcRun(
   projectId: string,
-  opts: { useLlm?: boolean; fastqSource?: "control" | "sim"; maxReads?: number | null } = {},
+  opts: { useLlm?: boolean; fastqSource?: "control" | "sim" | "upload"; maxReads?: number | null } = {},
 ): Promise<{ runId: string } | { error: string }> {
   let project;
   try {
@@ -30,7 +30,8 @@ export async function startQcRun(
     return { error: "project not found" };
   }
   const useLlm = opts.useLlm !== false;
-  const fastqSource: "control" | "sim" = opts.fastqSource === "control" ? "control" : "sim";
+  const fastqSource: "control" | "sim" | "upload" =
+    opts.fastqSource === "control" ? "control" : opts.fastqSource === "upload" ? "upload" : "sim";
   const maxReads =
     typeof opts.maxReads === "number" && opts.maxReads > 0 ? Math.floor(opts.maxReads) : null;
 
@@ -39,8 +40,19 @@ export async function startQcRun(
     project.activeSpecPath && (await fileExists(inProject(projectId, project.activeSpecPath)))
       ? inProject(projectId, project.activeSpecPath)
       : assets.referenceSpec;
-  const r1 = fastqSource === "control" ? assets.control.r1 : assets.sim.r1;
-  const r2 = fastqSource === "control" ? assets.control.r2 : assets.sim.r2;
+
+  let r1: string, r2: string;
+  if (fastqSource === "upload") {
+    const fq = project.inputs.fastq;
+    if (!fq || fq.source !== "upload" || !fq.r1 || !fq.r2) {
+      return { error: "upload both R1 and R2 FASTQ before running on your reads" };
+    }
+    r1 = inProject(projectId, fq.r1);
+    r2 = inProject(projectId, fq.r2);
+  } else {
+    r1 = fastqSource === "control" ? assets.control.r1 : assets.sim.r1;
+    r2 = fastqSource === "control" ? assets.control.r2 : assets.sim.r2;
+  }
   const whitelist = (await fileExists(assets.whitelist)) ? assets.whitelist : null;
   // Ground-truth labels only exist for the simulated dataset (enables the eval panel).
   const labels =

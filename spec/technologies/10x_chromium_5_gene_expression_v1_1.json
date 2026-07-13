@@ -471,7 +471,7 @@
       "title": "Fragmentation, End Repair & A-tailing",
       "summary": "Amplified cDNA is enzymatically fragmented and A-tailed to optimize amplicon size for library construction.",
       "note": "Enzymatic fragmentation gives variable-length fragments; end repair and A-tailing add a single 3' A overhang. Only the fragment retaining the 5' barcode/TSO end carries the cell barcode into the final library.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]*A -3'\n         3'- A*[revcomp CDNA]AAAGAATATACCC[UMI:10][CELL_BARCODE:16]GATGTGCTGCGAGAAGGCTAGA -5'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]*A -3'\n         3'- A*[CDNA]AAAGAATATACCC[UMI:10][CELL_BARCODE:16]GATGTGCTGCGAGAAGGCTAGA -5'"
     },
     {
       "step": 4,

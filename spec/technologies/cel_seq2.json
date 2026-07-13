@@ -569,7 +569,7 @@
       "template": "top",
       "cycles": 36,
       "note": "Reads 36 bases of the 3'-biased cDNA insert (used for genome mapping); paired with the R1 UMI/barcode.",
-      "diagram": "    <--------------------------- read (36 nt, into cDNA)\n          3'-ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG-5'   Read 2 primer\n5'- ...[cDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[i7rc]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[cDNA]ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG[i7 ]TAGAGCATACGGCAGAAGACGAAC -5'"
+      "diagram": "    <--------------------------- read (36 nt, into cDNA)\n          3'-ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG-5'   Read 2 primer\n5'- ...[cDNA]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[cDNA]ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG[i7]TAGAGCATACGGCAGAAGACGAAC -5'"
     }
   ],
   "whitelists": {},

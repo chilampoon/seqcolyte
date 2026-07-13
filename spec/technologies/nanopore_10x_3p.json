@@ -279,7 +279,7 @@
       "step": 5,
       "title": "cDNA amplification (bulk PCR with cDNA Primers, 11-13 cycles)",
       "note": "GEMs are broken, cDNA is purified on Dynabeads MyOne SILANE, then amplified in bulk with the cDNA Forward primer (CTACACGACGCTCTTCCGATCT) and cDNA Reverse primer (AAGCAGTGGTATCAACGCAGAG) to build sufficient mass for library construction.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE_COMP:16][UMI_COMP:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'",
       "stage_type": "laboratory_operation",
       "phase": "cdna_construction",
       "summary": "Bulk PCR amplifies the full-length cDNA to build mass."
@@ -290,7 +290,7 @@
       "phase": "ont_library_prep",
       "title": "End repair & dA-tailing (ONT end-prep, NEBNext Ultra II)",
       "note": "The full-length amplified cDNA is blunted and a single 3' dA overhang is added to each end (shown as the technical token [dA_OVERHANG], not part of the biological sequence). NO fragmentation \u2014 the molecule stays full-length.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT[dA_OVERHANG] -3'\n3'- [dA_OVERHANG]GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE_COMP:16][UMI_COMP:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT[dA_OVERHANG] -3'\n3'- [dA_OVERHANG]GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'",
       "summary": "End repair + 3' dA-tailing prepares the amplicon for ligation (no fragmentation)."
     },
     {
@@ -322,7 +322,7 @@
       "phase": "sequencing",
       "title": "Nanopore sequencing \u2014 single-strand read, either orientation",
       "note": "An ideal full-length read spans one strand of the unfragmented 10x cDNA amplicon. Raw reads enter from either end and may be truncated, may carry only one identifiable 10x terminal flank, or may be fused/chimeric \u2014 full-length origin is expected but not guaranteed. No fragmentation, P5/P7 or i7 index.",
-      "product": "Orientation A (R1-handle-first): 5'-CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT-3'\nOrientation B (TSO-first): 5'-[TSO][CDNA_RC][NB][polyA:30][UMI_RC][CELL_BARCODE_RC:16][R1_HANDLE_RC]-3'",
+      "product": "Orientation A (R1-handle-first): 5'-CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT-3'\nOrientation B (TSO-first): 5'-[TSO][CDNA][NB][polyA:30][UMI:12][CELL_BARCODE:16][R1_HANDLE]-3'",
       "summary": "Each molecule is read end-to-end on the flow cell, in either orientation."
     }
   ],
@@ -338,7 +338,7 @@
       "orientation_a_r1_handle_first": "5'-CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT-3'",
       "orientation_b_tso_first": "5'-[TSO][CDNA_RC][NB][polyA:30][UMI_RC][CELL_BARCODE_RC:16][R1_HANDLE_RC]-3'",
       "normalization": "Detect the R1-derived (adapter1) and TSO-derived (adapter2) terminal motifs; reverse-complement Orientation B reads to the R1-handle-first representation.",
-      "diagram": "Orientation A: 5'-CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT-3'\nOrientation B: 5'-[TSO][CDNA_RC][NB][polyA:30][UMI_RC][CELL_BARCODE_RC:16][R1_HANDLE_RC]-3'\n              |---------------- one long read (L1) ----------------|"
+      "diagram": "Orientation A: 5'-CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT-3'\nOrientation B: 5'-[TSO][CDNA][NB][polyA:30][UMI:12][CELL_BARCODE:16][R1_HANDLE]-3'\n              |---------------- one long read (L1) ----------------|"
     }
   ],
   "whitelists": {
@@ -710,10 +710,6 @@
     },
     "statistical_model": "Linear mixed models with sample-aware permutation testing for differential splicing; Wilcoxon rank-sum, likelihood-ratio, and Fisher's exact tests.",
     "other": [
-      {
-        "label": "Representative study / data source",
-        "value": "GoT-Splice (Cortes-Lopez et al., 2023) - the sc-Nanopore MDS dataset used as biological template."
-      },
       {
         "label": "Full-length read yield (paper, enriched protocol)",
         "value": "50.4%+/-2.7 -> 77.6%+/-2.0 with biotin enrichment; the baseline direct-ligation model does not reproduce this."
