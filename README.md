@@ -61,9 +61,15 @@ seqcolyte qc --r1 R1.fastq.gz --r2 R2.fastq.gz --json-out qc_report.json
   FASTQ and runs the spec-derived checks (R1 length, whitelist rate, TSO-at-R2-start, adapter read-through,
   poly-G tail) plus the label eval in one pass. The Python around it shells out to that binary, then
   Claude ranks + diagnoses the findings with a spec-linked evidence chain and (given labels) scores itself.
+- **`qc/catalog/`** — the machine-readable **diagnostic catalog** (metric → signal → issue → root cause →
+  test → action), authored in `diagnostic_catalog.yaml` and validated/rendered by `python -m qc.catalog
+  validate|render` into `spec/diagnostics/catalog.json` (browsable at the studio **/diagnostics** wiki) and
+  `docs/qc/*.md`. **`qc/evidence/`** — safe importers that summarise metrics from third-party QC reports
+  (Cell Ranger web summaries, ONT wf-single-cell) into a vendor-neutral evidence model with canonical
+  metric ids, preserving the original labels. Neither touches the network or an LLM.
 
 ```
-extract/  spec/  sim/  qc/(+ core/ rust compute)  seqcolyte/(core)  protocols/  tests/
+extract/  spec/  sim/  qc/(+ core/ rust · catalog/ · evidence/)  seqcolyte/(core)  docs/qc/  protocols/  tests/
 ```
 
 ---

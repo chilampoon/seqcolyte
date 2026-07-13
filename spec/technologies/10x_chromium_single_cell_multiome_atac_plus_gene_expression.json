@@ -657,7 +657,7 @@
       "template": "bottom",
       "cycles": 28,
       "note": "TruSeq Read 1 primes off the partial Read 1 region and reads the 16 bp 10x Barcode + 12 bp UMI (28 cycles) on the GEX library.",
-      "diagram": "                  Read 1 primer\n              5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT---------------------------->\n5'- ...N10(i5)ACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNNNNNNNNNNNNNNNNNNNTTTT...VN[cDNA] -3'\n3'- ...N10    TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNNNNNNNNNNNNNNNNNNNAAAA...BN[cDNA] -5'\n                                               |----16 bp 10x BC----||--12 bp UMI--|"
+      "diagram": "              Read 1 primer\n          5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT---------------------------->\n5'- ...N10(i5)ACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNNNNNNNNNNNNNNNNNNNTTTT...VN[cDNA] -3'\n3'- ...N10    TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNNNNNNNNNNNNNNNNNNNAAAA...BN[cDNA] -5'\n                                               |----16 bp 10x BC----||--12 bp UMI--|"
     },
     {
       "read": "i7 Index (Gene Expression)",
@@ -665,7 +665,7 @@
       "template": "top",
       "cycles": 10,
       "note": "Reads the 10 bp i7 sample index of the GEX library.",
-      "diagram": "               i7 index primer\n           5'- AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC---------->\n5'- ...[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                                              |-i7:10-| |--- P7 rev-comp ----|"
+      "diagram": "             i7 index primer\n         5'- AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC---------->\n5'- ...[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                                              |-i7:10-| |--- P7 rev-comp ----|"
     },
     {
       "read": "i5 Index (Gene Expression)",
@@ -689,7 +689,7 @@
       "template": "top",
       "cycles": 50,
       "note": "Read 1N primes off the Nextera Read 1 + mosaic-end region and reads 50 cycles of the transposed open-chromatin insert.",
-      "diagram": "            Read 1N primer\n        5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG----------->\n5'- ...CGCGTCTGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAGXXXXXXXXXX[insert]... -3'\n3'- ...GCGCAGACAGCAGCCGTCGCAGTCTACACATATTCTCTGTCXXXXXXXXXX[insert]... -5'\n     |Spacer|                                  |--- DNA insert ---|"
+      "diagram": "               Read 1N primer\n           5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG----------->\n5'- ...CGCGTCTGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAGXXXXXXXXXX[insert]... -3'\n3'- ...GCGCAGACAGCAGCCGTCGCAGTCTACACATATTCTCTGTCXXXXXXXXXX[insert]... -5'\n       |Spacer|                                 |--- DNA insert ---|"
     },
     {
       "read": "i7 Index (ATAC)",
@@ -697,7 +697,7 @@
       "template": "top",
       "cycles": 8,
       "note": "Reads the 8 bp i7 sample index of the ATAC library.",
-      "diagram": "                i7 index primer\n            5'- CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-------->\n5'- ...[insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                                                |i7:8| |--- P7 rev-comp ----|"
+      "diagram": "               i7 index primer\n           5'- CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-------->\n5'- ...[insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                                                 |i7:8| |--- P7 rev-comp ----|"
     },
     {
       "read": "i5 Index (ATAC)",

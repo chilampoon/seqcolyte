@@ -566,14 +566,14 @@
       "title": "mRNA capture & in-drop reverse transcription (barcoding)",
       "summary": "Photoreleased bead RT primer captures cellular mRNA on its poly(dT) tail and SuperScript III reverse-transcribes it, tagging cDNA with the cell barcode + UMI.",
       "note": "After UV (365 nm) photocleavage, the barcoding primer is free in-drop. Its poly(dT) anneals to mRNA poly(A) and reverse transcription (SuperScript III, 50 \u00b0C) synthesizes first-strand cDNA carrying the T7 promoter, PE1 handle, barcode1, W1, barcode2, UMI.",
-      "product": "|--5'- TAATACGACTCACTATAGGG...CTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:8]GAGTGATTGCTTGTGACGCCTT[CELL_BARCODE:8][UMI:6]TTTTTTTTTTTTTTTTTTTV------->\n                                                                                                             3'-[CDNA]AAAAAAAAAA...AAA(mRNA) -5'"
+      "product": "|--5'- TAATACGACTCACTATAGGG...CTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:8]GAGTGATTGCTTGTGACGCCTT[CELL_BARCODE:8][UMI:6]TTTTTTTTTTTTTTTTTTTV------->\n                                                                                                                3'-[CDNA]AAAAAAAAAA...AAA(mRNA) -5'"
     },
     {
       "step": 2,
       "title": "cDNA:mRNA hybrid after RT",
       "summary": "First-strand cDNA:mRNA hybrid with a single-stranded T7-promoter/PE1 handle.",
       "note": "The target is a cDNA-mRNA hybrid; the T7 promoter and PE1 handle remain single-stranded, which makes them immune to the dsDNA-specific HinfI cleanup in the next step.",
-      "product": "5'- TAATACGACTCACTATAGGG...CTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:8]GAGTGATTGCTTGTGACGCCTT[CELL_BARCODE:8][UMI:6]TTTTTTTTTTTTTTTTTTTV[CDNA-of-transcript] -3'\n                                                                                                                              3'-AAAA...(mRNA) -5'"
+      "product": "5'- TAATACGACTCACTATAGGG...CTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:8]GAGTGATTGCTTGTGACGCCTT[CELL_BARCODE:8][UMI:6]TTTTTTTTTTTTTTTTTTTV[CDNA-of-transcript] -3'\n                                                                                                                   3'-AAAA...(mRNA) -5'"
     },
     {
       "step": 3,
@@ -625,7 +625,7 @@
       "template": "bottom",
       "cycles": 36,
       "note": "Transcript / cDNA read. The primer is identical to the top-strand Read 1 handle, so it anneals to the bottom strand and reads the cDNA insert. Read length is platform-dependent: 89 cyc (MiSeq), 37-43 cyc (NextSeq), 61 cyc (HiSeq 2500).",
-      "diagram": "5'- ...GAGATCTACACGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT[CDNA]... -3'  (top)\n3'- ...CTCTAGATGTGCCAGAGCCGTAAGGACGACTTGGCGAGAAGGCTAGA[CDNA]... -5'  (bottom = template)\n                        5'-GGCATTCCTGCTGAACCGCTCTTCCGATCT------->\n                        Read 1 primer anneals to the bottom strand and reads the cDNA transcript"
+      "diagram": "5'- ...GAGATCTACACGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT[CDNA]... -3'  (top)\n3'- ...CTCTAGATGTGCCAGAGCCGTAAGGACGACTTGGCGAGAAGGCTAGA[CDNA]... -5'  (bottom = template)\n                     5'-GGCATTCCTGCTGAACCGCTCTTCCGATCT------->\n                        Read 1 primer anneals to the bottom strand and reads the cDNA transcript"
     },
     {
       "read": "Index read (i7)",
@@ -633,7 +633,7 @@
       "template": "bottom",
       "cycles": 6,
       "note": "Reads the 6-nt i7 library (sample) index. The primer is identical to the top-strand handle, so it anneals to the bottom strand and extends rightward into the index. Omitted (0 cycles) when a single library is run without multiplexing.",
-      "diagram": "5'- ...AGATCGGAAGAGCGTCGTGTAGGGAAAGAGNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'  (top)\n3'- ...TCTAGCCTTCTCGCAGCACATCCCTTTCTCNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'  (bottom = template)\n       5'-AGATCGGAAGAGCGTCGTGTAGGGAAAGAG----->\n                                     index-read primer reads NNNNNN = i7 index off the bottom strand"
+      "diagram": "5'- ...AGATCGGAAGAGCGTCGTGTAGGGAAAGAGNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'  (top)\n3'- ...TCTAGCCTTCTCGCAGCACATCCCTTTCTCNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'  (bottom = template)\n    5'-AGATCGGAAGAGCGTCGTGTAGGGAAAGAG----->\n                                     index-read primer reads NNNNNN = i7 index off the bottom strand"
     },
     {
       "read": "Read 2 (cell barcode + UMI)",
@@ -641,7 +641,7 @@
       "template": "top",
       "cycles": 51,
       "note": "Reads cell barcode 1, the W1 spacer, cell barcode 2 and the UMI (>=50 bp required). The primer is the reverse complement of the top-strand handle, so it anneals to the top strand and reads leftward: BC1 -> W1 -> BC2 -> UMI.",
-      "diagram": "5'- ...[UMI:6][CELL_BARCODE:8]AAGGCGTCACAAGCAATCACTC[CELL_BARCODE:8]AGATCGGAAGAGCGTCGTGTAGGGAAAGAG... -3'  (top = template)\n3'- ...[UMI:6][CELL_BARCODE:8]TTCCGCAGTGTTCGTTAGTGAG[CELL_BARCODE:8]TCTAGCCTTCTCGCAGCACATCCCTTTCTC... -5'  (bottom)\n                                                                 <-------CTCTTTCCCTACACGACGCTCTTCCGATCT-5'\n       Read 2 primer anneals to the top-strand handle and reads BC1 - W1 - BC2 - UMI leftward"
+      "diagram": "5'- ...[UMI:6][CELL_BARCODE:8]AAGGCGTCACAAGCAATCACTC[CELL_BARCODE:8]AGATCGGAAGAGCGTCGTGTAGGGAAAGAG... -3'  (top = template)\n3'- ...[UMI:6][CELL_BARCODE:8]TTCCGCAGTGTTCGTTAGTGAG[CELL_BARCODE:8]TCTAGCCTTCTCGCAGCACATCCCTTTCTC... -5'  (bottom)\n                                                            <-------CTCTTTCCCTACACGACGCTCTTCCGATCT-5'\n       Read 2 primer anneals to the top-strand handle and reads BC1 - W1 - BC2 - UMI leftward"
     }
   ],
   "whitelists": {},

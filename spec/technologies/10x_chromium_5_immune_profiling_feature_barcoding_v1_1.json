@@ -575,7 +575,7 @@
       "title": "GEM capture (TSO \u27f7 capture-sequence annealing)",
       "summary": "Inside a GEM, the antibody oligo's capture sequence anneals to the gel-bead TSO.",
       "note": "The gel bead is dissolved; its primer presents the TSO TTTCTTATATGGG, whose sequence is complementary to the antibody oligo capture sequence CCCATATAAGAAA. The two 3\u2032 ends hybridize, priming extension.",
-      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG -3'\n                                                     |||||||||||||\n              Ab~/5AmMC12/-3'- AAAGAATATACCC[SPACER:9][FEATURE_BARCODE:15][SPACER:10]GACAGAGAATATGTGTAGAGGC -5'"
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG -3'\n                                                      |||||||||||||\n                                     Ab~/5AmMC12/-3'- AAAGAATATACCC[SPACER:9][FEATURE_BARCODE:15][SPACER:10]GACAGAGAATATGTGTAGAGGC -5'"
     },
     {
       "step": 3,
@@ -613,7 +613,7 @@
       "template": "bottom",
       "cycles": 26,
       "note": "Reads the 16 nt 10x cell barcode + 10 nt UMI. Primer sequence matches the top strand and anneals to the bottom (template) strand, extending into the barcode+UMI region.",
-      "diagram": "                       5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------->\n5'- ...GAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNNNNNNNNNNNNNNNNNTTTCTTATATGGG...-3'  top\n3'- ...CTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNNNNNNNNNNNNNNNNNAAAGAATATACCC...-5'  bottom (template)\n                                             |----- 26 nt read -----|\n                                             [16 nt 10x cell barcode][10 nt UMI]"
+      "diagram": "              5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------->\n5'- ...GAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNNNNNNNNNNNNNNNNNTTTCTTATATGGG...-3'  top\n3'- ...CTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNNNNNNNNNNNNNNNNNAAAGAATATACCC...-5'  bottom (template)\n                                               |----- 26 nt read -----|\n                                               [16 nt 10x cell barcode][10 nt UMI]"
     },
     {
       "read": "Index 1 (i7)",
@@ -621,7 +621,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "Reads the 8 nt i7 sample index (Single Index Plate N Set A, used only for Cell Surface Protein libraries). Primer 3' end abuts the index and extends into it.",
-      "diagram": "                                          5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC---------->\n5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'  top\n3'- ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'  bottom (template)\n                                        |8 nt i7|"
+      "diagram": " 5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC---------->\n5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'  top\n3'- ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'  bottom (template)\n                                         |8 nt i7|"
     },
     {
       "read": "Read 2",
@@ -629,7 +629,7 @@
       "template": "top",
       "cycles": 91,
       "note": "Reads the 15 nt antibody Feature Barcode (ADT identity), flanked by spacers. Read 2N primer is complementary to the top-strand Nextera handle; its 3' end sits at the FB-proximal end and extends leftward. Minimum required Read 2 length is 25 bp; typically 91 bp when co-sequenced with GEX/VDJ.",
-      "diagram": "                                                 3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n                                          <-------\n5'- ...TTTCTTATATGGGNNNNNNNNNFFFFFFFFFFFFFFFNNNNNNNNNNCTGTCTCTTATACACATCTCCGAGCCCACGAGAC...-3'  top (template)\n3'- ...AAAGAATATACCCNNNNNNNNNFFFFFFFFFFFFFFFNNNNNNNNNNGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG...-5'  bottom\n                            |15 nt Feature Barcode|"
+      "diagram": "                                                   3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n                                              <-------\n5'- ...TTTCTTATATGGGNNNNNNNNNFFFFFFFFFFFFFFFNNNNNNNNNNCTGTCTCTTATACACATCTCCGAGCCCACGAGAC...-3'  top (template)\n3'- ...AAAGAATATACCCNNNNNNNNNFFFFFFFFFFFFFFFNNNNNNNNNNGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG...-5'  bottom\n                             |15 nt Feature Barcode|"
     }
   ],
   "whitelists": {},

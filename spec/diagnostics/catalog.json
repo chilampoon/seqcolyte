@@ -1,0 +1,1973 @@
+{
+  "catalog_version": "0.1.0",
+  "diagnostic_tests": [
+    {
+      "algorithm_summary": "Re-extract the cell barcode at a range of start offsets around the expected position and measure the whitelist-match rate at each offset.",
+      "interpretation": "A sharp match-rate peak at a non-zero offset supports a barcode boundary shift; a strong diagnosis also shows restored whitelist rate and ideally improved molecule/cell recovery after re-extraction.",
+      "limitations": "Cannot distinguish a boundary shift from a wrong whitelist if no offset restores the match rate.",
+      "outputs": "Whitelist-match rate as a function of offset; the offset that maximises the match rate.",
+      "purpose": "Detect a barcode/UMI extraction boundary shift by scanning candidate offsets.",
+      "rejects_causes": [
+        "cause.wrong_chemistry_or_whitelist"
+      ],
+      "required_inputs": [
+        "read_processing"
+      ],
+      "status": "planned",
+      "supports_causes": [
+        "cause.barcode_boundary_shift"
+      ],
+      "test_id": "test.barcode_offset_scan",
+      "title": "Barcode offset scan"
+    },
+    {
+      "algorithm_summary": "Match extracted barcodes against several candidate chemistry whitelists and compare match rates.",
+      "interpretation": "A markedly higher match rate against a different whitelist supports a wrong-chemistry/whitelist cause.",
+      "limitations": "Requires the true chemistry's whitelist to be among the candidates.",
+      "outputs": "Per-whitelist match rate; the best-matching chemistry.",
+      "purpose": "Identify whether a different chemistry whitelist explains the barcodes.",
+      "required_inputs": [
+        "read_processing"
+      ],
+      "status": "planned",
+      "supports_causes": [
+        "cause.wrong_chemistry_or_whitelist",
+        "cause.barcode_boundary_shift"
+      ],
+      "test_id": "test.alternative_whitelist_scan",
+      "title": "Alternative-whitelist scan"
+    },
+    {
+      "algorithm_summary": "Compare observed read lengths and segment positions against the spec's read_structure (R1 length vs cell barcode + UMI, expected cycles, orientation).",
+      "interpretation": "Any mismatch (e.g. R1 shorter than barcode + UMI) supports a read-configuration cause.",
+      "limitations": "Detects layout mismatches, not whether an otherwise-valid configuration was mis-processed.",
+      "outputs": "A list of mismatches between observed and expected read configuration.",
+      "purpose": "Check that the observed read layout matches the chemistry's expected barcode/UMI/insert geometry.",
+      "required_inputs": [
+        "read_processing"
+      ],
+      "status": "planned",
+      "supports_causes": [
+        "cause.read_configuration_mismatch",
+        "cause.wrong_chemistry_or_whitelist"
+      ],
+      "test_id": "test.read_configuration_audit",
+      "title": "Read-configuration audit"
+    },
+    {
+      "algorithm_summary": "Attempt barcode/UMI extraction with R1 and R2 roles swapped and compare whitelist-match rates.",
+      "interpretation": "A much higher match rate in the swapped orientation supports an R1/R2 swap.",
+      "limitations": "Only distinguishes a swap, not other configuration errors.",
+      "outputs": "Whitelist-match rate in normal vs swapped orientation.",
+      "purpose": "Detect whether read 1 and read 2 were swapped.",
+      "required_inputs": [
+        "read_processing"
+      ],
+      "status": "planned",
+      "supports_causes": [
+        "cause.read_configuration_mismatch"
+      ],
+      "test_id": "test.r1_r2_swap_test",
+      "title": "R1/R2 swap test"
+    },
+    {
+      "algorithm_summary": "Scan each read for the expected adapters/handles and classify by which are present and where; the Nanopore path implements this per-read classification.",
+      "implemented_by": "qc/nanopore.py: read_classification / handle_detection",
+      "interpretation": "Elevated adapter-only / short-insert fractions support adapter-dimer / short-cDNA causes.",
+      "limitations": "Read-level configuration fractions are not the same as physical library fractions.",
+      "outputs": "Per-configuration read fractions (full-length, adapter-only, short-insert, unclassified).",
+      "purpose": "Classify each read by its adapter/handle configuration to quantify full-length, adapter-only, short-insert, and TSO-proximal reads.",
+      "references": [
+        "ref.wf_single_cell_docs"
+      ],
+      "required_inputs": [
+        "library_structure"
+      ],
+      "status": "implemented",
+      "supports_causes": [
+        "cause.adapter_dimer_or_short_insert",
+        "cause.short_or_empty_cdna_products",
+        "cause.read_past_end_or_signal_decay"
+      ],
+      "test_id": "test.adapter_configuration_classification",
+      "title": "Adapter-configuration classification"
+    },
+    {
+      "algorithm_summary": "Scan long reads for TSO-derived motifs occurring internally (away from read ends); the Nanopore path implements this as the tso_concatemer check.",
+      "implemented_by": "qc/nanopore.py: tso_concatemer",
+      "interpretation": "An elevated internal-TSO fraction supports a long-read concatemer/fusion cause; it is distinct from short-read TSO read-through.",
+      "limitations": "Cannot by itself establish cross-sample molecule mixing.",
+      "outputs": "Internal-adapter fraction and per-read internal-motif positions.",
+      "purpose": "Detect internal TSO-derived motifs in long reads indicating concatemers or fused molecules.",
+      "references": [
+        "ref.lebrigand_2020"
+      ],
+      "required_inputs": [
+        "library_structure"
+      ],
+      "status": "implemented",
+      "supports_causes": [
+        "cause.long_read_tso_concatemer_or_fusion"
+      ],
+      "test_id": "test.internal_tso_scan",
+      "title": "Internal TSO scan (long-read)"
+    },
+    {
+      "algorithm_summary": "Recompute called cells across a range of calling thresholds and inspect where the count stabilises relative to the knee.",
+      "interpretation": "A large increase in called cells when the threshold is relaxed supports overly strict calling; a flat curve points upstream (input/capture).",
+      "limitations": "Cannot create cells that were never captured; distinguishes calling strictness from upstream loss only when molecules exist near the knee.",
+      "outputs": "Called-cell count as a function of threshold.",
+      "purpose": "Assess how called-cell count varies with the cell-calling threshold.",
+      "required_inputs": [
+        "cell_analysis"
+      ],
+      "status": "planned",
+      "supports_causes": [
+        "cause.overly_strict_cell_calling",
+        "cause.insufficient_viable_cell_input",
+        "cause.poor_partition_capture_or_rt"
+      ],
+      "test_id": "test.cell_calling_sensitivity",
+      "title": "Cell-calling sensitivity analysis"
+    },
+    {
+      "algorithm_summary": "Re-extract barcodes/UMIs at the offset found by the offset scan and recompute whitelist rate and downstream molecule/cell recovery.",
+      "interpretation": "Restored whitelist rate and improved recovery confirm a barcode boundary shift and demonstrate computational recoverability.",
+      "limitations": "Full recovery requires that the shift is the dominant defect.",
+      "outputs": "Whitelist rate and recovery before vs after counterfactual re-extraction.",
+      "purpose": "Confirm a barcode boundary shift by re-extracting at the corrected offset and measuring recovery.",
+      "required_inputs": [
+        "read_processing",
+        "cell_analysis"
+      ],
+      "status": "planned",
+      "supports_causes": [
+        "cause.barcode_boundary_shift",
+        "cause.read_configuration_mismatch"
+      ],
+      "test_id": "test.counterfactual_barcode_reextraction",
+      "title": "Counterfactual barcode re-extraction"
+    }
+  ],
+  "issues": [
+    {
+      "candidate_root_causes": [
+        "cause.barcode_boundary_shift",
+        "cause.read_configuration_mismatch",
+        "cause.wrong_chemistry_or_whitelist",
+        "cause.overly_strict_cell_calling",
+        "cause.insufficient_viable_cell_input",
+        "cause.poor_partition_capture_or_rt",
+        "cause.low_cdna_or_library_yield"
+      ],
+      "computational_actions": [
+        "Barcode offset / alternative-whitelist scan and re-extraction",
+        "Cell-calling sensitivity sweep"
+      ],
+      "confirmatory_tests": [
+        "test.barcode_offset_scan",
+        "test.alternative_whitelist_scan",
+        "test.read_configuration_audit",
+        "test.cell_calling_sensitivity",
+        "test.counterfactual_barcode_reextraction"
+      ],
+      "impacts": [
+        "Fewer called cells and reduced statistical power",
+        "Potentially biased population representation if loss is non-random"
+      ],
+      "issue_id": "issue.low_cell_recovery",
+      "missing_evidence": [
+        "Viable-cell input / cells-loaded from wet-lab metadata (needed to separate input loss from processing loss)",
+        "Raw FASTQ for counterfactual barcode re-extraction"
+      ],
+      "outcome_domains": [
+        "cell_analysis"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "recovery_classes": [
+        "computationally_recoverable",
+        "partially_recoverable",
+        "requires_experiment_rerun"
+      ],
+      "references": [
+        "ref.tenx_3p_v3_userguide",
+        "ref.cellranger_web_summary"
+      ],
+      "related_issues": [
+        "issue.barcode_umi_recovery_failure",
+        "issue.low_informative_read_yield"
+      ],
+      "required_evidence": [
+        "cell_analysis",
+        "read_processing"
+      ],
+      "sequencing_actions": [
+        "Additional sequencing only helps if the library is sound but shallow"
+      ],
+      "summary": "Far fewer cells were called than the declared target. Many mechanisms can cause this, from barcode-processing errors to insufficient input; the target must be a compatible target type before comparing.",
+      "supporting_signals": [
+        "signal.called_cells_below_target",
+        "signal.barcode_rank_no_knee",
+        "signal.low_reads_in_cells",
+        "signal.low_whitelist_match"
+      ],
+      "title": "Low called-cell recovery",
+      "wetlab_actions": [
+        "Confirm viable-cell input and capture efficiency; rerun if input was insufficient"
+      ],
+      "what_this_issue_cannot_explain": "It does not by itself establish cross-sample contamination or expression-fidelity bias; those require their own evidence. A low cell count with a healthy whitelist rate points upstream (input/capture/calling), not to barcode processing.",
+      "workflow_stages": [
+        "sample_prep",
+        "library_prep",
+        "read_processing",
+        "cell_calling"
+      ]
+    },
+    {
+      "candidate_root_causes": [
+        "cause.adapter_dimer_or_short_insert",
+        "cause.short_or_empty_cdna_products",
+        "cause.read_past_end_or_signal_decay",
+        "cause.long_read_tso_concatemer_or_fusion",
+        "cause.low_cdna_or_library_yield"
+      ],
+      "computational_actions": [
+        "Classify adapter configurations and quantify recoverable vs discarded reads"
+      ],
+      "confirmatory_tests": [
+        "test.adapter_configuration_classification",
+        "test.internal_tso_scan"
+      ],
+      "impacts": [
+        "Reduced usable molecules per cell",
+        "Wasted sequencing capacity"
+      ],
+      "issue_id": "issue.low_informative_read_yield",
+      "missing_evidence": [
+        "Physical library QC (e.g. fragment sizing) to relate sequenced-read fractions to library composition"
+      ],
+      "outcome_domains": [
+        "library_structure",
+        "sequencing_run"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "recovery_classes": [
+        "recoverable_by_additional_sequencing",
+        "partially_recoverable",
+        "requires_library_rebuild"
+      ],
+      "references": [
+        "ref.wf_single_cell_docs"
+      ],
+      "related_issues": [
+        "issue.abnormal_library_structure",
+        "issue.low_cell_recovery"
+      ],
+      "required_evidence": [
+        "library_structure",
+        "read_processing"
+      ],
+      "sequencing_actions": [
+        "Additional sequencing recovers depth when the usable library is intact"
+      ],
+      "summary": "A large share of sequencing was spent on reads that carry little usable single-cell information (adapter-only, short-insert, TSO-proximal, or tail-artifact reads).",
+      "supporting_signals": [
+        "signal.elevated_adapter_only",
+        "signal.short_insert_elevated",
+        "signal.tso_at_read_start",
+        "signal.polyg_tail_elevated",
+        "signal.internal_adapter_elevated",
+        "signal.low_full_length_proxy"
+      ],
+      "title": "Low informative-read yield",
+      "wetlab_actions": [
+        "Bead cleanup or library rebuild if adapter-dimer / short-insert load is severe"
+      ],
+      "what_this_issue_cannot_explain": "It does not directly establish a specific called-cell target collapse; relate it to cell recovery only via reads-in-cells depth. A physical library dimer percentage is not the same as the sequenced-read percentage.",
+      "workflow_stages": [
+        "library_prep",
+        "sequencing",
+        "read_processing"
+      ]
+    },
+    {
+      "candidate_root_causes": [
+        "cause.barcode_boundary_shift",
+        "cause.wrong_chemistry_or_whitelist",
+        "cause.read_configuration_mismatch"
+      ],
+      "computational_actions": [
+        "Barcode offset scan, alternative-whitelist scan, R1/R2 swap test, then re-extract"
+      ],
+      "confirmatory_tests": [
+        "test.barcode_offset_scan",
+        "test.alternative_whitelist_scan",
+        "test.read_configuration_audit",
+        "test.r1_r2_swap_test"
+      ],
+      "impacts": [
+        "Few reads assigned to valid barcodes",
+        "Collapse in called cells and per-cell metrics"
+      ],
+      "issue_id": "issue.barcode_umi_recovery_failure",
+      "missing_evidence": [
+        "Raw FASTQ needed for offset / whitelist / swap scans"
+      ],
+      "outcome_domains": [
+        "read_processing",
+        "cell_analysis"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "recovery_classes": [
+        "computationally_recoverable",
+        "partially_recoverable"
+      ],
+      "references": [
+        "ref.tenx_3p_v3_userguide"
+      ],
+      "related_issues": [
+        "issue.low_cell_recovery"
+      ],
+      "required_evidence": [
+        "read_processing"
+      ],
+      "summary": "Reads cannot be assigned to valid barcodes/UMIs at the expected rate, starving every downstream per-cell metric.",
+      "supporting_signals": [
+        "signal.low_whitelist_match",
+        "signal.low_barcode_umi_extractable",
+        "signal.called_cells_below_target"
+      ],
+      "title": "Barcode / UMI recovery failure",
+      "what_this_issue_cannot_explain": "A whitelist/extraction failure does not imply the wet-lab library is bad; it is usually a read-processing/configuration problem and is often computationally recoverable.",
+      "workflow_stages": [
+        "read_processing"
+      ]
+    },
+    {
+      "candidate_root_causes": [
+        "cause.short_or_empty_cdna_products",
+        "cause.adapter_dimer_or_short_insert",
+        "cause.long_read_tso_concatemer_or_fusion"
+      ],
+      "computational_actions": [
+        "Classify configurations; separate short-read TSO read-through from long-read internal TSO motifs"
+      ],
+      "confirmatory_tests": [
+        "test.adapter_configuration_classification",
+        "test.internal_tso_scan"
+      ],
+      "impacts": [
+        "Molecules deviate from expected architecture",
+        "Downstream extraction/assignment errors"
+      ],
+      "issue_id": "issue.abnormal_library_structure",
+      "outcome_domains": [
+        "library_structure"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "recovery_classes": [
+        "partially_recoverable",
+        "requires_library_rebuild"
+      ],
+      "references": [
+        "ref.tenx_3p_v3_userguide",
+        "ref.wf_single_cell_docs"
+      ],
+      "related_issues": [
+        "issue.low_informative_read_yield"
+      ],
+      "required_evidence": [
+        "library_structure"
+      ],
+      "summary": "Sequenced molecules deviate from the expected architecture (short/empty inserts, TSO-proximal reads, adapter-only reads, or long-read internal motifs).",
+      "supporting_signals": [
+        "signal.tso_at_read_start",
+        "signal.internal_adapter_elevated",
+        "signal.short_insert_elevated",
+        "signal.elevated_adapter_only",
+        "signal.low_full_length_proxy"
+      ],
+      "title": "Abnormal library structure",
+      "what_this_issue_cannot_explain": "Structural abnormality alone does not quantify lost cells or prove cross-sample mixing; a short-read TSO read-through and a long-read internal TSO motif are different events and must not be conflated.",
+      "workflow_stages": [
+        "library_prep",
+        "read_processing"
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "aliases": [
+        {
+          "label": "Input reads",
+          "producer": "wf-single-cell",
+          "source_scope": "sequencing_run"
+        },
+        {
+          "label": "Number of Reads",
+          "producer": "cellranger-like",
+          "source_scope": "sequencing_run"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Total reads (or read pairs) produced by the run before quality filtering.",
+      "direction": "descriptive",
+      "domain": "sequencing_run",
+      "label": "Total reads",
+      "metric_id": "run.reads_total",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "sequencing_run"
+      ],
+      "scoreability": "descriptive",
+      "unit": "count",
+      "value_type": "integer"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Pass reads",
+          "producer": "wf-single-cell",
+          "source_scope": "sequencing_run"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Reads passing the run/basecaller quality filter.",
+      "direction": "higher_is_better",
+      "domain": "sequencing_run",
+      "label": "Pass reads",
+      "metric_id": "run.reads_pass",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "sequencing_run"
+      ],
+      "scoreability": "profile_dependent",
+      "unit": "count",
+      "value_type": "integer"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "denominator": "reads passing quality / total reads produced",
+      "description": "Fraction of produced reads that pass the quality filter.",
+      "direction": "higher_is_better",
+      "domain": "sequencing_run",
+      "label": "Pass-read fraction",
+      "metric_id": "run.reads_pass_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "sequencing_run"
+      ],
+      "scoreability": "profile_dependent",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "denominator": "reads with an extractable barcode / reads examined",
+      "description": "Fraction of reads from which a candidate cell barcode could be extracted at the expected position (before whitelist matching).",
+      "direction": "higher_is_better",
+      "domain": "read_processing",
+      "label": "Barcode-extractable fraction",
+      "metric_id": "barcode.extractable_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "read_processing"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "caveats": [
+        "Denominator differs between producers; do not merge with barcode.valid_fraction unless the definition matches."
+      ],
+      "denominator": "reads with exact whitelist match / reads with an extracted barcode",
+      "description": "Fraction of reads whose extracted barcode matches the chemistry whitelist exactly, before error correction.",
+      "direction": "higher_is_better",
+      "domain": "read_processing",
+      "label": "Barcode whitelist-match fraction",
+      "metric_id": "barcode.whitelist_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "references": [
+        "ref.tenx_3p_v3_userguide"
+      ],
+      "required_scopes": [
+        "read_processing"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "aliases": [
+        {
+          "denominator": "reads with a barcode matching the whitelist after correction",
+          "label": "Valid Barcodes",
+          "producer": "cellranger-like",
+          "source_scope": "read_processing"
+        },
+        {
+          "label": "Valid barcode",
+          "producer": "wf-single-cell",
+          "source_scope": "read_processing"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "denominator": "reads with a valid (corrected) barcode / reads examined",
+      "description": "Fraction of reads assigned to a valid barcode after whitelist matching and error correction.",
+      "direction": "higher_is_better",
+      "domain": "read_processing",
+      "label": "Valid-barcode fraction",
+      "metric_id": "barcode.valid_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "references": [
+        "ref.cellranger_web_summary"
+      ],
+      "required_scopes": [
+        "read_processing"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of valid barcodes that required one-mismatch error correction to reach the whitelist.",
+      "direction": "descriptive",
+      "domain": "read_processing",
+      "label": "Barcode-corrected fraction",
+      "metric_id": "barcode.corrected_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "read_processing"
+      ],
+      "scoreability": "descriptive",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads from which a UMI of the expected length could be extracted at the expected position.",
+      "direction": "higher_is_better",
+      "domain": "read_processing",
+      "label": "UMI-extractable fraction",
+      "metric_id": "umi.extractable_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "read_processing"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads carrying a structurally valid UMI (correct length, not a homopolymer/low-complexity artifact).",
+      "direction": "higher_is_better",
+      "domain": "read_processing",
+      "label": "Valid-UMI fraction",
+      "metric_id": "umi.valid_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "read_processing"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "aliases": [
+        {
+          "label": "% full length reads",
+          "producer": "wf-single-cell",
+          "source_scope": "library_structure"
+        },
+        {
+          "label": "Full length",
+          "producer": "wf-single-cell",
+          "source_scope": "library_structure"
+        }
+      ],
+      "assays": [
+        "long_read_single_cell"
+      ],
+      "description": "Fraction of reads matching the expected full-length architecture (both flanking adapters/handles in the expected orientation).",
+      "direction": "higher_is_better",
+      "domain": "library_structure",
+      "label": "Full-length-proxy fraction",
+      "metric_id": "library.full_length_proxy_fraction",
+      "platforms": [
+        "nanopore",
+        "pacbio"
+      ],
+      "references": [
+        "ref.wf_single_cell_docs"
+      ],
+      "required_scopes": [
+        "library_structure"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "caveats": [
+        "A physical adapter-dimer percentage in the library is not equal to the sequenced-read percentage unless cluster-generation bias is modelled."
+      ],
+      "description": "Fraction of reads composed essentially of adapter/handle sequence with no meaningful insert (adapter dimers).",
+      "direction": "lower_is_better",
+      "domain": "library_structure",
+      "label": "Adapter-only fraction",
+      "metric_id": "library.adapter_only_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "library_structure"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads whose inferred insert is shorter than expected, causing adapter read-through into the read.",
+      "direction": "lower_is_better",
+      "domain": "library_structure",
+      "label": "Short-insert fraction",
+      "metric_id": "library.short_insert_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "library_structure"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_3p"
+      ],
+      "description": "Fraction of short-read cDNA reads that begin with template-switch-oligo-derived sequence, indicating short/empty cDNA products. Strand-specific: the 10x 3' TSO (AAGCAGTGGTATCAACGCAGAGTACATGGG) is distinct from its reverse complement TSO_RC (CCCATGTACTCTGCGTTGATACCACTGCTT).",
+      "direction": "lower_is_better",
+      "domain": "library_structure",
+      "label": "TSO-at-RNA-read-start fraction (short-read)",
+      "metric_id": "library.tso_at_rna_read_start_fraction",
+      "platforms": [
+        "illumina"
+      ],
+      "references": [
+        "ref.tenx_3p_v3_userguide"
+      ],
+      "required_scopes": [
+        "library_structure"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "long_read_single_cell"
+      ],
+      "description": "Fraction of long reads containing internal adapter/TSO-derived motifs mid-read, indicating concatemers or fused molecules. This is a distinct diagnostic event from short-read TSO read-through at the read start.",
+      "direction": "lower_is_better",
+      "domain": "library_structure",
+      "label": "Internal-adapter fraction (long-read)",
+      "metric_id": "library.internal_adapter_fraction",
+      "platforms": [
+        "nanopore",
+        "pacbio"
+      ],
+      "references": [
+        "ref.lebrigand_2020"
+      ],
+      "required_scopes": [
+        "library_structure"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads ending in a poly-G run (two-colour Illumina no-signal) or an equivalent no-signal tail. A supporting signal of read-past-end / signal decay, not an independent root cause.",
+      "direction": "lower_is_better",
+      "domain": "library_structure",
+      "label": "Poly-G tail fraction",
+      "metric_id": "library.polyg_tail_fraction",
+      "platforms": [
+        "illumina"
+      ],
+      "required_scopes": [
+        "library_structure"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads that do not match any expected library configuration.",
+      "direction": "lower_is_better",
+      "domain": "library_structure",
+      "label": "Unclassified-read fraction",
+      "metric_id": "library.unclassified_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "library_structure"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Reads Mapped to Genome",
+          "producer": "cellranger-like",
+          "source_scope": "alignment_assignment"
+        },
+        {
+          "label": "Mapped",
+          "producer": "wf-single-cell",
+          "source_scope": "alignment_assignment"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads mapping to the reference genome.",
+      "direction": "higher_is_better",
+      "domain": "alignment_assignment",
+      "label": "Genome-mapped fraction",
+      "metric_id": "mapping.genome_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "alignment_assignment"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads with a primary alignment.",
+      "direction": "higher_is_better",
+      "domain": "alignment_assignment",
+      "label": "Primary-alignment fraction",
+      "metric_id": "mapping.primary_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "alignment_assignment"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Unmapped",
+          "producer": "wf-single-cell",
+          "source_scope": "alignment_assignment"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads with no acceptable alignment.",
+      "direction": "lower_is_better",
+      "domain": "alignment_assignment",
+      "label": "Unmapped fraction",
+      "metric_id": "mapping.unmapped_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "alignment_assignment"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Supplementary",
+          "producer": "wf-single-cell",
+          "source_scope": "alignment_assignment"
+        }
+      ],
+      "assays": [
+        "long_read_single_cell"
+      ],
+      "description": "Fraction of reads with supplementary (chimeric/split) alignments; elevated values can indicate fused/concatemeric molecules.",
+      "direction": "descriptive",
+      "domain": "alignment_assignment",
+      "label": "Supplementary-alignment fraction",
+      "metric_id": "mapping.supplementary_fraction",
+      "platforms": [
+        "nanopore",
+        "pacbio"
+      ],
+      "required_scopes": [
+        "alignment_assignment"
+      ],
+      "scoreability": "descriptive",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Gene assigned",
+          "producer": "wf-single-cell",
+          "source_scope": "alignment_assignment"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads confidently assigned to a gene/feature.",
+      "direction": "higher_is_better",
+      "domain": "alignment_assignment",
+      "label": "Gene-assigned fraction",
+      "metric_id": "assignment.gene_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "alignment_assignment"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Transcript assigned",
+          "producer": "wf-single-cell",
+          "source_scope": "alignment_assignment"
+        }
+      ],
+      "assays": [
+        "long_read_single_cell"
+      ],
+      "description": "Fraction of reads confidently assigned to a transcript/isoform.",
+      "direction": "higher_is_better",
+      "domain": "alignment_assignment",
+      "label": "Transcript-assigned fraction",
+      "metric_id": "assignment.transcript_fraction",
+      "platforms": [
+        "nanopore",
+        "pacbio"
+      ],
+      "required_scopes": [
+        "alignment_assignment"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Unique genes",
+          "producer": "wf-single-cell",
+          "source_scope": "alignment_assignment"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Number of distinct genes detected across the dataset.",
+      "direction": "higher_is_better",
+      "domain": "alignment_assignment",
+      "label": "Unique genes detected",
+      "metric_id": "assignment.unique_genes",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "alignment_assignment"
+      ],
+      "scoreability": "descriptive",
+      "unit": "count",
+      "value_type": "integer"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Unique isoforms",
+          "producer": "wf-single-cell",
+          "source_scope": "alignment_assignment"
+        }
+      ],
+      "assays": [
+        "long_read_single_cell"
+      ],
+      "description": "Number of distinct isoforms detected across the dataset.",
+      "direction": "higher_is_better",
+      "domain": "alignment_assignment",
+      "label": "Unique isoforms detected",
+      "metric_id": "assignment.unique_isoforms",
+      "platforms": [
+        "nanopore",
+        "pacbio"
+      ],
+      "required_scopes": [
+        "alignment_assignment"
+      ],
+      "scoreability": "descriptive",
+      "unit": "count",
+      "value_type": "integer"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "The declared cell target for the library. Its meaning depends on the target type (cells loaded, expected recovered cells, ...); do not compare it to called cells across incompatible target types.",
+      "direction": "descriptive",
+      "domain": "cell_analysis",
+      "label": "Target cell count",
+      "metric_id": "cell.target_count",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "cell_analysis"
+      ],
+      "scoreability": "target_dependent",
+      "target_dependency": "Interpretation depends on the input-manifest cell_target.target_type.",
+      "unit": "count",
+      "value_type": "integer"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Estimated Number of Cells",
+          "producer": "cellranger-like",
+          "source_scope": "cell_analysis"
+        },
+        {
+          "label": "Estimated cells",
+          "producer": "wf-single-cell",
+          "source_scope": "cell_analysis"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Number of barcodes called as real cells by the cell-calling step.",
+      "direction": "descriptive",
+      "domain": "cell_analysis",
+      "label": "Called cell count",
+      "metric_id": "cell.called_count",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "references": [
+        "ref.cellranger_web_summary"
+      ],
+      "required_scopes": [
+        "cell_analysis"
+      ],
+      "scoreability": "target_dependent",
+      "unit": "count",
+      "value_type": "integer"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "denominator": "cell.called_count / cell.target_count",
+      "description": "Called cells divided by the target cell count. Only meaningful when the target type is compatible with called cells.",
+      "direction": "higher_is_better",
+      "domain": "cell_analysis",
+      "label": "Target attainment",
+      "metric_id": "cell.target_attainment",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "cell_analysis"
+      ],
+      "scoreability": "target_dependent",
+      "target_dependency": "Undefined unless cell_target.target_type is expected_recovered_cells or expected_called_cells.",
+      "unit": "ratio",
+      "value_type": "float"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Fraction Reads in Cells",
+          "producer": "cellranger-like",
+          "source_scope": "cell_analysis"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of valid-barcode reads that belong to barcodes called as cells.",
+      "direction": "higher_is_better",
+      "domain": "cell_analysis",
+      "label": "Fraction reads in cells",
+      "metric_id": "cell.reads_in_cells_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "cell_analysis"
+      ],
+      "scoreability": "scoreable",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Mean Reads per Cell",
+          "producer": "cellranger-like",
+          "source_scope": "cell_analysis"
+        },
+        {
+          "label": "Reads per cell (mean)",
+          "producer": "wf-single-cell",
+          "source_scope": "cell_analysis"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Mean number of reads per called cell.",
+      "direction": "descriptive",
+      "domain": "cell_analysis",
+      "label": "Mean reads per cell",
+      "metric_id": "cell.mean_reads",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "cell_analysis"
+      ],
+      "scoreability": "profile_dependent",
+      "unit": "count",
+      "value_type": "float"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Median Genes per Cell",
+          "producer": "cellranger-like",
+          "source_scope": "cell_analysis"
+        },
+        {
+          "label": "Genes per cell (median)",
+          "producer": "wf-single-cell",
+          "source_scope": "cell_analysis"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Median number of genes detected per called cell.",
+      "direction": "higher_is_better",
+      "domain": "cell_analysis",
+      "label": "Median genes per cell",
+      "metric_id": "cell.median_genes",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "cell_analysis"
+      ],
+      "scoreability": "profile_dependent",
+      "unit": "count",
+      "value_type": "float"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Median UMI Counts per Cell",
+          "producer": "cellranger-like",
+          "source_scope": "cell_analysis"
+        },
+        {
+          "label": "UMIs per cell (median)",
+          "producer": "wf-single-cell",
+          "source_scope": "cell_analysis"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Median number of UMIs (unique molecules) per called cell.",
+      "direction": "higher_is_better",
+      "domain": "cell_analysis",
+      "label": "Median UMIs per cell",
+      "metric_id": "cell.median_umis",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "cell_analysis"
+      ],
+      "scoreability": "profile_dependent",
+      "unit": "count",
+      "value_type": "float"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Descriptive measure of how cleanly the barcode-rank (knee) plot separates cells from background; a poor separation implies ambiguous cell calling.",
+      "direction": "descriptive",
+      "domain": "cell_analysis",
+      "label": "Barcode-rank knee separation",
+      "metric_id": "cell.barcode_rank_separation",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "cell_analysis"
+      ],
+      "scoreability": "descriptive",
+      "unit": "dimensionless",
+      "value_type": "float"
+    },
+    {
+      "aliases": [
+        {
+          "label": "Sequencing Saturation",
+          "producer": "cellranger-like",
+          "source_scope": "complexity_expression"
+        }
+      ],
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads that are duplicates of already-observed (barcode, UMI, gene) molecules; a measure of how completely the library has been sampled.",
+      "direction": "descriptive",
+      "domain": "complexity_expression",
+      "label": "Sequencing saturation",
+      "metric_id": "complexity.sequencing_saturation",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "references": [
+        "ref.cellranger_web_summary"
+      ],
+      "required_scopes": [
+        "complexity_expression"
+      ],
+      "scoreability": "profile_dependent",
+      "unit": "fraction",
+      "value_type": "fraction"
+    },
+    {
+      "assays": [
+        "single_cell_rna"
+      ],
+      "description": "Fraction of reads that are PCR/optical duplicates.",
+      "direction": "descriptive",
+      "domain": "complexity_expression",
+      "label": "Duplicate fraction",
+      "metric_id": "complexity.duplicate_fraction",
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "required_scopes": [
+        "complexity_expression"
+      ],
+      "scoreability": "profile_dependent",
+      "unit": "fraction",
+      "value_type": "fraction"
+    }
+  ],
+  "recovery_actions": [
+    {
+      "description": "The signal can be corrected in silico from existing data (e.g. re-extract barcodes at a corrected offset, re-run cell calling) without new sequencing or a new library.",
+      "label": "Computationally recoverable",
+      "recovery_class": "computationally_recoverable"
+    },
+    {
+      "description": "Some information can be rescued computationally, but a fraction is unrecoverable from the current data.",
+      "label": "Partially recoverable",
+      "recovery_class": "partially_recoverable"
+    },
+    {
+      "description": "The existing library is sound but under-sequenced for the goal; more sequencing recovers the signal.",
+      "label": "Recoverable by additional sequencing",
+      "recovery_class": "recoverable_by_additional_sequencing"
+    },
+    {
+      "description": "The molecular library itself is compromised; recovery needs a new library from retained material.",
+      "label": "Requires library rebuild",
+      "recovery_class": "requires_library_rebuild"
+    },
+    {
+      "description": "The defect originates upstream of library prep (e.g. cell input); recovery needs a new experiment.",
+      "label": "Requires experiment rerun",
+      "recovery_class": "requires_experiment_rerun"
+    },
+    {
+      "description": "Available evidence does not determine recoverability.",
+      "label": "Unknown / insufficient evidence",
+      "recovery_class": "unknown"
+    }
+  ],
+  "references": [
+    {
+      "assay_context": "10x Chromium 3' gene expression (v3/v3.1): 16 nt cell barcode, 12 nt UMI, TSO = AAGCAGTGGTATCAACGCAGAGTACATGGG",
+      "evidence_strength": "strong",
+      "reference_id": "ref.tenx_3p_v3_userguide",
+      "source": "10x Genomics",
+      "title": "Chromium Single Cell 3' Reagent Kits v3 / v3.1 User Guide"
+    },
+    {
+      "assay_context": "Short-read single-cell analysis (Estimated Number of Cells, Valid Barcodes, Reads Mapped to Genome, Sequencing Saturation, ...)",
+      "evidence_strength": "strong",
+      "reference_id": "ref.cellranger_web_summary",
+      "source": "10x Genomics Cell Ranger documentation",
+      "title": "Cell Ranger web summary metric definitions"
+    },
+    {
+      "assay_context": "Long-read single-cell analysis report (estimated cells, full-length reads, adapter configuration, gene/transcript assignment)",
+      "evidence_strength": "strong",
+      "reference_id": "ref.wf_single_cell_docs",
+      "source": "Oxford Nanopore Technologies / EPI2ME Labs",
+      "title": "EPI2ME wf-single-cell workflow documentation",
+      "url": "https://epi2me.nanoporetech.com/epi2me-docs/workflows/wf-single-cell/"
+    },
+    {
+      "assay_context": "Long-read 10x 3' single-cell; barcode/UMI recovery and full-length transcript assignment on Nanopore",
+      "evidence_strength": "strong",
+      "reference_id": "ref.lebrigand_2020",
+      "source": "Lebrigand et al., Nature Communications 2020",
+      "title": "High throughput error corrected Nanopore single cell transcriptome sequencing (ScNaUmi-seq / Sicelore)",
+      "url": "https://www.nature.com/articles/s41467-020-17800-6"
+    }
+  ],
+  "root_causes": [
+    {
+      "cause_id": "cause.barcode_boundary_shift",
+      "cell_recovery_relationship": {
+        "note": "A boundary shift collapses whitelist matching and therefore valid barcodes, which directly starves cell calling.",
+        "relationship": "direct"
+      },
+      "diagnostic_tests": [
+        "test.barcode_offset_scan",
+        "test.counterfactual_barcode_reextraction"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "If barcodes are re-extracted correctly, expression is typically unaffected; residual mis-extraction adds noise.",
+        "relationship": "context_dependent"
+      },
+      "mechanism": "Barcode/UMI extraction is offset by a few bases from the true position (e.g. unexpected upstream trimming or a wrong offset), so extracted barcodes rarely match the whitelist and valid-barcode reads collapse.",
+      "observable_signals": [
+        "signal.low_whitelist_match",
+        "signal.low_barcode_umi_extractable",
+        "signal.called_cells_below_target"
+      ],
+      "produces_issues": [
+        "issue.barcode_umi_recovery_failure",
+        "issue.low_cell_recovery"
+      ],
+      "recommended_actions": [
+        "Re-extract barcodes/UMIs at the scanned offset and re-run downstream steps."
+      ],
+      "recoverability": "computationally_recoverable",
+      "references": [
+        "ref.tenx_3p_v3_userguide"
+      ],
+      "required_inputs": [
+        "read_processing"
+      ],
+      "sample_integrity_relationship": {
+        "note": "A boundary shift does not move molecules between samples; it is an extraction geometry error.",
+        "relationship": "unlikely"
+      },
+      "title": "Barcode boundary shift",
+      "workflow_stage": "read_processing"
+    },
+    {
+      "cause_id": "cause.read_configuration_mismatch",
+      "cell_recovery_relationship": {
+        "note": "If R1 cannot yield a valid barcode+UMI, essentially no barcodes are recovered and cell calling fails.",
+        "relationship": "direct"
+      },
+      "diagnostic_tests": [
+        "test.read_configuration_audit",
+        "test.r1_r2_swap_test"
+      ],
+      "evidence_against": [
+        "signal.high_genome_low_gene_assignment"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "Some mismatches (e.g. swapped reads) are fully recoverable; wrong cycle counts may be unrecoverable.",
+        "relationship": "context_dependent"
+      },
+      "mechanism": "The read layout does not match the chemistry: R1 shorter than cell barcode + UMI, R1/R2 swapped, wrong barcode or UMI length, wrong sample-index cycles, wrong chemistry, or unexpected upstream trimming. A top-tier direct cause of cell-recovery collapse.",
+      "observable_signals": [
+        "signal.low_whitelist_match",
+        "signal.low_barcode_umi_extractable",
+        "signal.called_cells_below_target"
+      ],
+      "produces_issues": [
+        "issue.barcode_umi_recovery_failure",
+        "issue.low_cell_recovery"
+      ],
+      "recommended_actions": [
+        "Audit the read layout against the spec; if only extraction is wrong, re-extract; if cycles are wrong, additional sequencing or a rerun may be required."
+      ],
+      "recoverability": "partially_recoverable",
+      "references": [
+        "ref.tenx_3p_v3_userguide"
+      ],
+      "required_inputs": [
+        "read_processing"
+      ],
+      "sample_integrity_relationship": {
+        "note": "A configuration error affects all reads uniformly rather than mixing samples.",
+        "relationship": "unlikely"
+      },
+      "title": "Read-configuration mismatch",
+      "workflow_stage": "sequencing"
+    },
+    {
+      "cause_id": "cause.wrong_chemistry_or_whitelist",
+      "cell_recovery_relationship": {
+        "note": "With the wrong whitelist, valid barcodes are near zero and no cells are called.",
+        "relationship": "direct"
+      },
+      "diagnostic_tests": [
+        "test.alternative_whitelist_scan",
+        "test.read_configuration_audit"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "Fully recovered once the correct whitelist is applied.",
+        "relationship": "unlikely"
+      },
+      "mechanism": "Analysis used the wrong chemistry/whitelist, so the correct barcodes never match the loaded whitelist.",
+      "observable_signals": [
+        "signal.low_whitelist_match"
+      ],
+      "produces_issues": [
+        "issue.barcode_umi_recovery_failure",
+        "issue.low_cell_recovery"
+      ],
+      "recommended_actions": [
+        "Scan alternative chemistry whitelists and re-run with the best-matching one."
+      ],
+      "recoverability": "computationally_recoverable",
+      "references": [
+        "ref.tenx_3p_v3_userguide"
+      ],
+      "required_inputs": [
+        "read_processing"
+      ],
+      "sample_integrity_relationship": {
+        "note": "Whitelist choice does not mix samples.",
+        "relationship": "unlikely"
+      },
+      "title": "Wrong chemistry or barcode whitelist",
+      "workflow_stage": "read_processing"
+    },
+    {
+      "cause_id": "cause.adapter_dimer_or_short_insert",
+      "cell_recovery_relationship": {
+        "note": "Reduces usable molecules per cell; only collapses called-cell count if the informative yield falls far enough to starve cell calling.",
+        "relationship": "indirect"
+      },
+      "diagnostic_tests": [
+        "test.adapter_configuration_classification"
+      ],
+      "evidence_against": [
+        "signal.low_full_length_proxy"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "Adapter-only reads are discarded rather than mis-quantified.",
+        "relationship": "unlikely"
+      },
+      "mechanism": "Adapter-dimer and short-insert molecules consume sequencing capacity and produce adapter-only or read-through reads. Directly relevant to low informative yield. Note: a physical library dimer percentage does not equal the sequenced-read percentage unless cluster-generation bias is modelled.",
+      "observable_signals": [
+        "signal.elevated_adapter_only",
+        "signal.short_insert_elevated",
+        "signal.polyg_tail_elevated"
+      ],
+      "produces_issues": [
+        "issue.low_informative_read_yield",
+        "issue.abnormal_library_structure"
+      ],
+      "recommended_actions": [
+        "Classify adapter configurations; if the usable library is sound, additional sequencing recovers depth; severe dimer load may need a cleanup or rebuild."
+      ],
+      "recoverability": "recoverable_by_additional_sequencing",
+      "references": [
+        "ref.wf_single_cell_docs"
+      ],
+      "required_inputs": [
+        "library_structure"
+      ],
+      "sample_integrity_relationship": {
+        "note": "Dimers do not move molecules between samples.",
+        "relationship": "unlikely"
+      },
+      "title": "Adapter dimers or short inserts",
+      "workflow_stage": "library_prep"
+    },
+    {
+      "cause_id": "cause.short_or_empty_cdna_products",
+      "cell_recovery_relationship": {
+        "note": "Lowers informative yield per cell; does not by itself explain a large cell-count collapse.",
+        "relationship": "indirect"
+      },
+      "diagnostic_tests": [
+        "test.adapter_configuration_classification"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "Short products can bias 3' coverage and gene detection.",
+        "relationship": "context_dependent"
+      },
+      "mechanism": "Reverse transcription produced short or empty cDNA, so reads begin with TSO-derived sequence (short-read) or fail the full-length architecture (long-read).",
+      "observable_signals": [
+        "signal.tso_at_read_start",
+        "signal.short_insert_elevated",
+        "signal.low_full_length_proxy"
+      ],
+      "produces_issues": [
+        "issue.abnormal_library_structure",
+        "issue.low_informative_read_yield"
+      ],
+      "recoverability": "partially_recoverable",
+      "references": [
+        "ref.tenx_3p_v3_userguide"
+      ],
+      "required_inputs": [
+        "library_structure"
+      ],
+      "sample_integrity_relationship": {
+        "note": "Not a sample-mixing mechanism.",
+        "relationship": "unlikely"
+      },
+      "title": "Short or empty cDNA products",
+      "workflow_stage": "library_prep"
+    },
+    {
+      "cause_id": "cause.insufficient_viable_cell_input",
+      "cell_recovery_relationship": {
+        "note": "Fewer viable cells loaded directly caps how many can be called.",
+        "relationship": "direct"
+      },
+      "diagnostic_tests": [
+        "test.cell_calling_sensitivity"
+      ],
+      "evidence_against": [
+        "signal.low_whitelist_match"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "Recovered cells are still faithfully quantified.",
+        "relationship": "unlikely"
+      },
+      "mechanism": "Too few viable cells were loaded, so few real cells can be recovered regardless of downstream processing.",
+      "observable_signals": [
+        "signal.called_cells_below_target",
+        "signal.barcode_rank_no_knee"
+      ],
+      "produces_issues": [
+        "issue.low_cell_recovery"
+      ],
+      "recoverability": "requires_experiment_rerun",
+      "references": [
+        "ref.cellranger_web_summary"
+      ],
+      "required_inputs": [
+        "cell_analysis",
+        "wet_lab_qc"
+      ],
+      "sample_integrity_relationship": {
+        "note": "Low input does not mix samples.",
+        "relationship": "unlikely"
+      },
+      "title": "Insufficient viable-cell input",
+      "workflow_stage": "sample_prep"
+    },
+    {
+      "cause_id": "cause.poor_partition_capture_or_rt",
+      "cell_recovery_relationship": {
+        "note": "Poor capture/RT reduces molecules per cell, weakening the knee and lowering called cells.",
+        "relationship": "direct"
+      },
+      "diagnostic_tests": [
+        "test.cell_calling_sensitivity"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "Low capture can bias which transcripts are detected.",
+        "relationship": "context_dependent"
+      },
+      "mechanism": "Inefficient droplet/partition capture or reverse transcription yields few molecules per cell and a weak cell/background separation.",
+      "observable_signals": [
+        "signal.low_reads_in_cells",
+        "signal.called_cells_below_target",
+        "signal.barcode_rank_no_knee"
+      ],
+      "produces_issues": [
+        "issue.low_cell_recovery",
+        "issue.low_informative_read_yield"
+      ],
+      "recoverability": "requires_experiment_rerun",
+      "required_inputs": [
+        "cell_analysis",
+        "wet_lab_qc"
+      ],
+      "sample_integrity_relationship": {
+        "note": "Not a mixing mechanism.",
+        "relationship": "unlikely"
+      },
+      "title": "Poor partition capture or RT",
+      "workflow_stage": "library_prep"
+    },
+    {
+      "cause_id": "cause.low_cdna_or_library_yield",
+      "cell_recovery_relationship": {
+        "note": "Low yield lowers depth and reads-in-cells; whether cells collapse depends on how shallow the data is.",
+        "relationship": "indirect"
+      },
+      "diagnostic_tests": [
+        "test.cell_calling_sensitivity"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "Very shallow libraries can distort per-cell expression.",
+        "relationship": "context_dependent"
+      },
+      "mechanism": "Low cDNA/library yield gives shallow, ambient-dominated data with few reads in cells.",
+      "observable_signals": [
+        "signal.low_reads_in_cells"
+      ],
+      "produces_issues": [
+        "issue.low_cell_recovery",
+        "issue.low_informative_read_yield"
+      ],
+      "recoverability": "partially_recoverable",
+      "required_inputs": [
+        "wet_lab_qc",
+        "library_structure"
+      ],
+      "sample_integrity_relationship": {
+        "note": "Not a mixing mechanism.",
+        "relationship": "unlikely"
+      },
+      "title": "Low cDNA or library yield",
+      "workflow_stage": "library_prep"
+    },
+    {
+      "cause_id": "cause.overly_strict_cell_calling",
+      "cell_recovery_relationship": {
+        "note": "The molecules exist but are excluded by the calling threshold, so relaxing it recovers cells.",
+        "relationship": "direct"
+      },
+      "diagnostic_tests": [
+        "test.cell_calling_sensitivity"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "Recovered cells are unchanged in their expression.",
+        "relationship": "unlikely"
+      },
+      "mechanism": "The cell-calling threshold is too strict, discarding real cells that sit near the knee.",
+      "observable_signals": [
+        "signal.called_cells_below_target",
+        "signal.barcode_rank_no_knee"
+      ],
+      "produces_issues": [
+        "issue.low_cell_recovery"
+      ],
+      "recoverability": "computationally_recoverable",
+      "references": [
+        "ref.cellranger_web_summary"
+      ],
+      "required_inputs": [
+        "cell_analysis"
+      ],
+      "sample_integrity_relationship": {
+        "note": "A threshold choice does not mix samples.",
+        "relationship": "unlikely"
+      },
+      "title": "Overly strict cell calling",
+      "workflow_stage": "cell_calling"
+    },
+    {
+      "cause_id": "cause.read_past_end_or_signal_decay",
+      "cell_recovery_relationship": {
+        "note": "Tail artifacts are usually trimmed and rarely explain a large cell-count collapse.",
+        "relationship": "unlikely"
+      },
+      "diagnostic_tests": [
+        "test.adapter_configuration_classification"
+      ],
+      "evidence_against": [
+        "signal.low_full_length_proxy"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "If untrimmed, tails can reduce alignment/assignment rates.",
+        "relationship": "context_dependent"
+      },
+      "mechanism": "Sequencing reads past the insert end or suffers signal decay, producing poly-G (two-colour) or no-signal tails.",
+      "observable_signals": [
+        "signal.polyg_tail_elevated",
+        "signal.short_insert_elevated"
+      ],
+      "produces_issues": [
+        "issue.low_informative_read_yield"
+      ],
+      "recoverability": "computationally_recoverable",
+      "required_inputs": [
+        "library_structure",
+        "read_processing"
+      ],
+      "sample_integrity_relationship": {
+        "note": "Not a mixing mechanism.",
+        "relationship": "unlikely"
+      },
+      "title": "Read-past-end or signal decay",
+      "workflow_stage": "sequencing"
+    },
+    {
+      "cause_id": "cause.long_read_tso_concatemer_or_fusion",
+      "cell_recovery_relationship": {
+        "note": "Fused/concatemeric reads reduce cleanly assignable molecules but do not directly collapse cell calling.",
+        "relationship": "indirect"
+      },
+      "diagnostic_tests": [
+        "test.internal_tso_scan"
+      ],
+      "expression_fidelity_relationship": {
+        "note": "Mis-split concatemers can distort per-molecule assignment.",
+        "relationship": "context_dependent"
+      },
+      "mechanism": "Long reads contain internal TSO-derived motifs from concatemerised or fused molecules, distinct from short-read TSO read-through at the read start.",
+      "observable_signals": [
+        "signal.internal_adapter_elevated",
+        "signal.low_full_length_proxy"
+      ],
+      "produces_issues": [
+        "issue.abnormal_library_structure",
+        "issue.low_informative_read_yield"
+      ],
+      "recoverability": "partially_recoverable",
+      "references": [
+        "ref.lebrigand_2020",
+        "ref.wf_single_cell_docs"
+      ],
+      "required_inputs": [
+        "library_structure"
+      ],
+      "sample_integrity_relationship": {
+        "note": "A fused read can join molecules from different barcodes; treat as a per-read structural artifact, not established cross-sample hopping.",
+        "relationship": "context_dependent"
+      },
+      "title": "Long-read TSO concatemer or fused read",
+      "workflow_stage": "library_prep"
+    }
+  ],
+  "signals": [
+    {
+      "description": "The number of called cells is much lower than the declared cell target.",
+      "label": "Called-cell count far below the declared target",
+      "metrics": [
+        "cell.called_count",
+        "cell.target_count",
+        "cell.target_attainment"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "related_causes": [
+        "cause.barcode_boundary_shift",
+        "cause.read_configuration_mismatch",
+        "cause.overly_strict_cell_calling",
+        "cause.insufficient_viable_cell_input"
+      ],
+      "signal_id": "signal.called_cells_below_target"
+    },
+    {
+      "description": "A small fraction of valid-barcode reads belong to called cells, suggesting ambient/background dominance or poor capture.",
+      "label": "Low fraction of reads in cells",
+      "metrics": [
+        "cell.reads_in_cells_fraction"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "related_causes": [
+        "cause.poor_partition_capture_or_rt",
+        "cause.low_cdna_or_library_yield"
+      ],
+      "signal_id": "signal.low_reads_in_cells"
+    },
+    {
+      "description": "The barcode-rank curve does not show a clean separation between cells and background.",
+      "label": "Barcode-rank plot lacks a clear knee",
+      "metrics": [
+        "cell.barcode_rank_separation"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "related_causes": [
+        "cause.overly_strict_cell_calling",
+        "cause.insufficient_viable_cell_input"
+      ],
+      "signal_id": "signal.barcode_rank_no_knee"
+    },
+    {
+      "description": "Few reads carry a barcode matching the chemistry whitelist.",
+      "label": "Barcode whitelist match is low",
+      "metrics": [
+        "barcode.whitelist_fraction",
+        "barcode.valid_fraction"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "related_causes": [
+        "cause.barcode_boundary_shift",
+        "cause.wrong_chemistry_or_whitelist",
+        "cause.read_configuration_mismatch"
+      ],
+      "signal_id": "signal.low_whitelist_match"
+    },
+    {
+      "description": "Few reads yield an extractable barcode or UMI at the expected offsets.",
+      "label": "Barcode/UMI cannot be extracted at the expected position",
+      "metrics": [
+        "barcode.extractable_fraction",
+        "umi.extractable_fraction"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "related_causes": [
+        "cause.read_configuration_mismatch",
+        "cause.barcode_boundary_shift"
+      ],
+      "signal_id": "signal.low_barcode_umi_extractable"
+    },
+    {
+      "description": "An elevated fraction of reads are adapter/handle-only (adapter dimers).",
+      "label": "Adapter-only reads are elevated",
+      "metrics": [
+        "library.adapter_only_fraction"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "related_causes": [
+        "cause.adapter_dimer_or_short_insert"
+      ],
+      "signal_id": "signal.elevated_adapter_only"
+    },
+    {
+      "description": "An elevated fraction of reads read through into the adapter, implying short inserts.",
+      "label": "Short-insert / adapter read-through elevated",
+      "metrics": [
+        "library.short_insert_fraction"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "related_causes": [
+        "cause.adapter_dimer_or_short_insert",
+        "cause.short_or_empty_cdna_products",
+        "cause.read_past_end_or_signal_decay"
+      ],
+      "signal_id": "signal.short_insert_elevated"
+    },
+    {
+      "description": "Short-read cDNA reads begin with TSO-derived sequence, implying short/empty cDNA products. Distinct from internal long-read TSO motifs.",
+      "label": "TSO-derived sequence at the start of a short-read cDNA read",
+      "metrics": [
+        "library.tso_at_rna_read_start_fraction"
+      ],
+      "platforms": [
+        "illumina"
+      ],
+      "references": [
+        "ref.tenx_3p_v3_userguide"
+      ],
+      "related_causes": [
+        "cause.short_or_empty_cdna_products"
+      ],
+      "signal_id": "signal.tso_at_read_start"
+    },
+    {
+      "description": "Long reads contain internal adapter/TSO-derived motifs mid-read, implying concatemers or fused molecules.",
+      "label": "Internal adapter/TSO motifs in long reads",
+      "metrics": [
+        "library.internal_adapter_fraction"
+      ],
+      "platforms": [
+        "nanopore",
+        "pacbio"
+      ],
+      "references": [
+        "ref.lebrigand_2020"
+      ],
+      "related_causes": [
+        "cause.long_read_tso_concatemer_or_fusion"
+      ],
+      "signal_id": "signal.internal_adapter_elevated"
+    },
+    {
+      "description": "An elevated fraction of reads end in poly-G (two-colour no-signal) tails. This is a SUPPORTING signal of read-past-end or signal decay, not an independent root cause.",
+      "is_root_cause": false,
+      "label": "Poly-G / no-signal tails elevated",
+      "metrics": [
+        "library.polyg_tail_fraction"
+      ],
+      "platforms": [
+        "illumina"
+      ],
+      "related_causes": [
+        "cause.read_past_end_or_signal_decay",
+        "cause.adapter_dimer_or_short_insert"
+      ],
+      "signal_id": "signal.polyg_tail_elevated"
+    },
+    {
+      "description": "Few long reads match the expected full-length architecture.",
+      "label": "Low full-length-proxy fraction",
+      "metrics": [
+        "library.full_length_proxy_fraction"
+      ],
+      "platforms": [
+        "nanopore",
+        "pacbio"
+      ],
+      "references": [
+        "ref.wf_single_cell_docs"
+      ],
+      "related_causes": [
+        "cause.short_or_empty_cdna_products",
+        "cause.long_read_tso_concatemer_or_fusion"
+      ],
+      "signal_id": "signal.low_full_length_proxy"
+    },
+    {
+      "description": "Reads map to the genome at a high rate but are assigned to genes/features at a low rate.",
+      "label": "Genome mapping high but gene assignment low",
+      "metrics": [
+        "mapping.genome_fraction",
+        "assignment.gene_fraction"
+      ],
+      "platforms": [
+        "illumina",
+        "nanopore"
+      ],
+      "signal_id": "signal.high_genome_low_gene_assignment"
+    }
+  ]
+}

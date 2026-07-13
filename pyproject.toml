@@ -26,10 +26,17 @@ fast = ["pysam>=0.22"]  # optional: faster FASTQ reading; the reader falls back 
 seqcolyte = "seqcolyte.cli:main"
 
 [tool.setuptools]
-packages = ["seqcolyte", "seqcolyte.spec", "seqcolyte.io", "extract", "sim", "sim.modes", "qc"]
+packages = [
+  "seqcolyte", "seqcolyte.spec", "seqcolyte.io", "extract", "sim", "sim.modes",
+  "qc", "qc.catalog", "qc.evidence", "qc.evidence.importers", "qc.manifest", "qc.diagnose",
+]
 
 [tool.setuptools.package-data]
 "seqcolyte.spec" = ["schema.json"]
+"qc.catalog" = ["schema.json", "diagnostic_catalog.yaml"]
+"qc.evidence" = ["schema.json"]
+"qc.manifest" = ["schema.json"]
+"qc.diagnose" = ["profiles/*.yaml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

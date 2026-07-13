@@ -404,7 +404,7 @@
       "title": "mRNA capture on barcoded bead (poly-dT priming)",
       "summary": "Polyadenylated mRNA hybridizes to the poly(dT) tail of the bead-bound barcode oligo in each sealed nanowell.",
       "note": "Cells and beads are co-confined in the sealed nanowell array; lysis releases mRNA that is captured by the terminal poly(dT)30 of the SeqB bead oligo.",
-      "product": "|--5'- TTTTTTTAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT -3'\n                                                                          ||||||||||\n                                                          3'- mRNA...AAAAAAAAAA -5'"
+      "product": "|--5'- TTTTTTTAAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT -3'\n                                                                                   ||||||||||\n                                                                        3'- mRNA...AAAAAAAAAA -5'"
     },
     {
       "step": 2,
@@ -439,7 +439,7 @@
       "title": "Whole-transcriptome amplification (SMART/IS PCR primer)",
       "summary": "A single SMART PCR primer amplifies the double-stranded cDNA because both ends carry the SMART handle.",
       "note": "KAPA HiFi PCR (4 + 9-12 cycles) yields WTA cDNA flanked by the SMART sequence on both ends (avg 0.7-2 kb).",
-      "product": "5'- AAGCAGTGGTATCAACGCAGAGT[CELL_BARCODE:12][UMI:8](T)30[CDNA]ACTCTGCGTTGATACCACTGCTT -3'\n3'- TTCGTCACCATAGTTGCGTCTCA[CELL_BARCODE':12][UMI':8](A)30[CDNA']TGAGACGCAACTATGGTGACGAA -5'"
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGT[CELL_BARCODE:12] [UMI:8] (T)30[CDNA] ACTCTGCGTTGATACCACTGCTT -3'\n3'- TTCGTCACCATAGTTGCGTCTCA[CELL_BARCODE':12][UMI':8](A)30[CDNA']TGAGACGCAACTATGGTGACGAA -5'"
     },
     {
       "step": 7,
@@ -463,7 +463,7 @@
       "template": "bottom",
       "cycles": 20,
       "note": "Spiked-in custom primer anneals to the P5/SMART bead handle so Read 1 begins at the cell barcode; reads the 12-nt cell barcode then the 8-nt UMI (20 bp; occasionally 21 bp by bead lot).",
-      "diagram": "Custom Read 1 primer\n5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC----------------------->\n                                          (reads 12-nt CB + 8-nt UMI)\ntop    5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC NNNNNNNNNNNN NNNNNNNN TTTTT...-3'\n              |||||||||||||||||||||||||||||||||||||\nbottom 3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG NNNNNNNNNNNN NNNNNNNN AAAAA...-5'\n                                               |cell barcode|| UMI  |"
+      "diagram": "Custom Read 1 primer\n          5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC----------------------->\n                                                    (reads 12-nt CB + 8-nt UMI)\ntop    5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC NNNNNNNNNNNN NNNNNNNN TTTTT...-3'\n             |||||||||||||||||||||||||||||||||||||\nbottom 3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG NNNNNNNNNNNN NNNNNNNN AAAAA...-5'\n                                                  |cell barcode|| UMI  |"
     },
     {
       "read": "Index 1 (i7)",
@@ -471,7 +471,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "Reads the 8-nt i7 sample index off the tagmented (Nextera) end; on NovaSeq the protocol recommends dual-indexing to mitigate index hopping.",
-      "diagram": "i7 index primer\n5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC----------->\n                                       (reads 8-nt i7 index)\ntop    5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC NNNNNNNN ATCTCGTATGCCGTCTTCTGCTTG-3'\n              ||||||||||||||||||||||||||||||||||\nbottom 3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG NNNNNNNN TAGAGCATACGGCAGAAGACGAAC-5'\n                                              |i7 index|"
+      "diagram": "i7 index primer\n          5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC----------->\n                                                (reads 8-nt i7 index)\ntop    5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC NNNNNNNN ATCTCGTATGCCGTCTTCTGCTTG-3'\n             ||||||||||||||||||||||||||||||||||\nbottom 3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG NNNNNNNN TAGAGCATACGGCAGAAGACGAAC-5'\n                                               |i7 index|"
     },
     {
       "read": "Read 2",
@@ -479,7 +479,7 @@
       "template": "top",
       "cycles": 50,
       "note": "Anneals to the Nextera mosaic-end handle at the tagmented/P7 end and reads 50 bp (50-80 bp on NovaSeq) back into the cDNA insert.",
-      "diagram": "                       <----------------------- (Read 2 reads into cDNA)\ntop    5'-...[cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG-3'\n                  ||||||||||||||||||||||||||||||||||\nRead2 primer   3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\nbottom 3'-...[cDNA']GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7']TAGAGCATACGGCAGAAGACGAAC-5'"
+      "diagram": "                   <----------------------- (Read 2 reads into cDNA)\ntop    5'-...[cDNA] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7] ATCTCGTATGCCGTCTTCTGCTTG-3'\n                    ||||||||||||||||||||||||||||||||||\nRead2 primer     3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\nbottom 3'-...[cDNA']GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7']TAGAGCATACGGCAGAAGACGAAC-5'"
     }
   ],
   "whitelists": {},

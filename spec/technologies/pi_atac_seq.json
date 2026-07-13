@@ -517,14 +517,14 @@
       "title": "Bulk Tn5 tagmentation of accessible chromatin",
       "summary": "Tn5 loaded with Nextera mosaic-end adapters inserts Read 1/Read 2 adapters into accessible DNA and is stopped with EDTA (no purification).",
       "note": "Hyperactive Tn5 carrying Tn5ME-A/ME-rev and Tn5ME-B/ME-rev cuts open chromatin and appends adapters, leaving a characteristic 9-bp gap on each strand. The reaction is quenched with 40 mM EDTA; no clean-up is performed so that the sample can be sorted directly.",
-      "product": "     5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG                                            \n                          3'- TCTACACATATTCTCTGTC/5Phos/                              \n                                        [ accessible genomic DNA ]                    \n                                                    /5Phos/CTGTCTCTTATACACATCTGAGGGCGTCTCTG -3'\n                                                            GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG -5'\n         (A-adapter on one end, B-adapter on the other; 9-bp gaps left by Tn5)"
+      "product": "     5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG\n                   3'- TCTACACATATTCTCTGTC/5Phos/\n                                        [ accessible genomic DNA ]\n                                                    /5Phos/CTGTCTCTTATACACATCTGAGGGCGTCTCTG -3'\n                                          GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG -5'\n         (A-adapter on one end, B-adapter on the other; 9-bp gaps left by Tn5)"
     },
     {
       "step": 3,
       "title": "Index-FACS single-cell sorting + reverse crosslinking",
       "summary": "Single cells are index-sorted into wells prefilled with reverse-crosslink buffer, recording each cell's antibody fluorescence, then de-crosslinked.",
       "note": "The FACS AriaII sorts one cell per well of a 96- or 384-well plate; the per-cell protein-epitope fluorescence intensities are stored (index sorting) and mapped to the well. Reverse crosslinking (65 \u00b0C overnight, proteinase K, then 80 \u00b0C inactivation) uses a Taq-compatible buffer so PCR can proceed directly on the same well.",
-      "product": "  per well (one cell):\n  5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[ genomic DNA ]CTGTCTCTTATACACATCT... -3'\n  3'- ...TCTACACATATTCTCTGTC[ genomic DNA ]GAGCTCGGGTGCTCTG... GTCTCGTGGGCTCGGAG -5'\n  (tagmented fragment + recorded protein index; 9-bp gaps to be filled by PCR polymerase)"
+      "product": "  per well (one cell):\n  5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[ genomic DNA ]CTGTCTCTTATACACATCT... -3'\n  3'- ...           TCTACACATATTCTCTGTC[ genomic DNA ]GAGCTCGGGTGCTCTG... GTCTCGTGGGCTCGGAG -5'\n  (tagmented fragment + recorded protein index; 9-bp gaps to be filled by PCR polymerase)"
     },
     {
       "step": 4,
@@ -541,7 +541,7 @@
       "template": "bottom",
       "cycles": 75,
       "note": "First end of the 75x2 paired-end run on Illumina HiSeq 4000. The Read 1 primer (identical to the s5+ME top-strand segment) anneals to the bottom strand and reads rightward into the accessible genomic-DNA insert.",
-      "diagram": "                 Read 1 primer\n                 5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------------->  (reads insert)\n5'-...GAGATCTACAC[i5]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGXXXXXXXXXXXXX...-3'\n3'-...CTCTAGATGTG[i5]AGCAGCCGTCGCAGTCTACACATATTCTCTGTCXXXXXXXXXXXXX...-5'\n                                                     (bottom strand = template)"
+      "diagram": "                  Read 1 primer\n                  5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------------->  (reads insert)\n5'-...GAGATCTACAC[i5]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGXXXXXXXXXXXXX...-3'\n3'-...CTCTAGATGTG[i5]AGCAGCCGTCGCAGTCTACACATATTCTCTGTCXXXXXXXXXXXXX...-5'\n                                                     (bottom strand = template)"
     },
     {
       "read": "Index 1 (i7)",
@@ -549,7 +549,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "Reads the 8-bp i7 index. Primer (ME-rc + s7-rc, identical to the top strand) anneals to the bottom strand and reads rightward across the i7; together with i5 it encodes the sorted well/cell.",
-      "diagram": "                                    Index 1 (i7) primer\n                                    5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC------->  (reads i7)\n5'-...XXXXXXXCTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG-3'\n3'-...XXXXXXXGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]TAGAGCATACGGCAGAAGACGAAC-5'\n                                               (bottom strand = template)"
+      "diagram": "          Index 1 (i7) primer\n          5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC------->  (reads i7)\n5'-...XXXXXXXCTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]ATCTCGTATGCCGTCTTCTGCTTG-3'\n3'-...XXXXXXXGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]TAGAGCATACGGCAGAAGACGAAC-5'\n                                               (bottom strand = template)"
     },
     {
       "read": "Index 2 (i5)",
@@ -565,7 +565,7 @@
       "template": "top",
       "cycles": 75,
       "note": "Second end of the 75x2 paired-end run. The Read 2 primer anneals to the top strand at the s7+ME (ME-rc/s7-rc) region and reads leftward into the insert from the P7 side.",
-      "diagram": "     Read 2 primer\n     3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n     <-----------(reads insert)\n5'-...XXXXXXXXXXXXXCTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]...-3'\n3'-...XXXXXXXXXXXXXGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]...-5'\n   (top strand = template)"
+      "diagram": "                Read 2 primer\n                3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n                <-----------(reads insert)\n5'-...XXXXXXXXXXXXXCTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]...-3'\n3'-...XXXXXXXXXXXXXGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]...-5'\n   (top strand = template)"
     }
   ],
   "whitelists": {},

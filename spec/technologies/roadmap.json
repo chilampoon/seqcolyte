@@ -1,0 +1,470 @@
+[
+  {
+    "id": "trac_looping",
+    "title": "Trac-looping",
+    "source_url": "https://www.nature.com/articles/s41592-018-0107-y",
+    "status": "tbd"
+  },
+  {
+    "id": "matq_seq",
+    "title": "MATQ-seq",
+    "source_url": "https://www.nature.com/articles/nmeth.4145",
+    "status": "tbd"
+  },
+  {
+    "id": "astar_seq",
+    "title": "ASTAR-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/829960v1",
+    "status": "tbd"
+  },
+  {
+    "id": "drop_scchip_seq",
+    "title": "Drop scChIP-seq",
+    "source_url": "https://www.nature.com/articles/s41588-019-0424-9",
+    "status": "tbd"
+  },
+  {
+    "id": "sci_plex",
+    "title": "sci-Plex",
+    "source_url": "https://science.sciencemag.org/content/early/2019/12/04/science.aax6234.full",
+    "status": "tbd"
+  },
+  {
+    "id": "sci_car_seq",
+    "title": "sci-CAR-seq",
+    "source_url": "https://science.sciencemag.org/content/361/6409/1380.full",
+    "status": "tbd"
+  },
+  {
+    "id": "snmc2t_seq",
+    "title": "snmC2T-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2019.12.11.873398v1",
+    "status": "tbd"
+  },
+  {
+    "id": "malbac_dt",
+    "title": "MALBAC-DT",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2019.12.31.892190v1",
+    "status": "tbd"
+  },
+  {
+    "id": "grid_seq",
+    "title": "GRID-seq",
+    "source_url": "https://www.nature.com/articles/nbt.3968",
+    "status": "tbd"
+  },
+  {
+    "id": "zipseq",
+    "title": "ZipSeq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2020.02.04.932988v1",
+    "status": "tbd"
+  },
+  {
+    "id": "sccc",
+    "title": "scCC",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S009286742030814X",
+    "status": "tbd"
+  },
+  {
+    "id": "scsprite",
+    "title": "scSPRITE",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2020.08.11.242081v1",
+    "status": "tbd"
+  },
+  {
+    "id": "tea_seq_icicle_seq",
+    "title": "TEA-seq/ICICLE-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2020.09.04.283887v2",
+    "status": "tbd"
+  },
+  {
+    "id": "hsrchst_seq",
+    "title": "hsrChST-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.03.11.434985v1",
+    "status": "tbd"
+  },
+  {
+    "id": "tip_seq",
+    "title": "TIP-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.03.17.435909v1",
+    "status": "tbd"
+  },
+  {
+    "id": "eccite_seq",
+    "title": "ECCITE-seq",
+    "source_url": "https://www.nature.com/articles/s41592-019-0392-0",
+    "status": "tbd"
+  },
+  {
+    "id": "asap_seq_dogma_seq",
+    "title": "ASAP-seq/DOGMA-seq",
+    "source_url": "https://www.nature.com/articles/s41587-021-00927-2",
+    "status": "tbd"
+  },
+  {
+    "id": "phage_atac",
+    "title": "PHAGE-ATAC",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2020.10.01.322420v1",
+    "status": "tbd"
+  },
+  {
+    "id": "spatial_atac_seq",
+    "title": "Spatial-ATAC-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.06.06.447244v1",
+    "status": "tbd"
+  },
+  {
+    "id": "spatial_c_t",
+    "title": "Spatial C&T",
+    "source_url": "https://www.science.org/doi/10.1126/science.abg7216",
+    "status": "tbd"
+  },
+  {
+    "id": "sctem_seq",
+    "title": "scTEM-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.03.25.436351v1",
+    "status": "tbd"
+  },
+  {
+    "id": "dbit_seq",
+    "title": "DBiT-seq",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S0092867420313908",
+    "status": "tbd"
+  },
+  {
+    "id": "scget_seq",
+    "title": "scGET-seq",
+    "source_url": "https://www.nature.com/articles/s41587-021-01031-1",
+    "status": "tbd"
+  },
+  {
+    "id": "multi_cut_tag",
+    "title": "Multi-CUT&Tag",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S109727652100753X",
+    "status": "tbd"
+  },
+  {
+    "id": "multi_tag",
+    "title": "MulTI-Tag",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.07.08.451691v1",
+    "status": "tbd"
+  },
+  {
+    "id": "time_seq",
+    "title": "TIME-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.10.25.465725v1",
+    "status": "tbd"
+  },
+  {
+    "id": "scsplat",
+    "title": "scSPLAT",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.10.14.464375v2",
+    "status": "tbd"
+  },
+  {
+    "id": "epidamid",
+    "title": "EpiDamID",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.10.26.465688v1",
+    "status": "tbd"
+  },
+  {
+    "id": "scribo_seq",
+    "title": "scRibo-seq",
+    "source_url": "https://www.nature.com/articles/s41586-021-03887-4",
+    "status": "tbd"
+  },
+  {
+    "id": "sc_end5_seq",
+    "title": "sc-end5-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.04.04.438388v2",
+    "status": "tbd"
+  },
+  {
+    "id": "slide_seq_family",
+    "title": "Slide-seq family",
+    "source_url": "https://www.nature.com/articles/s41587-020-0739-1",
+    "status": "tbd"
+  },
+  {
+    "id": "cotech",
+    "title": "CoTECH",
+    "source_url": "https://www.nature.com/articles/s41592-021-01129-z",
+    "status": "tbd"
+  },
+  {
+    "id": "pairedtag",
+    "title": "PairedTag",
+    "source_url": "https://www.nature.com/articles/s41592-021-01060-3",
+    "status": "tbd"
+  },
+  {
+    "id": "got_cha",
+    "title": "GoT-ChA",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2022.05.11.491515v1",
+    "status": "tbd"
+  },
+  {
+    "id": "methyl_hic",
+    "title": "Methyl-HiC",
+    "source_url": "https://www.nature.com/articles/s41592-019-0502-z",
+    "status": "tbd"
+  },
+  {
+    "id": "snubar_atac",
+    "title": "SNuBar-ATAC",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S1097276521007954",
+    "status": "tbd"
+  },
+  {
+    "id": "raisin_miracl_seq",
+    "title": "RAISIN & MIRACL-seq",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S0092867420309946",
+    "status": "tbd"
+  },
+  {
+    "id": "microbe_seq",
+    "title": "Microbe-seq",
+    "source_url": "https://www.science.org/doi/10.1126/science.abm1483",
+    "status": "tbd"
+  },
+  {
+    "id": "sec_seq",
+    "title": "SEC-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2022.08.25.505190v1",
+    "status": "tbd"
+  },
+  {
+    "id": "scone_seq",
+    "title": "scONE-seq",
+    "source_url": "https://www.science.org/doi/10.1126/sciadv.abp8901",
+    "status": "tbd"
+  },
+  {
+    "id": "bacdrop",
+    "title": "BacDrop",
+    "source_url": "https://pubmed.ncbi.nlm.nih.gov/36708705/",
+    "status": "tbd"
+  },
+  {
+    "id": "speac_seq",
+    "title": "SPEAC-seq",
+    "source_url": "https://www.science.org/doi/10.1126/science.abq4822",
+    "status": "tbd"
+  },
+  {
+    "id": "disco",
+    "title": "DisCo",
+    "source_url": "https://www.nature.com/articles/s41592-021-01391-1",
+    "status": "tbd"
+  },
+  {
+    "id": "spindrop",
+    "title": "spinDrop",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.01.12.523500v1",
+    "status": "tbd"
+  },
+  {
+    "id": "sciplex_atac_seq",
+    "title": "sciPlex-ATAC-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.03.05.531201v1",
+    "status": "tbd"
+  },
+  {
+    "id": "scito_seq",
+    "title": "SCITO-seq",
+    "source_url": "https://www.nature.com/articles/s41592-021-01222-3",
+    "status": "tbd"
+  },
+  {
+    "id": "snrandom_seq",
+    "title": "snRandom-seq",
+    "source_url": "https://www.nature.com/articles/s41467-023-38409-5",
+    "status": "tbd"
+  },
+  {
+    "id": "last_seq",
+    "title": "LAST-seq",
+    "source_url": "https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-03025-5",
+    "status": "tbd"
+  },
+  {
+    "id": "gage_seq",
+    "title": "GAGE-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.07.20.549578v1",
+    "status": "tbd"
+  },
+  {
+    "id": "sccare_seq",
+    "title": "scCARE-seq",
+    "source_url": "https://www.nature.com/articles/s41594-023-01066-9",
+    "status": "tbd"
+  },
+  {
+    "id": "hires",
+    "title": "HiRES",
+    "source_url": "https://www.science.org/doi/10.1126/science.adg3797",
+    "status": "tbd"
+  },
+  {
+    "id": "limca",
+    "title": "LiMCA",
+    "source_url": "https://www.researchsquare.com/article/rs-3210240/v1",
+    "status": "tbd"
+  },
+  {
+    "id": "nano_ct",
+    "title": "nano-CT",
+    "source_url": "https://www.nature.com/articles/s41587-022-01535-4",
+    "status": "tbd"
+  },
+  {
+    "id": "ntt_seq",
+    "title": "NTT-seq",
+    "source_url": "https://www.nature.com/articles/s41587-022-01588-5",
+    "status": "tbd"
+  },
+  {
+    "id": "butt_seq",
+    "title": "BuTT-seq",
+    "source_url": "https://genesdev.cshlp.org/content/37/9-10/432",
+    "status": "tbd"
+  },
+  {
+    "id": "m3_seq",
+    "title": "M3-seq",
+    "source_url": "https://www.nature.com/articles/s41564-023-01462-3",
+    "status": "tbd"
+  },
+  {
+    "id": "indrops_2",
+    "title": "inDrops-2",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.09.26.559493v1",
+    "status": "tbd"
+  },
+  {
+    "id": "scrcat_seq",
+    "title": "scRCAT-seq",
+    "source_url": "https://www.nature.com/articles/s41467-020-18976-7",
+    "status": "tbd"
+  },
+  {
+    "id": "phospho_seq",
+    "title": "Phospho-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.03.27.534442v1.full",
+    "status": "tbd"
+  },
+  {
+    "id": "ramda_seq",
+    "title": "RamDA-seq",
+    "source_url": "https://www.nature.com/articles/s41467-018-02866-0",
+    "status": "tbd"
+  },
+  {
+    "id": "simple_seq",
+    "title": "SIMPLE-seq",
+    "source_url": "https://www.nature.com/articles/s41587-024-02148-9",
+    "status": "tbd"
+  },
+  {
+    "id": "sctaps",
+    "title": "scTAPS",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.02.12.579864v1",
+    "status": "tbd"
+  },
+  {
+    "id": "music",
+    "title": "MUSIC",
+    "source_url": "https://www.nature.com/articles/s41586-024-07239-w",
+    "status": "tbd"
+  },
+  {
+    "id": "direct_seq",
+    "title": "Direct-seq",
+    "source_url": "https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02044-w",
+    "status": "tbd"
+  },
+  {
+    "id": "strand_seq",
+    "title": "Strand-seq",
+    "source_url": "https://www.nature.com/articles/nmeth.2206",
+    "status": "tbd"
+  },
+  {
+    "id": "drop_bs",
+    "title": "Drop-BS",
+    "source_url": "https://www.nature.com/articles/s41467-023-40411-w",
+    "status": "tbd"
+  },
+  {
+    "id": "cropseq_multi",
+    "title": "CROPseq-multi",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.03.17.585235v1",
+    "status": "tbd"
+  },
+  {
+    "id": "chair",
+    "title": "ChAIR",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.05.03.592322v1.full",
+    "status": "tbd"
+  },
+  {
+    "id": "spatac_seq",
+    "title": "SPATAC-seq",
+    "source_url": "https://www.nature.com/articles/s41556-024-01449-0",
+    "status": "tbd"
+  },
+  {
+    "id": "snaptotal_seq",
+    "title": "snapTotal-seq",
+    "source_url": "https://www.nature.com/articles/s41467-024-50291-3",
+    "status": "tbd"
+  },
+  {
+    "id": "easyshare_seq",
+    "title": "easySHARE-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.02.26.581705v1.full",
+    "status": "tbd"
+  },
+  {
+    "id": "easysci",
+    "title": "EasySci",
+    "source_url": "https://www.nature.com/articles/s41588-023-01572-y",
+    "status": "tbd"
+  },
+  {
+    "id": "oak",
+    "title": "OAK",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.01.23.576918v1",
+    "status": "tbd"
+  },
+  {
+    "id": "bag_dna_rna",
+    "title": "BAG DNA RNA",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.10.04.560973v1",
+    "status": "tbd"
+  },
+  {
+    "id": "cap_seq",
+    "title": "CAP-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.09.10.612220v1",
+    "status": "tbd"
+  },
+  {
+    "id": "wellda_seq",
+    "title": "wellDA-seq",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.09.06.611519v1",
+    "status": "tbd"
+  },
+  {
+    "id": "probac_seq",
+    "title": "ProBac-seq",
+    "source_url": "https://www.nature.com/articles/s41596-024-01002-1",
+    "status": "tbd"
+  },
+  {
+    "id": "sccolor_seq",
+    "title": "scCOLOR-seq",
+    "source_url": "https://www.nature.com/articles/s41587-021-00965-w",
+    "status": "tbd"
+  }
+]

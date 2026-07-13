@@ -1089,7 +1089,7 @@
       "template": "top",
       "cycles": 69,
       "note": "Sequences the tagmented genomic (ChIP) insert from the T5 side. Primer anneals to the bottom strand across the linker+ME(A) and extends into the insert.",
-      "diagram": "                 Read 1 primer (Ext ME-A)\n                 5'-GCGATCGAGGACGGCAGATGTGTATAAGAGACAG----------->  (69 nt into insert)\ntop     5'- ...[T5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[====== genomic insert ======]... -3'\n                  ||||||||||||||||||||||||||||||||||\nbottom  3'- ...[T5]CGCTAGCTCCTGCCGTCTACACATATTCTCTGTC[====== genomic insert ======]... -5'"
+      "diagram": "                Read 1 primer (Ext ME-A)\n                5'-GCGATCGAGGACGGCAGATGTGTATAAGAGACAG----------->  (69 nt into insert)\ntop     5'- ...[T5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG[====== genomic insert ======]... -3'\n                   ||||||||||||||||||||||||||||||||||\nbottom  3'- ...[T5]CGCTAGCTCCTGCCGTCTACACATATTCTCTGTC[====== genomic insert ======]... -5'"
     },
     {
       "read": "Index 1",
@@ -1097,7 +1097,7 @@
       "template": "bottom",
       "cycles": 43,
       "note": "Decodes the cell/library index on the T7 side: first 8 bp = T7 cell barcode, then 27-bp Universal Connector B, last 8 bp = i7 library index (8 + 27 + 8 = 43).",
-      "diagram": "                              Index 1 primer (RC Ext ME-B)\n                              5'-CTGTCTCTTATACACATCTGAGGCGGAGACGGTG----------->  reads [T7:8]+ConnB(27)+[i7:8] = 43 cyc\ntop     5'- ...[insert]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[T7:8]GGACAGGGACAGCCGAGCCCACGAGAC[i7:8]... -3'\n                      ||||||||||||||||||||||||||||||||||\nbottom  3'- ...[insert]GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC[T7:8].......(ConnB comp)........[i7:8]... -5'"
+      "diagram": "                    Index 1 primer (RC Ext ME-B)\n                    5'-CTGTCTCTTATACACATCTGAGGCGGAGACGGTG----------->  reads [T7:8]+ConnB(27)+[i7:8] = 43 cyc\ntop     5'- ...[insert]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[T7:8]GGACAGGGACAGCCGAGCCCACGAGAC[i7:8]... -3'\n                       ||||||||||||||||||||||||||||||||||\nbottom  3'- ...[insert]GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC[T7:8].......(ConnB comp)........[i7:8]... -5'"
     },
     {
       "read": "Index 2",
@@ -1113,7 +1113,7 @@
       "template": "bottom",
       "cycles": 69,
       "note": "Sequences the genomic insert from the T7 side (paired end). Primer anneals to the top strand across the ME(B) region and extends leftward into the insert.",
-      "diagram": "top     5'- ...[====== genomic insert ======]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[T7]... -3'\n                                            ||||||||||||||||||||||||||||||||||\nbottom  3'- ...[====== genomic insert ======]GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC[T7]... -5'\n               <-----------GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC-5'\n               (69 nt into insert)   Read 2 primer (Ext ME-B), 5'->3' shown right-to-left"
+      "diagram": "top     5'- ...[====== genomic insert ======]CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[T7]... -3'\n                                             ||||||||||||||||||||||||||||||||||\nbottom  3'- ...[====== genomic insert ======]GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC[T7]... -5'\n                                 <-----------GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC-5'\n                                 (69 nt into insert)   Read 2 primer (Ext ME-B), 5'->3' shown right-to-left"
     }
   ],
   "whitelists": {},

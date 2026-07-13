@@ -507,14 +507,14 @@
       "title": "Lysis & mRNA capture on bead poly(T)",
       "summary": "Chemical lysis emulsion + heat release mRNA, whose poly(A) tail anneals to the bead poly(T).",
       "note": "37 \u00b0C for cells (66 \u00b0C for nuclei). Released poly(A) mRNA hybridizes to the bead's poly(dT) anchor.",
-      "product": "  bead: 5'-...ACACTCTTTCCCTACACGACGCTCTTCC-[BC16]-[UMI12]-TTTTTTTTTTTTTTTTTTTV-3'\n                                                                 ||||||||||||||||||\n  mRNA:                                     3'-AAAAAAAAAAAAAAAAAA...(gene 5')-cap-5'"
+      "product": "  bead: 5'-...ACACTCTTTCCCTACACGACGCTCTTCC-[BC16]-[UMI12]-TTTTTTTTTTTTTTTTTTTV-3'\n                                                          ||||||||||||||||||\n  mRNA:                                                    3'-AAAAAAAAAAAAAAAAAA...(gene 5')-cap-5'"
     },
     {
       "step": 3,
       "title": "Reverse transcription with template switching",
       "summary": "Maxima H-minus RT extends the bead primer into first-strand cDNA and template-switches onto the TSO.",
       "note": "RT master mix (RT Additive Mix + TSO + RT Enzyme Mix): 25 \u00b0C 30 min, 42 \u00b0C 90 min, 85 \u00b0C 10 min. The TSO (AAGCAGTGGTATCAACGCAGAGTGAATGGG) is appended at the 3' end of the first-strand cDNA.",
-      "product": "  5'-...R1handle-[BC16]-[UMI12]-(dT)---> cDNA (3'gene) --->CCCATTCTGCGTTGATACCACTGCTT-3'\n                                                             ^template-switched TSO complement\n  where R1handle = ACACTCTTTCCCTACACGACGCTCTTCC"
+      "product": "  5'-...R1handle-[BC16]-[UMI12]-(dT)---> cDNA (3'gene) --->CCCATTCTGCGTTGATACCACTGCTT-3'\n                                                           ^template-switched TSO complement\n  where R1handle = ACACTCTTTCCCTACACGACGCTCTTCC"
     },
     {
       "step": 4,
@@ -552,7 +552,7 @@
       "template": "top",
       "cycles": 54,
       "note": "Read 1 must be \u226554 nt. Sequencing primer anneals to the bottom strand at the Read 1 handle and reads the 16-nt cell barcode + 12-nt UMI, then runs into the poly(T).",
-      "diagram": "                     Read 1 primer 5'-ACACTCTTTCCCTACACGACGCTCTTCC----------------->  (reads CellBC[16] + UMI[12])\n5'-...GAGATCTACAC[i5:8]ACACTCTTTCCCTACACGACGCTCTTCC[CellBC:16][UMI:12]TTTTTTT...[cDNA]...-3'\n                     |||||||||||||||||||||||||||| \n3'-...CTCTAGATGTG[i5:8]TGTGAGAAAGGGATGTGCTGCGAGAAGG[CellBC:16][UMI:12]AAAAAAA...[cDNA]...-5'"
+      "diagram": "      Read 1 primer 5'-ACACTCTTTCCCTACACGACGCTCTTCC----------------->  (reads CellBC[16] + UMI[12])\n5'-...GAGATCTACAC[i5:8]ACACTCTTTCCCTACACGACGCTCTTCC[CellBC:16][UMI:12]TTTTTTT...[cDNA]...-3'\n                       ||||||||||||||||||||||||||||\n3'-...CTCTAGATGTG[i5:8]TGTGAGAAAGGGATGTGCTGCGAGAAGG[CellBC:16][UMI:12]AAAAAAA...[cDNA]...-5'"
     },
     {
       "read": "Index i7 (I1)",
@@ -560,7 +560,7 @@
       "template": "top",
       "cycles": 8,
       "note": "8-nt i7 sample index. Index primer anneals to the bottom strand at the ligated Nextera ME / P7-side handle and reads the i7.",
-      "diagram": "                    i7 primer 5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC------->  (reads i7[8])\n5'-...[cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]ATCTCGTATGCCGTCTTCTGCTTG-3'\n           ||||||||||||||||||||||||||||||||||\n3'-...[cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]TAGAGCATACGGCAGAAGACGAAC-5'"
+      "diagram": "i7 primer 5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC------->  (reads i7[8])\n5'-...[cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]ATCTCGTATGCCGTCTTCTGCTTG-3'\n            ||||||||||||||||||||||||||||||||||\n3'-...[cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]TAGAGCATACGGCAGAAGACGAAC-5'"
     },
     {
       "read": "Index i5 (I2)",
@@ -568,7 +568,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "8-nt i5 sample index. On forward-strand instruments (MiSeq/NovaSeq fwd) the i5 is read directly off the Read 1 handle primer; on reverse-complement-workflow instruments (NextSeq/NovaSeq rev) the primer shown anneals to the top strand and reads the i5 as its complement.",
-      "diagram": "5'-AATGATACGGCGACCACCGAGATCTACAC[i5:8]ACACTCTTTCCCTACACGACGCTCTTCC...-3'\n                                     ||||||||||||||||||||||||||||\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]TGTGAGAAAGGGATGTGCTGCGAGAAGG...-5'\n                       (reads i5[8]) <-------TGTGAGAAAGGGATGTGCTGCGAGAAGG-5' i5 primer"
+      "diagram": "5'-AATGATACGGCGACCACCGAGATCTACAC[i5:8]ACACTCTTTCCCTACACGACGCTCTTCC...-3'\n                                      ||||||||||||||||||||||||||||\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]TGTGAGAAAGGGATGTGCTGCGAGAAGG...-5'\n                (reads i5[8]) <-------TGTGAGAAAGGGATGTGCTGCGAGAAGG-5' i5 primer"
     },
     {
       "read": "Read 2 (cDNA / gene body)",
@@ -576,7 +576,7 @@
       "template": "bottom",
       "cycles": 67,
       "note": "Read 2 recommended \u226567 nt. Nextera Read 2 primer anneals to the top strand at the ligated ME/handle and reads back through the 3' end of the transcript (gene expression).",
-      "diagram": "R2 primer 3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  (anneals to top ME handle)\n              <---------- reads cDNA gene body\n5'-...[poly(T)][cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]ATCTCGTATGCCGTCTTCTGCTTG-3'\n                     ||||||||||||||||||||||||||||||||||\n3'-...[poly(A)][cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]TAGAGCATACGGCAGAAGACGAAC-5'"
+      "diagram": "        R2 primer 3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  (anneals to top ME handle)\n              <---------- reads cDNA gene body\n5'-...[poly(T)][cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]ATCTCGTATGCCGTCTTCTGCTTG-3'\n                     ||||||||||||||||||||||||||||||||||\n3'-...[poly(A)][cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]TAGAGCATACGGCAGAAGACGAAC-5'"
     }
   ],
   "whitelists": {},

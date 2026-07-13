@@ -450,7 +450,7 @@
       "title": "Reverse transcription with RTP",
       "summary": "The RTP primer anneals to the ligated RA3 adapter and SuperScript III makes cDNA of the aRNA.",
       "note": "65 \u00b0C anneal \u2192 50 \u00b0C / 1 h; RNaseA cleanup. RTP = GCCTTGGCACCCGAGAATTCCA.",
-      "product": "  aRNA  3'-...GGAACCGTGGGCTCTTAAGGT -5'\n  cDNA        GCCTTGGCACCCGAGAATTCCA-...(gene body)[UFI][BC2][W1][BC1][handle] -3'\n              <-------- RTP extension"
+      "product": "  aRNA  3'-...GGAACCGTGGGCTCTTAAGGT -5'\n  cDNA       GCCTTGGCACCCGAGAATTCCA-...(gene body)[UFI][BC2][W1][BC1][handle] -3'\n              <-------- RTP extension"
     },
     {
       "step": 10,
@@ -467,7 +467,7 @@
       "template": "top",
       "cycles": 247,
       "note": "Biological read: primer binds the s5 handle, reads through the 22-nt RTP/RA3-derived region and then across the fragmented total-RNA cDNA insert (even gene-body coverage). Adapter/homopolymer trimmed before mapping.",
-      "diagram": "                      Read1 primer\n                      5'-TCGTCGGCAGCGTC------------------------------->  R1 (247 bp)\n5'- ...GAGATCTACAC[i5]TCGTCGGCAGCGTCGCCTTGGCACCCGAGAATTCCA[--cDNA--]poly(dA)... -3'\n3'- ...CTCTAGATGTG[i5]AGCAGCCGTCGCAGCGGAACCGTGGGCTCTTAAGGT[--cDNA--]poly(dT)... -5'"
+      "diagram": "                   Read1 primer\n                   5'-TCGTCGGCAGCGTC------------------------------->  R1 (247 bp)\n5'- ...GAGATCTACAC[i5]TCGTCGGCAGCGTCGCCTTGGCACCCGAGAATTCCA[--cDNA--]poly(dA)... -3'\n3'- ...CTCTAGATGTG[i5]AGCAGCCGTCGCAGCGGAACCGTGGGCTCTTAAGGT[--cDNA--]poly(dT)... -5'"
     },
     {
       "read": "Index1 (i7)",
@@ -475,7 +475,7 @@
       "template": "bottom",
       "cycles": 31,
       "note": "Primer anneals to the top-strand reverse complement of the 15-bp common handle (CTGCACCCGACACCC) and reads leftward, reporting cell barcode 1 (BC1, 8 nt) followed by the W1 linker (22 nt) \u2014 the inDrop-v3 first barcode.",
-      "diagram": "5'- ...[--W1: 22 bp--][BC1: 8bp]CTGCACCCGACACCC[i7:8]ATCTCGTATGCC... -3'\n            I1 (31 bp): BC1(8)+W1(22)  GACGTGGGCTGTGGG-5'  (i7 index primer)\n                       <------------------\n3'- ...[--W1'-------][BC1':8 ]GACGTGGGCTGTGGG[i7':8]TAGAGCATACGG... -5'"
+      "diagram": "5'- ...[--W1: 22 bp--][BC1: 8bp]CTGCACCCGACACCC[i7:8] ATCTCGTATGCC... -3'\n     I1 (31 bp): BC1(8)+W1(22)  GACGTGGGCTGTGGG-5'  (i7 index primer)\n                <------------------\n3'- ...[--W1'-------][BC1':8 ]  GACGTGGGCTGTGGG[i7':8]TAGAGCATACGG... -5'"
     },
     {
       "read": "Index2 (i5)",
@@ -483,7 +483,7 @@
       "template": "top",
       "cycles": 8,
       "note": "Reads the 8-nt i5 sample index; on the NovaSeq 6000 forward-strand workflow the i5 primer binds the s5/Read1 handle and reads the index toward P5.",
-      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5:8]TCGTCGGCAGCGTC... -3'\n                          i5 primer  <------GACGCTGCCGACGA\n                              I2 (8 bp): i5 index\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5':8]AGCAGCCGTCGCAG... -5'"
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5:8] TCGTCGGCAGCGTC... -3'\n                      i5 primer  <------GACGCTGCCGACGA\n                              I2 (8 bp): i5 index\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5':8]AGCAGCCGTCGCAG... -5'"
     },
     {
       "read": "Read2",

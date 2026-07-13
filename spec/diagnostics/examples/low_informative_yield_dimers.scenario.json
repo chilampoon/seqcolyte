@@ -1,0 +1,11 @@
+{
+  "scenario_id": "low_informative_yield_dimers",
+  "title": "Low informative-read yield from adapter dimers / short inserts",
+  "observations": {
+    "library.adapter_only_fraction": 0.30,
+    "library.short_insert_fraction": 0.25,
+    "library.polyg_tail_fraction": 0.12,
+    "mapping.genome_fraction": 0.88,
+    "assignment.gene_fraction": 0.72
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "seqcolyte.qc_evidence.v1",
+  "title": "Seqcolyte QC evidence report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidence_report_id",
+    "schema_version",
+    "source_scopes",
+    "source_file",
+    "source_checksum",
+    "extraction_method",
+    "observations",
+    "warnings",
+    "unparsed_sections",
+    "provenance"
+  ],
+  "properties": {
+    "evidence_report_id": { "type": "string", "minLength": 1 },
+    "schema_version": { "const": "seqcolyte.qc_evidence.v1" },
+    "source_scopes": { "type": "array", "items": { "$ref": "#/$defs/scope" } },
+    "producer": { "type": ["string", "null"] },
+    "producer_version": { "type": ["string", "null"] },
+    "source_file": { "type": "string" },
+    "source_checksum": { "type": "string" },
+    "extraction_method": { "type": "string" },
+    "extraction_timestamp": { "type": ["string", "null"] },
+    "observations": { "type": "array", "items": { "$ref": "#/$defs/observation" } },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "unparsed_sections": { "type": "array", "items": { "type": "string" } },
+    "provenance": { "type": "object" }
+  },
+  "$defs": {
+    "scope": {
+      "enum": [
+        "sequencing_run",
+        "read_processing",
+        "library_structure",
+        "alignment_assignment",
+        "cell_analysis",
+        "complexity_expression",
+        "wet_lab_qc"
+      ]
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["original_label", "original_value_text", "source_scope", "source_locator"],
+      "properties": {
+        "metric_id": { "type": ["string", "null"] },
+        "value": { "type": ["number", "null"] },
+        "unit": { "type": ["string", "null"] },
+        "original_label": { "type": "string" },
+        "original_value_text": { "type": "string" },
+        "source_scope": { "$ref": "#/$defs/scope" },
+        "source_locator": { "type": "string" },
+        "source_denominator": { "type": ["string", "null"] },
+        "confidence": { "type": "number" },
+        "extraction_method": { "type": "string" },
+        "producer_metadata": { "type": ["object", "null"] },
+        "notes": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

@@ -1,0 +1,379 @@
+{
+  "fired_signals": [
+    {
+      "driving_metrics": [
+        "cell.target_attainment"
+      ],
+      "label": "Called-cell count far below the declared target",
+      "magnitude": 1.0,
+      "signal_id": "signal.called_cells_below_target"
+    },
+    {
+      "driving_metrics": [
+        "cell.reads_in_cells_fraction"
+      ],
+      "label": "Low fraction of reads in cells",
+      "magnitude": 1.0,
+      "signal_id": "signal.low_reads_in_cells"
+    },
+    {
+      "driving_metrics": [
+        "barcode.whitelist_fraction",
+        "barcode.valid_fraction"
+      ],
+      "label": "Barcode whitelist match is low",
+      "magnitude": 1.0,
+      "signal_id": "signal.low_whitelist_match"
+    },
+    {
+      "driving_metrics": [
+        "barcode.extractable_fraction"
+      ],
+      "label": "Barcode/UMI cannot be extracted at the expected position",
+      "magnitude": 0.5,
+      "signal_id": "signal.low_barcode_umi_extractable"
+    }
+  ],
+  "hypotheses": [
+    {
+      "cause_id": "cause.barcode_boundary_shift",
+      "cell_recovery_relationship": "direct",
+      "confirmatory_tests": [
+        "test.barcode_offset_scan",
+        "test.counterfactual_barcode_reextraction"
+      ],
+      "contradicting_signals": [],
+      "mechanism": "Barcode/UMI extraction is offset by a few bases from the true position (e.g. unexpected upstream trimming or a wrong offset), so extracted barcodes rarely match the whitelist and valid-barcode reads collapse.",
+      "produces_issues": [
+        "issue.barcode_umi_recovery_failure",
+        "issue.low_cell_recovery"
+      ],
+      "recoverability": "computationally_recoverable",
+      "score": 2.5,
+      "supporting_signals": [
+        "signal.low_whitelist_match",
+        "signal.low_barcode_umi_extractable",
+        "signal.called_cells_below_target"
+      ],
+      "title": "Barcode boundary shift"
+    },
+    {
+      "cause_id": "cause.read_configuration_mismatch",
+      "cell_recovery_relationship": "direct",
+      "confirmatory_tests": [
+        "test.read_configuration_audit",
+        "test.r1_r2_swap_test"
+      ],
+      "contradicting_signals": [],
+      "mechanism": "The read layout does not match the chemistry: R1 shorter than cell barcode + UMI, R1/R2 swapped, wrong barcode or UMI length, wrong sample-index cycles, wrong chemistry, or unexpected upstream trimming. A top-tier direct cause of cell-recovery collapse.",
+      "produces_issues": [
+        "issue.barcode_umi_recovery_failure",
+        "issue.low_cell_recovery"
+      ],
+      "recoverability": "partially_recoverable",
+      "score": 2.5,
+      "supporting_signals": [
+        "signal.low_whitelist_match",
+        "signal.low_barcode_umi_extractable",
+        "signal.called_cells_below_target"
+      ],
+      "title": "Read-configuration mismatch"
+    },
+    {
+      "cause_id": "cause.poor_partition_capture_or_rt",
+      "cell_recovery_relationship": "direct",
+      "confirmatory_tests": [
+        "test.cell_calling_sensitivity"
+      ],
+      "contradicting_signals": [],
+      "mechanism": "Inefficient droplet/partition capture or reverse transcription yields few molecules per cell and a weak cell/background separation.",
+      "produces_issues": [
+        "issue.low_cell_recovery",
+        "issue.low_informative_read_yield"
+      ],
+      "recoverability": "requires_experiment_rerun",
+      "score": 2.0,
+      "supporting_signals": [
+        "signal.low_reads_in_cells",
+        "signal.called_cells_below_target"
+      ],
+      "title": "Poor partition capture or RT"
+    },
+    {
+      "cause_id": "cause.low_cdna_or_library_yield",
+      "cell_recovery_relationship": "indirect",
+      "confirmatory_tests": [
+        "test.cell_calling_sensitivity"
+      ],
+      "contradicting_signals": [],
+      "mechanism": "Low cDNA/library yield gives shallow, ambient-dominated data with few reads in cells.",
+      "produces_issues": [
+        "issue.low_cell_recovery",
+        "issue.low_informative_read_yield"
+      ],
+      "recoverability": "partially_recoverable",
+      "score": 1.0,
+      "supporting_signals": [
+        "signal.low_reads_in_cells"
+      ],
+      "title": "Low cDNA or library yield"
+    },
+    {
+      "cause_id": "cause.overly_strict_cell_calling",
+      "cell_recovery_relationship": "direct",
+      "confirmatory_tests": [
+        "test.cell_calling_sensitivity"
+      ],
+      "contradicting_signals": [],
+      "mechanism": "The cell-calling threshold is too strict, discarding real cells that sit near the knee.",
+      "produces_issues": [
+        "issue.low_cell_recovery"
+      ],
+      "recoverability": "computationally_recoverable",
+      "score": 1.0,
+      "supporting_signals": [
+        "signal.called_cells_below_target"
+      ],
+      "title": "Overly strict cell calling"
+    },
+    {
+      "cause_id": "cause.wrong_chemistry_or_whitelist",
+      "cell_recovery_relationship": "direct",
+      "confirmatory_tests": [
+        "test.alternative_whitelist_scan",
+        "test.read_configuration_audit"
+      ],
+      "contradicting_signals": [],
+      "mechanism": "Analysis used the wrong chemistry/whitelist, so the correct barcodes never match the loaded whitelist.",
+      "produces_issues": [
+        "issue.barcode_umi_recovery_failure",
+        "issue.low_cell_recovery"
+      ],
+      "recoverability": "computationally_recoverable",
+      "score": 1.0,
+      "supporting_signals": [
+        "signal.low_whitelist_match"
+      ],
+      "title": "Wrong chemistry or barcode whitelist"
+    },
+    {
+      "cause_id": "cause.insufficient_viable_cell_input",
+      "cell_recovery_relationship": "direct",
+      "confirmatory_tests": [
+        "test.cell_calling_sensitivity"
+      ],
+      "contradicting_signals": [
+        "signal.low_whitelist_match"
+      ],
+      "mechanism": "Too few viable cells were loaded, so few real cells can be recovered regardless of downstream processing.",
+      "produces_issues": [
+        "issue.low_cell_recovery"
+      ],
+      "recoverability": "requires_experiment_rerun",
+      "score": 0.5,
+      "supporting_signals": [
+        "signal.called_cells_below_target"
+      ],
+      "title": "Insufficient viable-cell input"
+    }
+  ],
+  "inputs_summary": {
+    "cell_target": {
+      "confidence": "high",
+      "scope": "whole_library",
+      "source": "experimental_design",
+      "target_type": "expected_recovered_cells",
+      "value": 45000
+    },
+    "cell_target_comparable": true,
+    "metrics_supplied": [
+      "assignment.gene_fraction",
+      "barcode.extractable_fraction",
+      "barcode.valid_fraction",
+      "barcode.whitelist_fraction",
+      "cell.called_count",
+      "cell.reads_in_cells_fraction",
+      "cell.target_attainment",
+      "mapping.genome_fraction"
+    ],
+    "profile_evidence_strength": "operational_default",
+    "profile_version": "0.1.0"
+  },
+  "issues_ranked": [
+    {
+      "fired_signals": [
+        "signal.called_cells_below_target",
+        "signal.low_reads_in_cells",
+        "signal.low_whitelist_match"
+      ],
+      "issue_id": "issue.low_cell_recovery",
+      "score": 3.0,
+      "title": "Low called-cell recovery"
+    },
+    {
+      "fired_signals": [
+        "signal.low_whitelist_match",
+        "signal.low_barcode_umi_extractable",
+        "signal.called_cells_below_target"
+      ],
+      "issue_id": "issue.barcode_umi_recovery_failure",
+      "score": 2.5,
+      "title": "Barcode / UMI recovery failure"
+    }
+  ],
+  "metric_assessments": [
+    {
+      "basis": "0.75 >= warn_below 0.7",
+      "magnitude": 0.0,
+      "metric_id": "assignment.gene_fraction",
+      "source_scope": null,
+      "status": "ok",
+      "value": 0.75
+    },
+    {
+      "basis": "0.55 < warn_below 0.8",
+      "magnitude": 0.5,
+      "metric_id": "barcode.extractable_fraction",
+      "source_scope": null,
+      "status": "warn",
+      "value": 0.55
+    },
+    {
+      "basis": "0.38 < fail_below 0.5",
+      "magnitude": 1.0,
+      "metric_id": "barcode.valid_fraction",
+      "source_scope": null,
+      "status": "fail",
+      "value": 0.38
+    },
+    {
+      "basis": "0.4 < fail_below 0.5",
+      "magnitude": 1.0,
+      "metric_id": "barcode.whitelist_fraction",
+      "source_scope": null,
+      "status": "fail",
+      "value": 0.4
+    },
+    {
+      "basis": "no profile rule",
+      "magnitude": 0.0,
+      "metric_id": "cell.barcode_rank_separation",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no profile rule",
+      "magnitude": 0.0,
+      "metric_id": "cell.called_count",
+      "source_scope": null,
+      "status": "unknown",
+      "value": 2000.0
+    },
+    {
+      "basis": "0.35 < fail_below 0.5",
+      "magnitude": 1.0,
+      "metric_id": "cell.reads_in_cells_fraction",
+      "source_scope": null,
+      "status": "fail",
+      "value": 0.35
+    },
+    {
+      "basis": "0.044444 < fail_below 0.3",
+      "magnitude": 1.0,
+      "metric_id": "cell.target_attainment",
+      "source_scope": "cell_analysis",
+      "status": "fail",
+      "value": 0.044444
+    },
+    {
+      "basis": "no profile rule",
+      "magnitude": 0.0,
+      "metric_id": "cell.target_count",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "library.adapter_only_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "library.full_length_proxy_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "library.internal_adapter_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "library.polyg_tail_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "library.short_insert_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "library.tso_at_rna_read_start_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "0.92 >= warn_below 0.85",
+      "magnitude": 0.0,
+      "metric_id": "mapping.genome_fraction",
+      "source_scope": null,
+      "status": "ok",
+      "value": 0.92
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "umi.extractable_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    }
+  ],
+  "missing_evidence": [
+    "cell.barcode_rank_separation",
+    "cell.target_count",
+    "library.adapter_only_fraction",
+    "library.full_length_proxy_fraction",
+    "library.internal_adapter_fraction",
+    "library.polyg_tail_fraction",
+    "library.short_insert_fraction",
+    "library.tso_at_rna_read_start_fraction",
+    "umi.extractable_fraction"
+  ],
+  "profile_version": "0.1.0",
+  "scenario_id": "low_cell_recovery_barcode",
+  "schema_version": "seqcolyte.diagnosis.v1",
+  "summary": null,
+  "title": "Low cell recovery with degraded barcodes (2,000 of 45,000 expected)",
+  "warnings": []
+}

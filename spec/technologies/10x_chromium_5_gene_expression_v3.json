@@ -417,7 +417,7 @@
       "title": "GEX fragmentation, end repair & A-tailing",
       "summary": "Amplified cDNA is enzymatically fragmented and A-tailed to optimize insert size for the 5' library.",
       "note": "Only a fixed 25% of the cDNA is carried forward. Enzymatic fragmentation, end repair, and A-tailing produce blunt, A-tailed fragments; the barcode-bearing 5' fragment retains partial Read 1 + barcode + UMI + TSO.",
-      "product": "5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTCTTATATGGG[CDNA]*A -3'\n3'- A*GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12]AAAGAATATACCC[CDNA]   -5'"
+      "product": "5'-   CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTCTTATATGGG[CDNA]*A -3'\n3'- A*GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12]AAAGAATATACCC[CDNA]   -5'"
     },
     {
       "step": 4,
@@ -457,7 +457,7 @@
       "template": "bottom",
       "cycles": 10,
       "note": "On patterned / ExAmp flow cells (NovaSeq 6000, NextSeq 2000, HiSeq 3000/4000) i5 is read in the reverse-complement workflow: the Read 1 primer primes the P5-proximal strand and the 10 nt i5 is read toward P5 (reported as the reverse complement of the designed i5).",
-      "diagram": "                                 <---------ACACTCTTTCCCTACACGACGCTCTTCCGATCT (i5 read, 10 nt)\n5'-AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNACACTCTTTCCCTACACGACGCTCTTCCGATCT...-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNTGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA...-5'"
+      "diagram": "                                <---------ACACTCTTTCCCTACACGACGCTCTTCCGATCT (i5 read, 10 nt)\n5'-AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNACACTCTTTCCCTACACGACGCTCTTCCGATCT...-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNTGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA...-5'"
     },
     {
       "read": "Read 2",

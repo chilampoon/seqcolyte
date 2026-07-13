@@ -430,14 +430,14 @@
       "title": "Droplet co-encapsulation and UV primer release",
       "summary": "Single cell + one BHM + RT/lysis mix are encapsulated in a 4 nL droplet; UV (365 nm, 8 min) cleaves the photocleavable spacer, releasing barcoded primers and lysing the cell to free mRNA.",
       "note": "Near-100% single-bead occupancy from close packing; cells loaded at ~1 per 5-10 drops to minimize doublets.",
-      "product": "released primer:  5'- ...T7...PE1...[bc1]-W1-[bc2]-[UMI:6]-TTTTTTTTTTTTTTTTTTTV -3'\nmRNA:            3'- ...gene...AAAAAAAAAAAA -5'"
+      "product": "released primer:  5'- ...T7...PE1...[bc1]-W1-[bc2]-[UMI:6]-TTTTTTTTTTTTTTTTTTTV -3'\nmRNA:                                         3'- ...gene...AAAAAAAAAAAA -5'"
     },
     {
       "step": 3,
       "title": "In-drop reverse transcription",
       "summary": "Poly-T primes the mRNA poly-A and SuperScript III makes first-strand cDNA, tagging each molecule with the cell barcode and UMI.",
       "note": "50 \u00b0C for 2 h, then 70 \u00b0C for 15 min, all within the intact emulsion.",
-      "product": "5'- ...T7...PE1...[bc1]-GAGTGATTGCTTGTGACGCCTT-[bc2]-[UMI:6]-TTTTTTTTTTTTTTTTTTTV -------->(cDNA)------- -3'\n3'-                                                                              AAAA...mRNA template...cap -5'"
+      "product": "5'- ...T7...PE1...[bc1]-GAGTGATTGCTTGTGACGCCTT-[bc2]-[UMI:6]-TTTTTTTTTTTTTTTTTTTV -------->(cDNA)------- -3'\n3'-                                                          AAAA...mRNA template...cap -5'"
     },
     {
       "step": 4,
@@ -496,7 +496,7 @@
       "template": "top",
       "cycles": 50,
       "note": "Read 1 primer anneals to the bottom strand at the PE1/Read1 site and extends rightward, reading the two-part cell barcode separated by the W1 adaptor plus the UMI: bc1 (~8-11 nt) - W1 (22 nt) - bc2 (8 nt) - UMI (6 nt), then runs into the poly-T tract. Reads are retained only if both barcode halves flank the W1 sequence.",
-      "diagram": "     5'-CTCTTTCCCTACACGACGCTCTTCCGATCT------------------------------------------------------->  Read 1\n5'- CTCTTTCCCTACACGACGCTCTTCCGATCT NNNNNNNN GAGTGATTGCTTGTGACGCCTT NNNNNNNN NNNNNN TTTTTTTTTTTTTTTTTTTV [cDNA] -3'\n3'- GAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNNN CTCACTAACGAACACTGCGGAA NNNNNNNN NNNNNN AAAAAAAAAAAAAAAAAAAB [cDNA] -5'\n       PE1 / Read 1 site            bc1(8-11)      W1 adaptor         bc2(8)   UMI(6)      poly-T(19)V"
+      "diagram": "5'- CTCTTTCCCTACACGACGCTCTTCCGATCT------------------------------------------------------->  Read 1\n5'- CTCTTTCCCTACACGACGCTCTTCCGATCT NNNNNNNN GAGTGATTGCTTGTGACGCCTT NNNNNNNN NNNNNN TTTTTTTTTTTTTTTTTTTV [cDNA] -3'\n3'- GAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNNN CTCACTAACGAACACTGCGGAA NNNNNNNN NNNNNN AAAAAAAAAAAAAAAAAAAB [cDNA] -5'\n       PE1 / Read 1 site            bc1(8-11)      W1 adaptor         bc2(8)   UMI(6)      poly-T(19)V"
     },
     {
       "read": "Read 2 (cDNA)",
@@ -504,7 +504,7 @@
       "template": "bottom",
       "cycles": 50,
       "note": "Read 2 primer anneals to the top-strand ligated-adapter region (GTTCAGCAGGAATGCC) and extends leftward, reading the 3' cDNA fragment from the P7/PE2 side; the read is mapped to the reference transcriptome.",
-      "diagram": "5'- [cDNA]---AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- [cDNA]---TCTAGCCTTCTCGCCAAGTCGTCCTTACGGCTCTGGCTAGAGCATACGGCAGAAGACGAAC -5'\n                              3'-CAAGTCGTCCTTACGG-5'   Read 2 primer\n    <------------------------- Read 2 (reads cDNA on bottom strand)"
+      "diagram": "5'- [cDNA]---AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- [cDNA]---TCTAGCCTTCTCGCCAAGTCGTCCTTACGGCTCTGGCTAGAGCATACGGCAGAAGACGAAC -5'\n                        3'-CAAGTCGTCCTTACGG-5'   Read 2 primer\n    <------------------------- Read 2 (reads cDNA on bottom strand)"
     }
   ],
   "whitelists": {},

@@ -681,7 +681,7 @@
       "template": "top",
       "cycles": 8,
       "note": "Anneals to the s7 region on the top strand and reads the 8-nt i7 sample index added by the N7xx primer.",
-      "diagram": "                                    i7 index primer 5'-GTCTCGTGGGCTCGG-3'\n                                                       ---------------------> read (8 nt)\ntop    5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7':8]ATCTCGTATGCCGTCTTCTGCTTG-3'\n              |||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||\nbot    3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8] TAGAGCATACGGCAGAAGACGAAC-5'\n                                          template = top strand; reads i7'"
+      "diagram": "                                    i7 index primer 5'-GTCTCGTGGGCTCGG-3'\n                                                       ---------------------> read (8 nt)\ntop    5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7':8]ATCTCGTATGCCGTCTTCTGCTTG-3'\n             |||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||\nbot    3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8] TAGAGCATACGGCAGAAGACGAAC-5'\n                                          template = top strand; reads i7'"
     },
     {
       "read": "Read 2",

@@ -360,14 +360,14 @@
       "title": "Reverse transcription + template switching",
       "summary": "Maxima H-minus RT extends the oligo-dT primer to first-strand cDNA, adds non-templated Cs at the 5' cap, and template-switches onto the TSO's rGrGrG, appending the tag+UMI to the cDNA 3' end.",
       "note": "RT/TS at 42 C 90 min, 10x (50 C 2 min / 42 C 2 min), 85 C 5 min. NaCl (not KCl), 5% PEG and 1 mM GTP enhance RT/TS. The TSO copy places tag ATTGCGCAATG + 8-bp UMI + GGG at the 5' end of the eventual sense strand.",
-      "product": "                            oligo-dT30VN (5'-biotin)\n mRNA 5'- [CDNA sense] AAAAAAAAAA          -3'\n                    <-------------------- RT\n cDNA 3'- GGG [UMI] GTAACGCGTTAGACAGAGA...(tag) [CDNA antisense] TTTTTTTTTT ACGAUACGACGACGACUACGAGCA-5'\n         ^^^ template switch onto TSO rGrGrG"
+      "product": "                                                                 oligo-dT30VN (5'-biotin)\n mRNA 5'-                                       [CDNA sense]     AAAAAAAAAA -3'\n                                                <-------------------- RT\n cDNA 3'- GGG [UMI] GTAACGCGTTAGACAGAGA...(tag) [CDNA antisense] TTTTTTTTTT ACGAUACGACGACGACUACGAGCA-5'\n          ^^^ template switch onto TSO rGrGrG"
     },
     {
       "step": 3,
       "title": "PCR pre-amplification",
       "summary": "The forward primer (Read1/ME + tag) and reverse primer (oligo-dT handle) amplify full-length cDNA with KAPA HiFi polymerase.",
       "note": "3 min 98 C; 18-25 cycles (20 s 98 C / 30 s 65 C / 4-6 min 72 C); 5 min 72 C. Excess forward primer suppresses residual TSO priming.",
-      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG ATTGCGCAATG [UMI:8] GGG [CDNA] AAAA...AAAA TCGTATGCTGCTGATGCTCGT -3'\n3'- AGCAGCCGTCGCAGTCTACACATATTCTCTGTC TAACGCGTTAC [UMI] CCC [CDNA] TTTT...TTTT AGCATACGACGACTACGAGCA -5'\n      (Fwd_PCR_primer)                                                        (Rev_PCR_primer)"
+      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG ATTGCGCAATG [UMI:8] GGG [CDNA] AAAA...AAAA TCGTATGCTGCTGATGCTCGT -3'\n3'- AGCAGCCGTCGCAGTCTACACATATTCTCTGTC TAACGCGTTAC [UMI]   CCC [CDNA] TTTT...TTTT AGCATACGACGACTACGAGCA -5'\n    (Fwd_PCR_primer)                                                             (Rev_PCR_primer)"
     },
     {
       "step": 4,
@@ -381,7 +381,7 @@
       "title": "Tn5 tagmentation",
       "summary": "Nextera Tn5 (ATM/TDE1) makes near-random cuts in the amplified cDNA and appends mosaic-end adapters, then is stripped with SDS.",
       "note": "55 C 10 min, then 0.5 uL 0.2% SDS. Produces 5' UMI-tagged fragments (retaining tag+UMI end) and internal fragments spanning the gene body. Tn5:cDNA ratio tunes UMI-to-internal read fraction.",
-      "product": "5' UMI fragment:\n5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGATTGCGCAATG[UMI:8]GGG[CDNA]CTGTCTCTTATACACATCT -3'\n                                                                        ^ ME added by Tn5\ninternal fragment:\n5'- AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT -3'"
+      "product": "5' UMI fragment:\n5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGATTGCGCAATG[UMI:8]GGG[CDNA]CTGTCTCTTATACACATCT -3'\n                                                                ^ ME added by Tn5\ninternal fragment:\n5'- AGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT -3'"
     },
     {
       "step": 6,
@@ -413,7 +413,7 @@
       "template": "top",
       "cycles": 8,
       "note": "8-bp (or 10-bp) custom Nextera i7 sample index; base-mask I8. Read off the i7 side of the tagmented (3') end.",
-      "diagram": "5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]ATCTCGTATGCCGTCTTCTGCTTG-3'  top (template)\n                          i7 index-read primer ===>[i7:8]\n3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]TAGAGCATACGGCAGAAGACGAAC-5'  bottom"
+      "diagram": "5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]ATCTCGTATGCCGTCTTCTGCTTG-3'  top (template)\n               i7 index-read primer ===>[i7:8]\n3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]TAGAGCATACGGCAGAAGACGAAC-5'  bottom"
     },
     {
       "read": "I2 (i5 index)",
@@ -421,7 +421,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "8-bp (or 10-bp) custom Nextera i5 sample index; base-mask I8. Avoid i5 indexes starting 'AC' on NovaSeq (documented artifact).",
-      "diagram": "5'-AATGATACGGCGACCACCGAGATCTACAC[i5:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG...-3'  top\n                        [i5:8]<=== i5 index-read primer\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC...-5'  bottom (template)"
+      "diagram": "5'-AATGATACGGCGACCACCGAGATCTACAC[i5:8]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG...-3'  top\n                                [i5:8]<=== i5 index-read primer\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC...-5'  bottom (template)"
     },
     {
       "read": "R2 (internal read)",

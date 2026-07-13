@@ -921,21 +921,21 @@
       "title": "In situ reverse transcription (Round 1 barcode)",
       "summary": "Fixed, permeabilized cells are split across a 96-well plate and reverse-transcribed with well-specific barcoded random hexamers, tagging cDNA with the first cell barcode.",
       "note": "Maxima H Minus reverse transcriptase extends the random-hexamer RT primer on cellular mRNA inside intact cells; the 5' /5Phos/ handle (GCCAGA + BC1) is carried on the cDNA for later ligation.",
-      "product": "5'- /5Phos/GCCAGA[CELL_BARCODE:7]NNNNNN----------------->[CDNA] -3'\n                                3'- ......mRNA template...... -5'"
+      "product": "5'- /5Phos/GCCAGA[CELL_BARCODE:7]NNNNNN----------------->[CDNA] -3'\n                             3'- ......mRNA template...... -5'"
     },
     {
       "step": 2,
       "title": "Round 2 split-pool barcode ligation (+ blocking)",
       "summary": "Cells are pooled, re-split, and a second barcode is ligated onto the 5' handle of the first-strand cDNA using splint linker SB83; unreacted ends are then capped with blocking oligos SB84/SB85.",
       "note": "T4 DNA ligase joins the 3' handle (CCTCCTAC) of the Round 2 oligo to the 5' phosphate (GCCAGA) of BC1, guided by linker SB83. Blocking prevents further ligation to unbarcoded ends.",
-      "product": "5'- /5Phos/GCTTCGC[CELL_BARCODE:7]CCTCCTAC GCCAGA[CELL_BARCODE:7]NNNNNN[CDNA] -3'\n            (BC2 oligo)              |__SB83 splint__|      (BC1)"
+      "product": "5'- /5Phos/GCTTCGC[CELL_BARCODE:7]CCTCCTAC GCCAGA[CELL_BARCODE:7]NNNNNN[CDNA] -3'\n                 (BC2 oligo)      |__SB83 splint__|   (BC1)"
     },
     {
       "step": 3,
       "title": "Round 3 split-pool barcode + UMI ligation (+ blocking)",
       "summary": "Cells are pooled and re-split again; a third oligo carrying the UMI, third barcode, and the Read 1 / P5 handle is ligated via linker SB80. Unreacted ends are capped with blocking oligos SB81/SB82.",
       "note": "T4 DNA ligase joins the 3' handle (GGTCCTTG) of the Round 3 oligo to the 5' phosphate (GCTTCGC) of BC2, guided by linker SB80. After three rounds each cDNA carries 1 of ~884,736 barcode combinations plus a 7-nt UMI.",
-      "product": "5'- AGAATACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTG GCTTCGC[CELL_BARCODE:7]CCTCCTAC GCCAGA[CELL_BARCODE:7]NNNNNN[CDNA] -3'\n                    (Read1 handle)     (UMI)   (BC3)    |_SB80_|   (BC2)              (BC1)"
+      "product": "5'- AGAATACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTG GCTTCGC[CELL_BARCODE:7]CCTCCTAC GCCAGA[CELL_BARCODE:7]NNNNNN[CDNA] -3'\n         (Read1 handle)       (UMI)       (BC3)         |_SB80_|          (BC2)                         (BC1)"
     },
     {
       "step": 4,
@@ -956,7 +956,7 @@
       "title": "Tagmentation (Nextera XT / EZ-Tn5)",
       "summary": "Double-stranded cDNA is fragmented and tagged with Nextera mosaic-end adapters; only fragments retaining the P5-side barcode handle and an N7 mosaic end are amplifiable.",
       "note": "Tn5 inserts the mosaic end (AGATGTGTATAAGAGACAG / CTGTCTCTTATACACATCT) into the dsDNA. PCR later uses the transposon-inserted sequence plus the upstream Read 1 handle as primer sites, so only correctly tagmented, barcoded molecules amplify (excluding undigested genomic DNA).",
-      "product": "5'- AGAATACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTGGCTTCGC[CELL_BARCODE:7]CCTCCTACGCCAGA[CELL_BARCODE:7]NNNNNN[CDNA]CTGTCTCTTATACACATCT -3'\n                                                                                                              3'- GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG... -5'"
+      "product": "5'- AGAATACACGACGCTCTTCCGATCT[UMI:7][CELL_BARCODE:7]GGTCCTTGGCTTCGC[CELL_BARCODE:7]CCTCCTACGCCAGA[CELL_BARCODE:7]NNNNNN[CDNA]CTGTCTCTTATACACATCT -3'\n                                                                                                                         3'- GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG... -5'"
     },
     {
       "step": 7,
@@ -973,7 +973,7 @@
       "template": "top",
       "cycles": 58,
       "note": "TruSeq Read 1 primer anneals to the bottom strand and extends rightward across the 7-nt UMI, then BC3, linker GGTCCTTGGCTTCGC, BC2, linker CCTCCTACGCCAGA, and BC1 (barcodes read 3\u21922\u21921). Barcodes overlap the adjacent linker by one base.",
-      "diagram": "primer:               5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------->  read 1 (58 cyc)\ntop:    5'- ...GAGATCTACAC[i5]ACACTCTTTCCCTACACGACGCTCTTCCGATCT NNNNNNN NNNNNNN GGTCCTTGGCTTCGC NNNNNNN CCTCCTACGCCAGA NNNNNNN NNNNNN [cDNA]... -3'\nbottom: 3'- ...CTCTAGATGTG[i5]TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNN NNNNNNN CCAGGAACCGAAGCG NNNNNNN GGAGGATGCGGTCT NNNNNNN NNNNNN [cDNA]... -5'\n                                                            UMI     BC3       linker         BC2       linker         BC1    hex"
+      "diagram": "primer:                    5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------->  read 1 (58 cyc)\ntop:    5'- ...GAGATCTACAC[i5]ACACTCTTTCCCTACACGACGCTCTTCCGATCT NNNNNNN NNNNNNN GGTCCTTGGCTTCGC NNNNNNN CCTCCTACGCCAGA NNNNNNN NNNNNN [cDNA]... -3'\nbottom: 3'- ...CTCTAGATGTG[i5]TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNN NNNNNNN CCAGGAACCGAAGCG NNNNNNN GGAGGATGCGGTCT NNNNNNN NNNNNN [cDNA]... -5'\n                                                                  UMI     BC3       linker        BC2      linker        BC1     hex"
     },
     {
       "read": "Read 2 (cDNA)",
@@ -981,7 +981,7 @@
       "template": "bottom",
       "cycles": 17,
       "note": "Nextera Read 2 primer (= bottom-strand s7 + mosaic end) anneals to the top-strand adapter and extends leftward into the cDNA from the tagmented junction; reads map adjacent to the Tn5 insertion site (mild bias toward the 5' end of operons).",
-      "diagram": "top:    5'- ...NNNNNN[cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]... -3'\nbottom: 3'- ...NNNNNN[cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]... -5'\nprimer:  read 2 (17 cyc) <-----------5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG\n                    (cDNA insert)          (Nextera R2 / s7 + ME)"
+      "diagram": "top:    5'- ...NNNNNN[cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7]... -3'\nbottom: 3'- ...NNNNNN[cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7]... -5'\nprimer:  read 2 (17 cyc) <-----------5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG\n             (cDNA insert)       (Nextera R2 / s7 + ME)"
     },
     {
       "read": "Index 1 (i7)",
@@ -989,7 +989,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "8-cycle i7 sample-index read off the Nextera P7-side adapter; primer anneals to the bottom strand and reads the i7 rightward.",
-      "diagram": "primer: 5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC------->  index 1 (8 cyc)\ntop:    5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC NNNNNNNN ATCTCGTATGCCGTCTTCTGCTTG -3'\nbottom: 3'- ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG NNNNNNNN TAGAGCATACGGCAGAAGACGAAC -5'\n                                              i7            (P7')"
+      "diagram": "primer: 5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC------->  index 1 (8 cyc)\ntop:    5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC NNNNNNNN ATCTCGTATGCCGTCTTCTGCTTG -3'\nbottom: 3'- ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG NNNNNNNN TAGAGCATACGGCAGAAGACGAAC -5'\n                                                     i7             (P7')"
     },
     {
       "read": "Index 2 (i5)",

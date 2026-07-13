@@ -348,14 +348,14 @@
       "template": "bottom",
       "cycles": 6,
       "note": "Primer is identical to the top-strand Read 2 adapter, anneals to the bottom strand and reads rightward across the i7 sample index (single index in the original TruSeq PE chemistry). The output is the top-strand i7 sequence.",
-      "diagram": "5'-[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'\n         GATCGGAAGAGCACACGTCTGAACTCCAGTCAC------> (i7 index read)\n3'-[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'"
+      "diagram": "5'-[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'\n          GATCGGAAGAGCACACGTCTGAACTCCAGTCAC------> (i7 index read)\n3'-[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'"
     },
     {
       "read": "Read 2",
       "primer": "Illumina TruSeq Read 2 primer (5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3')",
       "template": "top",
       "note": "Primer anneals to the top-strand Read 2 adapter (its reverse complement) and reads leftward into the opposite end of the cDNA insert (paired-end), again pure cDNA. Shown below aligned 3'->5' under its binding site.",
-      "diagram": "5'-[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'\n <--------TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG (Read 2 <- cDNA)\n3'-[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'"
+      "diagram": "5'-[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'\n<--------TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG (Read 2 <- cDNA)\n3'-[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'"
     }
   ],
   "whitelists": {},

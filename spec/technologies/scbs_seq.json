@@ -363,7 +363,7 @@
       "title": "First-strand synthesis / adaptor 1 tagging (x5)",
       "summary": "Preamp Oligo random hexamers prime the ssDNA and Klenow exo- extends, adding adaptor 1; repeated five times with heat denaturation.",
       "note": "Five rounds of random priming+extension capture each locus multiple times and add the P5-side adaptor at the 5' end of each new strand.",
-      "product": "        5'- CTACACGACGCTCTTCCGATCT NNNNNN -------------------->\n                                          3'- ...converted genomic template... -5'\n  product: 5'- CTACACGACGCTCTTCCGATCT NNNNNN [copied genomic] -3'"
+      "product": "           5'- CTACACGACGCTCTTCCGATCT NNNNNN -------------------->\n                                             3'- ...converted genomic template... -5'\n  product: 5'- CTACACGACGCTCTTCCGATCT NNNNNN [copied genomic] -3'"
     },
     {
       "step": 4,

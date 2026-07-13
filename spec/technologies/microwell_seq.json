@@ -563,7 +563,7 @@
       "title": "mRNA capture on barcoded beads",
       "summary": "Single cells and barcoded magnetic beads are co-trapped in agarose microwells and lysed so poly(A) mRNA hybridizes to the bead poly(dT).",
       "note": "10^5 microwells trap 5-10 K cells; each bead carries 10^7-10^8 copies of one cell barcode. After 12 min lysis, beads are retrieved with a magnet.",
-      "product": "bead 5'-...AAGCAGTGGTATCAACGCAGAGTACGT[BC1]CGACTCACTACAGGG[BC2]TCGGTGACACGATCG[BC3][UMI]TTTTTTTTTT-3'\n                                                                                    ||||||||||\nmRNA                                                                     3'-AAAAAAAAAA......(gene).....cap-5'"
+      "product": "bead 5'-...AAGCAGTGGTATCAACGCAGAGTACGT[BC1]CGACTCACTACAGGG[BC2]TCGGTGACACGATCG[BC3][UMI]TTTTTTTTTT-3'\n                                                                                        ||||||||||\nmRNA                                                                                     3'-AAAAAAAAAA......(gene).....cap-5'"
     },
     {
       "step": 2,
@@ -591,7 +591,7 @@
       "title": "Tn5 tagmentation",
       "summary": "A customized transposase carrying two identical mosaic-end insertion sequences fragments the amplified cDNA and appends adapters at both ends.",
       "note": "TruePrep/Vazyme Tn5 (both ends identical), so productive fragments must be rescued by asymmetric selective PCR.",
-      "product": "5'-...[BC3][UMI]TTTT[cDNA-fragment]CTGTCTCTTATACACATCT-3'\n3'-...AAAA[cDNA-fragment]GACAGAGAATATGTGTAGA...-5'  (identical ME on both ends)"
+      "product": "5'-...[BC3][UMI]TTTT[cDNA-fragment]CTGTCTCTTATACACATCT-3'\n3'-...          AAAA[cDNA-fragment]GACAGAGAATATGTGTAGA...-5'  (identical ME on both ends)"
     },
     {
       "step": 6,

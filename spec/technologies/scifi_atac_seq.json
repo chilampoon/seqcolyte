@@ -512,7 +512,7 @@
       "title": "Anneal indexed Tn5 adapters",
       "summary": "Each barcoded Tn5-ME-A (A1\u2013A12) and Tn5-ME-B (B1\u2013B8) oligo is annealed to the common 5'-phosphorylated Tn5-ME-Rev to form double-stranded transposon adapters.",
       "note": "Oligos are mixed 1:1 in TE at 100 \u00b5M, heated to 98 \u00b0C, and cooled to 25 \u00b0C at -1 \u00b0C per 10 s. Only the 19-bp mosaic end duplexes; the handle + 5-bp barcode remain a single-stranded 5' flap.",
-      "product": "5'-TCGTCGGCAGCGTCGATATGTGATAATGAGGAC NNNNN AGATGTGTATAAGAGACAG-3'\n                                          3'-TCTACACATATTCTCTGTC-5'p\n(NNNNN = 5-bp Tn5-ME-A index; Tn5-ME-B assembled identically with its own handle/index)"
+      "product": "5'-TCGTCGGCAGCGTCGATATGTGATAATGAGGAC NNNNN AGATGTGTATAAGAGACAG-3'\n                                        3'-TCTACACATATTCTCTGTC-5'p\n(NNNNN = 5-bp Tn5-ME-A index; Tn5-ME-B assembled identically with its own handle/index)"
     },
     {
       "step": 2,
@@ -574,7 +574,7 @@
       "template": "top",
       "cycles": 50,
       "note": "Custom 4_Read2 primer (the Tn5-ME-B handle) anneals to the top-strand Read2-handle segment and extends toward the insert, reading the inline 5-bp Tn5-B barcode, the 19-bp mosaic end, then genomic DNA on the opposite fragment end. Read length not stated; 50 shown as the 10x default.",
-      "diagram": "                                        AGACAGAAGATGTGTAAGTGGCTCGGGTGCTCTG  (4_Read2, 5'->3' = GTCTCGTGGGCTCGGTGAATGTGTAGAAGACAGA)\n   <-------[reads BC-B:5 + mosaic end + genomic]\n5'-...[gDNA]CTGTCTCTTATACACATCT[BC-B:5]TCTGTCTTCTACACATTCACCGAGCCCACGAGAC[i7:8]...-3'\n3'-...[gDNA]GACAGAGAATATGTGTAGA[BC-B:5]AGACAGAAGATGTGTAAGTGGCTCGGGTGCTCTG[i7:8]...-5'\n   template = top strand;  read = [BC-B:5] + mosaic end (19 bp) + genomic insert"
+      "diagram": "                                       AGACAGAAGATGTGTAAGTGGCTCGGGTGCTCTG  (4_Read2, 5'->3' = GTCTCGTGGGCTCGGTGAATGTGTAGAAGACAGA)\n   <-------[reads BC-B:5 + mosaic end + genomic]\n5'-...[gDNA]CTGTCTCTTATACACATCT[BC-B:5]TCTGTCTTCTACACATTCACCGAGCCCACGAGAC[i7:8]...-3'\n3'-...[gDNA]GACAGAGAATATGTGTAGA[BC-B:5]AGACAGAAGATGTGTAAGTGGCTCGGGTGCTCTG[i7:8]...-5'\n   template = top strand;  read = [BC-B:5] + mosaic end (19 bp) + genomic insert"
     }
   ],
   "whitelists": {},

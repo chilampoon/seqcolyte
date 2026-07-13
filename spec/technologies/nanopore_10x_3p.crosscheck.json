@@ -1,0 +1,8 @@
+{
+  "folder": "nanopore_10x_3p",
+  "title": "10x Chromium 3\u2032 Single Cell \u2014 Nanopore (long-read)",
+  "crosscheck": {
+    "status": "no_groundtruth",
+    "big_conflict": false
+  }
+}

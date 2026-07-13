@@ -687,7 +687,7 @@
       "title": "RPE PCR",
       "summary": "Universal Oligo (forward) and WTA Amplification Primer (reverse) amplify the RPE product into double-stranded DNA (~200-2000 bp).",
       "note": "Cycle number scales with input cells (16 cycles at 100 cells down to 9 at 80,000-100,000).",
-      "product": "5'- ACACGACGCTCTTCCGATCT-[CL]-[UMI]-TTT-[cDNA]-AGATCGGAAGAGCACACGTCTGA -3'\n3'- TGTGCTGCGAGAAGGCTAGA-[CL']-[UMI']-AAA-[cDNA']-TCTAGCCTTCTCGTGTGCAGACT -5'\n     ACACGACGCTCTTCCGATCT-->                          <--CAGACGTGTGCTCTTCCGATCT"
+      "product": "5'- ACACGACGCTCTTCCGATCT-[CL]-[UMI]-TTT-[cDNA]-AGATCGGAAGAGCACACGTCTGA -3'\n3'- TGTGCTGCGAGAAGGCTAGA-[CL']-[UMI']-AAA-[cDNA']-TCTAGCCTTCTCGTGTGCAGACT -5'\n    ACACGACGCTCTTCCGATCT-->                 <--CAGACGTGTGCTCTTCCGATCT"
     },
     {
       "step": 5,
@@ -701,7 +701,7 @@
       "title": "WTA Index PCR",
       "summary": "Library Forward Primer (P5+i5+Read1) and a Library Reverse Primer (P7+i7+Read2) add full-length Illumina adapters and sample indices.",
       "note": "8-9 cycles depending on input concentration. Optional OMICS-One dual-index primers give unique dual indexing.",
-      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC-TATAGCCT-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-[CL]-[UMI]-TTT-[cDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-[i7]-ATCTCGTATGCCGTCTTCTGCTTG -3'\n    P5------- i5 ---- Read1 ----------------------------- insert ------------ Read2handle ---- i7 --- P7'"
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC-TATAGCCT-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-[CL]-[UMI]-TTT-[cDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-[i7]-ATCTCGTATGCCGTCTTCTGCTTG -3'\n    P5-------                     i5----   Read1-----------------------------insert------------    Read2handle----                    i7---P7'"
     },
     {
       "step": 7,
@@ -718,7 +718,7 @@
       "template": "bottom",
       "cycles": 51,
       "note": "Primer anneals to the bottom strand at the Read 1 handle; extension reads the 27-nt combinatorial Cell Label (3 x 9 nt) + 8-nt Molecular Index (UMI), then runs into poly(T). Recommended 51 cycles.",
-      "diagram": "                Read 1 primer (TruSeq Read 1)\n             5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT------------------------------------>\n5'-...TATAGCCT ACACTCTTTCCCTACACGACGCTCTTCCGATCT NNNNNNNNNNNNNNNNNNNNNNNNNNN NNNNNNNN TTTTTTTT[cDNA]...-3'\n               ||||||||||||||||||||||||||||||||| ||||||||||||||||||||||||||| |||||||| ||||||||\n3'-...ATATCGGA TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNNNNNNNNNNNNNNNNNNNNNN NNNNNNNN AAAAAAAA[cDNA]...-5'\n               (template = bottom strand)         |----- Cell Label 27 ----| |-UMI 8-|"
+      "diagram": "                Read 1 primer (TruSeq Read 1)\n            5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT------------------------------------>\n5'-...TATAGCCT ACACTCTTTCCCTACACGACGCTCTTCCGATCT NNNNNNNNNNNNNNNNNNNNNNNNNNN NNNNNNNN TTTTTTTT[cDNA]...-3'\n               ||||||||||||||||||||||||||||||||| ||||||||||||||||||||||||||| |||||||| ||||||||\n3'-...ATATCGGA TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNNNNNNNNNNNNNNNNNNNNNN NNNNNNNN AAAAAAAA[cDNA]...-5'\n               (template = bottom strand)        |----- Cell Label 27 ----|  |-UMI 8-|"
     },
     {
       "read": "Read 2",
@@ -726,7 +726,7 @@
       "template": "top",
       "cycles": 71,
       "note": "Primer anneals to the top strand at the Read 2 / RPE-extension handle; extension reads leftward into the random-primed cDNA (gene body). Recommended 71 cycles.",
-      "diagram": "                    Read 2 primer (BD custom)  3'<---------------5'\n                    TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG\n5'-...[cDNA]--------AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-NNNNNNNN-ATCTCGTATGCCGTCTTCTGCTTG-3'  (template = top)\n                    ||||||||||||||||||||||||||||||||||\n3'-...[cDNA]--------TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-NNNNNNNN-TAGAGCATACGGCAGAAGACGAAC-5'\n            <---reads cDNA gene body |-- Read 2 / RPE handle --| (i7)"
+      "diagram": "                    Read 2 primer (BD custom)  3'<---------------5'\n                    TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG\n5'-...[cDNA]--------AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-NNNNNNNN-ATCTCGTATGCCGTCTTCTGCTTG-3'  (template = top)\n                    ||||||||||||||||||||||||||||||||||\n3'-...[cDNA]--------TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-NNNNNNNN-TAGAGCATACGGCAGAAGACGAAC-5'\n<---reads cDNA gene body |-- Read 2 / RPE handle --|  (i7)"
     },
     {
       "read": "Index 1 (i7)",
@@ -734,7 +734,7 @@
       "template": "top",
       "cycles": 8,
       "note": "Reads the 8-nt i7 sample index between the Read 2 handle and P7.",
-      "diagram": "                              i7 index primer -->\n5'-...GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT NNNNNNNN ATCTCGTATGCCGTCTTCTGCTTG-3'  (top = template)\n      ||||||||||||||||||||||||||||||||||                                    \n3'-...CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA NNNNNNNN TAGAGCATACGGCAGAAGACGAAC-5'\n                                         |-i7 8-|  (P7')"
+      "diagram": "                              i7 index primer -->\n5'-...GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT NNNNNNNN ATCTCGTATGCCGTCTTCTGCTTG-3'  (top = template)\n      ||||||||||||||||||||||||||||||||||\n3'-...CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA NNNNNNNN TAGAGCATACGGCAGAAGACGAAC-5'\n                                         |-i7 8-| (P7')"
     },
     {
       "read": "Index 2 (i5)",

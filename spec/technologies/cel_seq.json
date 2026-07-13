@@ -353,7 +353,7 @@
       "title": "Single-cell lysis, primer annealing & first-strand synthesis",
       "summary": "The barcoded CEL-Seq primer captures the cell's polyA mRNA and ArrayScript reverse transcriptase copies it into first-strand cDNA.",
       "note": "Each frozen single cell receives one uniquely barcoded CEL-Seq RT primer (+ERCC spike-in), is heated to open the cell and anneal the anchored poly(dT), then reverse transcribed at 42C (Ambion MessageAmp II ArrayScript).",
-      "product": "         T7 promoter                RA5 (5' adapter)          BC        poly(dT)\n5'- CGATTGAGGCCGGTAATACGACTCACTATAGGGGTTCAGAGTTCTACAGTCCGACGATC[CELL_BARCODE:8]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]------->\n                                                                                         3'- ...AAAAAAAAAA[mRNA] -5'"
+      "product": "         T7 promoter                RA5 (5' adapter)          BC        poly(dT)\n5'- CGATTGAGGCCGGTAATACGACTCACTATAGGGGTTCAGAGTTCTACAGTCCGACGATC[CELL_BARCODE:8]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]------->\n                                                                                      3'- ...AAAAAAAAAA[mRNA] -5'"
     },
     {
       "step": 2,
@@ -428,7 +428,7 @@
       "template": "top",
       "cycles": 50,
       "note": "Reads 50 bases into the 3'-most cDNA fragment, identifying the transcript strand-specifically (>97% of exonic reads sense-oriented; reads map to transcript 3' ends).",
-      "diagram": "Read 2 primer anneals over RA3 on top strand; reads into 3'-most cDNA fragment (antisense):\n         3'-ACCTTAAGAGCCCACGGTTCC-5'                              (Read 2 primer)\n         <------(read 2)\n5'-...TTTTTTT[.....cDNA insert.....]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC...-3'  (top = template)\n3'-...AAAAAAA[.....cDNA insert.....]ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG...-5'  (bottom)"
+      "diagram": "Read 2 primer anneals over RA3 on top strand; reads into 3'-most cDNA fragment (antisense):\n                                 3'-ACCTTAAGAGCCCACGGTTCC-5'                 (Read 2 primer)\n                                 <------(read 2)\n5'-...TTTTTTT[.....cDNA insert.....]TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC...-3'  (top = template)\n3'-...AAAAAAA[.....cDNA insert.....]ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG...-5'  (bottom)"
     }
   ],
   "whitelists": {},

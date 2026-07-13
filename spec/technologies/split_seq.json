@@ -798,7 +798,7 @@
       "title": "PCR amplification of barcoded cDNA",
       "summary": "PCR with BC_0062 (round-3 handle) and BC_0108 (TSO handle) amplifies the full-length barcoded cDNA.",
       "note": "5 cycles of Kapa HiFi followed by qPCR to endpoint (EvaGreen), then SPRI cleanup.",
-      "product": "5'-CAGACGTGTGCTCTTCCGATCT-[UMI:10]-[CELL_BARCODE:8]-...-[CELL_BARCODE:8]-TTTTTTTTTTTTTTTVN-[CDNA]-GGG-ACTCTGCGTTGATACCACTGCTT-3'\n3'-GTCTGCACACGAGAAGGCTAGA-...-[CDNA(c)]-CCC-TGAGACGCAACTATGGTGACGAA-5'"
+      "product": "5'-CAGACGTGTGCTCTTCCGATCT-[UMI:10]-[CELL_BARCODE:8]-...-[CELL_BARCODE:8]-TTTTTTTTTTTTTTTVN-[CDNA]-GGG-ACTCTGCGTTGATACCACTGCTT-3'\n3'-GTCTGCACACGAGAAGGCTAGA-...                                                          -[CDNA(c)]-CCC-TGAGACGCAACTATGGTGACGAA-5'"
     },
     {
       "step": 7,

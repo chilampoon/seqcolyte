@@ -437,14 +437,14 @@
       "title": "Cell lysis & oligo-dT priming",
       "summary": "A single sorted cell is lysed and its poly(A) mRNA is captured by the biotinylated FS dT30VN oligo-dT after a 72 \u00b0C denaturation.",
       "note": "Cells are FACS-sorted into 384-well plates with 1 \u00b5L lysis mix (Triton X-100, dNTPs, FS dT30VN, RNase inhibitor, DTT, FS TSO, dCTP, betaine); 3 min at 72 \u00b0C resolves RNA secondary structure and anneals the oligo-dT to the poly(A) tail.",
-      "product": "                          FS dT30VN (oligo-dT)\n           3'-NV(T)30-CATGAGACGCAACTATGGTGACGAA-[Bio]-5'\n                      ||||||||||\n5'-cap-XXXXXXXXXXXXXXXXXX...XXXXXXAAAAAAAAAA-3'   mRNA"
+      "product": "                          FS dT30VN (oligo-dT)\n                             3'-NV(T)30-CATGAGACGCAACTATGGTGACGAA-[Bio]-5'\n                                  ||||||||||\n5'-cap-XXXXXXXXXXXXXXXXXX...XXXXXXAAAAAAAAAA-3'   mRNA"
     },
     {
       "step": 2,
       "title": "Reverse transcription + template switching",
       "summary": "SuperScript IV extends the oligo-dT into first-strand cDNA, adds a C-tail at the 5' cap, and switches to the FS TSO, appending the ISPCR handle to both cDNA ends.",
       "note": "Excess dCTP boosts non-templated C-tailing; the rGrGrG of FS TSO base-pairs with the C-tail and RT copies the TSO. Both cDNA ends now carry the identical AAGCAGTGGTATCAACGCAGAGT handle.",
-      "product": "5'-[Bio]AAGCAGTGGTATCAACGCAGAGTAC(T)30VN----cDNA----GGG-3'\n                                                   ^ templated off FS TSO handle\n   first-strand cDNA flanked by the shared ISPCR handle at both ends"
+      "product": "5'-[Bio]AAGCAGTGGTATCAACGCAGAGTAC(T)30VN----cDNA----GGG-3'\n                                                    ^ templated off FS TSO handle\n   first-strand cDNA flanked by the shared ISPCR handle at both ends"
     },
     {
       "step": 3,
@@ -465,7 +465,7 @@
       "title": "Tagmentation",
       "summary": "Tn5 loaded with ME-A/ME-B adapters simultaneously fragments the cDNA and inserts mosaic-end adapters at both ends of each fragment.",
       "note": "In-house Tn5 (TAPS-Mg/DMF) or Nextera XT ATM. Fragments receive a 9-bp gap and the transferred ME strand; SDS then strips Tn5 from the DNA.",
-      "product": "5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[==cDNA insert==]                   \n                      TCTAC   3'-gap                   CTGTCTCTTATACACATCT...B-5'\n   ME-A adapter -----[ insert ]----- ME-B adapter (both ends tagmented)"
+      "product": "5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[==cDNA insert==]                   \n                 TCTAC        3'-gap                   CTGTCTCTTATACACATCT...B-5'\n   ME-A adapter -----[ insert ]----- ME-B adapter (both ends tagmented)"
     },
     {
       "step": 6,

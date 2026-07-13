@@ -530,14 +530,14 @@
       "title": "Second-strand synthesis (tagging primer)",
       "summary": "The tagging primer anneals to the new poly(A) tail and MightyAmp builds the second strand, placing the WTA tag at both ends.",
       "note": "98C->40C->68C. Both ends now carry the complementary M tag region, creating the substrate for suppression PCR.",
-      "product": "double-stranded cDNA, tag at both ends:\n5'- TATAGAATTCGCGGCCGCTCGCGAT...(T)24[cDNA](A)n...ATCGCGAGCGGCCGCGAATTCTATA -3'\n3'- ATATCTTAAGCGCCGGCGAGCGCTA...(A)24[cDNA'](T)n...TAGCGCTCGCCGGCGCTTAAGATAT -5'"
+      "product": "double-stranded cDNA, tag at both ends:\n5'- TATAGAATTCGCGGCCGCTCGCGAT...(T)24[cDNA] (A)n...ATCGCGAGCGGCCGCGAATTCTATA -3'\n3'- ATATCTTAAGCGCCGGCGAGCGCTA...(A)24[cDNA'](T)n...TAGCGCTCGCCGGCGCTTAAGATAT -5'"
     },
     {
       "step": 5,
       "title": "PCR enrichment (suppression PCR)",
       "summary": "The single aminated suppression primer amplifies full-length cDNA; short byproducts self-anneal into a pan-like structure and are suppressed.",
       "note": "MightyAmp, 16-21 cycles (98C/65C/68C). Complementary tag ends on short molecules pair intramolecularly and block priming.",
-      "product": "amplified double-stranded cDNA (aminated tag at both ends):\n5'- (NH2)GTATAGAATTCGCGGCCGCTCGCGAT......[cDNA]......ATCGCGAGCGGCCGCGAATTCTATAC(NH2) -3'\n3'- (NH2)CATATCTTAAGCGCCGGCGAGCGCTA......[cDNA']......TAGCGCTCGCCGGCGCTTAAGATATG(NH2) -5'"
+      "product": "amplified double-stranded cDNA (aminated tag at both ends):\n5'- (NH2)GTATAGAATTCGCGGCCGCTCGCGAT......[cDNA] ......ATCGCGAGCGGCCGCGAATTCTATAC(NH2) -3'\n3'- (NH2)CATATCTTAAGCGCCGGCGAGCGCTA......[cDNA']......TAGCGCTCGCCGGCGCTTAAGATATG(NH2) -5'"
     },
     {
       "step": 6,

@@ -326,7 +326,7 @@
       "title": "Single-cell lysis & reverse transcription with barcoded Ad-1x",
       "summary": "A hand-picked single cell is lysed and its mRNA reverse-transcribed with the barcoded poly-T primer Ad-1x, leaving intact gDNA alongside single-stranded cDNA.",
       "note": "Arrayscript reverse transcriptase extends from the Ad-1x poly(T) annealed to mRNA poly(A); the cDNA acquires a 5' cell barcode, a 5' Illumina adaptor and a T7 promoter overhang. ERCC spike-ins are added at lysis.",
-      "product": "gDNA (unmodified double-stranded genome):\n5'- ...genomic DNA... -3'\n3'- ...genomic DNA... -5'\n\nFirst-strand cDNA (from mRNA):\n5'- [ILLUMINA_ADAPTOR][T7_PROMOTER][CELL_BARCODE](T)n[CDNA] -3'\n                                              3'- (A)n...mRNA...cap -5'"
+      "product": "gDNA (unmodified double-stranded genome):\n5'- ...genomic DNA... -3'\n3'- ...genomic DNA... -5'\n\nFirst-strand cDNA (from mRNA):\n5'- [ILLUMINA_ADAPTOR][T7_PROMOTER][CELL_BARCODE](T)n[CDNA] -3'\n                                             3'- (A)n...mRNA...cap -5'"
     },
     {
       "step": 2,
@@ -406,7 +406,7 @@
       "template": "top",
       "cycles": 100,
       "note": "The left mate reads the cell-specific barcode carried by Ad-1x, identifying the cell of origin. The Read 1 primer anneals in the TruSeq Read 1 region and extends rightward through the barcode. 100 bp paired-end on Illumina HiSeq 2500. Internal adaptor/barcode segments are placeholders because their sequences are deferred to CEL-Seq and not printed in the DR-Seq documents; only the P5/P7 flanks are known and shown base-paired.",
-      "diagram": "                                 Illumina Read 1 sequencing primer\n                                 5'-[TruSeq Read 1]------------------------------------------->  (reads barcode)\n5'- AATGATACGGCGACCACCGAGATCTACAC[TruSeq Read 1 ][CELL_BARCODE ][cDNA insert ]...[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[TruSeq Read 1'][CELL_BARCODE'][cDNA insert']...[i7']TAGAGCATACGGCAGAAGACGAAC -5'"
+      "diagram": "                                 Illumina Read 1 sequencing primer\n                              5'-[TruSeq Read 1]------------------------------------------->  (reads barcode)\n5'- AATGATACGGCGACCACCGAGATCTACAC[TruSeq Read 1 ][CELL_BARCODE ][cDNA insert ]...[i7] ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[TruSeq Read 1'][CELL_BARCODE'][cDNA insert']...[i7']TAGAGCATACGGCAGAAGACGAAC -5'"
     },
     {
       "read": "Read 2 (cDNA / transcript 3' end; right mate)",
@@ -414,7 +414,7 @@
       "template": "bottom",
       "cycles": 100,
       "note": "The right mate reads the 3' end of the transcript. The Read 2 primer anneals in the TruSeq Read 2 region and extends leftward across the cDNA insert; residual Ad-2 sequence is trimmed computationally and the first mapped coordinate becomes the length-based identifier used to collapse PCR duplicates. 100 bp paired-end.",
-      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[TruSeq Read 1 ][CELL_BARCODE ][cDNA insert ][TruSeq Read 2 ]...[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[TruSeq Read 1'][CELL_BARCODE'][cDNA insert'][TruSeq Read 2']...[i7']TAGAGCATACGGCAGAAGACGAAC -5'\n(reads transcript)  <-------------------------------------[TruSeq Read 2]-5'"
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[TruSeq Read 1 ][CELL_BARCODE ][cDNA insert ][TruSeq Read 2 ]...[i7] ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[TruSeq Read 1'][CELL_BARCODE'][cDNA insert'][TruSeq Read 2']...[i7']TAGAGCATACGGCAGAAGACGAAC -5'\n(reads transcript)                      <-------------------------------------[TruSeq Read 2]-5'"
     }
   ],
   "whitelists": {},

@@ -405,14 +405,14 @@
       "title": "Transposome assembly (barcoded Tn5)",
       "summary": "384 uniquely indexed Tn5 transposomes are assembled, each loaded with a barcoded P5-side adapter and a common primer C P7-side adapter.",
       "note": "For each well the Tn5 primer C oligo, Tn5 ME oligo and a barcoded Tn5 primer are annealed (95 C -> 10 C), then loaded onto Tn5 transposase (Vazyme S111) at 30 C. The ME oligo (5' phosphorylated) is the shared bottom strand of both adapter arms.",
-      "product": "Barcoded (P5-side) adaptor:\n5'- AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG -3'\n                        3'-           TCTACACATATTCTCTGTC -5'   (Tn5 ME oligo, /5Phos/)\n\nPrimer C (P7-side) adaptor:\n5'- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG -3'\n                     3'- TCTACACATATTCTCTGTC -5'   (Tn5 ME oligo, /5Phos/)"
+      "product": "Barcoded (P5-side) adaptor:\n5'- AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG -3'\n                                       3'- TCTACACATATTCTCTGTC -5'   (Tn5 ME oligo, /5Phos/)\n\nPrimer C (P7-side) adaptor:\n5'- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG -3'\n               3'- TCTACACATATTCTCTGTC -5'   (Tn5 ME oligo, /5Phos/)"
     },
     {
       "step": 2,
       "title": "Tagmentation (first-round index)",
       "summary": "Nuclei split into 96-well plates are tagmented by well-specific barcoded Tn5, inserting the barcoded and primer C adapters into accessible chromatin.",
       "note": "23 uL nuclei + 2 uL indexed Tn5 per well, 55 C for 30 min. Tn5 leaves 9-bp gaps at each insertion junction (filled later). This introduces the first of three barcodes.",
-      "product": "5'- AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[ genomic DNA ]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'\n3'-                        TCTACACATATTCTCTGTC[ genomic DNA ]AGATGTGTATAAGAGACAG                     -5'\n                                   (9-bp gaps at both ME/genomic junctions)"
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGT[TN5_BARCODE:10]AGATGTGTATAAGAGACAG[ genomic DNA ]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -3'\n3'-                                        TCTACACATATTCTCTGTC[ genomic DNA ]AGATGTGTATAAGAGACAG                     -5'\n                                   (9-bp gaps at both ME/genomic junctions)"
     },
     {
       "step": 3,
@@ -450,7 +450,7 @@
       "template": "bottom",
       "cycles": 100,
       "note": "Primer is identical to the P5-arm top strand (P5-landing + ME), so it anneals to the bottom strand and reads the top-strand sequence rightward. Imaged: HY barcode (cyc 1-10); dark reaction across the 23 nt SMART/HY handle (cyc 11-33); Tn5 barcode (cyc 34-43); dark reaction across the 19 nt ME (cyc 44-62); genomic open-chromatin insert (cyc 63-100).",
-      "diagram": "pri  5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------------------------------------------------->\ntop  5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[HY-BC x10]AAGCAGTGGTATCAACGCAGAGT[Tn5-BC x10]AGATGTGTATAAGAGACAG[==genomic==]-3'\nbtm  3'-AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[HY-BC x10]TTCGTCACCATAGTTGCGTCTCA[Tn5-BC x10]TCTACACATATTCTCTGTC[==genomic==]-5'\nread:                                  |1-10 HY | dark 11-33 (23nt) |34-43 Tn5| dark 44-62 (19nt) | 63-100 genomic |"
+      "diagram": "pri  5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------------------------------------------------->\ntop  5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[HY-BC x10]AAGCAGTGGTATCAACGCAGAGT[Tn5-BC x10]AGATGTGTATAAGAGACAG[==genomic==]-3'\nbtm  3'-AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[HY-BC x10]TTCGTCACCATAGTTGCGTCTCA[Tn5-BC x10]TCTACACATATTCTCTGTC[==genomic==]-5'\nread:                                     |1-10 HY | dark 11-33 (23nt) |34-43 Tn5| dark 44-62 (19nt) | 63-100 genomic |"
     },
     {
       "read": "i7 sample index",
@@ -458,7 +458,7 @@
       "template": "top",
       "cycles": 10,
       "note": "Primer anneals to the top-strand P7-adapter region (GAAGACAACAACTCCTTGGCTCACA), 3' end pointing into the index, and reads leftward using the top strand as template. It reports the third-round sample index as listed in Table S1 (e.g. TAGGTCCGAT), which is the reverse complement of the SAMPLE_INDEX shown on the top strand.",
-      "diagram": "top  5'-...CCGAGCCCACGAGAC[idx x10]GAAGACAACAACTCCTTGGCTCACA-3'\nbtm  3'-...GGCTCGGGTGCTCTG[idx x10]CTTCTGTTGTTGAGGAACCGAGTGT-5'\npri              <-------3'-CTTCTGTTGTTGAGGAACCGAGTGT-5'   (reads index, 10 cyc)"
+      "diagram": "top  5'-...CCGAGCCCACGAGAC[idx x10]GAAGACAACAACTCCTTGGCTCACA-3'\nbtm  3'-...GGCTCGGGTGCTCTG[idx x10]CTTCTGTTGTTGAGGAACCGAGTGT-5'\npri                     <-------3'-CTTCTGTTGTTGAGGAACCGAGTGT-5'   (reads index, 10 cyc)"
     },
     {
       "read": "Read 2 (genomic insert)",

@@ -407,14 +407,14 @@
       "title": "FACS index-sort, lysis & RT1 annealing",
       "summary": "Single cells are index-sorted into 384-well plates and lysed, and the well-specific RT1 poly-T primer anneals to the mRNA polyA tail.",
       "note": "Each well contains a unique RT1 primer carrying a 7-bp cell barcode, 8-bp UMI, an Illumina Read2 handle and a T7 promoter; lysis buffer is evaporated and 0.5 ul RT mix added.",
-      "product": "mRNA   5'- [CDNA] AAAAAAAAAAAAAAAAAAAA -3'\n                        ::::::::::::::::::::\nRT1  3'-N TTTTTTTTTTTTTTTTTTTT-[UMI:8]-[CB:7]-(rd2)-(T7 promoter)-(leader) -5'"
+      "product": "mRNA   5'- [CDNA] AAAAAAAAAAAAAAAAAAAA -3'\n                  ::::::::::::::::::::\nRT1          3'-N TTTTTTTTTTTTTTTTTTTT-[UMI:8]-[CB:7]-(rd2)-(T7 promoter)-(leader) -5'"
     },
     {
       "step": 2,
       "title": "Reverse transcription",
       "summary": "SuperScript III extends RT1 to make first-strand cDNA tagged with the cell barcode, UMI, Read2 handle and T7 promoter.",
       "note": "RT primer final concentration only 4 nM to minimize well-to-well contamination.",
-      "product": "cDNA 5'-CGATTGAGGCCGGTAATACGACTCACTATAGGGGCGACGTGTGCTCTTCCGATCT[CB:7][UMI:8]TTTTTTTTTTTTTTTTTTTTN[CDNA]-3'\n              (leader)(---T7 promoter---)(----rd2----)"
+      "product": "cDNA 5'-CGATTGAGGCCGGTAATACGACTCACTATAGGGGCGACGTGTGCTCTTCCGATCT[CB:7][UMI:8]TTTTTTTTTTTTTTTTTTTTN[CDNA]-3'\n        (leader)     (---T7 promoter---)  (----rd2----)"
     },
     {
       "step": 3,
@@ -428,7 +428,7 @@
       "title": "Second-strand synthesis",
       "summary": "The pooled cDNA is converted to double-stranded DNA, making the T7 promoter double-stranded.",
       "note": "NEBNext second-strand module (enzyme diluted 1:8) optimized to reduce PCR-contaminant noise.",
-      "product": "top 5'-[mRNA-sense CDNA]AAAA...[UMI:8]'[CB:7]'-(rd2')-CCCTATAGTGAGTCGTATTACCGGCCTCAATCG-3'\nbot 3'-[CDNA]'TTTT...[UMI:8][CB:7]-(rd2)-GGGATATCACTCAGCATAATGGCCGGAGTTAGC-5'\n                                        (----- T7 promoter (ds) -----)"
+      "product": "top 5'-[mRNA-sense CDNA]AAAA...[UMI:8]'[CB:7]'-(rd2')-CCCTATAGTGAGTCGTATTACCGGCCTCAATCG-3'\nbot 3'-[CDNA]'          TTTT...[UMI:8] [CB:7] -(rd2)- GGGATATCACTCAGCATAATGGCCGGAGTTAGC-5'\n                                                      (----- T7 promoter (ds) -----)"
     },
     {
       "step": 5,
@@ -473,7 +473,7 @@
       "template": "top",
       "cycles": 75,
       "note": "Sequences from the Read1 handle into the pool-barcode side: first 5 nt are the random Ns of the ligation adaptor (ignored), the next 4 nt are the pool/plate (amplification-batch) barcode, then ~66 nt of 3'-end mRNA-derived cDNA (gene identity). No separate index reads are run.",
-      "diagram": "                      Read 1 primer (SP1)\n            5'-TCTTTCCCTACACGACGCTCTTCCGATCT----------------------->\ntop 5'-...ACAC TCTTTCCCTACACGACGCTCTTCCGATCT NNNNN BBBB CDNA(3')..... -3'\n              ||||||||||||||||||||||||||||| ||||| ||||\nbot 3'-...TGTG AGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNN VVVV cdna(3')..... -5'\n                                            |_5N_| |pool| 3' mRNA (gene body)\n                                           ignored  BC(4)   ---> 75 cycles"
+      "diagram": "                      Read 1 primer (SP1)\n            5'-TCTTTCCCTACACGACGCTCTTCCGATCT----------------------->\ntop 5'-...ACAC TCTTTCCCTACACGACGCTCTTCCGATCT NNNNN BBBB CDNA(3')..... -3'\n               ||||||||||||||||||||||||||||| ||||| ||||\nbot 3'-...TGTG AGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNN VVVV cdna(3')..... -5'\n                                            |_5N_| |pool| 3' mRNA (gene body)\n                                           ignored  BC(4)   ---> 75 cycles"
     },
     {
       "read": "Read 2",
@@ -481,7 +481,7 @@
       "template": "bottom",
       "cycles": 15,
       "note": "Sequences from the Read2 handle back across the RT1-derived barcodes: reads the 7-bp cell/well barcode first, then the 8-bp UMI (15 cycles total). Sequencer parameters: rd1=75 bp, rd2=15 bp, no index reads (NextSeq 500, High Output v2).",
-      "diagram": "top 5'-..CDNA-AAAA-[UMI 8]-[CB 7]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC..-3'\n                               ||||||||||||||||||||||||||||||||||\nbot 3'-..cdna-TTTT-[umi 8]-[cb 7]-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG..-5'\n        <--------------------------  Read 2 primer (SP2)\n      reads CB(7) then UMI(8)       5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3'\n                                        ---> 15 cycles"
+      "diagram": "top 5'-..CDNA-AAAA-[UMI 8]-[CB 7]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC..-3'\n                                  ||||||||||||||||||||||||||||||||||\nbot 3'-..cdna-TTTT-[umi 8]-[cb 7]-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG..-5'\n        <--------------------------  Read 2 primer (SP2)\n      reads CB(7) then UMI(8)  5'-GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT-3'\n                                        ---> 15 cycles"
     }
   ],
   "whitelists": {},

@@ -686,21 +686,21 @@
       "title": "mRNA capture on barcoded bead (droplet co-encapsulation + lysis)",
       "summary": "A lysed cell's polyadenylated mRNA hybridizes by its poly(A) tail to the 30-nt oligo-dT of a co-encapsulated barcoded bead.",
       "note": "The co-flow device pairs one cell with one bead in a ~1 nL droplet; lysis buffer (Ficoll/Sarkosyl/Tris/EDTA/DTT) releases mRNA that anneals to the bead-tethered oligo-dT.",
-      "product": "|--5'- ...AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT----->\n                                                                         3'- AAAAA......[mRNA] -5'"
+      "product": "|--5'- ...AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT----->\n                                                       3'- AAAAA......[mRNA] -5'"
     },
     {
       "step": 2,
       "title": "Reverse transcription with template switching (STAMP formation)",
       "summary": "Maxima H- RT extends the bead primer into first-strand cDNA and adds untemplated dC's at the 3\u2032 end.",
       "note": "Reverse transcription copies the mRNA into cDNA covalently attached to the bead (a STAMP); the terminal-transferase activity of Maxima H- appends 2-3 dC's to the cDNA 3\u2032 end.",
-      "product": "|--5'- ...AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CCC----->\n                                                              3'- ...........[mRNA template] -5'"
+      "product": "|--5'- ...AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CCC----->\n                                                       3'- ...........[mRNA template] -5'"
     },
     {
       "step": 3,
       "title": "Template switch appends SMART handle to cDNA 3\u2032 end",
       "summary": "The TSO rGrGrG anneals to the cDNA dC overhang and is copied, placing a SMART handle on the cDNA 3\u2032 end.",
       "note": "Both ends of the first-strand cDNA now carry the AAGCAGTGGTATCAACGCAGAGT SMART handle, enabling single-primer whole-transcriptome PCR.",
-      "product": "|--5'- ...AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CCCATTCACTCTGCGTTGATACCACTGCTT -3'\n                                                                   GGGTAAG......TGACGAA -5' (from TSO)"
+      "product": "|--5'- ...AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CCCATTCACTCTGCGTTGATACCACTGCTT -3'\n                                                                      GGGTAAG......TGACGAA -5' (from TSO)"
     },
     {
       "step": 4,
@@ -721,7 +721,7 @@
       "title": "Nextera XT tagmentation (Tn5)",
       "summary": "Tn5 fragments the amplified cDNA and inserts the Nextera mosaic-end adapter.",
       "note": "Tagmentation adds the Nextera Read 2 / s7 handle to internal 3\u2032-biased fragments; only fragments still bearing the 5\u2032 SMART handle can later receive P5, restricting the library to 3\u2032 ends.",
-      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CTGTCTCTTATACACATCT -3'\n                                                                <-- Nextera mosaic end (ME) -->"
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8](T)30[CDNA]CTGTCTCTTATACACATCT -3'\n                                                          <-- Nextera mosaic end (ME) -->"
     },
     {
       "step": 7,
@@ -738,7 +738,7 @@
       "template": "bottom",
       "cycles": 20,
       "note": "Custom Read 1 primer anneals to the bottom strand across the bridge + SMART handle; its 3' end sits at the barcode boundary and extension reads the 12-bp cell barcode (bases 1-12) then the 8-bp UMI (bases 13-20).",
-      "diagram": "   5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC----------------------->\n5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTACNNNNNNNNNNNNNNNNNNNNTTTTTTTT...[cDNA]-3'\n3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATGNNNNNNNNNNNNNNNNNNNNAAAAAAAA...[cDNA]-5'\n                                          \\___cell BC (12)___/\\_UMI(8)_/"
+      "diagram": "   5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC----------------------->\n5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTACNNNNNNNNNNNNNNNNNNNNTTTTTTTT...[cDNA]-3'\n3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATGNNNNNNNNNNNNNNNNNNNNAAAAAAAA...[cDNA]-5'\n                                           \\___cell BC (12)___/\\_UMI(8)_/"
     },
     {
       "read": "Index 1 (i7 sample index)",
@@ -746,7 +746,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "The index primer matches the top-strand s7 handle, so it anneals to the bottom strand with its 3' end at the index boundary and reads the 8-bp i7 sample index installed by the Nextera N70X primer.",
-      "diagram": "    5'-CCGAGCCCACGAGAC-------->\n5'- ...CCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...GGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                   reads 8-bp i7 index -->"
+      "diagram": "    5'-CCGAGCCCACGAGAC-------->\n5'- ...CCGAGCCCACGAGACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...GGCTCGGGTGCTCTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                      reads 8-bp i7 index -->"
     },
     {
       "read": "Read 2 (cDNA)",
@@ -754,7 +754,7 @@
       "template": "top",
       "cycles": 50,
       "note": "The s7 Read 2 primer anneals to the top strand across the Nextera mosaic-end + s7 region; its 3' end points into the insert and extension reads back through the 3' cDNA fragment (50 bp; 60 bp in the retina experiment).",
-      "diagram": "                            3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n5'- ...(dT)30-[cDNA]-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-[i7]...-3'\n3'- ...(dA)30-[cDNA]-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-[i7]...-5'\n        <-----------[reads cDNA insert]"
+      "diagram": "                  3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n5'- ...(dT)30-[cDNA]-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-[i7]...-3'\n3'- ...(dA)30-[cDNA]-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-[i7]...-5'\n        <-----------[reads cDNA insert]"
     }
   ],
   "whitelists": {},

@@ -502,7 +502,7 @@
       "title": "GEM-RT: mRNA capture & reverse transcription",
       "summary": "Gel-bead poly(dT) primer captures poly(A) mRNA in each GEM and reverse transcription produces barcoded first-strand cDNA.",
       "note": "Inside each GEM the dissolved gel bead releases the poly(dT) primer (partial TruSeq Read 1 + 16 nt 10x barcode + 12 nt UMI + 30 nt oligo-dT VN), which anneals to the mRNA poly(A) tail; reverse transcriptase extends to make full-length first-strand cDNA carrying the barcode and UMI.",
-      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]------->\n                                                       3'- XXX...XXX(A)n mRNA -5'"
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]------->\n                                                     3'- XXX...XXX(A)n mRNA -5'"
     },
     {
       "step": 2,
@@ -523,7 +523,7 @@
       "title": "Fragmentation, End Repair & A-tailing",
       "summary": "Amplified cDNA is enzymatically fragmented, end-repaired, and A-tailed; only the barcode-bearing 5' fragment carries forward into the library.",
       "note": "Fragmentation optimizes amplicon size (~200-400 bp); end repair and A-tailing add a single 3' A overhang for adapter ligation. The 10x-barcode-containing fragment is the one that becomes a sequenceable library molecule.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]*A -3'\n3'-      A*GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30BN[CDNA] -5'"
+      "product": "5'-   CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]*A -3'\n3'- A*GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30BN[CDNA] -5'"
     },
     {
       "step": 5,
@@ -571,7 +571,7 @@
       "template": "top",
       "cycles": 90,
       "note": "Sequences the 3' cDNA insert; primer is the reverse complement of the top-strand Read 2 adapter, anneals to the top strand, and reads leftward into the cDNA.",
-      "diagram": "5'- ...XX[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNNN... -3'\n3'- ...XX[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNNN... -5'\n   <----------TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG  Read 2 primer (reads 90 nt cDNA, 3'->5')"
+      "diagram": "5'- ...XX[cDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNNN... -3'\n3'- ...XX[cDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNNN... -5'\n    <----------TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG  Read 2 primer (reads 90 nt cDNA, 3'->5')"
     }
   ],
   "whitelists": {},

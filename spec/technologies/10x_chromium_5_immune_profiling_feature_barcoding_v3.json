@@ -684,7 +684,7 @@
       "title": "GEM generation & barcoding (GEM-RT)",
       "summary": "Co-partition labeled cells with barcoded gel beads and RT mix; template-switch adds the 10x barcode+UMI to 5' cDNA and the antibody Feature Barcode is captured on the same gel-bead primer.",
       "note": "48 C 45 min RT. Poly-dT primes mRNA RT; RT template-switches onto the gel-bead TSO (adding cell barcode + UMI). The antibody oligo capture sequence (CCCATATAAGAAA) hybridizes to the gel-bead TSO (TTTCTTATATGGG) and is extended, transferring the same barcode+UMI onto the Feature Barcode molecule.",
-      "product": "gel-bead primer\n5'-CTACACGACGCTCTTCCGATCT-[CB:16]-[UMI:12]-TTTCTTATATGGG-3'\n                                              |||||||||||||  (capture)\n                        3'-AAAGAATATACCC-[N9]-[FB:15]-[N10]-GACAGAGAATATGTGTAGAGGC...-5'  (antibody oligo)"
+      "product": "gel-bead primer\n5'-CTACACGACGCTCTTCCGATCT-[CB:16]-[UMI:12]-TTTCTTATATGGG-3'\n                                           |||||||||||||  (capture)\n                                        3'-AAAGAATATACCC-[N9]-[FB:15]-[N10]-GACAGAGAATATGTGTAGAGGC...-5'  (antibody oligo)"
     },
     {
       "step": 3,
@@ -729,7 +729,7 @@
       "template": "bottom",
       "cycles": 28,
       "note": "Read 1 primer anneals to the bottom strand and reads the 16 nt 10x cell barcode + 12 nt UMI (same read for GEX, V(D)J and Cell Surface Protein libraries).",
-      "diagram": "                          ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------->  (28 cyc: 16 nt CB + 12 nt UMI)\n5'-...GAGATCTACAC [i5:10] ACACTCTTTCCCTACACGACGCTCTTCCGATCT [CB:16] [UMI:12] TTTCTTATATGGG ...-3'\n3'-...CTCTAGATGTG [i5:10] TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA [CB:16] [UMI:12] AAAGAATATACCC ...-5'  (template)"
+      "diagram": "                           ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------->  (28 cyc: 16 nt CB + 12 nt UMI)\n5'-...GAGATCTACAC [i5:10] ACACTCTTTCCCTACACGACGCTCTTCCGATCT [CB:16] [UMI:12] TTTCTTATATGGG ...-3'\n3'-...CTCTAGATGTG [i5:10] TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA [CB:16] [UMI:12] AAAGAATATACCC ...-5'  (template)"
     },
     {
       "read": "i7 (I1)",
@@ -745,7 +745,7 @@
       "template": "top",
       "cycles": 10,
       "note": "Reads the 10 nt i5 sample index. Primer is the bottom-strand TruSeq Read 1 sequence; it anneals to the top strand and reads i5 leftward (dual indexing).",
-      "diagram": "        <-----------3'-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-5'  i5 index primer (reads 10 nt i5)\n5'-AATGATACGGCGACCACCGAGATCTACAC [i5:10] ACACTCTTTCCCTACACGACGCTCTTCCGATCT ...-3'  (template)\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG [i5:10] TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA ...-5'"
+      "diagram": "                          <-----------3'-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-5'  i5 index primer (reads 10 nt i5)\n5'-AATGATACGGCGACCACCGAGATCTACAC [i5:10] ACACTCTTTCCCTACACGACGCTCTTCCGATCT ...-3'  (template)\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG [i5:10] TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA ...-5'"
     },
     {
       "read": "R2",
@@ -753,7 +753,7 @@
       "template": "top",
       "cycles": 90,
       "note": "Cell Surface Protein library: Read 2N primer (rev-comp of the top-strand Read 2N handle) anneals to the top strand and reads leftward through the 10 nt spacer into the 15 nt antibody Feature Barcode (protein identity). For the paired GEX/V(D)J libraries R2 instead uses TruSeq Read 2 and reads the cDNA insert.",
-      "diagram": "                                          3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  Read 2N primer\n   <--------------------------------------                                          (reads 15 nt FB, 90 cyc)\n5'-...TTTCTTATATGGG [SP:9] [FB:15] [SP:10] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC [i7:10] ...-3'  (template)\n3'-...AAAGAATATACCC [SP:9] [FB:15] [SP:10] GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG [i7:10] ...-5'"
+      "diagram": "                                         3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  Read 2N primer\n   <--------------------------------------                                          (reads 15 nt FB, 90 cyc)\n5'-...TTTCTTATATGGG [SP:9] [FB:15] [SP:10] CTGTCTCTTATACACATCTCCGAGCCCACGAGAC [i7:10] ...-3'  (template)\n3'-...AAAGAATATACCC [SP:9] [FB:15] [SP:10] GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG [i7:10] ...-5'"
     }
   ],
   "whitelists": {},

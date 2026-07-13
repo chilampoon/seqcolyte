@@ -797,7 +797,7 @@
       "title": "Barcoded tagmentation (plate 1, well-specific BC1)",
       "summary": "TnY transposomes loaded with MEDS A (T5) and barcoded MEDS B (T7) fragment open chromatin and add well-specific barcode BC1.",
       "note": "In each of 96 wells, nuclei are tagmented for 30 min at 37C by TnY (ViPar P50K/M53Q) carrying MEDS A + a unique barcoded MEDS B. Both fragment ends receive a mosaic end; the P7 end also carries the 8-bp first-round cell barcode BC1. EDTA stops the reaction.",
-      "product": "5'- TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC -3'\n       |____ T5 handle ____||________ ME ________|          |__ ME __||_linker_||__ BC1 __||____ T7 handle ____|"
+      "product": "5'- TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC -3'\n    |____ T5 handle ____|                       |________ ME ________|   |__ ME __|         |_linker_|     |__ BC1 __|     |____ T7 handle ____|"
     },
     {
       "step": 3,
@@ -825,21 +825,21 @@
       "title": "gRNA PCR1 (add i5 / BC2)",
       "summary": "The gRNA cDNA is amplified with the U6 outer primer and the P5i sgRNA PCR1 primer, adding the second-round i5 barcode and a PCR2 handle.",
       "note": "PfuX7 amplification (14-18 cycles). P5i sgRNA PCR1 primes on the RT handle and appends i5 (BC2) + CGCCGTCCAGCTGA; the U6 outer primer defines the guide-containing amplicon.",
-      "product": "5'- CGCCGTCCAGCTGA[CELL_BARCODE:8]CCGGGAGCTGCATGT[CELL_BARCODE:8]TTTTTCAAGTTGATAA...[FEATURE_BARCODE:20]...GTGGAAAGGACGAAACAC... -3'\n       |__ PCR2 handle __||__ i5(BC2) __||__ RT handle __||__ BC1 __|            guide            scaffold"
+      "product": "5'- CGCCGTCCAGCTGA[CELL_BARCODE:8]CCGGGAGCTGCATGT[CELL_BARCODE:8]TTTTTCAAGTTGATAA...[FEATURE_BARCODE:20]...GTGGAAAGGACGAAACAC... -3'\n    |__ PCR2 handle __||__ i5(BC2) __||__ RT handle __||__ BC1 __|                  guide                  scaffold"
     },
     {
       "step": 7,
       "title": "gRNA PCR2 (add P5+Read1 and i7+P7) -> final gRNA library",
       "summary": "A second PCR adds the full P5/TruSeq-Read1 (staggered) on one end and i7+P7 on the scaffold end, completing the sequenceable gRNA library.",
       "note": "Staggered P5 sgRNA PCR2 primers (0/1/2/3/8-nt) add base diversity; P7i sgRNA PCR2 anneals on the tracrRNA scaffold and adds i7 (BC3) + P7. The final gRNA amplicon (~250 bp) reads out the perturbation and the BC1 x i5 x i7 cell barcode.",
-      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[SPACER:0]CGCCGTCCAGCTGA[CELL_BARCODE:8]CCGGGAGCTGCATGT[CELL_BARCODE:8]TTTTTCAAGTTGATAA...[FEATURE_BARCODE:20]...GTGTTTCGTCCTTTCCACAA[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n       |___ P5 ___||___ TruSeq Read 1 ___|         |PCR2 hdl||i5(BC2)||RT hdl||BC1|            guide                    |i7(BC3)||__ revcomp P7 __|"
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[SPACER:0]CGCCGTCCAGCTGA[CELL_BARCODE:8]CCGGGAGCTGCATGT[CELL_BARCODE:8]TTTTTCAAGTTGATAA...[FEATURE_BARCODE:20]...GTGTTTCGTCCTTTCCACAA[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n    |___ P5 ___|                 |___ TruSeq Read 1 ___|                |PCR2 hdl|    |i5(BC2)|       |RT hdl|       |BC1|                              guide                                      |i7(BC3)|       |__ revcomp P7 __|"
     },
     {
       "step": 8,
       "title": "ATAC PCR1 (add P5+i5 and P7+i7) -> final ATAC library",
       "summary": "The tagmented genomic fragments are amplified with P5i and P7i ATAC-seq PCR1 primers, adding P5+i5 and P7+i7 to complete the sequenceable ATAC library.",
       "note": "PfuX7 amplification. P5i ATAC-seq PCR1 primes the T5 handle and adds P5 + i5 (BC2); P7i ATAC-seq PCR1 primes the T7 handle and adds P7 + i7 (BC3). Combined with BC1 from tagmentation this gives the full BC1 x i5 x i7 cell barcode. This product equals the final ATAC library.",
-      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:8]TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n       |____ P5 ____||i5(BC2)||_____ T5 handle + ME _____|          [CDNA]  |__ ME __||linker||BC1||_ T7 handle _||i7(BC3)||_ revcomp P7 _|"
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:8]TCGTCGGCAGCGTCTCCACGCAACCAACGCACCGTCTCCGCCTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCTGCCGTCCTCGATCGC[CELL_BARCODE:8]GGACAGGGACAGCCGAGCCCACGAGAC[CELL_BARCODE:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n    |____ P5 ____|               |i5(BC2)|       |_____ T5 handle + ME _____|                                   [CDNA]|__ ME __|         |linker|       |BC1|           |_ T7 handle _|            |i7(BC3)|       |_ revcomp P7 _|"
     }
   ],
   "library_sequencing": [
@@ -857,7 +857,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "Reverse complement of the T7 mosaic-end/linker; matches the top strand ending just 5' of BC1, anneals to the bottom strand and reads the 8-bp first-round tagmentation barcode.",
-      "diagram": "Index 1 primer = top-strand sequence; reads --> into BC1\n       ...ATACACATCTGCCGTCCTCGATCGC------->\n5'- ...ATACACATCTGCCGTCCTCGATCGCNNNNNNNNGGACAGGGACAG... -3'\n3'- ...TATGTGTAGACGGCAGGAGCTAGCGNNNNNNNNCCTGTCCCTGTC... -5'\n                             (BC1, 8 nt)"
+      "diagram": "Index 1 primer = top-strand sequence; reads --> into BC1\n    ...ATACACATCTGCCGTCCTCGATCGC------->\n5'- ...ATACACATCTGCCGTCCTCGATCGCNNNNNNNNGGACAGGGACAG... -3'\n3'- ...TATGTGTAGACGGCAGGAGCTAGCGNNNNNNNNCCTGTCCCTGTC... -5'\n                             (BC1, 8 nt)"
     },
     {
       "read": "Index 2 / i5 (i5 well barcode, BC2)",
@@ -881,7 +881,7 @@
       "template": "top",
       "cycles": 50,
       "note": "Custom primer equals the barcoded T7 handle/mosaic end (bottom strand, 3' of BC1); it anneals to the top strand and synthesizes leftward into the genomic insert from the opposite end. gRNA amplicons are sequenced on a separate MiSeq run using the P5/P7 sgRNA primers. Genomic read length not stated in text; ~50 bp shown as typical.",
-      "diagram": "Read 2 primer = bottom-strand sequence; reads <-- into insert\n5'- ...(insert)CTGTCTCTTATACACATCTGCCGTCCTCGATCGC... -3'\n3'- ...(insert)GACAGAGAATATGTGTAGACGGCAGGAGCTAGCG... -5'\n     <-------3'-GACAGAGAATATGTGTAGACGGCAGGAGCTAGCG-5' (Read 2 primer)"
+      "diagram": "Read 2 primer = bottom-strand sequence; reads <-- into insert\n5'- ...(insert)CTGTCTCTTATACACATCTGCCGTCCTCGATCGC... -3'\n3'- ...(insert)GACAGAGAATATGTGTAGACGGCAGGAGCTAGCG... -5'\n    <-------3'-GACAGAGAATATGTGTAGACGGCAGGAGCTAGCG-5' (Read 2 primer)"
     }
   ],
   "whitelists": {},

@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { TechIndexEntry } from "@/lib/technologies";
 
+const ROADMAP_LABEL = "Roadmap · not yet supported";
+
 function tally(values: (string | null | undefined)[]): [string, number][] {
   const m = new Map<string, number>();
   for (const v of values) if (v) m.set(v, (m.get(v) ?? 0) + 1);
@@ -52,7 +54,44 @@ function FilterRow({
   );
 }
 
+function isRoadmap(t: TechIndexEntry): boolean {
+  return t.status === "tbd" || t.status === "in_progress";
+}
+
+/** Roadmap card: greyed-out and non-interactive — no link into the wiki. The title may be a subtle
+ *  external link to the source paper, but the card itself has no hover affordance. */
+function RoadmapCard({ t }: { t: TechIndexEntry }) {
+  const label = t.status === "in_progress" ? "In progress" : "TBD";
+  const title = t.title ?? t.id;
+  return (
+    <Card className="border-border/40 h-full cursor-default border-dashed opacity-55">
+      <CardHeader>
+        <CardTitle className="text-muted-foreground text-base leading-tight">
+          {t.source_url ? (
+            <a
+              href={t.source_url}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-foreground hover:underline"
+            >
+              {title}
+            </a>
+          ) : (
+            title
+          )}
+        </CardTitle>
+        <div className="flex flex-wrap gap-1.5 pt-1">
+          <Badge variant="outline" className="text-muted-foreground text-[10px]">
+            {label}
+          </Badge>
+        </div>
+      </CardHeader>
+    </Card>
+  );
+}
+
 function TechCard({ t }: { t: TechIndexEntry }) {
+  if (isRoadmap(t)) return <RoadmapCard t={t} />;
   return (
     <Link href={`/technologies/${t.id}`} className="group block">
       <Card className="group-hover:border-primary/50 h-full transition-colors">
@@ -92,12 +131,20 @@ export function TechGallery({ techs }: { techs: TechIndexEntry[] }) {
   const filtered = techs.filter(
     (t) => (!mod || t.modality === mod) && (!meth || t.method_type === meth),
   );
-  // when no modality filter is active, group the grid by modality (ordered by size)
+  // supported cards group by modality; roadmap (tbd/in_progress) cards have null modality and collect
+  // under a trailing "Roadmap" section so they aren't dropped from the modality-grouped view.
+  const live = filtered.filter((t) => !isRoadmap(t));
+  const roadmap = filtered.filter(isRoadmap);
   const groups: [string, TechIndexEntry[]][] = mod
-    ? [[mod, filtered]]
-    : modCounts
-        .map(([m]) => [m, filtered.filter((t) => t.modality === m)] as [string, TechIndexEntry[]])
-        .filter(([, items]) => items.length > 0);
+    ? [[mod, live]]
+    : [
+        ...modCounts
+          .map(([m]) => [m, live.filter((t) => t.modality === m)] as [string, TechIndexEntry[]])
+          .filter(([, items]) => items.length > 0),
+        ...(roadmap.length
+          ? ([[ROADMAP_LABEL, roadmap]] as [string, TechIndexEntry[]][])
+          : []),
+      ];
 
   return (
     <div className="space-y-6">

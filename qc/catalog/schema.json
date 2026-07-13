@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "seqcolyte.diagnostic_catalog.v1",
+  "title": "Seqcolyte diagnostic catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "catalog_version",
+    "metrics",
+    "signals",
+    "issues",
+    "root_causes",
+    "diagnostic_tests",
+    "recovery_actions",
+    "references"
+  ],
+  "properties": {
+    "catalog_version": { "type": "string" },
+    "metrics": { "type": "array", "items": { "$ref": "#/$defs/metric" } },
+    "signals": { "type": "array", "items": { "$ref": "#/$defs/signal" } },
+    "issues": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
+    "root_causes": { "type": "array", "items": { "$ref": "#/$defs/root_cause" } },
+    "diagnostic_tests": { "type": "array", "items": { "$ref": "#/$defs/diagnostic_test" } },
+    "recovery_actions": { "type": "array", "items": { "$ref": "#/$defs/recovery_action" } },
+    "references": { "type": "array", "items": { "$ref": "#/$defs/reference" } }
+  },
+  "$defs": {
+    "scope": {
+      "enum": [
+        "sequencing_run",
+        "read_processing",
+        "library_structure",
+        "alignment_assignment",
+        "cell_analysis",
+        "complexity_expression",
+        "wet_lab_qc"
+      ]
+    },
+    "platform": { "enum": ["illumina", "nanopore", "pacbio", "any"] },
+    "recovery_class": {
+      "enum": [
+        "computationally_recoverable",
+        "partially_recoverable",
+        "recoverable_by_additional_sequencing",
+        "requires_library_rebuild",
+        "requires_experiment_rerun",
+        "unknown"
+      ]
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relationship", "note"],
+      "properties": {
+        "relationship": { "enum": ["direct", "indirect", "unlikely", "context_dependent"] },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    },
+    "alias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "producer": { "type": "string" },
+        "source_scope": { "$ref": "#/$defs/scope" },
+        "denominator": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric_id",
+        "label",
+        "description",
+        "domain",
+        "unit",
+        "value_type",
+        "direction",
+        "scoreability",
+        "required_scopes",
+        "platforms",
+        "assays"
+      ],
+      "properties": {
+        "metric_id": { "type": "string", "pattern": "^[a-z][a-z0-9]*\\.[a-z0-9_]+$" },
+        "label": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "domain": { "$ref": "#/$defs/scope" },
+        "unit": { "enum": ["count", "fraction", "ratio", "bases", "hours", "phred", "nucleotides", "dimensionless"] },
+        "value_type": { "enum": ["integer", "float", "fraction", "categorical", "string"] },
+        "direction": { "enum": ["higher_is_better", "lower_is_better", "descriptive"] },
+        "scoreability": { "enum": ["scoreable", "profile_dependent", "target_dependent", "descriptive"] },
+        "required_scopes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/scope" } },
+        "platforms": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/platform" } },
+        "assays": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "denominator": { "type": "string" },
+        "canonical_calculation": { "type": "string" },
+        "target_dependency": { "type": "string" },
+        "scoring_profile": { "type": "string" },
+        "caveats": { "type": "array", "items": { "type": "string" } },
+        "aliases": { "type": "array", "items": { "$ref": "#/$defs/alias" } },
+        "references": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "signal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signal_id", "label", "description", "metrics"],
+      "properties": {
+        "signal_id": { "type": "string", "pattern": "^signal\\.[a-z0-9_]+$" },
+        "label": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "metrics": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "platforms": { "type": "array", "items": { "$ref": "#/$defs/platform" } },
+        "related_causes": { "type": "array", "items": { "type": "string" } },
+        "is_root_cause": { "type": "boolean" },
+        "references": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "issue_id",
+        "title",
+        "summary",
+        "outcome_domains",
+        "platforms",
+        "workflow_stages",
+        "supporting_signals",
+        "candidate_root_causes",
+        "impacts",
+        "required_evidence",
+        "confirmatory_tests",
+        "recovery_classes",
+        "what_this_issue_cannot_explain"
+      ],
+      "properties": {
+        "issue_id": { "type": "string", "pattern": "^issue\\.[a-z0-9_]+$" },
+        "title": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "outcome_domains": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/scope" } },
+        "platforms": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/platform" } },
+        "workflow_stages": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "supporting_signals": { "type": "array", "items": { "type": "string" } },
+        "contradicting_signals": { "type": "array", "items": { "type": "string" } },
+        "candidate_root_causes": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "impacts": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "required_evidence": { "type": "array", "items": { "$ref": "#/$defs/scope" } },
+        "missing_evidence": { "type": "array", "items": { "type": "string" } },
+        "confirmatory_tests": { "type": "array", "items": { "type": "string" } },
+        "recovery_classes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/recovery_class" } },
+        "computational_actions": { "type": "array", "items": { "type": "string" } },
+        "sequencing_actions": { "type": "array", "items": { "type": "string" } },
+        "wetlab_actions": { "type": "array", "items": { "type": "string" } },
+        "related_issues": { "type": "array", "items": { "type": "string" } },
+        "simulation_modes": { "type": "array", "items": { "type": "string" } },
+        "references": { "type": "array", "items": { "type": "string" } },
+        "what_this_issue_cannot_explain": { "type": "string", "minLength": 1 }
+      }
+    },
+    "root_cause": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cause_id",
+        "title",
+        "mechanism",
+        "workflow_stage",
+        "produces_issues",
+        "observable_signals",
+        "required_inputs",
+        "diagnostic_tests",
+        "cell_recovery_relationship",
+        "sample_integrity_relationship",
+        "expression_fidelity_relationship",
+        "recoverability"
+      ],
+      "properties": {
+        "cause_id": { "type": "string", "pattern": "^cause\\.[a-z0-9_]+$" },
+        "title": { "type": "string", "minLength": 1 },
+        "mechanism": { "type": "string", "minLength": 1 },
+        "workflow_stage": { "type": "string", "minLength": 1 },
+        "produces_issues": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "observable_signals": { "type": "array", "items": { "type": "string" } },
+        "evidence_against": { "type": "array", "items": { "type": "string" } },
+        "required_inputs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/scope" } },
+        "diagnostic_tests": { "type": "array", "items": { "type": "string" } },
+        "cell_recovery_relationship": { "$ref": "#/$defs/relationship" },
+        "sample_integrity_relationship": { "$ref": "#/$defs/relationship" },
+        "expression_fidelity_relationship": { "$ref": "#/$defs/relationship" },
+        "recoverability": { "$ref": "#/$defs/recovery_class" },
+        "recommended_actions": { "type": "array", "items": { "type": "string" } },
+        "references": { "type": "array", "items": { "type": "string" } },
+        "simulation_modes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "diagnostic_test": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "test_id",
+        "title",
+        "purpose",
+        "required_inputs",
+        "algorithm_summary",
+        "outputs",
+        "interpretation",
+        "limitations",
+        "supports_causes",
+        "status"
+      ],
+      "properties": {
+        "test_id": { "type": "string", "pattern": "^test\\.[a-z0-9_]+$" },
+        "title": { "type": "string", "minLength": 1 },
+        "purpose": { "type": "string", "minLength": 1 },
+        "required_inputs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/scope" } },
+        "algorithm_summary": { "type": "string", "minLength": 1 },
+        "outputs": { "type": "string", "minLength": 1 },
+        "interpretation": { "type": "string", "minLength": 1 },
+        "limitations": { "type": "string", "minLength": 1 },
+        "supports_causes": { "type": "array", "items": { "type": "string" } },
+        "rejects_causes": { "type": "array", "items": { "type": "string" } },
+        "status": { "enum": ["implemented", "planned", "external"] },
+        "implemented_by": { "type": "string" },
+        "references": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "recovery_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recovery_class", "label", "description"],
+      "properties": {
+        "recovery_class": { "$ref": "#/$defs/recovery_class" },
+        "label": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference_id", "title", "source", "evidence_strength"],
+      "properties": {
+        "reference_id": { "type": "string", "pattern": "^ref\\.[a-z0-9_]+$" },
+        "title": { "type": "string", "minLength": 1 },
+        "source": { "type": "string", "minLength": 1 },
+        "url": { "type": "string" },
+        "assay_context": { "type": "string" },
+        "note": { "type": "string" },
+        "evidence_strength": { "enum": ["strong", "moderate", "weak", "anecdotal", "unknown"] }
+      }
+    }
+  }
+}

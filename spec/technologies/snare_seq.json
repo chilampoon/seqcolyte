@@ -530,7 +530,7 @@
       "title": "Droplet co-encapsulation + splint/mRNA capture",
       "summary": "Nuclei, barcoded beads and splint oligos are co-droplet-encapsulated; heat lysis releases fragments and the splint bridges each genomic fragment to the bead while mRNA poly(A) is also captured.",
       "note": "72 C, 5 min releases Tn5 and nuclei contents inside droplets. Splint 5' end anneals to the transposed Read-1 adapter; splint 3' poly(A) and mRNA poly(A) both hybridize to the bead oligo(dT).",
-      "product": "Bead   |--5'-AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTT...T-3'\n                                                              ::::::::::::  (dT:dA)\nSplint                                    3'-AAAAAAAAAA...AGCAGCCGTCGCAGTCTACAC...-5'\n(splint 5' region anneals to genomic TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG adapter)"
+      "product": "Bead   |--5'-AAGCAGTGGTATCAACGCAGAGTAC[CELL_BARCODE:12][UMI:8]TTTTTTTTTT...T-3'\n                                                              ::::::::::::  (dT:dA)\nSplint                                                       3'-AAAAAAAAAA...AGCAGCCGTCGCAGTCTACAC...-5'\n(splint 5' region anneals to genomic TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG adapter)"
     },
     {
       "step": 3,
@@ -575,7 +575,7 @@
       "template": "bottom",
       "cycles": 30,
       "note": "cDNA library on Illumina HiSeq 2500. Primer anneals to the SMART/bead handle on the bottom strand and reads the shared 12-bp cell barcode + 8-bp UMI (barcode/UMI taken from the first 20 bases).",
-      "diagram": "   5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC------------> (read, 30 nt)\n5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CB:12][UMI:8][T x30]...-3'  (top)\n3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CB:12][UMI:8][A x30]...-5'  (bottom = template)\n                                          |--CB (12)--||UMI(8)|"
+      "diagram": "   5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC------------> (read, 30 nt)\n5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CB:12][UMI:8][T x30]...-3'  (top)\n3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CB:12][UMI:8][A x30]...-5'  (bottom = template)\n                                           |--CB (12)--||UMI(8)|"
     },
     {
       "read": "cDNA library - Read 2 (cDNA insert)",
@@ -583,7 +583,7 @@
       "template": "top",
       "cycles": 80,
       "note": "Read 2 (80 bp) primed by HP11 on the Nextera Read-2 handle; reads into the cDNA insert. Aligned to hg38/mm10 after trimming SMART adapter and poly(A).",
-      "diagram": "5'-...[cDNA insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]...-3'  (top = template)\n3'-...[cDNA insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]...-5'  (bottom)\n   <------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  HP11 (read, 80 nt)"
+      "diagram": "5'-...[cDNA insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]...-3'  (top = template)\n3'-...[cDNA insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]...-5'  (bottom)\n      <------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  HP11 (read, 80 nt)"
     },
     {
       "read": "Chromatin library - Read 1 (cell barcode + UMI)",
@@ -591,7 +591,7 @@
       "template": "bottom",
       "cycles": 30,
       "note": "Chromatin library on HiSeq 2500. Same shared 12-bp cell barcode + 8-bp UMI read as the cDNA library, priming on the bead SMART handle.",
-      "diagram": "   5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC------------> (read, 30 nt)\n5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CB:12][UMI:8][T x30]...-3'  (top)\n3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CB:12][UMI:8][A x30]...-5'  (bottom = template)\n                                          |--CB (12)--||UMI(8)|"
+      "diagram": "   5'-GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC------------> (read, 30 nt)\n5'-...GCCTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC[CB:12][UMI:8][T x30]...-3'  (top)\n3'-...CGGACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG[CB:12][UMI:8][A x30]...-5'  (bottom = template)\n                                           |--CB (12)--||UMI(8)|"
     },
     {
       "read": "Chromatin library - genomic read (HP10)",
@@ -607,7 +607,7 @@
       "template": "top",
       "cycles": 75,
       "note": "Second paired genomic ATAC mate (75 bp), primed by HP11 on the Nextera Read-2 / Ad2 mosaic end, reading into the accessible insert from the opposite side.",
-      "diagram": "5'-...[genomic insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]...-3'  (top = template)\n3'-...[genomic insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]...-5'  (bottom)\n      <------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  HP11 (read, 75 nt)"
+      "diagram": "5'-...[genomic insert]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]...-3'  (top = template)\n3'-...[genomic insert]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]...-5'  (bottom)\n         <------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  HP11 (read, 75 nt)"
     },
     {
       "read": "Chromatin library - Index 2 (i5 demultiplexing)",
@@ -615,7 +615,7 @@
       "template": "top",
       "cycles": 8,
       "note": "8-bp index-2 read of the P50X i5 sample index used to demultiplex the chromatin library; primes 3' of the i5 (in the linker/SMART region) and reads the index.",
-      "diagram": "5'-...AATGATACGGCGACCACCGAGATCTACAC[i5:8]GCCTGTCCGCGG...-3'  (top = template)\n3'-...TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]CGGACAGGCGCC...-5'  (bottom)\n                            <----[i5:8]CGGACAGGCGCC-5'  i5 index-2 primer (8 nt)"
+      "diagram": "5'-...AATGATACGGCGACCACCGAGATCTACAC[i5:8]GCCTGTCCGCGG...-3'  (top = template)\n3'-...TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]CGGACAGGCGCC...-5'  (bottom)\n                                   <----[i5:8]CGGACAGGCGCC-5'  i5 index-2 primer (8 nt)"
     }
   ],
   "whitelists": {},

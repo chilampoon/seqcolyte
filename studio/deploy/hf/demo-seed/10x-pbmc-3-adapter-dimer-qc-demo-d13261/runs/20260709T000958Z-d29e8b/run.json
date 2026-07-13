@@ -14,11 +14,11 @@
     "fastqSource": "sim"
   },
   "inputsSnapshot": {
-    "specPath": "/home/node/data/projects/10x-pbmc-3-adapter-dimer-qc-demo-d13261/runs/20260709T000958Z-d29e8b/spec.json",
-    "r1": "/home/node/repo/data/sim/adapter_dimer_f30/R1.fastq.gz",
-    "r2": "/home/node/repo/data/sim/adapter_dimer_f30/R2.fastq.gz",
-    "whitelist": "/home/node/repo/whitelists/3M-february-2018.txt.gz",
-    "labels": "/home/node/repo/sim/labels/adapter_dimer_f30.tsv"
+    "specPath": "/Users/seqmachines/playground/seqcolyte/studio/projects/10x-pbmc-3-adapter-dimer-qc-demo-d13261/runs/20260709T000958Z-d29e8b/spec.json",
+    "r1": "/Users/seqmachines/playground/seqcolyte/data/sim/adapter_dimer_f30/R1.fastq.gz",
+    "r2": "/Users/seqmachines/playground/seqcolyte/data/sim/adapter_dimer_f30/R2.fastq.gz",
+    "whitelist": "/Users/seqmachines/playground/seqcolyte/whitelists/3M-february-2018.txt.gz",
+    "labels": "/Users/seqmachines/playground/seqcolyte/sim/labels/adapter_dimer_f30.tsv"
   },
   "steps": {
     "qc": {

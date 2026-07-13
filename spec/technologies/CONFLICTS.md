@@ -115,3 +115,5 @@ The wiki spec is extracted from the papers/protocols (papers-first); this compar
 | txci_atac_seq | 0.692 | no | ok |
 | vasa_drop | 0.182 | no | low-overlap |
 | vasa_plate | 0.727 | no | ok |
+
+_No ground truth (cross-check skipped): nanopore_10x_3p._

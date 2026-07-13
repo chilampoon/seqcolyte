@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head><title>Summary</title></head>
+  <body>
+    <div id="header">10x Genomics Cell Ranger web_summary (synthetic fixture)</div>
+    <script>
+      /* Synthetic, redacted stand-in for a Cell Ranger web summary. No real sample/run data. */
+      const data = {
+        "summary": {
+          "summary_tab": {
+            "filtered_bcs_transcriptome_union": {"threshold": "pass", "metric": "1,234", "name": "Estimated Number of Cells"},
+            "sequencing": {"table": {"rows": [
+              ["Number of Reads", "2,000,000"],
+              ["Valid Barcodes", "95.0%"],
+              ["Valid UMIs", "99.0%"],
+              ["Sequencing Saturation", "40.0%"]
+            ]}},
+            "mapping": {"table": {"rows": [
+              ["Reads Mapped to Genome", "92.0%"]
+            ]}},
+            "cells": {"table": {"rows": [
+              ["Estimated Number of Cells", "1,234"],
+              ["Fraction Reads in Cells", "80.0%"],
+              ["Mean Reads per Cell", "1,620"],
+              ["Median Genes per Cell", "500"],
+              ["Total Genes Detected", "18,000"]
+            ]}},
+            "pipeline_info_table": {"header": ["Sample"], "rows": [
+              ["Sample ID", "synthetic_sample"],
+              ["Reference Path", "/synthetic/reference/path"],
+              ["Chemistry", "Single Cell 3' v3"]
+            ]}
+          }
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -371,7 +371,7 @@
       "title": "Cell lysis & oligo-dT annealing",
       "summary": "A single cell is lysed and the tailed oligo-dT30VN primer hybridizes to the poly(A) tail of each mRNA.",
       "note": "Cells are picked into hypotonic Triton X-100 lysis buffer with RNase inhibitor, dNTPs and oligo-dT30VN, then heated to 72 C for 3 min to denature RNA secondary structure and anneal the primer.",
-      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC-TTTT...TTVN -3'\n                              ||||||||\n3'- [transcript] AAAA...AAAA -5'  (mRNA poly(A) tail)"
+      "product": "5'- AAGCAGTGGTATCAACGCAGAGTAC-TTTT...TTVN -3'\n                              ||||||||\n3'- [transcript]              AAAA...AAAA -5'  (mRNA poly(A) tail)"
     },
     {
       "step": 2,
@@ -424,7 +424,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "i7 sample index read (Nextera XT, 8 bp). Reads from the mosaic-end/Read2 handle into the i7 index.",
-      "diagram": "Index1 (i7) primer 5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-->  (reads i7)\n                      ||||||||||||||||||||||||||||||||||\n5'- ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]ATCTCGTATGCCGTCTTCTGCTTG -3'  (top)\n                                              |||||||\n3'- ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]TAGAGCATACGGCAGAAGACGAAC -5'  (bottom, template)"
+      "diagram": "Index1 (i7) primer 5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-->  (reads i7)\n                      ||||||||||||||||||||||||||||||||||\n5'-                ...CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:8]ATCTCGTATGCCGTCTTCTGCTTG -3'  (top)\n                                                             |||||||\n3'-                ...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:8]TAGAGCATACGGCAGAAGACGAAC -5'  (bottom, template)"
     },
     {
       "read": "I2 (i5 index)",
@@ -432,7 +432,7 @@
       "template": "top",
       "cycles": 8,
       "note": "i5 sample index read (Nextera XT, 8 bp). Reads from the Read 1 handle back into the i5 index; used with i7 for dual-index demultiplexing.",
-      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5:8]TCGTCGGCAGCGTC... -3'  (top, template)\n                                       ||||||||||||||\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]AGCAGCCGTCGCAG... -5'  (bottom)\n         (reads i5)  <--[i5:8]AGCAGCCGTCGCAG-5'  Index 2 (i5) primer"
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[i5:8]TCGTCGGCAGCGTC... -3'  (top, template)\n                                       ||||||||||||||\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:8]AGCAGCCGTCGCAG... -5'  (bottom)\n         (reads i5)           <--[i5:8]AGCAGCCGTCGCAG-5'  Index 2 (i5) primer"
     },
     {
       "read": "R2",

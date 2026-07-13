@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "studio.run.v1",
+  "id": "20260710T161333Z-7e9cb9",
+  "projectId": "sc-nanopore-3-healthy-demo",
+  "createdAt": "2026-07-10T16:13:33.073386Z",
+  "pipeline": [
+    "qc"
+  ],
+  "options": {
+    "useLlm": false,
+    "maxReads": null,
+    "withLabels": true,
+    "withWhitelist": false,
+    "fastqSource": "sim",
+    "platform": "nanopore"
+  },
+  "inputsSnapshot": {
+    "specPath": "/Users/seqmachines/playground/seqcolyte/studio/projects/sc-nanopore-3-healthy-demo/runs/20260710T161333Z-7e9cb9/spec.json",
+    "r1": "/Users/seqmachines/playground/seqcolyte/data/sim/nanopore_healthy/reads.fastq.gz",
+    "r2": "",
+    "whitelist": null,
+    "labels": "/Users/seqmachines/playground/seqcolyte/data/sim/nanopore_healthy/labels.tsv"
+  },
+  "steps": {
+    "qc": {
+      "name": "qc",
+      "status": "succeeded",
+      "log": "logs/qc.log",
+      "startedAt": "2026-07-10T16:13:33.073386Z",
+      "pid": 0,
+      "exitCode": 0,
+      "finishedAt": "2026-07-10T16:13:33.073386Z",
+      "durationMs": 1500
+    }
+  },
+  "overallStatus": "succeeded",
+  "startedAt": "2026-07-10T16:13:33.073386Z",
+  "overall": "pass",
+  "finishedAt": "2026-07-10T16:13:33.073386Z"
+}

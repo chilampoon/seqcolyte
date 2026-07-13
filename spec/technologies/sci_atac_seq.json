@@ -848,21 +848,21 @@
       "title": "Assemble barcoded Tn5 transposomes",
       "summary": "Load Tn5 with a barcoded transferred strand (i5 on one adapter, i7 on the other) annealed to the 5'-phosphorylated pMENTS non-transferred strand.",
       "note": "Transposase complexes are prepared as in Amini et al. 2014; each 96-well plate well receives a Tn5 loaded with a unique i5/i7 mosaic-end adapter combination (its transposase barcode).",
-      "product": "P5/i5 adapter (read1 side):\n5'- TCGTCGGCAGCGTCTCCACGC[i5:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG -3'\n                                          3'- TCTACACATATTCTCTGTC -5'(Phos)\n\nP7/i7 adapter (read2 side):\n5'- GTCTCGTGGGCTCGGCTGTCCCTGTCC[i7:8]CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG -3'\n                                                  3'- TCTACACATATTCTCTGTC -5'(Phos)"
+      "product": "P5/i5 adapter (read1 side):\n5'- TCGTCGGCAGCGTCTCCACGC[i5:8]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG -3'\n                                          3'- TCTACACATATTCTCTGTC -5'(Phos)\n\nP7/i7 adapter (read2 side):\n5'- GTCTCGTGGGCTCGGCTGTCCCTGTCC[i7:8]CACCGTCTCCGCCTCAGATGTGTATAAGAGACAG -3'\n                                                3'- TCTACACATATTCTCTGTC -5'(Phos)"
     },
     {
       "step": 2,
       "title": "Tagmentation of nuclei in 96 wells",
       "summary": "Distribute permeabilized nuclei across 96 wells and let barcoded Tn5 insert adapters into nucleosome-free (open) chromatin, tagging each fragment with the well's transposase barcode.",
       "note": "2,500 nuclei per well, 2.5 uM Tn5, 30 min at 37C, stopped with 40 mM EDTA. Tagmentation leaves a 9-bp gap on each side; the transferred strands are joined to genomic DNA while the pMENTS strands are displaced.",
-      "product": "One tagmented open-chromatin fragment (transferred strands attached):\n5'- ...GCGATCGAGGACGGCAGATGTGTATAAGAGACAG =====GENOMIC===== -3'\n                          i5-tagged (P5 side)                        (9 bp gap)\n                                            3'- =====GENOMIC===== GACAGATGTGTATAAGAGACAG[i7]CCTGTCC... -5'\n                                                                          i7-tagged (P7 side)"
+      "product": "One tagmented open-chromatin fragment (transferred strands attached):\n5'- ...GCGATCGAGGACGGCAGATGTGTATAAGAGACAG =====GENOMIC===== -3'\n                      i5-tagged (P5 side)                    (9 bp gap)\n                                      3'- =====GENOMIC===== GACAGATGTGTATAAGAGACAG[i7]CCTGTCC... -5'\n                                                                  i7-tagged (P7 side)"
     },
     {
       "step": 3,
       "title": "Pool, dilute, sort, and lyse",
       "summary": "Pool all nuclei, then sort ~15-25 nuclei into each well of a second 96-well plate and lyse; each well now holds nuclei that will share a second (PCR) barcode.",
       "note": "For human-only mixtures nuclei were DAPI-stained and 25 sorted per well; for the human/mouse mix 15 unstained nuclei per well. Tn5 is stripped from the DNA, exposing the adapter ends for amplification.",
-      "product": "Tagmented fragment, Tn5 removed, ready for gap-fill/PCR:\n5'- TCGTCGGCAGCGTCTCCACGC[i5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG =====GENOMIC===== -3'\n3'- =====GENOMIC===== GACAGATGTGTATAAGAGACAG[i7]CCTGTCCCTGTCGGCTCGGGTGCTCTG -5'"
+      "product": "Tagmented fragment, Tn5 removed, ready for gap-fill/PCR:\n5'- TCGTCGGCAGCGTCTCCACGC[i5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG =====GENOMIC===== -3'\n                                                            3'- =====GENOMIC===== GACAGATGTGTATAAGAGACAG[i7]CCTGTCCCTGTCGGCTCGGGTGCTCTG -5'"
     },
     {
       "step": 4,
@@ -902,7 +902,7 @@
       "template": "top",
       "cycles": 43,
       "note": "Long custom index read on the P7 side. The primer (reverse complement of extended mosaic end B) anneals to the bottom strand and reads rightward through the Tn5 i7 transposase barcode, the s7 connector, and the PCR/library i7 barcode: 8 + 27 + 8 = 43 cycles.",
-      "diagram": "                   5'-CTGTCTCTTATACACATCTGAGGCGGAGACGGTG---------------------------->  (Index 1 primer)\n5'- ...CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[Tn5 i7]GGACAGGGACAGCCGAGCCCACGAGAC[PCR i7]... -3'\n3'- ...GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC[Tn5 i7]CCTGTCCCTGTCGGCTCGGGTGCTCTG[PCR i7]... -5'\n       ME-B'+connectorB' (primer)          Tn5 i7      s7 connector (rc)        PCR i7\n   reads: Tn5 i7 (8) -> s7 connector (27) -> PCR i7 (8-10)  = 43 cycles"
+      "diagram": "    5'-CTGTCTCTTATACACATCTGAGGCGGAGACGGTG---------------------------->  (Index 1 primer)\n5'- ...CTGTCTCTTATACACATCTGAGGCGGAGACGGTG[Tn5 i7]GGACAGGGACAGCCGAGCCCACGAGAC[PCR i7]... -3'\n3'- ...GACAGAGAATATGTGTAGACTCCGCCTCTGCCAC[Tn5 i7]CCTGTCCCTGTCGGCTCGGGTGCTCTG[PCR i7]... -5'\n       ME-B'+connectorB' (primer)          Tn5 i7      s7 connector (rc)        PCR i7\n   reads: Tn5 i7 (8) -> s7 connector (27) -> PCR i7 (8-10)  = 43 cycles"
     },
     {
       "read": "Index 2 (i5 barcodes: PCR + Tn5)",
@@ -910,7 +910,7 @@
       "template": "bottom",
       "cycles": 37,
       "note": "Long custom index read on the P5 side, using the bottom strand as template. The recipe spans both i5 barcodes: PCR/library i5 barcode, s5 connector, and Tn5 i5 transposase barcode: 8 + 21 + 8 = 37 cycles.",
-      "diagram": "5'- ...[PCR i5]TCGTCGGCAGCGTCTCCACGC[Tn5 i5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG... -3'\n3'- ...[PCR i5]AGCAGCCGTCGCAGAGGTGCG[Tn5 i5]CGCTAGCTCCTGCCGTCTACACATATTCTCTGTC... -5'\n    <----------------------------------------------  (Index 2 read; bottom-strand template)\n       PCR i5     s5 connector       Tn5 i5           ME-A\n   long i5 index read spans: PCR i5 -> s5 connector -> Tn5 i5  = 37 cycles"
+      "diagram": "5'- ...[PCR i5]TCGTCGGCAGCGTCTCCACGC[Tn5 i5]GCGATCGAGGACGGCAGATGTGTATAAGAGACAG... -3'\n3'- ...[PCR i5]AGCAGCCGTCGCAGAGGTGCG[Tn5 i5]CGCTAGCTCCTGCCGTCTACACATATTCTCTGTC... -5'\n       <----------------------------------------------  (Index 2 read; bottom-strand template)\n       PCR i5     s5 connector       Tn5 i5           ME-A\n   long i5 index read spans: PCR i5 -> s5 connector -> Tn5 i5  = 37 cycles"
     }
   ],
   "whitelists": {},

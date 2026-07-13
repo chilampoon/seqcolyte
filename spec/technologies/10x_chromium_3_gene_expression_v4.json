@@ -482,14 +482,14 @@
       "title": "GEM generation, gel-bead capture & mRNA priming",
       "summary": "Cells are partitioned with barcoded gel beads into GEMs; released poly(dT) primers hybridize to polyadenylated mRNA.",
       "note": "On the Chromium X, cells + RT master mix, gel beads, and Partitioning Oil B are loaded onto a GEM-X 3' chip. The gel bead dissolves, releasing barcoded poly(dT) primers whose 30 nt oligo-dT/VN anneals to the mRNA poly(A) tail.",
-      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN-3'\n                                                     3'- A A A A A A...XXXXXXXXX mRNA -5'"
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN-3'\n                                                  3'- A A A A A A...XXXXXXXXX mRNA -5'"
     },
     {
       "step": 2,
       "title": "Reverse transcription (GEM-RT)",
       "summary": "Reverse transcriptase extends the poly(dT) primer into first-strand cDNA, adding untemplated C's at the 3' end.",
       "note": "RT Enzyme E copies the mRNA into barcoded first-strand cDNA (48 C, 45 min). At the 5' end of the transcript the enzyme adds a few untemplated C nucleotides (CCC), setting up template switching.",
-      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]------->CCC\n                                                     3'- A A A A...XXXXXXXXX mRNA -5'"
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]------->CCC\n                                                  3'- A A A A...XXXXXXXXX mRNA -5'"
     },
     {
       "step": 3,
@@ -510,14 +510,14 @@
       "title": "Fragmentation, End Repair & A-tailing",
       "summary": "Amplified cDNA is enzymatically fragmented, end-repaired, and dA-tailed.",
       "note": "Fragmentation Enzyme shears the cDNA to an optimal insert size (32 C, 5 min), then end repair and A-tailing (65 C) add a single 3' dA overhang for adaptor ligation.",
-      "product": "5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]  *A -3'\n3'- A*  GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30BN[CDNA]    -5'"
+      "product": "5'-     CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]  *A -3'\n3'- A*  GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30BN[CDNA]    -5'"
     },
     {
       "step": 6,
       "title": "Adaptor ligation (TruSeq Read 2)",
       "summary": "The double-stranded TruSeq Read 2 adapter is ligated to the dA-tailed fragment ends.",
       "note": "DNA Ligase joins the T-overhang TruSeq Read 2 adapter to the A-tailed cDNA (20 C, 15 min), supplying the Read 2 primer site for the downstream index PCR.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -3'\n3'-      GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30BN[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG -5'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30VN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30BN[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG -5'"
     },
     {
       "step": 7,
@@ -542,7 +542,7 @@
       "template": "bottom",
       "cycles": 10,
       "note": "Primer sits on the Read 2 adapter and reads the 10 bp i7 sample index (Index 1). Read as the reverse complement of the top-strand i7 on the P7 strand.",
-      "diagram": "              AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC------->  (i7 index read, 10 cycles)\n5'- ...[cDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[cDNA]-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                                               |<-10 bp i7->|"
+      "diagram": "              AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC------->  (i7 index read, 10 cycles)\n5'- ...[cDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[cDNA]-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'\n                                                |<-10 bp i7->|"
     },
     {
       "read": "Index 2 (i5)",

@@ -449,7 +449,7 @@
       "title": "Single-cell sort & lysis",
       "summary": "A single cell is FACS-sorted into ~300 nl lysis buffer under a 3 \u00b5l hydrophobic overlay and heat-denatured.",
       "note": "Lysis buffer contains 0.1% Triton X-100, 5% PEG8000, oligo-dT30VN (0.125-0.5 uM), dNTPs and RNase inhibitor. The overlay (e.g. Vapor-Lock) both prevents evaporation of the nanoliter reaction and acts as a landing cushion for the sorted cell. Denature 72 \u00b0C, 10 min.",
-      "product": "mRNA:  5'- [CDNA] AAAAAAAAA -3'\n                        ||||||||\n           3'- NV(T)30-ACGATACGACGACGACTAGAGCA -5'  (oligo-dT30VN)"
+      "product": "mRNA:  5'- [CDNA] AAAAAAAAA -3'\n                  ||||||||\n           3'- NV(T)30-ACGATACGACGACGACTAGAGCA -5'  (oligo-dT30VN)"
     },
     {
       "step": 2,
@@ -477,7 +477,7 @@
       "title": "Tagmentation",
       "summary": "Tn5 (TDE1/ATM or in-house) fragments the cDNA and inserts mosaic-end (ME) adapters.",
       "note": "55 \u00b0C, 10 min, then 0.2% SDS to strip Tn5. Amount of Tn5 tunes the ratio of UMI-containing 5' reads (few cuts) to internal full-transcript reads (more cuts). The 5'-most fragment retains the s5-tag-UMI-GGG block.",
-      "product": "5'-fragment:   TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-ATTGCGCAATG[UMI:8]GGG-[CDNA]-CTGTCTCTTATACACATCT\ninternal frag: ...AGATGTGTATAAGAGACAG-[CDNA]-CTGTCTCTTATACACATCT...  (ME at both new cut sites)"
+      "product": "5'-fragment:   TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-ATTGCGCAATG[UMI:8]GGG-[CDNA]-CTGTCTCTTATACACATCT\ninternal frag:            ...AGATGTGTATAAGAGACAG-[CDNA]-CTGTCTCTTATACACATCT...  (ME at both new cut sites)"
     },
     {
       "step": 6,
@@ -501,7 +501,7 @@
       "template": "top",
       "cycles": 75,
       "note": "Read 1 primer (Nextera s5 + ME) anneals to the bottom strand; the polymerase reads the top strand 5'->3'. For 5'-UMI molecules it reads the 11-nt tag ATTGCGCAATG + 8-nt UMI + GGG, then cDNA; internal-fragment reads start directly in cDNA. Minimum supported read length is not below 75 bases because of the tag+UMI+GGG. zUMIs parses UMI reads via the ATTGCGCAATG pattern (\u22642 mismatches).",
-      "diagram": "Read 1 primer (s5+ME) anneals to the bottom strand; reads the top strand 5'->3':\n        5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------------>\n5'- [i5:10]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGATTGCGCAATG[UMI:8]GGG[CDNA]... -3'\n3'- [i5:10]AGCAGCCGTCGCAGTCTACACATATTCTCTGTCTAACGCGTTAC[UMI:8]CCC[CDNA]... -5'\n                                             |___tag___| UMI  GGG   cDNA"
+      "diagram": "Read 1 primer (s5+ME) anneals to the bottom strand; reads the top strand 5'->3':\n        5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------------>\n5'- [i5:10]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGATTGCGCAATG[UMI:8]GGG[CDNA]... -3'\n3'- [i5:10]AGCAGCCGTCGCAGTCTACACATATTCTCTGTCTAACGCGTTAC[UMI:8]CCC[CDNA]... -5'\n                                            |___tag___| UMI   GGG cDNA"
     },
     {
       "read": "Index 1 (i7)",
@@ -509,7 +509,7 @@
       "template": "top",
       "cycles": 10,
       "note": "10-bp i7 (index1) of the custom Nextera dual-index pair. The i7 primer anneals to the top strand at the P7 site and reads the i7 index off the top-strand template.",
-      "diagram": "i7 index primer (P7) anneals to the top strand; reads the i7 index (template = top):\n                          [i7 primer, reads i7]<------------\n5'- ...CCGAGCCCACGAGAC[i7:10]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...GGCTCGGGTGCTCTG[i7:10]TAGAGCATACGGCAGAAGACGAAC -5'\n                       |i7|  |______P7 revcomp______|"
+      "diagram": "i7 index primer (P7) anneals to the top strand; reads the i7 index (template = top):\n                          [i7 primer, reads i7]<------------\n5'- ...CCGAGCCCACGAGAC[i7:10]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...GGCTCGGGTGCTCTG[i7:10]TAGAGCATACGGCAGAAGACGAAC -5'\n                      |i7|   |______P7 revcomp______|"
     },
     {
       "read": "Index 2 (i5)",
@@ -517,7 +517,7 @@
       "template": "bottom",
       "cycles": 10,
       "note": "10-bp i5 (index2) of the custom Nextera dual-index pair. The i5 primer anneals to the top strand at the s5+ME site and reads the i5 index off the bottom-strand template (as on NextSeq/DNBSEQ).",
-      "diagram": "i5 index primer (s5+ME revcomp) anneals to the top strand; reads the i5 index (template = bottom):\n                              [i5 primer, reads i5]<------------\n5'- AATGATACGGCGACCACCGAGATCTACAC[i5:10]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:10]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC... -5'\n    |__________P5__________|      |i5|  |________s5 + ME________|"
+      "diagram": "i5 index primer (s5+ME revcomp) anneals to the top strand; reads the i5 index (template = bottom):\n                              [i5 primer, reads i5]<------------\n5'- AATGATACGGCGACCACCGAGATCTACAC[i5:10]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[i5:10]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC... -5'\n    |__________P5__________|     |i5|   |________s5 + ME________|"
     },
     {
       "read": "Read 2 (internal cDNA)",
@@ -525,7 +525,7 @@
       "template": "bottom",
       "cycles": 75,
       "note": "Read 2 primer (Nextera s7 + ME) anneals to the top strand at the tagmented (i7) end and reads internal cDNA off the bottom-strand template. Paired-end sequencing is needed for molecule reconstruction / full-transcript coverage; single-end suffices for gene counting. Libraries run on Illumina (NextSeq 500) and MGI DNBSEQ G400RS.",
-      "diagram": "Read 2 primer (s7+ME) anneals to the top strand; reads internal cDNA toward the 5' end (template = bottom):\n                    <------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5' [Read 2 primer, 3'->5']\n5'- ...[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:10]... -3'\n3'- ...[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:10]... -5'\n            |____ME revcomp____|_s7 revcomp__|"
+      "diagram": "Read 2 primer (s7+ME) anneals to the top strand; reads internal cDNA toward the 5' end (template = bottom):\n<------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5' [Read 2 primer, 3'->5']\n5'- ...[CDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:10]... -3'\n3'- ...[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:10]... -5'\n             |____ME revcomp____|_s7 revcomp__|"
     }
   ],
   "whitelists": {},

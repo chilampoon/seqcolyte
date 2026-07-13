@@ -14,6 +14,10 @@ export interface TechIndexEntry {
   description?: string;
   big_conflict?: boolean;
   oligo_seq_recall?: number | null;
+  /** Roadmap state. Absent → treat as "supported" (has a spec file, links to /technologies/{id}). */
+  status?: "supported" | "in_progress" | "tbd";
+  /** For roadmap (tbd/in_progress) cards: the source paper URL (cards don't link into the wiki). */
+  source_url?: string | null;
 }
 
 /** Repo-level shared wiki spec collection: <REPO_ROOT>/spec/technologies/. */

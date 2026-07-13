@@ -420,21 +420,21 @@
       "title": "Single-species indexed tagmentation (SBS-U-ME Tn5)",
       "summary": "One indexed single-adapter Tn5 transposome tagments the genome, leaving a 9 nt gap and the R2/index/U-ME stub on both ends.",
       "note": "Each well uses a single uniquely indexed transposome (transferred strand = Truseq_R2_SBS12_partial + Tn5 index + /ideoxyU/mosaic end; blocking strand = /5Phos/ME'). 55 \u00b0C, 10 min.",
-      "product": "R2/idx/U-ME ---------------------->        gDNA(gap)                     <---------------------- U-ME/idx/R2\n5'- CGTGTGCTCTTCCGATCT[BC8]/idU/AGATGTGTATAAGAGACAG .......<GAP>....... CTGTCTCTTATACACATCT              -3'\n3'-              TCTACACATATTCTCTGTC .......<GAP>....... GACAGAGAATATGTGTAGA/idU/[BC8]TCTAGCCTTCTCGTGTGC -5'"
+      "product": "R2/idx/U-ME ---------------------->        gDNA(gap)                     <---------------------- U-ME/idx/R2\n5'- CGTGTGCTCTTCCGATCT[BC8]/idU/AGATGTGTATAAGAGACAG .......<GAP>....... CTGTCTCTTATACACATCT              -3'\n3'-                             TCTACACATATTCTCTGTC .......<GAP>....... GACAGAGAATATGTGTAGA/idU/[BC8]TCTAGCCTTCTCGTGTGC -5'"
     },
     {
       "step": 3,
       "title": "Gap fill with uracil-sensitive polymerase (NPM)",
       "summary": "NPM fills the 9 nt gap and copies the mosaic end, but stalls at the deoxyU so the index/adapter stay single-stranded.",
       "note": "Uracil-intolerant gap-fill closes the top strand up to the mosaic end; the dU blocks read-through into the barcode/forward adapter, preventing premature PCR-able products.",
-      "product": "5'- CGTGTGCTCTTCCGATCT[BC8]/idU/AGATGTGTATAAGAGACAG .........  CTGTCTCTTATACACATCT              -3'\n3'-                        TCTACACATATTCTCTGTC .........  GACAGAGAATATGTGTAGA/idU/[BC8]TCTAGCCTTCTCGTGTGC -5'"
+      "product": "5'- CGTGTGCTCTTCCGATCT[BC8]/idU/AGATGTGTATAAGAGACAG .........  CTGTCTCTTATACACATCT              -3'\n3'-                             TCTACACATATTCTCTGTC .........  GACAGAGAATATGTGTAGA/idU/[BC8]TCTAGCCTTCTCGTGTGC -5'"
     },
     {
       "step": 4,
       "title": "Adapter switching with A14-LNA-ME oligo",
       "summary": "The LNA/inverted-dT A14 oligo out-competes ME', anneals to the copied mosaic end, and templates copying of the Nextera A14 adapter onto the top strand.",
       "note": "NPM extends the top strand across the LNA oligo (10 thermocycles), converting the i5 side to the Nextera Read-1 adapter. The 3' inverted dT keeps the LNA oligo itself unextended.",
-      "product": "                                                                     A14-LNA-ME (anneals)\n                                                                     <<< CTGCGACGGCTGCT[+LNA ME]/3InvdT/\n5'- CGTGTGCTCTTCCGATCT[BC8]/idU/AGATGTGTATAAGAGACAG ......... CTGTCTCTTATACACATCT >>>> GACGCTGCCGACGA -3'"
+      "product": "                                                                                   A14-LNA-ME (anneals)\n                                                                                   <<< CTGCGACGGCTGCT[+LNA ME]/3InvdT/\n5'- CGTGTGCTCTTCCGATCT[BC8]/idU/AGATGTGTATAAGAGACAG ......... CTGTCTCTTATACACATCT >>>> GACGCTGCCGACGA -3'"
     },
     {
       "step": 5,
@@ -465,7 +465,7 @@
       "template": "top",
       "cycles": 85,
       "note": "Read 1 primer anneals to the ME'/A14 region on the top strand and reads the open-chromatin genomic insert from the i5/Nextera side.",
-      "diagram": "Nextera Read 1 primer (A14): 5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-3'\n\n5'- ...[genomic insert] CTGTCTCTTATACACATCTGACGCTGCCGACGA [i5rc:8] GTGTAGATCTCGGTGGTCGCCGTATCATT -3'\n                       |||||||||||||||||||||||||||||||||\n3'- ...[genomic insert] GACAGAGAATATGTGTAGACTGCGACGGCTGCT [i5:8]  CACATCTAGAGCCACCAGCGGCATAGTAA -5'\n      <--------------- GACAGAGAATATGTGTAGACTGCGACGGCTGCT\n                       (primer binds ME'+A14 on top strand; reads the insert, 85 nt)"
+      "diagram": "Nextera Read 1 primer (A14): 5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-3'\n\n5'- ...[genomic insert] CTGTCTCTTATACACATCTGACGCTGCCGACGA [i5rc:8] GTGTAGATCTCGGTGGTCGCCGTATCATT -3'\n                        |||||||||||||||||||||||||||||||||\n3'- ...[genomic insert] GACAGAGAATATGTGTAGACTGCGACGGCTGCT [i5:8]   CACATCTAGAGCCACCAGCGGCATAGTAA -5'\n       <--------------- GACAGAGAATATGTGTAGACTGCGACGGCTGCT\n                       (primer binds ME'+A14 on top strand; reads the insert, 85 nt)"
     },
     {
       "read": "I1 (i7)",
@@ -473,7 +473,7 @@
       "template": "top",
       "cycles": 10,
       "note": "Reads the 8 nt i7 PCR sample index adjacent to the P7 adapter; run as a 10-cycle index read.",
-      "diagram": "i7 index read (TruSeq index read 1) - primer anneals to the SBS12/R2 region:\n\n5'- ...CAAGCAGAAGACGGCATACGAGAT [i7:8] GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT... -3'\n      ||||||||||||||||||||||||        |||||||||||||||||||||||||||||||||||\n3'- ...GTTCGTCTTCTGCCGTATGCTCTA [i7':8] CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA... -5'\n                       <--- reads i7 sample index (8 nt), 10-cycle index read"
+      "diagram": "i7 index read (TruSeq index read 1) - primer anneals to the SBS12/R2 region:\n\n5'- ...CAAGCAGAAGACGGCATACGAGAT [i7:8]  GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT... -3'\n       ||||||||||||||||||||||||         |||||||||||||||||||||||||||||||||||\n3'- ...GTTCGTCTTCTGCCGTATGCTCTA [i7':8] CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA... -5'\n                       <--- reads i7 sample index (8 nt), 10-cycle index read"
     },
     {
       "read": "I2 (i5)",
@@ -481,7 +481,7 @@
       "template": "bottom",
       "cycles": 10,
       "note": "Reads the 8 nt i5 PCR sample index adjacent to the P5 adapter; run as a 10-cycle index read.",
-      "diagram": "i5 index read (Nextera index read 2) - primer anneals to the A14 region:\n\n5'- ...GACGCTGCCGACGA [i5:8]  GTGTAGATCTCGGTGGTCGCCGTATCATT -3'\n      ||||||||||||||         |||||||||||||||||||||||||||||\n3'- ...CTGCGACGGCTGCT [i5':8] CACATCTAGAGCCACCAGCGGCATAGTAA -5'\n      TCGTCGGCAGCGTC ---> reads i5 sample index (8 nt), 10-cycle index read"
+      "diagram": "i5 index read (Nextera index read 2) - primer anneals to the A14 region:\n\n5'- ...GACGCTGCCGACGA [i5:8]  GTGTAGATCTCGGTGGTCGCCGTATCATT -3'\n       ||||||||||||||         |||||||||||||||||||||||||||||\n3'- ...CTGCGACGGCTGCT [i5':8] CACATCTAGAGCCACCAGCGGCATAGTAA -5'\n       TCGTCGGCAGCGTC ---> reads i5 sample index (8 nt), 10-cycle index read"
     },
     {
       "read": "R2",
@@ -489,7 +489,7 @@
       "template": "bottom",
       "cycles": 85,
       "note": "Read 2 primer anneals to the bottom strand at the SBS12/R2 region and reads the 8 nt Tn5 transposase cell barcode, then the 19 nt mosaic end, then the genomic insert.",
-      "diagram": "TruSeq Read 2 / SBS12 primer:\n                                 GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT --------------->\n5'- ...GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT [Tn5BC:8] AGATGTGTATAAGAGACAG [insert]... -3'\n      ||||||||||||||||||||||||||||||||||\n3'- ...CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA [Tn5BC':8] TCTACACATATTCTCTGTC [insert]... -5'\n      reads Tn5 cell barcode (8 nt) -> mosaic end (19 nt) -> genomic insert, 85 nt"
+      "diagram": "TruSeq Read 2 / SBS12 primer:\n       GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT --------------->\n5'- ...GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT [Tn5BC:8]  AGATGTGTATAAGAGACAG [insert]... -3'\n       ||||||||||||||||||||||||||||||||||\n3'- ...CACTGACCTCAAGTCTGCACACGAGAAGGCTAGA [Tn5BC':8] TCTACACATATTCTCTGTC [insert]... -5'\n      reads Tn5 cell barcode (8 nt) -> mosaic end (19 nt) -> genomic insert, 85 nt"
     }
   ],
   "whitelists": {},

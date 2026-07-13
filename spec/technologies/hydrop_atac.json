@@ -705,7 +705,7 @@
       "title": "Bulk Tn5 tagmentation of nuclei",
       "summary": "Accessible chromatin in bulk nuclei is fragmented and tagged with custom Tn5 transposon adapters.",
       "note": "Nuclei (Pitstop-permeabilized) are tagmented in bulk with a custom Tn5 that inserts asymmetric mosaic-end adapters; one side carries the GTCTCGTGGGCTCGG (ATAC-capture / S7) handle.",
-      "product": "5'- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG XXXXX...XXXXX          CTGTCTCTTATACACATCT -3'\n3'-          TCTACACATATTCTCTGTC XXXXX...XXXXX GACAGAGAATATGTGTAGACTGCGACGGCTGCT -5'"
+      "product": "5'- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG XXXXX...XXXXX CTGTCTCTTATACACATCT -3'\n3'-                TCTACACATATTCTCTGTC XXXXX...XXXXX GACAGAGAATATGTGTAGACTGCGACGGCTGCT -5'"
     },
     {
       "step": 2,
@@ -719,7 +719,7 @@
       "title": "Barcode capture (bead primer anneals to fragment)",
       "summary": "The bead primer's 3' ATAC-capture end anneals to the S7 handle on the tagmented fragment.",
       "note": "The 3' end of the barcoded bead primer (\u2026GTCTCGTGGGCTCGG) hybridizes to the bottom-strand CAGAGCACCCGAGCC of the gap-filled fragment, priming linear copy of the fragment.",
-      "product": "|--5'- ...CAGAGTAC[BC1]CAGCTACTGC[BC2]CGAGTACCCT[BC3]GTCTCGTGGGCTCGG -3'\n                                              3'- CAGAGCACCCGAGCCTCTACACATATTCTCTGTC XXX...XXX GACAGAGAATATGTGTAGACTGCGACGGCTGCT -5'"
+      "product": "|--5'- ...CAGAGTAC[BC1]CAGCTACTGC[BC2]CGAGTACCCT[BC3]GTCTCGTGGGCTCGG -3'\n                                                 3'- CAGAGCACCCGAGCCTCTACACATATTCTCTGTC XXX...XXX GACAGAGAATATGTGTAGACTGCGACGGCTGCT -5'"
     },
     {
       "step": 4,

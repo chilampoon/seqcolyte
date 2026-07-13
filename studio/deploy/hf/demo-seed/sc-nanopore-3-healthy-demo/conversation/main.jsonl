@@ -1,0 +1,1 @@
+{"role": "assistant", "text": "This is a **healthy** sc-Nanopore demo (10x 3′ long-read). QC scanned 40,000 ONT reads: only **2.7%** carry an internal TSO copy (below the 5% threshold), 96.6% are full-length with intact cell-barcode/UMI structure — **overall PASS**. Open the QC report in the viewer.", "ts": "2026-07-10T16:13:33.073386Z"}

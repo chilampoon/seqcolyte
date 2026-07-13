@@ -316,7 +316,7 @@
       "title": "End-repair / dA-tailing",
       "summary": "Klenow (exo-) fills in the CG overhangs and adds a single 3'-dA overhang to each end.",
       "note": "dNTP mix skewed to dATP (40 uM dATP, 4 uM dCTP, 4 uM dGTP): the recessed 3' ends are filled to the CG then a non-templated A is added for TA ligation. 37 C 40 min, 75 C 15 min.",
-      "product": "5'-  CGXXXXXXXXXXXXCG A -3'\n3'- A GCXXXXXXXXXXXXGC   -5'\n(blunt filled ends + 3'-A overhang)"
+      "product": "5'-   CGXXXXXXXXXXXXCG A -3'\n3'- A GCXXXXXXXXXXXXGC   -5'\n(blunt filled ends + 3'-A overhang)"
     },
     {
       "step": 4,
@@ -361,7 +361,7 @@
       "template": "bottom",
       "cycles": 100,
       "note": "Standard TruSeq Read 1 primer (embedded in the P5/universal adapter). Its sequence is identical to the top strand, so it anneals to the bottom strand and reads rightward into the bisulfite-converted MspI genomic insert, starting at the filled-in MspI (CGG) remnant. 100-bp paired-end on HiSeq 2000/2500.",
-      "diagram": "Read 1 primer  5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3'\n                                                 --------> Read 1 (100 nt)\ntop    5'- ...ACACTCTTTCCCTACACGACGCTCTTCCGATCT[==BS-converted MspI insert==]AGATCGGAAGAGC... -3'\nbottom 3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[==   insert complement (RC)  ==]TCTAGCCTTCTCG... -5'"
+      "diagram": "Read 1 primer  5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3'\n                                                 --------> Read 1 (100 nt)\ntop    5'- ...ACACTCTTTCCCTACACGACGCTCTTCCGATCT[==  BS-converted MspI insert ==]AGATCGGAAGAGC... -3'\nbottom 3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[==   insert complement (RC)  ==]TCTAGCCTTCTCG... -5'"
     },
     {
       "read": "Index read (i7)",
@@ -377,7 +377,7 @@
       "template": "top",
       "cycles": 100,
       "note": "Standard TruSeq Read 2 primer; its reverse complement is the AGATCGGAAGAGC...CCAGTCAC adapter stem, so the primer anneals to the top strand at that stem and reads leftward (<---) into the bisulfite-converted insert from the P7 side. Paired-end mate of Read 1.",
-      "diagram": "top    5'- ...[==BS-converted MspI insert==]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7]... -3'\nbottom 3'- ...[==   insert complement (RC)  ==]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7c]... -5'\n              Read 2 (100 nt) <--------  3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'  (Read 2 primer, anneals to top strand)"
+      "diagram": "top    5'- ...[==  BS-converted MspI insert ==]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7 ]... -3'\nbottom 3'- ...[==   insert complement (RC)  ==]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7c]... -5'\n                 Read 2 (100 nt) <--------  3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'  (Read 2 primer, anneals to top strand)"
     }
   ],
   "whitelists": {},

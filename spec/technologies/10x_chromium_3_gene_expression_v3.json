@@ -532,14 +532,14 @@
       "title": "Reverse transcription (GEM-RT)",
       "summary": "Poly(dT) primes polyadenylated mRNA and reverse transcriptase makes first-strand cDNA.",
       "note": "53 C for 45 min. RT extends the barcoded oligo-dT along the mRNA; the MMLV-type RT adds a few untemplated C's at the cDNA 3' end.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30[CDNA]CCC------->\n                                              3'- (A)n[mRNA] -5'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30[CDNA]CCC------->\n                                               3'- (A)n[mRNA] -5'"
     },
     {
       "step": 3,
       "title": "Template switching",
       "summary": "TSO anneals to the untemplated C overhang and RT switches template, appending the TSO handle.",
       "note": "The TSO 3' rGrGrG pairs with the cDNA CCC overhang; RT copies the TSO, giving first-strand cDNA flanked by the Read 1 handle (5') and the TSO handle (3').",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30[CDNA]CCC------->\n                                    3'- GGGTACATGAGACGCAACTATGGTGACGAA -5'\n\nFirst-strand product:\n5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT -3'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30[CDNA]CCC------->\n                                                          3'- GGGTACATGAGACGCAACTATGGTGACGAA -5'\n\nFirst-strand product:\n5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT -3'"
     },
     {
       "step": 4,
@@ -553,7 +553,7 @@
       "title": "Fragmentation, end repair & A-tailing",
       "summary": "Amplified cDNA is enzymatically fragmented and A-tailed to optimize insert size.",
       "note": "32 C fragmentation then 65 C end-repair/A-tailing; double-sided SPRI selects ~200-400 bp fragments. Only the Read 1-containing fragment carries the barcode/UMI.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30[CDNA]*A -3'\n3'-  A*GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30[CDNA] -5'"
+      "product": "  5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12](T)30[CDNA]*A -3'\n3'- A*GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12](A)30[CDNA] -5'"
     },
     {
       "step": 6,

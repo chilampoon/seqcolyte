@@ -557,28 +557,28 @@
       "title": "Load Tn5 with barcoded adapters",
       "summary": "Anneal Tn5MErev to Tn5ME-A and to each barcoded Tn5ME-B, then load into Tn5 to build common (A) and well-barcoded (B) transposomes.",
       "note": "Tn5ME-A and each 8-bp-barcoded Tn5ME-B are separately annealed to the phosphorylated Tn5MErev, then loaded onto Tn5 (iTSM plate: 500 nM pre-indexed Tn5 per well). Each of 96 wells carries a unique Tn5 barcode.",
-      "product": "Transposome A (common):\n5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG -3'\n              3'- TCTACACATATTCTCTGTC -5' (5'Phos)\n\nTransposome B (barcoded, 1 of 96):\n5'- CGTGTGCTCTTCCGATCT[TN5_BARCODE:8]AGATGTGTATAAGAGACAG -3'\n                            3'- TCTACACATATTCTCTGTC -5' (5'Phos)"
+      "product": "Transposome A (common):\n5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG -3'\n              3'- TCTACACATATTCTCTGTC -5' (5'Phos)\n\nTransposome B (barcoded, 1 of 96):\n5'- CGTGTGCTCTTCCGATCT[TN5_BARCODE:8]AGATGTGTATAAGAGACAG -3'\n                                 3'- TCTACACATATTCTCTGTC -5' (5'Phos)"
     },
     {
       "step": 2,
       "title": "96-plex barcoded tagmentation of nuclei",
       "summary": "Barcoded Tn5 tagments accessible chromatin in each well (37 \u00b0C, 60 min), inserting adapter A on one side and the well-barcoded adapter B on the other.",
       "note": "Each well's Tn5 inserts its unique 8-bp barcode into open chromatin. A productive fragment carries a common A end and a barcoded B end; the 9-bp gaps at the mosaic-end junctions are filled during the first cycle of in-droplet amplification. Nuclei from all 96 wells are then pooled.",
-      "product": "Productive tagmented fragment (transferred-strand / top strand after gap fill):\n5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT[TN5_BARCODE:8]AGATCGGAAGAGCACACG -3'\n    |____ Nextera R1 + ME ____|        |__ ME(rc) __|          |__ SBS handle(rc) __|"
+      "product": "Productive tagmented fragment (transferred-strand / top strand after gap fill):\n5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT[TN5_BARCODE:8]AGATCGGAAGAGCACACG -3'\n    |____ Nextera R1 + ME ____|            |__ ME(rc) __|                    |__ SBS handle(rc) __|"
     },
     {
       "step": 3,
       "title": "10x GEM encapsulation & in-droplet barcoding",
       "summary": "Pooled nuclei are overloaded onto the 10x Chromium; inside each droplet the gel-bead primer (P5 + 16-bp cell barcode + Read1N) anneals to the A-end mosaic end and extends, and the short SBS oligo primes the B end for exponential amplification.",
       "note": "The gel-bead primer adds P5 and the 16-bp 10x cell barcode to the A end. Spiking in the short SBS oligo converts the normally linear in-droplet reaction into exponential amplification, out-competing Tn5 barcode swapping. 8 GEM PCR cycles (lung/liver).",
-      "product": "gel-bead primer annealing:\n|--5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------->\n                                                   3'- AGCAGCCGTCGTCTACACATATTCTCTGTC[CDNA]... -5'\n\nproduct (top strand):\n5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT[TN5_BARCODE:8]AGATCGGAAGAGCACACG -3'"
+      "product": "gel-bead primer annealing:\n|--5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG------->\n                                                    3'- AGCAGCCGTCGTCTACACATATTCTCTGTC[CDNA]... -5'\n\nproduct (top strand):\n5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT[TN5_BARCODE:8]AGATCGGAAGAGCACACG -3'"
     },
     {
       "step": 4,
       "title": "Sample Index PCR \u2192 final library",
       "summary": "After the GEMs are broken and cleaned up, the customized i7 TruSeq primer anneals to the B-end SBS handle and adds an 8-bp i7 sample index + P7 (5 cycles), completing the dual-P5/P7 library.",
       "note": "A P5 primer and the barcoded i7 TruSeq primer amplify the fragment, appending the i7 sample index and P7. Double-sided size selection follows. The resulting library is dual-indexed (i7 sample + i5 10x barcode) and additionally carries the Tn5 barcode within Read 2.",
-      "product": "i7 TruSeq primer annealing at the B end:\n5'- ...[TN5_BARCODE:8]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n                       <----- GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT ... (i7 TruSeq primer) ... -5'\n\nFinal library (top strand 5'->3'):\nAATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT[TN5_BARCODE:8]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
+      "product": "i7 TruSeq primer annealing at the B end:\n5'- ...[TN5_BARCODE:8]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n               <----- GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT ... (i7 TruSeq primer) ... -5'\n\nFinal library (top strand 5'->3'):\nAATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT[TN5_BARCODE:8]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG"
     }
   ],
   "library_sequencing": [
@@ -588,7 +588,7 @@
       "template": "bottom",
       "cycles": 51,
       "note": "Sequences the accessible-chromatin genomic insert from the A end. Primer anneals to the A-end Read1N/mosaic-end region and extends into the insert (50 cycles in the earliest cell-line runs; 51 in lung/liver runs).",
-      "diagram": "5'- ...GAGATCTACAC[CELL_BC:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[INSERT]... -3'\n3'- ...CTCTAGATGTG[CELL_BC:16]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[INSERT]... -5'\n                          5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-------> reads INSERT (Read 1)"
+      "diagram": "5'- ...GAGATCTACAC[CELL_BC:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[INSERT]... -3'\n3'- ...CTCTAGATGTG[CELL_BC:16]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[INSERT]... -5'\n                           5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-------> reads INSERT (Read 1)"
     },
     {
       "read": "Index 1 (i7)",
@@ -596,7 +596,7 @@
       "template": "top",
       "cycles": 8,
       "note": "Reads the 8-bp i7 sample/lane index that distinguishes 10x lanes. Primer anneals at the B-end TruSeq/SBS handle and extends into the sample index. 10 cycles were sometimes run to co-sequence bulk libraries, but the txci index is only 8 bp.",
-      "diagram": "                       5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-------> reads i7 index\n5'- ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'"
+      "diagram": "     5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-------> reads i7 index\n5'- ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'"
     },
     {
       "read": "Index 2 (i5)",
@@ -604,7 +604,7 @@
       "template": "bottom",
       "cycles": 16,
       "note": "Reads the 16-bp 10x GEM/cell barcode as the i5 index. The Read1N primer anneals to the A-end Read1N region and the barcode is read back toward P5.",
-      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BC:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[CELL_BC:16]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC... -5'\n     reads CELL_BC <-------AGCAGCCGTCGCAGTCTACACATATTCTCTGTC-3' (i5 primer, Read1N)"
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BC:16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[CELL_BC:16]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC... -5'\n                       reads CELL_BC <-------AGCAGCCGTCGCAGTCTACACATATTCTCTGTC-3' (i5 primer, Read1N)"
     },
     {
       "read": "Read 2",
@@ -612,7 +612,7 @@
       "template": "top",
       "cycles": 78,
       "note": "Reads the 8-bp Tn5 well barcode, then the 19-bp mosaic end (CTGTCTCTTATACACATCT), then the genomic insert from the B end. Preprocessing moves the first 8 bp to the header and trims the first 27 bp; cycles 9-27 may be run as dark cycles (or balanced with PhiX/bulk ATAC) to offset the fixed Tn5MErev bases (77 cycles in early runs; 78 in lung/liver).",
-      "diagram": "5'- ...[INSERT]CTGTCTCTTATACACATCT[TN5_BC:8]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]... -3'\n3'- ...[INSERT]GACAGAGAATATGTGTAGA[TN5_BC:8]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]... -5'\n  reads INSERT|ME|Tn5_BC <-------3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5' (Read 2 primer, binds B-end handle)"
+      "diagram": "5'- ...[INSERT]CTGTCTCTTATACACATCT[TN5_BC:8]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]... -3'\n3'- ...[INSERT]GACAGAGAATATGTGTAGA[TN5_BC:8]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]... -5'\n          reads INSERT|ME|Tn5_BC <-------3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5' (Read 2 primer, binds B-end handle)"
     }
   ],
   "whitelists": {},

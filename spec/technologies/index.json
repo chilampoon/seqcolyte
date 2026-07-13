@@ -8,7 +8,9 @@
     "method_type": "droplet",
     "description": "10x Chromium Single Cell 3' v3 with Feature Barcoding technology jointly measures the transcriptome and cell-surface protein levels of the same single cell. Cells are stained with antibodies conjugated to a Feature Barcode oligonucleotide (e.g. BioLegend TotalSeq-B); inside each GEM the gel-bead Capture Sequence 1 primer captures and copies the antibody-derived feature barcode while the poly(dT) primer captures polyadenylated mRNA, both indexed by a shared 16 bp 10x cell barcode and 12 bp UMI. Read 1 encodes the cell barcode + UMI, the i7 read the sample index, and Read 2 reads the 15 bp feature barcode (Cell Surface Protein library) or the cDNA insert (3' Gene Expression library).",
     "big_conflict": false,
-    "oligo_seq_recall": 0.875
+    "oligo_seq_recall": 0.875,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_3_gene_expression_v4",
@@ -19,7 +21,9 @@
     "method_type": "droplet",
     "description": "A droplet-based single-cell 3' gene expression assay (10x Genomics Chromium GEM-X Single Cell 3' v4). Single cells are co-partitioned with barcoded gel beads into nanoliter GEMs; poly(dT) primers on the gel bead prime reverse transcription of polyadenylated mRNA, tagging each transcript with a shared 16 bp 10x cell barcode and a 12 bp UMI, and template switching adds a defined handle at the 3' end. Barcoded full-length cDNA is amplified in bulk, fragmented, and built into dual-indexed Illumina paired-end libraries. Read 1 reads the cell barcode + UMI, Read 2 reads the cDNA insert, and the i7/i5 index reads carry the sample indices, enabling digital 3' transcript counting of thousands of single cells.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.636
+    "oligo_seq_recall": 0.636,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_3_gene_expression_v2",
@@ -30,7 +34,9 @@
     "method_type": "droplet",
     "description": "Droplet-based single-cell 3' gene-expression profiling on Illumina. Cells are partitioned with barcoded gel beads into nanoliter Gel Bead-in-EMulsions (GEMs); polyadenylated mRNA is captured on a bead oligo carrying a partial Illumina Read 1 handle, a 16 nt 10x cell barcode, a 10 nt UMI and a 30 nt anchored poly(dT), then reverse-transcribed with template switching. Pooled cDNA is amplified, enzymatically fragmented, and built into a P5/P7 short-read library with an i7 sample index. Read 1 captures the cell barcode + UMI while Read 2 reads the cDNA insert, yielding 3' digital gene counts for thousands of single cells per channel.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.909
+    "oligo_seq_recall": 0.909,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_3_gene_expression_v3_1",
@@ -41,7 +47,9 @@
     "method_type": "droplet",
     "description": "Droplet-based single-cell 3' gene expression assay. Single cells are partitioned into Gel Beads-in-emulsion (GEMs) on Chromium Next GEM Chip G, where a gel-bead poly(dT) primer bearing a 16 nt 10x cell barcode and 12 nt UMI primes reverse transcription of polyadenylated mRNA and a template-switching oligo adds a fixed 3' handle. Barcoded full-length cDNA is amplified in bulk, fragmented, and built into a dual-index Illumina library. Read 1 reads the 16 bp barcode + 12 bp UMI, Read 2 reads the 3' cDNA insert, and i7/i5 reads carry the sample indices.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.818
+    "oligo_seq_recall": 0.818,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_3_gene_expression_v3",
@@ -52,7 +60,22 @@
     "method_type": "droplet",
     "description": "A droplet-based single-cell 3\u2032 gene expression assay. Cells are co-partitioned with barcoded gel beads into nanoliter Gel-Beads-in-emulsion (GEMs); inside each GEM, poly(dT) primers bearing a 16 bp 10x cell barcode and 12 bp UMI reverse-transcribe polyadenylated mRNA into barcoded full-length cDNA via template switching. Pooled cDNA is amplified, fragmented, and built into standard Illumina paired-end libraries. Read 1 sequences the 16 bp barcode + 12 bp UMI, the i7 index read gives the sample index, and Read 2 sequences the 3\u2032 cDNA insert, yielding digital 3\u2032 transcript counts per single cell.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.818
+    "oligo_seq_recall": 0.818,
+    "status": "supported",
+    "source_url": null
+  },
+  {
+    "id": "nanopore_10x_3p",
+    "title": "10x Chromium 3\u2032 Single Cell \u2014 Nanopore (long-read)",
+    "platform": "Nanopore",
+    "chemistry_version": "v3.1/v4",
+    "modality": "RNA",
+    "method_type": "droplet",
+    "description": "Full-length single-cell 3' cDNA sequenced on Oxford Nanopore. Amplified 10x cDNA (16 nt cell barcode + 12 nt UMI) is taken through ONT end-prep and ligation-adapter attachment and read end-to-end as one long read per molecule. This is a baseline direct-ligation simulation model; it omits the biotin-enrichment / streptavidin pull-down steps of the optimized ONT workflow.",
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "supported",
+    "source_url": "https://www.nature.com/articles/s41467-020-17800-6"
   },
   {
     "id": "10x_chromium_5_gene_expression_v3",
@@ -63,7 +86,9 @@
     "method_type": "droplet",
     "description": "Droplet-based single-cell 5' gene expression assay (10x Genomics Chromium GEM-X Single Cell 5' v3). Cells are partitioned into GEMs with barcoded gel beads; the poly-dT RT primer primes reverse transcription off the mRNA poly(A) tail while the gel-bead primer's template-switch oligo captures the transcript 5' end, appending a 16 nt 10x cell barcode, 12 nt UMI, and partial TruSeq Read 1. Read 1 (28 cyc) recovers the barcode+UMI; Read 2 (90 cyc) reads the cDNA from the 5' end of the transcript; dual i7/i5 indices demultiplex samples.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.545
+    "oligo_seq_recall": 0.545,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_5_immune_profiling_feature_barcoding_v1_1",
@@ -74,7 +99,9 @@
     "method_type": "droplet",
     "description": "A droplet single-cell assay that measures cell-surface protein abundance alongside 5\u2032 gene expression and V(D)J. Cells are stained with antibodies conjugated to a Feature Barcode oligonucleotide (TotalSeq-C); inside each GEM the oligo's 3\u2032 capture sequence anneals to the gel-bead template-switch oligo (TSO) and is extended, appending a shared 16 nt 10x cell barcode and 10 nt UMI. The resulting antibody-derived tag (ADT) DNA is amplified, size-separated from cDNA, and finished into an Illumina library by Sample Index PCR. Read 1 reads the cell barcode + UMI, the i7 read gives the sample index, and Read 2 (Nextera Read 2N) reads the 15 nt antibody Feature Barcode.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.444
+    "oligo_seq_recall": 0.444,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_5_immune_profiling_feature_barcoding_v2",
@@ -85,7 +112,9 @@
     "method_type": "droplet",
     "description": "A droplet single-cell assay (10x Chromium Next GEM Single Cell 5\u2032 v2, Dual Index) that jointly measures the transcriptome, paired V(D)J immune receptors, and cell-surface protein levels from the same cell. Cells are first stained with antibodies conjugated to a Feature Barcode oligonucleotide (BioLegend TotalSeq-C, the commercial embodiment of CITE-seq). Inside each GEM, a gel-bead primer template-switches onto 5\u2032 cDNA and simultaneously captures the antibody Feature Barcode through a capture sequence complementary to the template-switch (TSO) handle, so both molecules share a 16 nt 10x cell barcode and 10 nt UMI. Read 1 reads the cell barcode + UMI, dual i7/i5 reads carry sample indices, and Read 2 reads the cDNA insert (Gene Expression / V(D)J) or the 15 nt Feature Barcode (Cell Surface Protein).",
     "big_conflict": false,
-    "oligo_seq_recall": 0.667
+    "oligo_seq_recall": 0.667,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_5_immune_profiling_feature_barcoding_v3",
@@ -96,7 +125,9 @@
     "method_type": "droplet",
     "description": "10x Chromium GEM-X Single Cell 5\u2032 v3 immune-profiling assay with Feature Barcode technology for cell surface protein (TotalSeq-C / CITE-seq chemistry). Cells are stained with antibodies conjugated to a 15 nt Feature Barcode oligonucleotide, then partitioned into GEMs with barcoded gel beads. In each GEM, poly-adenylated mRNA is reverse transcribed and template-switched onto the gel-bead primer (adding a 16 nt 10x cell barcode + 12 nt UMI), while the antibody Feature Barcode oligo is captured by hybridizing its capture sequence to the gel-bead TSO and is likewise barcoded. Amplified material is split by size into cDNA (used to build 5\u2032 Gene Expression and paired V(D)J libraries) and Feature Barcode DNA (used to build the Cell Surface Protein library). Read 1 reads the cell barcode + UMI; the Cell Surface Protein Read 2 (Nextera Read 2N) reads the 15 nt antibody Feature Barcode, giving protein abundance alongside transcriptome and immune-receptor sequence per cell.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.389
+    "oligo_seq_recall": 0.389,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_5_gene_expression_v1_1",
@@ -107,7 +138,9 @@
     "method_type": "droplet",
     "description": "A droplet-based single-cell 5\u2032 gene-expression assay. Cells are partitioned into GEMs with barcoded gel beads; polyadenylated mRNA is reverse-transcribed with a poly(dT) RT primer and the reverse transcriptase template-switches onto the gel-bead oligo, placing a 16 nt 10x cell barcode and 10 nt UMI at the 5\u2032 end of each transcript. Amplified full-length cDNA is fragmented and built into a standard Illumina paired-end library. Read 1 (26 cyc) reads the 16 bp barcode + 10 bp UMI, the i7 read (8 cyc) reads the sample index, and Read 2 (91 cyc) reads the 5\u2032 cDNA insert.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.909
+    "oligo_seq_recall": 0.909,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_5_gene_expression_v2",
@@ -118,7 +151,9 @@
     "method_type": "droplet",
     "description": "A droplet-based single-cell 5\u2032 gene expression assay. Cells are co-partitioned with barcoded gel beads into GEMs; a poly(dT) RT primer primes reverse transcription of polyadenylated mRNA, and MMLV reverse transcriptase template-switches onto a bead-bound template switch oligo (TSO), attaching a 16 nt 10x cell barcode, a 10 nt UMI and the Illumina Read 1 sequence to the 5\u2032 end of each transcript. Read 1 (26 cycles) recovers the cell barcode + UMI, while Read 2 (90 cycles) reads the cDNA insert from the 5\u2032 end of the transcript; dual i7/i5 sample indices (10 bp each) permit multiplexing. The final construct is a standard Illumina paired-end library flanked by P5 and P7.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.727
+    "oligo_seq_recall": 0.727,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_single_cell_atac_v2",
@@ -129,7 +164,9 @@
     "method_type": "droplet",
     "description": "Droplet-based single-cell assay for transposase-accessible chromatin (scATAC-seq) on the 10x Chromium platform. Nuclei are transposed in bulk with a hyperactive Tn5 loaded with Read 1N / Read 2N mosaic-end adapters, then partitioned into GEMs where a gel-bead oligo (P5 + 16 nt 10x barcode + partial Read 1N) primes 12 cycles of linear amplification to barcode each nucleus's tagmented fragments. Sample-index PCR adds an i7 index and P7 to build a dual-indexed Illumina library. Paired reads (Read 1N/Read 2N) capture the accessible genomic insert, the i5 read captures the 16 bp cell barcode, and the i7 read captures the 8 bp sample index.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.818
+    "oligo_seq_recall": 0.818,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_single_cell_multiome_atac_plus_gene_expression",
@@ -140,7 +177,9 @@
     "method_type": "droplet",
     "description": "Chromium Next GEM Single Cell Multiome ATAC + Gene Expression simultaneously profiles open chromatin (ATAC) and the transcriptome (3' gene expression) from the same single nuclei. Nuclei are bulk-transposed with Tn5 (adding mosaic-end adapters to open-chromatin DNA), then partitioned into GEMs with barcoded gel beads: each bead carries two oligos \u2014 an ATAC oligo (P5 + 16 nt 10x Barcode + 8 nt Spacer) that attaches the barcode to transposed DNA, and a GEX oligo (partial TruSeq Read 1 + 16 nt 10x Barcode + 12 nt UMI + 30 nt poly(dT)VN) that primes reverse transcription of poly-adenylated mRNA. A shared 10x Barcode links ATAC reads and GEX reads back to the same nucleus. Two separate Illumina paired-end libraries (ATAC and Gene Expression) are built from a common pre-amplified pool.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.545
+    "oligo_seq_recall": 0.545,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "bd_rhapsody_wta",
@@ -151,7 +190,9 @@
     "method_type": "microwell/picowell",
     "description": "BD Rhapsody Whole Transcriptome Analysis (WTA) is a microwell-based single-cell 3'-biased whole-transcriptome assay. Single cells are co-isolated with barcoded Enhanced Cell Capture Beads in a picowell cartridge; poly(A) mRNA is captured on the bead-bound oligo (Universal PCR handle + combinatorial Cell Label + Molecular Index/UMI + poly(dT)) and reverse transcribed. Whole-transcriptome coverage is then generated on-bead by random priming and extension (RPE) rather than gene-specific PCR, followed by RPE PCR and an index PCR that adds full-length Illumina adapters. Read 1 reads the Cell Label and UMI; Read 2 reads the random-primed cDNA to identify the gene.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.5
+    "oligo_seq_recall": 0.5,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "cel_seq",
@@ -162,7 +203,9 @@
     "method_type": "manual/tube",
     "description": "CEL-Seq (Cell Expression by Linear amplification and Sequencing) is a multiplexed single-cell RNA-seq method that barcodes each cell's mRNA during reverse transcription, pools the samples, and linearly amplifies them with a single round of T7 in vitro transcription (IVT) instead of PCR. Each cell's RT primer carries an anchored poly(dT), an 8-bp cell barcode, the Illumina 5' small-RNA adapter, and a T7 promoter. After IVT the amplified antisense RNA is fragmented and built into an Illumina directional (TruSeq Small RNA) library. Paired-end sequencing reads the cell barcode followed by a poly(T) stretch in read 1 and the 3'-most mRNA fragment in read 2, yielding strand-specific, 3'-end digital gene-expression counts.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.714
+    "oligo_seq_recall": 0.714,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "cel_seq2",
@@ -173,7 +216,9 @@
     "method_type": "plate-based",
     "description": "CEL-Seq2 is a 3'-end-tag, early-barcoding single-cell RNA-seq method that linearly amplifies transcripts by in vitro transcription (IVT). A barcoded RT primer carrying a T7 promoter, a shortened Illumina 5' (small-RNA) adapter, a 6-nt UMI and a 6-nt cell barcode captures poly(A) mRNA at the reverse-transcription step. After second-strand synthesis and T7 IVT (linear amplification), the amplified antisense RNA (aRNA) is fragmented, reverse-transcribed with a random hexamer bearing the Illumina 3' adapter, and PCR-amplified with the Illumina small-RNA RP1/RPI primers into a sequenceable library. Read 1 reads the UMI + cell barcode, Read 2 reads the 3'-biased cDNA, enabling accurate molecule counting across many multiplexed cells.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.643
+    "oligo_seq_recall": 0.643,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "ch_atac_seq",
@@ -184,7 +229,9 @@
     "method_type": "combinatorial indexing",
     "description": "Combinatorial-hybridization-based single-cell ATAC-seq (CH-ATAC-seq). It profiles single-nucleus chromatin accessibility (open chromatin / candidate cis-regulatory elements) by tagging open genomic DNA with a barcoded Tn5 transposase and then combinatorially indexing each nucleus in three rounds: (1) 384 barcoded Tn5 transposase adapters during tagmentation, (2) 768 ligase-free hybridization (HY) barcode oligos, and (3) 384 indexed MGI P7 PCR adapters during library amplification. Libraries are circularized and sequenced as DNA nanoballs on MGI DNBSEQ; the reads capture the two in-line combinatorial barcodes plus the genomic (accessible-chromatin) insert.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.545
+    "oligo_seq_recall": 0.545,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "10x_chromium_3_gene_expression_v1",
@@ -195,7 +242,9 @@
     "method_type": "droplet",
     "description": "Droplet-based 3' single-cell RNA-seq (10x Genomics GemCode/Chromium). Single cells and barcoded gel beads are co-encapsulated in Gel Bead-in-EMulsion (GEM) partitions; each gel-bead oligo carries an Illumina P7 + Read 2 primer, a 14 bp 10x cell barcode, a 10 bp UMI randomer and an anchored 30 bp oligo-dT that primes reverse transcription of polyadenylated mRNA. Barcoded cDNA is pooled, amplified, sheared and finished into Illumina paired-end libraries. In this v1 chemistry, Read 1 sequences the cDNA insert, Read 2 reads the 10 bp UMI, the i7 index read reads the 14 bp cell barcode, and the i5 index read reads the 8 bp sample index \u2014 giving digital 3' transcript counts for thousands of single cells per channel.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.6
+    "oligo_seq_recall": 0.6,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "crispr_sciatac",
@@ -206,7 +255,9 @@
     "method_type": "combinatorial indexing",
     "description": "CRISPR-sciATAC is a scalable, single-cell combinatorial-indexing assay for transposase-accessible chromatin (sciATAC) coupled to pooled CRISPR screening. Open chromatin in fixed nuclei is barcoded by in-well tagmentation with a Vibrio parahemolyticus transposase (TnY) loaded with mosaic-end adapters, while the Cas9 guide RNA (expressed from a CROP-seq Pol II transcript) is captured in the same well by barcoded in-situ reverse transcription. Nuclei are pooled, resplit, and both the ATAC fragments and the gRNA amplicons receive a second combinatorial index (i5/i7) in PCR, so a unique BC1\u00d7i5\u00d7i7 cell barcode jointly tags each cell's chromatin-accessibility fragments and its perturbing gRNA. Genomic reads report chromatin accessibility genome-wide; the gRNA read reports which perturbation each cell received.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.875
+    "oligo_seq_recall": 0.875,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "ddseq_single_cell_3_rna_seq_kit",
@@ -217,7 +268,9 @@
     "method_type": "droplet",
     "description": "Bio-Rad ddSEQ Single-Cell 3\u2032 RNA-Seq is a droplet-based single-cell 3\u2032-tagged whole-transcriptome assay. Single cells are co-encapsulated with barcoded gel beads in the ddSEQ Single-Cell Isolator; each bead carries poly(T) capture oligos and deconvolution oligos (DOs), both bearing the same bead barcode plus a UMI. In-droplet lysis releases mRNA, which is captured on poly(T) and reverse-transcribed to cDNA, while DOs from co-encapsulated beads hybridize and extend into DO dimers that record which beads shared a droplet. After droplet disruption the cDNA and DO-dimer fractions are separated by SPRI size selection; cDNA is converted to an Illumina library by Tn5 tagmentation followed by index PCR, and DO dimers are converted by index PCR only. Both libraries are dual-indexed with 8-bp unique dual indexes and sequenced on Illumina (NextSeq2000): Read 1 (54 cyc) reads the bead barcode + UMI, Read 2 (68 cyc) reads the cDNA insert, and i7/i5 (8+8 cyc) read the sample indexes. Omnition Analysis Software uses the DO libraries to deconvolve multiple beads back to single-cell/droplet resolution.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.125
+    "oligo_seq_recall": 0.125,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "dr_seq",
@@ -228,7 +281,9 @@
     "method_type": "manual/tube",
     "description": "DR-Seq (gDNA-mRNA sequencing) simultaneously quantifies the genome and transcriptome of the same single cell without physically separating nucleic acids before amplification. A single hand-picked cell is lysed and its mRNA reverse-transcribed with a barcoded poly-T primer (Ad-1x) carrying a 5' Illumina adaptor and T7 promoter; gDNA and single-stranded cDNA are then co-amplified by MALBAC-style quasilinear whole-genome amplification with a random-priming adaptor (Ad-2). The sample is split: one half is PCR-amplified and made into a gDNA Illumina library for copy-number/SNV calling, the other is IVT-amplified (aRNA is produced only from cDNA) and made into a CEL-Seq-style mRNA library. Unique Ad-2 random-priming positions (\"length-based identifiers\") replace UMIs to remove PCR duplicates and count original cDNA molecules.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.6
+    "oligo_seq_recall": 0.6,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "drop_seq",
@@ -239,7 +294,9 @@
     "method_type": "droplet",
     "description": "Drop-seq is a droplet-based, massively parallel 3\u2032 single-cell RNA-seq method. Individual cells are co-encapsulated with a DNA-barcoded microparticle (\"bead\") in a nanoliter (~1 nL, 125 \u00b5m) aqueous droplet formed by a co-flow microfluidic device; the cell lyses inside the droplet and its polyadenylated mRNAs hybridize to the bead's oligo-dT primers. Each bead carries a common SMART/PCR handle, a 12-bp split-pool cell barcode (one of 4^12 = 16,777,216), an 8-bp UMI, and a 30-bp oligo-dT. After bulk reverse transcription with template switching (STAMP formation), exonuclease treatment, whole-transcriptome PCR, and Nextera XT tagmentation of the 3\u2032 ends, the library is sequenced on Illumina: Read 1 (20 bp) yields the cell barcode + UMI, and Read 2 the cDNA.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.667
+    "oligo_seq_recall": 0.667,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "ddseq_scatac_seq",
@@ -250,7 +307,9 @@
     "method_type": "droplet + combinatorial indexing",
     "description": "dscATAC-seq (Bio-Rad ddSEQ / SureCell ATAC-Seq) is a droplet-microfluidics single-cell ATAC-seq assay. Intact nuclei are first tagmented with Tn5 to insert Nextera adapters into regions of open chromatin, then co-encapsulated in droplets with PCR reagents and barcoded beads; droplet PCR appends a bead-specific cell barcode (three 7-bp barcode segments joined by fixed linker sequences) onto the Read-1 end of each transposed fragment. Read 1 captures the composite bead cell-barcode plus genomic DNA, Read 2 captures the paired genomic end, and an i7 index identifies the sample. In the higher-throughput combinatorial variant (dsciATAC-seq), Tn5 is additionally loaded with 6-bp barcoded Nextera Read-1 adapters (96 barcodes) so multiple barcoded cells can be super-loaded into each droplet.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.5
+    "oligo_seq_recall": 0.5,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "fipresci",
@@ -261,7 +320,9 @@
     "method_type": "droplet + combinatorial indexing",
     "description": "FIPRESCI (FIve PRime End Single-cell Combinatorial Indexing RNA sequencing) is a droplet-based combinatorial-indexing method for massive-scale 5\u2032-end scRNA-seq and snRNA-seq. Whole transcriptomes are pre-indexed in situ inside permeabilized cells or nuclei: reverse transcription with an oligo-dT (or random) primer creates RNA/cDNA hybrids that an i7-only indexed Tn5 transposome tagments in a 96/384-well plate, adding a well-specific round1 barcode plus a mosaic-end/partial-Read2 adapter. Pooled, overloaded cells are then encapsulated on a 10x Genomics 5\u2032 Chromium platform where a gel-bead TSO adds a droplet-specific round2 (16 bp) barcode and 10 bp UMI by template switching; the combination of round1+round2 uniquely resolves single cells even with multiple cells per droplet. Reads capture the 5\u2032-end/TSS of transcripts (enabling promoter/enhancer and TCR/BCR repertoire analysis), with R1 reading the round2 cell barcode + UMI and R2 reading the round1 barcode + cDNA.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.462
+    "oligo_seq_recall": 0.462,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "flash_seq",
@@ -272,7 +333,9 @@
     "method_type": "plate-based",
     "description": "FLASH-seq (FS) is a fast, high-sensitivity full-length single-cell RNA-seq method derived from Smart-seq2/3. A single cell is lysed and its polyadenylated mRNA is reverse-transcribed by SuperScript IV using a biotinylated oligo-dT (FS dT30VN); template switching onto a riboguanosine-tailed TSO (FS-TSO) appends a shared ISPCR handle to both cDNA ends, so a single combined RT-PCR pre-amplifies full-length cDNA. The cDNA is then tagmented with Tn5 and enriched with Nextera i5/i7 index primers to build the sequencing library. Reads give full-length gene-body coverage (R1 captures the cDNA insert; i7/i5 index reads identify the cell), enabling isoform and SNP analysis and, in the FS-UMI variant, UMI-based molecule counting. Variants: FS (standard), FS-LA (low-amplification, no cleanup), and FS-UMI (UMI-containing TSO).",
     "big_conflict": true,
-    "oligo_seq_recall": 0.118
+    "oligo_seq_recall": 0.118,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "hydrop_atac",
@@ -283,7 +346,9 @@
     "method_type": "droplet",
     "description": "HyDrop-ATAC is an open-source, droplet-microfluidic single-cell ATAC-seq assay that uses dissolvable, barcoded polyacrylamide hydrogel beads. Nuclei are Tn5-tagmented in bulk with a custom transposon, then co-encapsulated with a dissolvable bead carrying a 96\u00d796\u00d796 split-pool cell barcode ending in a sequence complementary to the Tn5 adapter. Inside the droplet the bead dissolves (DTT-triggered), the Tn5 is denatured, and the accessible-chromatin fragments are gap-filled, captured, and cell-indexed by linear amplification off the bead primer. Pooled fragments are then bulk-PCR amplified with P5/P7 index primers. Sequencing reads the two genomic (ATAC) mates plus a 30 bp cell barcode (read as index 1) and a sample index (index 2).",
     "big_conflict": false,
-    "oligo_seq_recall": 0.889
+    "oligo_seq_recall": 0.889,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "hydrop_rna",
@@ -294,7 +359,9 @@
     "method_type": "droplet + combinatorial indexing",
     "description": "HyDrop-RNA is an open-source droplet-microfluidic single-cell RNA-seq assay built on dissolvable, barcoded polyacrylamide hydrogel beads. Each bead carries a three-round split-pool cell barcode (96x96x96 = 884,736 combinations), an 8 nt UMI, and a poly(dT) capture sequence. Inside droplets, cells are lysed and poly(A)+ mRNA is reverse transcribed on the bead primer with template switching (Drop-seq/SMART-style chemistry, GTP/PEG-supplemented); barcoded cDNA is pooled, amplified by IS-PCR, then fragmented and ligated to a NEBNext/TruSeq adapter and dual-indexed. Read 1 reads the 3' cDNA insert, Read 2 reads the three linker-separated cell barcodes plus UMI, and the i7/i5 index reads carry the sample index.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.75
+    "oligo_seq_recall": 0.75,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "indrop_v1",
@@ -305,7 +372,9 @@
     "method_type": "droplet",
     "description": "inDrop (indexing droplets) is a droplet-microfluidic single-cell RNA-seq method. Single cells are co-encapsulated with a barcoded hydrogel microsphere (BHM) carrying ~10^9 photo-releasable RT primers encoding one of 147,456 (384\u00d7384) combinatorial cell barcodes, plus lysis and reverse-transcription reagents. After UV release, mRNA is captured on the poly-T primer and barcoded during in-drop reverse transcription; pooled cDNA is then linearly amplified by T7 in vitro transcription (CEL-Seq/MARS-Seq workflow) and converted into an Illumina library. Read 1 recovers the two-part cell barcode (separated by the W1 adaptor) plus the UMI; Read 2 is the 3' cDNA that is mapped to the transcriptome.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.556
+    "oligo_seq_recall": 0.556,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "indrop_v2",
@@ -316,7 +385,9 @@
     "method_type": "droplet",
     "description": "inDrops is a droplet-microfluidic single-cell RNA-seq method that co-encapsulates single cells with barcoding hydrogel beads (BHBs) bearing photoreleasable, combinatorially barcoded RT primers. After UV release of primers, mRNA is captured on a poly(dT) tail and reverse-transcribed in-drop so that each cell's transcripts are tagged with a two-part cellular barcode plus a UMI. Pooled cDNA is linearly amplified by T7 in-vitro transcription (CEL-seq strategy), the amplified RNA is fragmented and re-reverse-transcribed with a random-hexamer primer, and a limited-cycle PCR adds Illumina P5/P7 and an i7 library index. Read 1 reads the transcript, Read 2 reads the cell barcode + UMI, and the index read reads the library (sample) index.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.8
+    "oligo_seq_recall": 0.8,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "issaac_seq_droplet",
@@ -327,7 +398,9 @@
     "method_type": "droplet",
     "description": "ISSAAC-seq (in situ sequencing hetero RNA\u2013DNA-hybrid, SHERRY, after ATAC-seq) is a droplet-based single-nucleus multi-omics assay that jointly profiles chromatin accessibility (ATAC) and gene expression (RNA) from the same nucleus. Open chromatin is tagged in situ by a Tn5-S5/S7 transposome (Nextera mosaic-end adapters); mRNA is reverse-transcribed in the nucleus with a poly-dT primer carrying a partial TruSeq adapter and a 10-bp UMI; a Tn5-S5/S5 homodimer then tags the RNA\u2013DNA hybrid to add a Nextera handle to the cDNA. Nuclei are captured on the 10x Chromium Single-Cell ATAC platform, which adds a 16-bp cell barcode (Nextera Read-1 bead), and the pre-amplified pool is split and amplified into separate ATAC and RNA Illumina libraries. Reads capture: genomic insert (ATAC) or cDNA (RNA) plus a 16-bp 10x cell barcode (i5) and a 10-bp UMI (first 10 bp of the RNA Read 2).",
     "big_conflict": true,
-    "oligo_seq_recall": 0.429
+    "oligo_seq_recall": 0.429,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "issaac_seq_facs",
@@ -338,7 +411,9 @@
     "method_type": "plate-based",
     "description": "ISSAAC-seq (in situ sequencing hetero RNA\u2013DNA-hybrid after ATAC-seq) is a plate-based (FACS) single-nucleus multi-omics method that jointly profiles chromatin accessibility and gene expression from the same nucleus. In situ, open chromatin is first tagmented by a Tn5-S5/S7 transposome (Nextera adapters); mRNA is then reverse-transcribed in the nucleus with an oligo-dT primer carrying a partial TruSeq Read 1 handle and a 10-bp UMI; the resulting RNA\u2013DNA hybrid is marked by a Tn5-S7/S7 homodimer (SHERRY chemistry). Single DAPI+ nuclei are FACS-sorted into a 384-well plate where a per-well i7 (Nextera N7xx) barcode is added, then a per-plate i5 barcode and P5/P7 are appended. The pool is split into an ATAC library (Nextera S5+S7 ends) and an RNA gene-expression library (TruSeq Read 1 + Nextera S7 ends). Read 1 reads the UMI followed by cDNA, Read 2 reads cDNA from the Nextera side, and the combinatorial cell barcode is formed from Index 1 (i7 well) + Index 2 (i5 plate).",
     "big_conflict": true,
-    "oligo_seq_recall": 0.462
+    "oligo_seq_recall": 0.462,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "lianti",
@@ -349,7 +424,9 @@
     "method_type": "manual/tube",
     "description": "LIANTI (Linear Amplification via Transposon Insertion) is a single-cell whole-genome amplification (WGA) method that combines Tn5 transposition with T7 in vitro transcription to achieve linear \u2014 rather than exponential \u2014 amplification of a single cell's genomic DNA. A self-looping \"pre-cut\" transposon carrying a single-stranded T7-promoter loop tags genomic DNA; DNA-polymerase gap-fill converts the loops into double-stranded T7 promoters on both ends, and overnight in vitro transcription linearly amplifies each fragment into genomic RNA. The RNA self-primes at its 3' end, is reverse-transcribed, RNase-digested, and made double-stranded with a primer bearing an 8-bp unique molecular identifier (UMI), yielding LIANTI amplicons. Amplicons are sonicated and converted into a standard paired-end Illumina genomic library (NEBNext Ultra / TruSeq), where reads capture an inline 8-bp UMI plus the mosaic-end binding sequence on the 5' end of each amplicon, enabling digital fragment counting for high-accuracy micro-CNV and SNV detection.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.6
+    "oligo_seq_recall": 0.6,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "malbac",
@@ -360,7 +437,9 @@
     "method_type": "manual/tube",
     "description": "MALBAC (Multiple Annealing and Looping Based Amplification Cycles) is a single-cell whole-genome amplification (WGA) method. Random primers carrying a common 27-nucleotide sequence plus 8 variable nucleotides anneal genome-wide at 0\u00b0C and are extended by a strand-displacing polymerase to make semi-amplicons; further cycles generate full amplicons whose complementary 27-nt ends loop at 58\u00b0C, giving quasi-linear preamplification with low bias. The looped amplicons are then exponentially PCR-amplified with the 27-nt common primer and converted to a standard Illumina/SOLiD whole-genome library. Reads capture genomic DNA of a single human cell, enabling detection of copy-number variations (CNVs) and single-nucleotide variations (SNVs).",
     "big_conflict": false,
-    "oligo_seq_recall": 1.0
+    "oligo_seq_recall": 1.0,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "mars_seq_v2",
@@ -371,7 +450,9 @@
     "method_type": "plate-based",
     "description": "MARS-seq2.0 is a plate-based, FACS-indexed, 3'-end single-cell RNA-seq method. Single cells are index-sorted into 384-well plates and reverse-transcribed with a poly-T primer carrying a 7-bp cell/well barcode, an 8-bp UMI, an Illumina Read2 handle and a T7 promoter. Pooled cDNA is made double-stranded, linearly amplified by T7 in-vitro transcription, fragmented, and given a 4-bp pool/plate barcode by RNA:ssDNA ligation; Illumina adaptors are then added by a second RT and PCR. Read1 captures the pool barcode plus the 3' mRNA sequence; Read2 captures the cell barcode and UMI.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.7
+    "oligo_seq_recall": 0.7,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "microsplit",
@@ -382,7 +463,9 @@
     "method_type": "combinatorial indexing",
     "description": "microSPLiT (Microbial Split-Pool Ligation Transcriptomics) is a high-throughput, droplet-free bacterial single-cell RNA-seq method that extends SPLiT-seq to gram-positive and gram-negative bacteria. Fixed, Tween-20/lysozyme-permeabilized cells are polyadenylated in-cell with E. coli Poly(A) Polymerase, then labeled by combinatorial barcoding: in-cell reverse transcription with barcoded poly-dT and random-hexamer primers (barcode 1), followed by two in-cell ligation rounds (barcodes 2 and 3, the last also carrying a UMI and biotin), and a fourth sublibrary index added during library preparation. Read 1 captures the transcript sequence, Read 2 captures the UMI plus the three cell barcodes, and the index read captures the sublibrary barcode, so every cell acquires a unique barcode combination.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.556
+    "oligo_seq_recall": 0.556,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "microwell_seq",
@@ -393,7 +476,9 @@
     "method_type": "microwell/picowell",
     "description": "Microwell-seq is a high-throughput, low-cost droplet-free scRNA-seq platform in which single cells are trapped in an agarose microwell array (~100,000 wells) alongside barcoded magnetic beads. Each bead carries poly(dT) capture oligos bearing a 3-part split-pool cell barcode (3 x 6 nt) and a 6 nt UMI; captured mRNA is reverse-transcribed with Smart-seq2 template switching, amplified by single-primer ISPCR, tagmented by a customized Tn5 carrying two identical mosaic ends, and 3'-enriched by selective PCR (P5 + Nextera i7). Read 1 reads the split cell barcode + UMI, Read 2 reads the cDNA fragment, and the i7 index read reads the sample index on an Illumina HiSeq.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.4
+    "oligo_seq_recall": 0.4,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "paired_seq",
@@ -404,7 +489,9 @@
     "method_type": "combinatorial indexing",
     "description": "Paired-seq (parallel analysis of individual cells for RNA expression and DNA accessibility by sequencing) is an ultra high-throughput combinatorial-indexing assay that jointly profiles open chromatin (ATAC) and the transcriptome from the same single nucleus. Nuclei are Tn5-tagmented with barcoded mosaic-end adaptors and reverse-transcribed with barcoded poly(dT) primers in the same wells, then given three additional rounds of splint-ligation barcoding, generating >10^7 unique cell barcode combinations. Amplified molecules are split and digested with NotI or SbfI to \"dedicate\" DNA vs RNA libraries. Read 1 sequences the genomic/cDNA insert; Read 2 (130 cyc) reads a 10 nt UMI followed by the four cell-barcode rounds; Index 1 reads the i7 sample index.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.565
+    "oligo_seq_recall": 0.565,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "petri_seq",
@@ -415,7 +502,9 @@
     "method_type": "combinatorial indexing",
     "description": "PETRI-seq (Prokaryotic Expression profiling by Tagging RNA In situ and sequencing) is a high-throughput bacterial single-cell RNA-seq method based on in situ combinatorial indexing. Fixed, permeabilized Gram-negative (E. coli) or Gram-positive (S. aureus) cells are barcoded in place: in-cell reverse transcription with barcoded random hexamers (Round 1) is followed by two rounds of split-pool barcode ligation (Rounds 2 and 3), giving each cell's cDNA a unique three-barcode combination (~884,736 possible) plus a 7-nt UMI. After pooling and lysis, second-strand synthesis and Nextera XT tagmentation build a paired-end Illumina library. Read 1 reads the UMI and the three cell barcodes; Read 2 reads the cDNA insert.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.75
+    "oligo_seq_recall": 0.75,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "pi_atac_seq",
@@ -426,7 +515,9 @@
     "method_type": "combinatorial indexing",
     "description": "Pi-ATAC (Protein-indexed Assay of Transposase Accessible Chromatin with sequencing) jointly profiles single-cell chromatin accessibility and protein-epitope abundance from the same cell. Cells or nuclei are fixed, permeabilized, antibody-stained, and tagmented in bulk with Tn5 loaded with Nextera mosaic-end adapters; single cells are then index-sorted by FACS into wells (recording per-cell antibody fluorescence) and reverse-crosslinked, and each well is amplified with a unique combinatorial i5\u00d7i7 barcoding-PCR primer pair that also builds the Illumina library. The paired-end reads capture accessible genomic DNA fragments, while the i5/i7 index combination encodes the well (and thus the cell) whose FACS protein levels are known.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.636
+    "oligo_seq_recall": 0.636,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "pip_seq_v4",
@@ -437,7 +528,9 @@
     "method_type": "droplet",
     "description": "PIPseq (Particle-templated Instant Partition sequencing) T20 3\u2032 Single Cell RNA v4 is a microfluidics-free droplet scRNA-seq assay from Fluent BioSciences. Cells (or nuclei) are co-encapsulated with barcoded polyacrylamide hydrogel beads by vortex-driven templated emulsification in a Partitioning Reagent; heat + chemical lysis releases mRNA, which is captured on bead-bound poly(T) oligos carrying a cell barcode and a UMI. Reverse transcription with template switching (TSO) followed by whole-transcriptome amplification generates full-length cDNA, which is then fragmented, end-repaired/A-tailed, ligated to a Nextera-style adapter, and dual-indexed by PCR into a standard Illumina P5\u2192P7 library. Read 1 captures the cell barcode + UMI; Read 2 captures the 3\u2032 end of the transcript (gene expression).",
     "big_conflict": true,
-    "oligo_seq_recall": 0.25
+    "oligo_seq_recall": 0.25,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "plate_scatac_seq",
@@ -448,7 +541,9 @@
     "method_type": "plate-based",
     "description": "Plate-based single-cell ATAC-seq measures genome-wide chromatin accessibility in individual nuclei. Bulk populations of cells (5,000\u201350,000) are first tagmented with standard Nextera Tn5 transposome (which binds but does not fragment DNA), then single nuclei are FACS-sorted into 96/384-well plates containing lysis buffer (proteinase K + SDS) pre-loaded with a unique Nextera S5xx/N7xx index-primer pair per well. Heat releases the Tn5, Tween-20 quenches SDS, and a single indexing PCR gap-fills and adds P5/i5 and P7/i7. Each well's dual index (i5 + i7) encodes the single-cell identity; paired-end reads capture the accessible genomic insert from both ends.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.273
+    "oligo_seq_recall": 0.273,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "quartz_seq",
@@ -459,7 +554,9 @@
     "method_type": "manual/tube",
     "description": "Quartz-Seq is a plate-based, full-length single-cell RNA-seq / whole-transcript amplification (WTA) method. A single cell is lysed in a PCR tube and reverse-transcribed with an oligo-dT primer carrying a common tag (an EcoRI/NotI 'M' PCR-target region plus a T7 promoter); the RT primer is then digested with exonuclease I, the first-strand cDNA is given a restricted poly-A tail by terminal transferase, a tagging primer builds the second strand so both ends share the tag, and suppression PCR enriches full-length cDNA while eliminating short byproducts \u2014 all in one tube without purification. The amplified cDNA is Covaris-fragmented and converted into a paired-end TruSeq Illumina library (LIMprep). Reads capture cDNA fragments only (there are no cell barcodes or UMIs); sample multiplexing is provided by the TruSeq i7 index in the ligated adapter.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.833
+    "oligo_seq_recall": 0.833,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "s3_atac",
@@ -470,7 +567,9 @@
     "method_type": "combinatorial indexing",
     "description": "s3-ATAC (symmetrical strand single-cell combinatorial indexing ATAC-seq) profiles single-cell chromatin accessibility. Nuclei are tagmented in 96 wells with single-adapter, uracil-containing indexed Tn5 transposomes; a uracil-intolerant gap-fill plus an LNA-templated adapter-switch reaction converts every tagmented fragment (not just the 50% that get two different adapters) into a dual-adapter, PCR-able molecule, boosting usable reads/cell 6\u201313\u00d7 over other scATAC methods. Reads capture the open-chromatin genomic insert plus three indices (a transposase/Tn5 cell barcode read at the start of Read 2, and i7/i5 PCR sample indices) whose concatenation uniquely labels each cell.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.333
+    "oligo_seq_recall": 0.333,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "itchip_seq",
@@ -481,7 +580,9 @@
     "method_type": "combinatorial indexing",
     "description": "itChIP-seq (simultaneous indexing and tagmentation-based ChIP-seq) profiles histone modifications and non-histone DNA-binding proteins genome-wide from low-input samples and single cells. Fixed cells are opened with SDS at 62 \u00b0C, then tagmented in situ by barcoded Tn5 transposomes carrying combinatorial T5/T7 cellular indices; indexed chromatin from pooled single cells is immunoprecipitated with an antibody (or captured on streptavidin beads for biotin-tagged factors), reverse-crosslinked, purified, and PCR-amplified with i5/i7 library indices (custom Nextera) or, alternatively, converted to a standard TruSeq library. Paired 69-bp reads capture the tagmented genomic (ChIP) fragment, while index reads decode the T5/T7 cell barcodes and the i5/i7 library indices.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.3
+    "oligo_seq_recall": 0.3,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "scbs_seq",
@@ -492,7 +593,9 @@
     "method_type": "manual/tube",
     "description": "scBS-seq (single-cell bisulfite sequencing) measures genome-wide DNA methylation (5mC) at single-CpG, base resolution in individual cells. It is a post-bisulfite adaptor tagging (PBAT) method: single cells are lysed and bisulfite-converted first (simultaneously fragmenting DNA and deaminating unmethylated cytosines to uracil/thymine), then Illumina adaptors are incorporated by five rounds of random-primed first-strand synthesis with an adaptor-1 oligo, followed by second-adaptor tagging and indexed PCR. Sequencing reads capture bisulfite-converted genomic sequence (methylation state at CpGs) flanked by random-priming sites, and an 8-bp iPCRTag index identifies each single cell. Libraries are nondirectional (OT:CTOT:CTOB:OB \u2248 2:3:3:2) and are sequenced single-end even when paired-end reads are collected.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.571
+    "oligo_seq_recall": 0.571,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "scdam_and_t_seq",
@@ -503,7 +606,9 @@
     "method_type": "plate-based",
     "description": "scDam&T-seq is a single-cell multi-omics method that simultaneously quantifies protein\u2013DNA contacts (via DamID) and the transcriptome (via CEL-Seq2) from the same cell. A protein of interest is fused to E. coli Dam adenine methyltransferase, which deposits m6A at GATC motifs near its DNA-binding sites in vivo. In sorted single cells, polyadenylated mRNA is reverse-transcribed with a barcoded CEL-Seq2 primer and made double-stranded; genomic DNA is stripped of protein, the m6A-marked GATC sites are cut with DpnI, and a barcoded double-stranded DamID adapter is ligated to the blunt ends. Both the DamID adapter and the CEL-Seq2 primer carry a T7 promoter, so pooled cDNA and gDNA are co-amplified linearly by in vitro transcription, then converted into an Illumina TruSeq small-RNA library. Read 1 reads the cell/sample barcode + UMI + insert start, Read 2 reads the cDNA or gDNA insert, and the i7 read identifies the library pool. DamID contacts are scored as observed-over-expected (OE) UMI counts per genomic bin.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.7
+    "oligo_seq_recall": 0.7,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "scdnase_seq",
@@ -514,7 +619,9 @@
     "method_type": "manual/tube",
     "description": "scDNase-seq (also called Pico-Seq) is an ultrasensitive DNase I hypersensitive site (DHS) sequencing method that maps genome-wide chromatin accessibility in single cells or in tiny cell pools recovered from FFPE tissue. FACS-sorted single cells are lysed and lightly digested with DNase I, which cuts preferentially at open (hypersensitive) chromatin; because a single cell releases <0.1 pg of DHS DNA, a large excess of circular carrier plasmid DNA (~30 ng) is added before a standard Illumina TruSeq end-repair/adaptor-ligation library prep. A two-step PCR (index primers, then P5/P7 primers) preferentially amplifies the small DHS-derived fragments over the non-ligatable circular carrier. The short reads simply map genomic fragments derived from accessible chromatin; there is no cell barcode or UMI because each single cell is processed one-per-tube and carries one sample index.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.75
+    "oligo_seq_recall": 0.75,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "sci_atac_seq",
@@ -525,7 +632,9 @@
     "method_type": "combinatorial indexing",
     "description": "sci-ATAC-seq measures genome-wide chromatin accessibility in thousands of single cells using two rounds of combinatorial cellular indexing. Intact nuclei are tagmented in 96 wells with barcoded Tn5 transposase carrying Nextera-style adapters (the first, transposase, barcode), then pooled and redistributed at ~15\u201325 nuclei per well for an indexed PCR that adds a second (PCR/library) barcode plus the Illumina flow-cell adapters. Because nearly every nucleus passes through a unique combination of wells, paired-end 51-bp reads sharing the same barcode combination derive from a single cell. The two genomic reads mark transposase-accessible (open) chromatin, while the index reads capture both the transposase barcode and the library-amplification barcode.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.455
+    "oligo_seq_recall": 0.455,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "sci_atac_seq3",
@@ -536,7 +645,9 @@
     "method_type": "combinatorial indexing",
     "description": "sci-ATAC-seq3 is a three-level single-cell combinatorial-indexing ATAC-seq assay that profiles chromatin accessibility in ~10^6 nuclei without custom barcoded Tn5. Nuclei are tagmented in bulk with standard, uniformly loaded Nextera Tn5, then two successive rounds of in-nucleus splint-mediated ligation append an N5 barcode and an N7 barcode to the two mosaic-end (ME) adapters; a final indexed PCR adds i5/i7 barcodes and the P5/P7 flow-cell sequences. Paired reads (R1/R2) capture the accessible genomic fragment from each ME end, while the two index reads recover the N7+i7 and N5+i5 barcodes that jointly identify each cell. The 384\u00d7384\u00d7PCR combinatorial scheme (56,623,104 combinations) enables profiling on the order of a million cells per experiment.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.636
+    "oligo_seq_recall": 0.636,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "sci_rna_seq",
@@ -547,7 +658,9 @@
     "method_type": "combinatorial indexing",
     "description": "Single-cell combinatorial indexing RNA sequencing (sci-RNA-seq): a plate-based, split-pool method that produces 3'-tag digital gene-expression profiles from tens of thousands of single cells or nuclei without physical isolation of each cell. Methanol-fixed cells are distributed to wells and given an in situ reverse-transcription with a well-specific barcoded oligo-dT primer carrying a UMI (first index); cells are pooled, FACS-sorted into a new plate, then second-strand synthesis, Tn5 (Nextera) tagmentation, and PCR with indexed P5/P7 primers add a second well-specific index. Read 1 captures the UMI + RT barcode, Read 2 captures the 3' end of the transcript, and the two index reads capture i5/i7; the combination of RT barcode + PCR barcode forms the cellular index.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.3
+    "oligo_seq_recall": 0.3,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "sci_rna_seq3",
@@ -558,7 +671,9 @@
     "method_type": "combinatorial indexing",
     "description": "sci-RNA-seq3 is a three-level single-cell combinatorial-indexing RNA-seq method that profiles the transcriptomes of hundreds of thousands to millions of single nuclei in one experiment, without droplets or a commercial kit. Fixed nuclei are split across 96-/384-well plates and labeled by three successive in-well barcoding reactions: a barcoded oligo-dT reverse-transcription primer that also carries a UMI (index 1), a ligated hairpin barcode (index 2), and an indexed PCR (index 3), so each nucleus receives a unique RT + ligation + PCR barcode combination. After second-strand synthesis and Tn5 (N7) tagmentation, the hybrid TruSeq(P5)/Nextera(P7) library is sequenced on Illumina: Read 1 recovers the ligation barcode, UMI and RT barcode (together the cell barcode), Read 2 reads the cDNA insert, and the i7/i5 index reads recover the PCR barcodes.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.4
+    "oligo_seq_recall": 0.4,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "scifi_atac_seq",
@@ -569,7 +684,9 @@
     "method_type": "droplet + combinatorial indexing",
     "description": "scifi-ATAC-seq (single-cell combinatorial fluidic indexing ATAC-seq) profiles genome-wide chromatin accessibility in single nuclei at massive scale. Nuclei are pre-indexed in a 96-well plate with a two-sided barcoded Tn5 transposase (12 Tn5-ME-A \u00d7 8 Tn5-ME-B = 96 inline 5-bp barcode combinations), then ~100\u2013300k nuclei are overloaded onto the 10x Genomics Chromium scATAC v1.1 (Next GEM) platform, which adds a 16-bp gel-bead cell barcode. Because each fragment carries an inline 5-bp Tn5 barcode on both the s5 and s7 ends plus the 16-bp 10x barcode, the combined identifier resolves nuclei even when several occupy the same droplet, greatly reducing barcode collisions from overloading. Paired genomic reads map Tn5 integration (open-chromatin) sites; the inline Tn5 barcodes are read at the start of Read1/Read2 and the 10x barcode is read as the i5 index.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.786
+    "oligo_seq_recall": 0.786,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "scifi_rna_seq",
@@ -580,7 +697,9 @@
     "method_type": "droplet + combinatorial indexing",
     "description": "scifi-RNA-seq (single-cell combinatorial fluidic indexing RNA-seq) is an ultra-high-throughput droplet scRNA-seq assay. Whole transcriptomes are first pre-indexed inside permeabilized cells/nuclei by barcoded oligo-dT reverse transcription on a 96-/384-well plate, introducing a plate-specific round1 barcode, an 8 nt UMI, and a TruSeq Read1 primer-binding site. Pre-indexed cells are pooled and massively overloaded onto a 10x Chromium single-cell ATAC chip, where a droplet-specific round2 barcode carried on the gel-bead oligo is joined to the 5'-phosphate of the RT primer by thermostable (Ampligase) thermocycling ligation, directed by a 3'-blocked bridge oligo. The combination of round1 + round2 barcodes uniquely identifies each single cell, so many cells can share a droplet. After template switching, cDNA amplification, custom i7-only Tn5 tagmentation and PCR (adding an i7 sample index), libraries are sequenced on Illumina NovaSeq 6000: Read1 (21 nt) = UMI + round1 barcode, Index1/i7 (8 nt) = sample index, Index2/i5 (16 nt) = round2 barcode, Read2 (78 nt) = cDNA insert.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.733
+    "oligo_seq_recall": 0.733,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "scrb_seq",
@@ -591,7 +710,9 @@
     "method_type": "plate-based",
     "description": "SCRB-seq (Single Cell RNA Barcoding and Sequencing) is a 3' digital gene-expression single-cell RNA-seq protocol. Single cells are FACS-sorted into 384-well plates and reverse-transcribed with a template-switching RT using a well-specific 6 bp barcode + 10 bp UMI on a poly(dT) RT primer (E3V6NEXT) and a universal template-switching oligo (E5V6NEXT). Barcoded cDNA from all 384 wells is pooled, single-primer PCR amplified, and fragmented/tagmented with Nextera XT (transposase) to enrich for 3' ends and preserve strand information. Read 1 decodes the cell barcode + UMI, an i7 index read decodes the Nextera sample index, and Read 2 sequences the 3' cDNA fragment.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.538
+    "oligo_seq_recall": 0.538,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "scrrbs",
@@ -602,7 +723,9 @@
     "method_type": "manual/tube",
     "description": "Single-cell reduced-representation bisulfite sequencing (scRRBS) profiles genome-wide DNA methylation (5mC + 5hmC) at single-base resolution from a single mammalian cell or a few pooled cells. Genomic DNA is MspI-digested (C^CGG) to enrich CpG-dense regions, end-repaired/dA-tailed, ligated to premethylated Illumina TruSeq indexed adapters, and bisulfite-converted \u2014 all in one tube to minimize DNA loss \u2014 then PCR-amplified and size-selected. Paired-end reads capture the bisulfite-converted MspI genomic fragments, whose per-CpG methylation is read out digitally as fully methylated or unmethylated.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.714
+    "oligo_seq_recall": 0.714,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "scths_seq",
@@ -613,7 +736,9 @@
     "method_type": "combinatorial indexing",
     "description": "scTHS-seq (single-cell transposome hypersensitive-site sequencing) is a droplet-free, combinatorial-indexing single-nucleus DNA-accessibility assay. Nuclei are distributed into a 384-well plate of uniquely barcoded (r5) Tn5059 super-mutant transposome complexes that tagment open chromatin, inserting a barcoded transposon bearing a T7 promoter; after pooling and FACS redistribution, in vitro transcription linearly amplifies tagmented fragments, which are reverse-transcribed, made double-stranded, tagmented again with a custom i7 transposome, and PCR-indexed (i5 \u00d7 i7). Sequencing reads capture ~50 bp of genomic DNA (Read 1) plus the combinatorial cell identity (r5 transposon barcode + i5 index + i7 index), mapping accessible chromatin at single-cell resolution across archived human brain tissue.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.333
+    "oligo_seq_recall": 0.333,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "seq_well_s3",
@@ -624,7 +749,9 @@
     "method_type": "nanowell",
     "description": "Seq-Well S3 (\"Second-Strand Synthesis\") is a massively parallel, nanowell-array 3' single-cell RNA-seq method. Cells and uniquely barcoded poly(dT) capture beads are co-confined in a functionalized PDMS array sealed under a semipermeable polycarbonate membrane; captured mRNA is reverse-transcribed on-bead with a template-switch handle, then a randomly primed second-strand synthesis (Klenow, dN-SMRT primer) recovers cDNA molecules that failed template switching, appending the SMART handle to both ends. After whole-transcriptome PCR and Nextera XT tagmentation, the library is sequenced 3'-first: Read 1 reads the 12-nt cell barcode + 8-nt UMI off the bead handle, and Read 2 reads the cDNA insert.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.667
+    "oligo_seq_recall": 0.667,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "share_seq",
@@ -635,7 +762,9 @@
     "method_type": "combinatorial indexing",
     "description": "SHARE-seq (Simultaneous High-throughput ATAC and RNA Expression with sequencing) jointly measures chromatin accessibility and gene expression in the same single cell. Fixed cells/nuclei are tagmented by Tn5 to mark open chromatin, mRNA is reverse-transcribed with a biotinylated poly(dT)+UMI primer, and both molecule types receive the same cell identity through three rounds of split-pool hybridization/ligation barcoding (~96^3 combinations). Streptavidin pulldown separates cDNA from chromatin, and two libraries (RNA and ATAC) are built and sequenced. Reads capture the shared three-part cell barcode (index read), the cDNA or genomic insert (Read 1 / Read 2), and a 10 bp RNA UMI (Read 2).",
     "big_conflict": false,
-    "oligo_seq_recall": 0.632
+    "oligo_seq_recall": 0.632,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "scdamid",
@@ -646,7 +775,9 @@
     "method_type": "plate-based",
     "description": "Single-cell DamID (scDamID) maps genome\u2013nuclear lamina (NL) contacts genome-wide in individual human cells. A cell line expresses an inducible Dam\u2013Lamin B1 fusion that methylates adenine in GATC motifs (Gm6ATC) at genomic loci contacting the NL; single cells are FACS-sorted and lysed, the methylation-specific enzyme DpnI cuts only methylated GATC sites, a double-stranded DamID adapter is ligated, and the fragments are PCR-amplified, converted to an indexed Illumina library, and sequenced. Each 51 bp read consists of 4 random diversity bases, 15 bp of DamID-adapter constant sequence, and a stretch of genomic DNA beginning at the reconstituted GATC site, which is mapped to score per-cell NL contact frequency at ~100 kb resolution.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.25
+    "oligo_seq_recall": 0.25,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "smart_seq",
@@ -657,7 +788,9 @@
     "method_type": "plate-based",
     "description": "Smart-Seq is a plate-based, full-length single-cell (or low-input, down to ~10 pg) mRNA-Seq method. Poly(A)+ RNA is captured by a tailed oligo(dT) CDS primer and reverse-transcribed by MMLV/SMARTScribe RT, which adds a few nontemplated C's at the 5' end of the mRNA; a SMARTer II A template-switching oligo then base-pairs with these C's so the RT copies the oligo, appending a universal anchor. The resulting full-length cDNA carries the same IS PCR sequence at both ends and is PCR pre-amplified (12\u201318 cycles), then converted to a standard Illumina library either by Covaris shearing + TruSeq (PE) adapter ligation or by Nextera Tn5 tagmentation. Because there is no cell barcode or UMI, each cell is one indexed library and the paired reads tile the full length of the cDNA insert, enabling isoform, allele and SNP analysis.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.429
+    "oligo_seq_recall": 0.429,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "smart_seq2",
@@ -668,7 +801,9 @@
     "method_type": "plate-based",
     "description": "SMART-seq2 is a plate-based, full-length single-cell RNA-seq method for polyadenylated transcripts. A tailed oligo-dT primer reverse-transcribes mRNA with Superscript II; template switching via an LNA-containing TSO appends a common 5' anchor to the cDNA 3' end, so a single ISPCR primer PCR-preamplifies full-length cDNA. Amplified cDNA is fragmented and adapter-tagged in one step by the Nextera XT Tn5 transposase, then dual-index (i5/i7) enrichment PCR builds the sequenceable library. Reads cover the entire transcript body (no UMIs, not strand-specific); index reads assign each fragment to its cell of origin.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.643
+    "oligo_seq_recall": 0.643,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "smart_seq3",
@@ -679,7 +814,9 @@
     "method_type": "plate-based",
     "description": "Smart-seq3 is a plate-based, full-length single-cell RNA-seq method that adds a 5\u2032 unique molecular identifier (UMI) counting strategy to Smart-seq2 chemistry. PolyA+ RNA is reverse transcribed with an oligo-dT primer and Maxima H-minus RT, template-switched onto a TSO carrying a partial Tn5 motif, an 11-bp tag, an 8-bp UMI and three riboguanosines, then PCR pre-amplified and Tn5-tagmented. Sequencing yields strand-specific 5\u2032 UMI-containing reads (tag + UMI + transcript 5\u2032 end) plus internal reads spanning the full gene body, enabling molecule counting together with in-silico reconstruction of RNA molecules at allele and isoform resolution.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.235
+    "oligo_seq_recall": 0.235,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "smart_seq3xpress",
@@ -690,7 +827,9 @@
     "method_type": "plate-based",
     "description": "Smart-seq3xpress is a miniaturized, streamlined plate-based full-length single-cell RNA-seq method \u2014 a nanoliter implementation of Smart-seq3. Single cells are FACS-sorted into ~300 nl of lysis buffer under a hydrophobic overlay; an oligo-dT primer primes reverse transcription while a biotinylated template-switching oligo (TSO) appends a 5' recognition tag, an 8-nt UMI and a GGG at the transcript 5' end. Low-cycle pre-amplification (SeqAmp/KAPA) with a tagged forward primer is followed \u2014 without cleanup or QC, only 1:10 dilution \u2014 by Tn5 tagmentation and custom dual-index Nextera PCR to make sequencing-ready libraries in one workday. 5' reads carry the UMI for accurate molecule counting; internal tagmentation reads give full-transcript coverage enabling isoform-, splicing- and allele-specific analysis.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.353
+    "oligo_seq_recall": 0.353,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "snare_seq",
@@ -701,7 +840,9 @@
     "method_type": "droplet",
     "description": "SNARE-seq (Single-Nucleus chromatin Accessibility and mRNA Expression sequencing) is a droplet-based dual-omics assay that jointly profiles open chromatin and the transcriptome from the same individual nuclei. Accessible sites in permeabilized nuclei are tagmented by Tn5 (Nextera adapters) before droplet generation; inside Drop-seq droplets a splint oligo whose 5' end is complementary to the transposed Read-1 adapter and whose 3' polyA is captured by oligo(dT) beads links each genomic fragment to the same cellular barcode that captures the cell's polyadenylated mRNA. Reverse transcription with template switching builds the RNA library while T7 ligase/Klentaq attach the barcode to genomic fragments, yielding paired cDNA and chromatin libraries that share a cell barcode and are read out on Illumina.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.667
+    "oligo_seq_recall": 0.667,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "spear_atac",
@@ -712,7 +853,9 @@
     "method_type": "droplet",
     "description": "Spear-ATAC (Single-cell perturbations with an accessibility read-out using scATAC-seq) is a droplet-based single-cell ATAC-seq CRISPRi screen. Cells are transduced at low MOI with a lentiviral sgRNA whose spacer is pre-flanked by Nextera Read1/Read2 adapters, then processed on the 10x Genomics scATAC-seq platform. In-GEM linear amplification tags open-chromatin fragments with a 10x cell barcode via a Read1-complementary forward oligo, while a spiked-in sgRNA-specific reverse primer (oSP1735) exponentially amplifies the integrated sgRNA fragment so the sgRNA spacer is read out directly from genomic DNA. The scATAC reads report chromatin accessibility; a separate biotin-enriched targeted amplicon reads the sgRNA spacer (perturbation identity) paired to the same cell barcode.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.5
+    "oligo_seq_recall": 0.5,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "split_seq",
@@ -723,7 +866,9 @@
     "method_type": "combinatorial indexing",
     "description": "SPLiT-seq (split-pool ligation-based transcriptome sequencing) is a combinatorial-barcoding single-cell / single-nucleus RNA-seq method that labels each transcriptome's cellular origin without ever physically isolating single cells \u2014 the fixed cells or nuclei themselves act as reaction compartments. Formaldehyde-fixed cells pass through four rounds of barcoding: an in-cell barcoded reverse-transcription round (barcode 1), two in-cell split-pool ligation rounds (barcodes 2 and 3, with the round-3 oligo also adding a UMI, a PCR handle and a biotin), and a final sublibrary-splitting PCR (barcode 4). Each cell thus receives a unique 4-barcode combination. After streptavidin capture, template switching, PCR and Nextera tagmentation, Read 1 sequences the cDNA fragment, Read 2 reads the UMI plus the three ligated cell barcodes, and the index read reads the sublibrary barcode.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.522
+    "oligo_seq_recall": 0.522,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "strt_seq",
@@ -734,7 +879,9 @@
     "method_type": "plate-based",
     "description": "Single-cell tagged reverse transcription (STRT) is a highly multiplexed, strand-specific single-cell RNA-seq method that sequences the 5\u2032 ends of mRNAs. Ninety-six single cells are lysed in individual wells; poly(A)+ mRNA is reverse transcribed with a biotinylated tailed oligo-dT primer, and MMLV reverse transcriptase template-switching adds a well-specific 6-bp barcode plus a universal primer sequence at the 5\u2032 end of each cDNA. All 96 barcoded cDNAs are pooled, amplified by single-primer PCR, immobilized on streptavidin beads, fragmented, end-repaired/A-tailed, ligated to an Illumina P2 adapter, and library-amplified to introduce the P1 sequence. Each Illumina read starts at the barcode, followed by the template-switch GGG, followed by the 5\u2032 end of the transcript (transcription start site), yielding strand-specific, promoter-resolved quantitative expression profiles.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.714
+    "oligo_seq_recall": 0.714,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "strt_seq_2i",
@@ -745,7 +892,9 @@
     "method_type": "microwell/picowell",
     "description": "STRT-seq-2i is a dual-index 5\u2032-end single-cell/single-nucleus RNA-seq method run on an addressable 9,600-microwell aluminum array (96 subarrays \u00d7 100 wells). Cells or nuclei are deposited by nanodispenser or FACS, lysed in-well, and reverse transcribed with a biotinylated oligo-dT primer; a 6-nt UMI and partial Illumina adapter are added at the transcript 5\u2032 end by template switching. A first indexed PCR adds a 5-bp well barcode (Index 2), then Tn5 tagmentation isolates the biotinylated 5\u2032 fragment and adds an 8-bp subarray barcode (Index 1) plus the P7 adapter. Libraries are sequenced single-end on Illumina: Read 1 (~45\u201348 bp) captures the UMI + GGG + 5\u2032 transcript, with two index reads (8 bp subarray, 5 bp well).",
     "big_conflict": false,
-    "oligo_seq_recall": 0.545
+    "oligo_seq_recall": 0.545,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "strt_seq_c1",
@@ -756,7 +905,9 @@
     "method_type": "microfluidic (C1)",
     "description": "STRT-seq-C1 is a Fluidigm C1 microfluidic single-cell RNA-seq method that quantifies transcripts by their 5' ends using unique molecular identifiers (UMIs). During reverse transcription an oligo(dT) primer and an all-RNA template-switching oligo carrying a 5 bp random UMI append the Illumina read-1 adapter to the transcript 5' end; the cDNA is PCR-amplified and then tagmented with well-barcoded Tn5 transposomes that add the read-2/P7 adapter and an 8 bp well (cell) barcode. Streptavidin capture plus PvuI digestion retain only the 5'-most fragment. Read 1 (50 bp) reads the UMI, the template-switch GGG and the 5' end of the transcript, and a separate 8 bp index read reads the well barcode, enabling absolute molecule counting per cell.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.375
+    "oligo_seq_recall": 0.375,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "tang_2009",
@@ -767,7 +918,9 @@
     "method_type": "manual/tube",
     "description": "The first single-cell whole-transcriptome mRNA-Seq assay (Tang et al., 2009/2010). A single manually-picked mouse oocyte or blastomere is lysed and its poly(A) mRNA is reverse-transcribed with an anchored poly(dT) primer (UP1); free primer is removed, a poly(dA) tail is added to the first-strand cDNA by TdT, and a second anchored poly(dT) primer (UP2) primes second-strand synthesis. The dsDNA is evenly PCR-amplified with UP1/UP2 (20 cycles) then re-amplified with 5'-amine-blocked AUP1/AUP2 (9 cycles) to suppress primer-dimer ligation. Amplified cDNA (0.5\u20133 kb) is sonicated to 80\u2013130 bp, end-repaired, and ligated to SOLiD P1/P2 fragment-library adaptors (optionally barcoded P2 for 16-plex multiplexing), then read as 50-base color-space reads on the Applied Biosystems SOLiD system. The read captures the cDNA insert only (digital gene expression); there is no cell barcode or UMI \u2014 one cell equals one library.",
     "big_conflict": false,
-    "oligo_seq_recall": 1.0
+    "oligo_seq_recall": 1.0,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "txci_atac_seq",
@@ -778,7 +931,9 @@
     "method_type": "droplet + combinatorial indexing",
     "description": "txci-ATAC-seq (Ten-X-compatible Combinatorial Indexing ATAC-seq) is a massive-scale single-cell chromatin-accessibility assay that couples 96-well plate-based barcoded Tn5 tagmentation (\"molecular pre-indexing\") with 10x Chromium droplet (GEM) barcoding. Accessible chromatin is tagmented in each well by a Tn5 loaded with a common Tn5ME-A adapter and a well-specific 8-bp-barcoded Tn5ME-B adapter; nuclei are pooled, overloaded onto the 10x scATAC platform, and each fragment additionally receives a 16-bp GEM/cell barcode and, in a final PCR, an 8-bp i7 sample index. The combination of i7 sample barcode + 16-bp 10x barcode + 8-bp Tn5 barcode deconvolutes up to ~200,000 nuclei per lane; Read 1 and Read 2 capture the genomic insert while the barcodes are read as the i5 index, i7 index, and the first 8 bp of Read 2.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.692
+    "oligo_seq_recall": 0.692,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "vasa_drop",
@@ -789,7 +944,9 @@
     "method_type": "droplet",
     "description": "VASA-seq (droplet format, \"VASA-drop\") is a high-throughput single-cell TOTAL RNA-seq assay: after cell lysis, all RNA is fragmented, end-repaired and poly(A)-tailed so that non-polyadenylated as well as polyadenylated transcripts are captured. Fragments are reverse-transcribed with inDrop-v3 barcoded oligo-dT beads (cell barcode + 6-nt unique fragment identifier/UFI), second-strand synthesized, linearly amplified by T7 in vitro transcription, rRNA-depleted, then converted to an Illumina library (RA3 3' ligation \u2192 RTP reverse transcription \u2192 dual-indexed PCR). Read1 reads the fragmented cDNA insert across the gene body; the cell barcode, UFI and dual sample indices are read in the index/Read2 reads.",
     "big_conflict": true,
-    "oligo_seq_recall": 0.182
+    "oligo_seq_recall": 0.182,
+    "status": "supported",
+    "source_url": null
   },
   {
     "id": "vasa_plate",
@@ -800,6 +957,1022 @@
     "method_type": "plate-based",
     "description": "VASA-plate is the plate-based format of VASA-seq (vast transcriptome analysis of single cells by dA-tailing), a total-RNA single-cell method that captures both polyadenylated and non-polyadenylated transcripts across their full length. Single cells are FACS-sorted into 384-well plates pre-loaded with a barcoded CEL-seq2/SORT-seq oligo-dT primer; after lysis, all RNA is fragmented, end-repaired and poly(A)-tailed so every fragment can be primed by the oligo-dT, tagging it with a 6-nt UFI/UMI and an 8-nt well-specific cell barcode. Barcoded cDNA is linearly amplified by in-vitro transcription (T7), rRNA-depleted, then converted to an Illumina small-RNA-style library by RA3 3' adapter ligation, RTP-primed reverse transcription and indexed PCR. Read 1 recovers the UMI + cell barcode, the index read recovers the sample (i7) index, and Read 2 reads the cDNA insert across the gene body.",
     "big_conflict": false,
-    "oligo_seq_recall": 0.727
+    "oligo_seq_recall": 0.727,
+    "status": "supported",
+    "source_url": null
+  },
+  {
+    "id": "asap_seq_dogma_seq",
+    "title": "ASAP-seq/DOGMA-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41587-021-00927-2"
+  },
+  {
+    "id": "astar_seq",
+    "title": "ASTAR-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/829960v1"
+  },
+  {
+    "id": "bacdrop",
+    "title": "BacDrop",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://pubmed.ncbi.nlm.nih.gov/36708705/"
+  },
+  {
+    "id": "bag_dna_rna",
+    "title": "BAG DNA RNA",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.10.04.560973v1"
+  },
+  {
+    "id": "butt_seq",
+    "title": "BuTT-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://genesdev.cshlp.org/content/37/9-10/432"
+  },
+  {
+    "id": "cap_seq",
+    "title": "CAP-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.09.10.612220v1"
+  },
+  {
+    "id": "chair",
+    "title": "ChAIR",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.05.03.592322v1.full"
+  },
+  {
+    "id": "cotech",
+    "title": "CoTECH",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41592-021-01129-z"
+  },
+  {
+    "id": "cropseq_multi",
+    "title": "CROPseq-multi",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.03.17.585235v1"
+  },
+  {
+    "id": "dbit_seq",
+    "title": "DBiT-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S0092867420313908"
+  },
+  {
+    "id": "direct_seq",
+    "title": "Direct-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02044-w"
+  },
+  {
+    "id": "disco",
+    "title": "DisCo",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41592-021-01391-1"
+  },
+  {
+    "id": "drop_scchip_seq",
+    "title": "Drop scChIP-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41588-019-0424-9"
+  },
+  {
+    "id": "drop_bs",
+    "title": "Drop-BS",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41467-023-40411-w"
+  },
+  {
+    "id": "easysci",
+    "title": "EasySci",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41588-023-01572-y"
+  },
+  {
+    "id": "easyshare_seq",
+    "title": "easySHARE-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.02.26.581705v1.full"
+  },
+  {
+    "id": "eccite_seq",
+    "title": "ECCITE-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41592-019-0392-0"
+  },
+  {
+    "id": "epidamid",
+    "title": "EpiDamID",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.10.26.465688v1"
+  },
+  {
+    "id": "gage_seq",
+    "title": "GAGE-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.07.20.549578v1"
+  },
+  {
+    "id": "got_cha",
+    "title": "GoT-ChA",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2022.05.11.491515v1"
+  },
+  {
+    "id": "grid_seq",
+    "title": "GRID-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/nbt.3968"
+  },
+  {
+    "id": "hires",
+    "title": "HiRES",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.science.org/doi/10.1126/science.adg3797"
+  },
+  {
+    "id": "hsrchst_seq",
+    "title": "hsrChST-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.03.11.434985v1"
+  },
+  {
+    "id": "indrops_2",
+    "title": "inDrops-2",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.09.26.559493v1"
+  },
+  {
+    "id": "last_seq",
+    "title": "LAST-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-03025-5"
+  },
+  {
+    "id": "limca",
+    "title": "LiMCA",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.researchsquare.com/article/rs-3210240/v1"
+  },
+  {
+    "id": "m3_seq",
+    "title": "M3-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41564-023-01462-3"
+  },
+  {
+    "id": "malbac_dt",
+    "title": "MALBAC-DT",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2019.12.31.892190v1"
+  },
+  {
+    "id": "matq_seq",
+    "title": "MATQ-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/nmeth.4145"
+  },
+  {
+    "id": "methyl_hic",
+    "title": "Methyl-HiC",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41592-019-0502-z"
+  },
+  {
+    "id": "microbe_seq",
+    "title": "Microbe-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.science.org/doi/10.1126/science.abm1483"
+  },
+  {
+    "id": "multi_cut_tag",
+    "title": "Multi-CUT&Tag",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S109727652100753X"
+  },
+  {
+    "id": "multi_tag",
+    "title": "MulTI-Tag",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.07.08.451691v1"
+  },
+  {
+    "id": "music",
+    "title": "MUSIC",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41586-024-07239-w"
+  },
+  {
+    "id": "nano_ct",
+    "title": "nano-CT",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41587-022-01535-4"
+  },
+  {
+    "id": "ntt_seq",
+    "title": "NTT-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41587-022-01588-5"
+  },
+  {
+    "id": "oak",
+    "title": "OAK",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.01.23.576918v1"
+  },
+  {
+    "id": "pairedtag",
+    "title": "PairedTag",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41592-021-01060-3"
+  },
+  {
+    "id": "phage_atac",
+    "title": "PHAGE-ATAC",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2020.10.01.322420v1"
+  },
+  {
+    "id": "phospho_seq",
+    "title": "Phospho-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.03.27.534442v1.full"
+  },
+  {
+    "id": "probac_seq",
+    "title": "ProBac-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41596-024-01002-1"
+  },
+  {
+    "id": "raisin_miracl_seq",
+    "title": "RAISIN & MIRACL-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S0092867420309946"
+  },
+  {
+    "id": "ramda_seq",
+    "title": "RamDA-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41467-018-02866-0"
+  },
+  {
+    "id": "sc_end5_seq",
+    "title": "sc-end5-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.04.04.438388v2"
+  },
+  {
+    "id": "sccare_seq",
+    "title": "scCARE-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41594-023-01066-9"
+  },
+  {
+    "id": "sccc",
+    "title": "scCC",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S009286742030814X"
+  },
+  {
+    "id": "sccolor_seq",
+    "title": "scCOLOR-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41587-021-00965-w"
+  },
+  {
+    "id": "scget_seq",
+    "title": "scGET-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41587-021-01031-1"
+  },
+  {
+    "id": "sci_car_seq",
+    "title": "sci-CAR-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://science.sciencemag.org/content/361/6409/1380.full"
+  },
+  {
+    "id": "sci_plex",
+    "title": "sci-Plex",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://science.sciencemag.org/content/early/2019/12/04/science.aax6234.full"
+  },
+  {
+    "id": "sciplex_atac_seq",
+    "title": "sciPlex-ATAC-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.03.05.531201v1"
+  },
+  {
+    "id": "scito_seq",
+    "title": "SCITO-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41592-021-01222-3"
+  },
+  {
+    "id": "scone_seq",
+    "title": "scONE-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.science.org/doi/10.1126/sciadv.abp8901"
+  },
+  {
+    "id": "scrcat_seq",
+    "title": "scRCAT-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41467-020-18976-7"
+  },
+  {
+    "id": "scribo_seq",
+    "title": "scRibo-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41586-021-03887-4"
+  },
+  {
+    "id": "scsplat",
+    "title": "scSPLAT",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.10.14.464375v2"
+  },
+  {
+    "id": "scsprite",
+    "title": "scSPRITE",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2020.08.11.242081v1"
+  },
+  {
+    "id": "sctaps",
+    "title": "scTAPS",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.02.12.579864v1"
+  },
+  {
+    "id": "sctem_seq",
+    "title": "scTEM-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.03.25.436351v1"
+  },
+  {
+    "id": "sec_seq",
+    "title": "SEC-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2022.08.25.505190v1"
+  },
+  {
+    "id": "simple_seq",
+    "title": "SIMPLE-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41587-024-02148-9"
+  },
+  {
+    "id": "slide_seq_family",
+    "title": "Slide-seq family",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41587-020-0739-1"
+  },
+  {
+    "id": "snaptotal_seq",
+    "title": "snapTotal-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41467-024-50291-3"
+  },
+  {
+    "id": "snmc2t_seq",
+    "title": "snmC2T-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2019.12.11.873398v1"
+  },
+  {
+    "id": "snrandom_seq",
+    "title": "snRandom-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41467-023-38409-5"
+  },
+  {
+    "id": "snubar_atac",
+    "title": "SNuBar-ATAC",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S1097276521007954"
+  },
+  {
+    "id": "spatac_seq",
+    "title": "SPATAC-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41556-024-01449-0"
+  },
+  {
+    "id": "spatial_c_t",
+    "title": "Spatial C&T",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.science.org/doi/10.1126/science.abg7216"
+  },
+  {
+    "id": "spatial_atac_seq",
+    "title": "Spatial-ATAC-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.06.06.447244v1"
+  },
+  {
+    "id": "speac_seq",
+    "title": "SPEAC-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.science.org/doi/10.1126/science.abq4822"
+  },
+  {
+    "id": "spindrop",
+    "title": "spinDrop",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2023.01.12.523500v1"
+  },
+  {
+    "id": "strand_seq",
+    "title": "Strand-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/nmeth.2206"
+  },
+  {
+    "id": "tea_seq_icicle_seq",
+    "title": "TEA-seq/ICICLE-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2020.09.04.283887v2"
+  },
+  {
+    "id": "time_seq",
+    "title": "TIME-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.10.25.465725v1"
+  },
+  {
+    "id": "tip_seq",
+    "title": "TIP-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2021.03.17.435909v1"
+  },
+  {
+    "id": "trac_looping",
+    "title": "Trac-looping",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.nature.com/articles/s41592-018-0107-y"
+  },
+  {
+    "id": "wellda_seq",
+    "title": "wellDA-seq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2024.09.06.611519v1"
+  },
+  {
+    "id": "zipseq",
+    "title": "ZipSeq",
+    "platform": null,
+    "chemistry_version": null,
+    "modality": null,
+    "method_type": null,
+    "description": null,
+    "big_conflict": false,
+    "oligo_seq_recall": null,
+    "status": "tbd",
+    "source_url": "https://www.biorxiv.org/content/10.1101/2020.02.04.932988v1"
   }
 ]

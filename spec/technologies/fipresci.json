@@ -712,28 +712,28 @@
       "title": "In-situ reverse transcription",
       "summary": "Poly-dT (or random) primer and MMLV reverse transcriptase make first-strand cDNA on mRNA inside permeabilized cells or nuclei.",
       "note": "Fixed/permeabilized cells or nuclei are reverse transcribed in situ with Maxima H Minus (M-MLV) using RT PolyT Primer (or random hexamer, or a mix). The RNA/cDNA hybrid is retained inside the cell.",
-      "product": "5'- XXXXXXXXX....XXXXXXXXXXXNBAAAAAAAAAAAAAAAAAAAAAAA -3'  mRNA\n                                <-----------3'-NVTTTTTTTTTTTTTTTTTTTTTTT-5'  RT primer"
+      "product": "5'- XXXXXXXXX....XXXXXXXXXXXNBAAAAAAAAAAAAAAAAAAAAAAA -3'  mRNA\n             <-----------3'-NVTTTTTTTTTTTTTTTTTTTTTTT-5'  RT primer"
     },
     {
       "step": 2,
       "title": "Terminal-transferase C-tailing",
       "summary": "M-MLV adds 2-5 untemplated C nucleotides to the 3' end of the newly synthesized cDNA.",
       "note": "The terminal transferase activity of MMLV appends extra C's (CCC) that later serve as the template-switch landing site for the gel-bead TSO.",
-      "product": "5'- XXXXXXXXX....XXXXXXXXXXXNBAAAAAAAAAAAAAAAAAAAAAAA -3'  mRNA\n3'-CCCXXXXXXXXX....XXXXXXXXXXXNVTTTTTTTTTTTTTTTTTTTTTTT-5'  cDNA"
+      "product": "5'-   XXXXXXXXX....XXXXXXXXXXXNBAAAAAAAAAAAAAAAAAAAAAAA -3'  mRNA\n3'-CCCXXXXXXXXX....XXXXXXXXXXXNVTTTTTTTTTTTTTTTTTTTTTTT-5'  cDNA"
     },
     {
       "step": 3,
       "title": "Indexed i7-only Tn5 tagmentation (round1 barcode)",
       "summary": "A well-specific i7-only Tn5 transposome cuts the RNA/DNA hybrid, inserting the round1 barcode + mosaic end.",
       "note": "Performed in a 96/384-well plate (one indexed transposome per well). The Tn5 stays bound to its RNA/cDNA substrate (no SDS) so contiguity is preserved until droplet capture. Adds partial TruSeq Read2 + 6 bp round1 barcode to the 5' fragment end.",
-      "product": "5'-XXXXXX....XXXXXX CTGTCTCTTATACACATCT-3'\n3'-CCCXXXXXX....XXXXXXGACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAG-5'"
+      "product": "5'-   XXXXXX....XXXXXXCTGTCTCTTATACACATCT-3'\n3'-CCCXXXXXX....XXXXXXGACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAG-5'"
     },
     {
       "step": 4,
       "title": "Droplet template switching (round2 barcode + UMI)",
       "summary": "Inside 10x GEMs the gel-bead TSO templates cDNA extension, adding the round2 cell barcode, UMI and TSO.",
       "note": "Pre-indexed cells/nuclei are overloaded into 10x Chromium droplets. The gel-bead barcoded TSO base-pairs with the 3' CCC of the cDNA; extension incorporates the 16 bp round2 (droplet) barcode + 10 bp UMI + Read1 handle. Round1(well)+round2(droplet) together uniquely tag each cell.",
-      "product": "5'-CTACACGACGCTCTTCCGATCT[BC2:16][UMI:10]TTTCTTATATGGGXXXXXX....------->\n                                        <-------CCCXXXXXX....GACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAG-5'"
+      "product": "5'-CTACACGACGCTCTTCCGATCT[BC2:16][UMI:10]TTTCTTATATGGGXXXXXX....------->\n                                           <-------CCCXXXXXX....GACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAG-5'"
     },
     {
       "step": 5,
@@ -747,7 +747,7 @@
       "title": "Biotinylated single-primer linear pre-amplification",
       "summary": "S5R-P5-bio linearly amplifies the 5'-end cDNA and adds the P5 arm; products are streptavidin-captured.",
       "note": "Biotinylated single-primer (linear) amplification enriches 5'-end cDNA; biotin enables Dynabeads MyOne Streptavidin C1 capture before library amplification.",
-      "product": "5'-Bio-AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC2:16][UMI:10]TTTCTTATATGGGXXXXXX....XXXXXXCTGTCTCTTATACACATCT[BC1:6]AGATCGGAAGAGCACACGTC-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[BC2:16][UMI:10]AAAGAATATACCCXXXXXX....XXXXXXGACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAG-5'"
+      "product": "5'-Bio-AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC2:16][UMI:10]TTTCTTATATGGGXXXXXX....XXXXXXCTGTCTCTTATACACATCT[BC1:6]AGATCGGAAGAGCACACGTC-3'\n    3'-TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[BC2:16][UMI:10]AAAGAATATACCCXXXXXX....XXXXXXGACAGAGAATATGTGTAGA[BC1:6]TCTAGCCTTCTCGTGTGCAG-5'"
     },
     {
       "step": 7,
@@ -764,7 +764,7 @@
       "template": "bottom",
       "cycles": 26,
       "note": "Read1 primer is identical to the top-strand partial Read1 and anneals to the bottom strand; its 3\u2032 end extends rightward into the gel-bead barcode block, reading the 16 bp round2 (10x droplet) cell barcode then the 10 bp UMI (26 cycles). 150-bp PE on NovaSeq 6000 / MGISeq-T7.",
-      "diagram": "                    Read1 primer 5'-...CTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------->\n5'-...CTCTTTCCCTACACGACGCTCTTCCGATCT[== round2 CB 16 nt ==][= UMI 10 nt =]TTTCTTATATGGG[cDNA]...-3'  (top)\n3'-...GAGAAAGGGATGTGCTGCGAGAAGGCTAGA[== round2 CB 16 nt ==][= UMI 10 nt =]AAAGAATATACCC[cDNA]...-5'  (bottom)\n                                  |___________ R1 reads CB(16)+UMI(10) = 26 nt ___________|"
+      "diagram": "Read1 primer 5'-...CTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------->\n             5'-...CTCTTTCCCTACACGACGCTCTTCCGATCT[== round2 CB 16 nt ==][= UMI 10 nt =]TTTCTTATATGGG[cDNA]...-3'  (top)\n             3'-...GAGAAAGGGATGTGCTGCGAGAAGGCTAGA[== round2 CB 16 nt ==][= UMI 10 nt =]AAAGAATATACCC[cDNA]...-5'  (bottom)\n                                                 |___________ R1 reads CB(16)+UMI(10) = 26 nt ___________|"
     },
     {
       "read": "R2",
@@ -772,7 +772,7 @@
       "template": "top",
       "cycles": 150,
       "note": "Read2 primer is identical to the bottom strand and anneals to the top-strand partial-Read2 region (AGATCGGAAGAGCACACGTC); its 3\u2032 end extends leftward, reading the 6 bp round1 (Tn5 well) barcode, then the 19 bp mosaic end, then into the 5\u2032-end cDNA insert. FASTQs are demultiplexed by the round1 barcode and the BC+ME are trimmed before Cell Ranger.",
-      "diagram": "5'-...[cDNA]CTGTCTCTTATACACATCT[round1 BC 6 nt]AGATCGGAAGAGCACACGTC...-3'  (top)\n3'-...[cDNA]GACAGAGAATATGTGTAGA[round1 BC 6 nt]TCTAGCCTTCTCGTGTGCAG...-5'  (bottom)\n   <-------------------------------------------TCTAGCCTTCTCGTGTGCAG-5'  Read2 primer\n        |__ R2 reads BC1(6) + ME(19) + cDNA (150 cycles) __|"
+      "diagram": "5'-...[cDNA]CTGTCTCTTATACACATCT[round1 BC 6 nt]AGATCGGAAGAGCACACGTC...-3'  (top)\n3'-...[cDNA]GACAGAGAATATGTGTAGA[round1 BC 6 nt]TCTAGCCTTCTCGTGTGCAG...-5'  (bottom)\n   <-------------------------------------------TCTAGCCTTCTCGTGTGCAG-5'  Read2 primer\n      |__ R2 reads BC1(6) + ME(19) + cDNA (150 cycles) __|"
     },
     {
       "read": "I1",
@@ -780,7 +780,7 @@
       "template": "top",
       "cycles": 6,
       "note": "Optional i7 sample-index read, present only when an indexed S-P7 primer is used for an extra round of sample multiplexing. Primer abuts the sample index and reads 6 cycles toward P7.",
-      "diagram": "5'-...CACACGTCTGAACTCCAGTCAC[i7 index 6 nt]ATCTCGTATGCCGTCTTCTGCTTG-3'  (top)\n3'-...GTGTGCAGACTTGAGGTCAGTG[i7 index 6 nt]TAGAGCATACGGCAGAAGACGAAC-5'  (bottom)\n   i7 index primer 5'-...GTGTGCTCTTCCGATCT...CTCCAGTCAC-------->\n                             |__ I1 reads i7 index (6 cycles) __|"
+      "diagram": "                        5'-...CACACGTCTGAACTCCAGTCAC[i7 index 6 nt]ATCTCGTATGCCGTCTTCTGCTTG-3'  (top)\n                        3'-...GTGTGCAGACTTGAGGTCAGTG[i7 index 6 nt]TAGAGCATACGGCAGAAGACGAAC-5'  (bottom)\ni7 index primer 5'-...GTGTGCTCTTCCGATCT...CTCCAGTCAC-------->\n                                                    |__ I1 reads i7 index (6 cycles) __|"
     }
   ],
   "whitelists": {},

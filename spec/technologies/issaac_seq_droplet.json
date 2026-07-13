@@ -782,21 +782,21 @@
       "title": "Chromatin tagmentation (Tn5-S5/S7)",
       "summary": "Tn5-S5/S7 tagments open chromatin in situ, inserting Nextera s5 and s7 mosaic-end adapters.",
       "note": "Nuclei incubated with Tn5-S5/S7 at 30 C, 30 min (30 C is critical for RNA-library quality). Each Tn5 insertion leaves a 9-bp gap; fragments end up flanked by s5 and s7.",
-      "product": "5'- TCGTCGGCAGCGTC AGATGTGTATAAGAGACAG [GENOMIC] CTGTCTCTTATACACATCT CCGAGCCCACGAGAC -3'\n           (s5)            (ME)          insert         (ME rev)        (s7 rev)"
+      "product": "5'- TCGTCGGCAGCGTC AGATGTGTATAAGAGACAG [GENOMIC] CTGTCTCTTATACACATCT CCGAGCCCACGAGAC -3'\n         (s5)             (ME)          insert        (ME rev)          (s7 rev)"
     },
     {
       "step": 2,
       "title": "In-situ reverse transcription",
       "summary": "TruseqR2_oligo_dT primes mRNA poly(A); Maxima H- RT makes first-strand cDNA carrying a TruSeq-R2 handle + 10-bp UMI.",
       "note": "Performed inside intact nuclei with 12% PEG-8000. The RT primer adds a partial TruSeq Read 2 adapter and a 10-bp UMI to every cDNA.",
-      "product": "mRNA 5'- ................................AAAAAA -3'\ncDNA 3'- [CDNA]TTTTTTTTTT[UMI:10]TCTAGCCTCTTGTGTGCACACGAGAAGGTCAGTG -5'\n                     (poly-dT)  (UMI)        (TruSeq R2 handle)"
+      "product": "mRNA 5'- ................................AAAAAA -3'\ncDNA 3'- [CDNA]TTTTTTTTTT[UMI:10]TCTAGCCTCTTGTGTGCACACGAGAAGGTCAGTG -5'\n               (poly-dT)  (UMI)          (TruSeq R2 handle)"
     },
     {
       "step": 3,
       "title": "RNA-DNA hybrid tagmentation (Tn5-S5/S5)",
       "summary": "Tn5-S5/S5 homodimer tags the mRNA:cDNA hybrid, adding a Nextera Read-1 (s5) handle to the cDNA.",
       "note": "Droplet workflow uses the S5/S5 homodimer so the cDNA gains the same Nextera Read-1 handle as ATAC fragments, enabling 10x bead barcoding.",
-      "product": "5'- TCGTCGGCAGCGTC AGATGTGTATAAGAGACAG [CDNA] TTTTTTTTTT [UMI:10] GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT -3'\n           (s5)            (ME)         cDNA    poly-dT    (UMI)          (TruSeq R2)"
+      "product": "5'- TCGTCGGCAGCGTC AGATGTGTATAAGAGACAG [CDNA] TTTTTTTTTT [UMI:10] GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT -3'\n         (s5)             (ME)          cDNA   poly-dT    (UMI)              (TruSeq R2)"
     },
     {
       "step": 4,
@@ -810,7 +810,7 @@
       "title": "GEM generation and 10x barcoding",
       "summary": "Nuclei are partitioned on the 10x Chromium Next GEM Single-Cell ATAC v1.1 chip; the gel-bead oligo adds P5 + a 16-bp cell barcode via the Nextera Read-1 (s5) end.",
       "note": "10x transposition step is omitted (Tn5 already applied in situ). Linear barcoding within GEMs transfers the same cell barcode to both ATAC and RNA molecules; 12 thermal cycles.",
-      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC [CELL_BARCODE:16] TCGTCGGCAGCGTC AGATGTGTATAAGAGACAG [CDNA or GENOMIC] ... -3'\n           (P5)                     (10x CB)          (s5)            (ME)"
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACAC [CELL_BARCODE:16] TCGTCGGCAGCGTC AGATGTGTATAAGAGACAG [CDNA or GENOMIC] ... -3'\n                (P5)                   (10x CB)           (s5)             (ME)"
     },
     {
       "step": 6,
@@ -842,7 +842,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "8-bp sample index from RNA_droplet_N7xx (RNA) or ATAC_droplet_N7xx (ATAC); distinguishes samples and modality. Read from the P7-proximal read-2 handle toward P7.",
-      "diagram": "Index 1 (i7) --------->\n5'- ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'\n    5'-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC------->\n                                       reads [SAMPLE_INDEX:8]"
+      "diagram": "Index 1 (i7) --------->\n5'- ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'\n    5'-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC------->\n                                   reads [SAMPLE_INDEX:8]"
     },
     {
       "read": "Index 2 (i5 cell barcode)",
@@ -850,7 +850,7 @@
       "template": "top",
       "cycles": 16,
       "note": "16-bp 10x Chromium cell barcode, read toward P5. For RNA, Index 2 is concatenated with the first 10 bp of Read 2 to form the cell-barcode+UMI; for ATAC, it is the Cell Ranger ATAC cell barcode.",
-      "diagram": "Index 2 (i5)\n5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTC... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[CELL_BARCODE:16]AGCAGCCGTCGCAG... -5'\n         reads [CELL_BARCODE:16] <-------3'-AGCAGCCGTCGCAG-5'"
+      "diagram": "Index 2 (i5)\n5'- AATGATACGGCGACCACCGAGATCTACAC[CELL_BARCODE:16]TCGTCGGCAGCGTC... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[CELL_BARCODE:16]AGCAGCCGTCGCAG... -5'\n               reads [CELL_BARCODE:16] <-------3'-AGCAGCCGTCGCAG-5'"
     },
     {
       "read": "Read 2 (UMI + poly-T + cDNA / genomic insert)",
@@ -858,7 +858,7 @@
       "template": "top",
       "cycles": 150,
       "note": "RNA library: first 10 bp = UMI, then poly-T, then cDNA reverse complement. ATAC library: reads the genomic insert from the s7 end with the Nextera Read 2 primer. Primer anneals to the top-strand TruSeq handle and extends leftward into the UMI.",
-      "diagram": "Read 2 primer (TruSeq Read 2)\n        reads <-----------------------------\n5'- ...[CDNA]TTTTTTTTTTTTTTTTTTTT[UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]... -3'\n3'- ...[CDNA]AAAAAAAAAAAAAAAAAAAA[UMI:10]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]... -5'\n                                    3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'"
+      "diagram": "Read 2 primer (TruSeq Read 2)\n        reads <-----------------------------\n5'- ...[CDNA]TTTTTTTTTTTTTTTTTTTT[UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]... -3'\n3'- ...[CDNA]AAAAAAAAAAAAAAAAAAAA[UMI:10]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]... -5'\n                                      3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'"
     }
   ],
   "whitelists": {},

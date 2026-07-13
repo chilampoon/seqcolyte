@@ -375,14 +375,14 @@
       "title": "Template-switching reverse transcription",
       "summary": "Single-cell mRNA is reverse-transcribed with the barcoded poly(dT) RT primer E3V6NEXT, tagging each cDNA with a well barcode and UMI.",
       "note": "Cells are FACS-sorted into 384-well plates; ERCC spike-in is added and the template-switching RT reaction is run with SmartScribe (D1/D2) or Maxima H Minus (D3). E3V6NEXT anneals to the mRNA poly(A) tail (T30VN) and copies the transcript; the RT adds a few untemplated C's at the cDNA 3' end.",
-      "product": "5'-RNA:NB(A)30-3'\n3'-CCC:cDNA:NV(T)30(N)10[BC6]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'"
+      "product": "     5'-RNA:NB(A)30-3'\n3'-CCC:cDNA:NV(T)30(N)10[BC6]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'"
     },
     {
       "step": 2,
       "title": "Template switching (E5V6NEXT)",
       "summary": "The universal TSO E5V6NEXT base-pairs with the cDNA's terminal C's and the RT extends across it, appending the universal 5' adapter.",
       "note": "E5V6NEXT terminal rGrGrG pairs with the CCC overhang; the iso-dC/iso-dG bases suppress background. This yields cDNA flanked by universal adapters on both ends.",
-      "product": "5'-ACACTCTTTCCCTACACGACGCGGG:cDNA:NB(A)30-3'\n                          CCC:cDNA:NV(T)30(N)10[BC6]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'"
+      "product": "5'-ACACTCTTTCCCTACACGACGCGGG:cDNA:NB(A)30-3'\n                         CCC:cDNA:NV(T)30(N)10[BC6]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'"
     },
     {
       "step": 3,
@@ -396,14 +396,14 @@
       "title": "Pool, ExoI, single-primer PCR (SINGV6)",
       "summary": "cDNA from all 384 wells is pooled, purified, Exonuclease I-treated, and amplified by single-primer PCR with SINGV6.",
       "note": "Because both ends share the universal adapter, one primer (SINGV6, ACACTCTTTCCCTACACGACGC) amplifies the whole pool with Advantage 2 polymerase; products are AMPure-purified and quantified.",
-      "product": "5'-ACACTCTTTCCCTACACGACGCGGG:cDNA:NB(A)30(N)10[BC6]AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT-3'\n                                          3-'CGCAGCACATCCCTTTCTCACA-5'\n3'-TGTGAGAAAGGGATGTGCTGCGCCC:cDNA:NV(T)30(N)10[BC6]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'\n                          5'-ACACTCTTTCCCTACACGACGC-3'"
+      "product": "5'-ACACTCTTTCCCTACACGACGCGGG:cDNA:NB(A)30(N)10[BC6]AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT-3'\n                                                           3-'CGCAGCACATCCCTTTCTCACA-5'\n3'-TGTGAGAAAGGGATGTGCTGCGCCC:cDNA:NV(T)30(N)10[BC6]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA-5'\n5'-ACACTCTTTCCCTACACGACGC-3'"
     },
     {
       "step": 5,
       "title": "Tagmentation (Nextera XT)",
       "summary": "Full-length cDNA is fragmented and tagged with Nextera transposon ends by Tn5, enriching for 3' ends.",
       "note": "Tn5 inserts the transposon (s7/mosaic-end) sequence at random positions; fragments retaining the barcode/UMI end are carried forward.",
-      "product": "5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC6](N)10(T)30VN-Frag-3'\n                                              3'-Frag-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'"
+      "product": "5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT[BC6](N)10(T)30VN-Frag-3'\n                                                   3'-Frag-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'"
     },
     {
       "step": 6,

@@ -669,7 +669,7 @@
       "title": "GEM generation & gel-bead capture",
       "summary": "Inside a GEM the gel-bead Capture Sequence 1 primer hybridizes to the antibody feature-barcode oligo (and poly(dT) captures mRNA).",
       "note": "Cells are partitioned with barcoded gel beads; Capture Sequence 1 (TTGCTAGGACCGGCCTTAAAGC) anneals to the oligo's 3' end (GCTTTAAGGCCGGTCCTAGCAA).",
-      "product": "|--5'- GTCAGATGTGTATAAGAGACAG[CELL_BARCODE:16][UMI:12]TTGCTAGGACCGGCCTTAAAGC------->\n                                                      ||||||||||||||||||||||\n    3'- AACGATCCTGGCCGGAATTTCG[SPACER:9][FEATURE_BARCODE:15][SPACER:10]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-/5AmMC12/-5'"
+      "product": "|--5'- GTCAGATGTGTATAAGAGACAG[CELL_BARCODE:16][UMI:12]TTGCTAGGACCGGCCTTAAAGC------->\n                                                      ||||||||||||||||||||||\n                                                  3'- AACGATCCTGGCCGGAATTTCG[SPACER:9][FEATURE_BARCODE:15][SPACER:10]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-/5AmMC12/-5'"
     },
     {
       "step": 3,
@@ -707,7 +707,7 @@
       "template": "bottom",
       "cycles": 28,
       "note": "Read 1N primer anneals to the bottom strand and is extended 5'->3' (rightward), reading out the 16 bp 10x cell barcode + 12 bp UMI (top-strand identities).",
-      "diagram": "                 5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-------------------------->  (reads 16 bp CBC + 12 bp UMI)\n5'-...GAGATCTACACTCGTCGGCAGCGTCAGATGTGTATAAGAGACAGNNNNNNNNNNNNNNNNNNNNNNNNNNNNTTGCTAGGACCGGCCTTAAAGC...-3'\n3'-...CTCTAGATGTGAGCAGCCGTCGCAGTCTACACATATTCTCTGTCNNNNNNNNNNNNNNNNNNNNNNNNNNNNAACGATCCTGGCCGGAATTTCG...-5'\n                                                 |----16 bp cell barcode----||---12 bp UMI---|"
+      "diagram": "              5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG-------------------------->  (reads 16 bp CBC + 12 bp UMI)\n5'-...GAGATCTACACTCGTCGGCAGCGTCAGATGTGTATAAGAGACAGNNNNNNNNNNNNNNNNNNNNNNNNNNNNTTGCTAGGACCGGCCTTAAAGC...-3'\n3'-...CTCTAGATGTGAGCAGCCGTCGCAGTCTACACATATTCTCTGTCNNNNNNNNNNNNNNNNNNNNNNNNNNNNAACGATCCTGGCCGGAATTTCG...-5'\n                                                  |----16 bp cell barcode----||---12 bp UMI---|"
     },
     {
       "read": "Index 1 (i7)",
@@ -723,7 +723,7 @@
       "template": "top",
       "cycles": 25,
       "note": "TruSeq Read 2 primer anneals to the top-strand Read 2 adapter and is extended 5'->3' (leftward) across the spacers and the 15 bp feature barcode (antibody identity). >=25 cycles are recommended for Cell Surface Protein libraries; when pooled with 3' Gene Expression it is typically run at the GEX Read 2 length (~90 bp). The primer occupies the bottom-strand adapter position shown below.",
-      "diagram": "5'-...TTGCTAGGACCGGCCTTAAAGCNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC...-3'\n3'-...AACGATCCTGGCCGGAATTTCGNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNTCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG...-5'\n                          <-------------------------------------3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\n                        |9nt spacer||--15 bp feature barcode--||10nt spacer|   (Read 2 primer, reads FB)"
+      "diagram": "5'-...TTGCTAGGACCGGCCTTAAAGCNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC...-3'\n3'-...AACGATCCTGGCCGGAATTTCGNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNTCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG...-5'\n                     <-------------------------------------3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\n                            |9nt spacer||--15 bp feature barcode--||10nt spacer|   (Read 2 primer, reads FB)"
     }
   ],
   "whitelists": {},

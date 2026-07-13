@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "studio.project.v1",
+  "id": "10x-pbmc-3-healthy-library-demo-9ec7eb",
+  "name": "10x PBMC 3\u2032 \u2014 Healthy library (demo)",
+  "assay": "10x Chromium Single Cell 3' Gene Expression",
+  "specId": "10x_3p_v3",
+  "createdAt": "2026-07-10T03:16:53.342Z",
+  "updatedAt": "2026-07-10T03:16:53.457Z",
+  "activeSpecPath": "spec/spec.json",
+  "phase": "complete",
+  "specConfirmed": true,
+  "inputs": {
+    "protocolDoc": null,
+    "notesPath": "inputs/notes.md",
+    "reads": "demo",
+    "fastq": {
+      "source": "sim",
+      "r1": null,
+      "r2": null
+    }
+  },
+  "latestRunId": "20260710T031653Z-82a2fa",
+  "runIds": [
+    "20260710T031653Z-82a2fa"
+  ],
+  "demo": true,
+  "demoBlurb": "Illumina short-read: clean 10x PBMC v3 control \u2014 every QC check passes."
+}

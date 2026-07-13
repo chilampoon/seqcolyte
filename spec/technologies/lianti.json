@@ -433,7 +433,7 @@
       "title": "Second-strand synthesis with UMI primer",
       "summary": "The UMI primer anneals to the cDNA 3' end and extends, forming double-stranded LIANTI amplicons tagged with an 8-bp UMI.",
       "note": "The primer 5'-NNNNNNNNGGGAGATGTGTATAAGAGACAG-3' (Q5 polymerase) anneals to the 3' end of the cDNA and extends, adding a unique 8-bp molecular barcode to each amplicon. Amplicons from the same original fragment share the same 5' mapping coordinate but different UMIs, enabling digital fragment counting.",
-      "product": "5'- [UMI:8]GGGAGATGTGTATAAGAGACAG[==== genomic insert ====] ------->\n                                <------- [==== genomic insert ====]CCCTCTACACATATTCTCTGTC[N8] -5'"
+      "product": "5'- [UMI:8]GGGAGATGTGTATAAGAGACAG[==== genomic insert ====] ------->\n                        <------- [==== genomic insert ====]CCCTCTACACATATTCTCTGTC[N8] -5'"
     },
     {
       "step": 9,
@@ -457,7 +457,7 @@
       "template": "bottom",
       "cycles": 150,
       "note": "Primer anneals to the bottom strand and reads the top strand rightward: first the inline 8-bp UMI, then the 22-bp T7 +1 (GGG) + Tn5 mosaic-end binding sequence, then the genomic insert. The UMI enables 5'-end digital fragment counting / duplicate removal (run as 2x125 or 2x150 bp).",
-      "diagram": "           5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------------->  Read 1\n5'- ...GAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNGGGAGATGTGTATAAGAGACAG[gDNA]... -3'\n3'- ...CTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNCCCTCTACACATATTCTCTGTC[gDNA]... -5'\n                                             |--UMI--||--T7+1 GGG + Tn5 mosaic end--|"
+      "diagram": "           5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------------------->  Read 1\n5'- ...GAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNGGGAGATGTGTATAAGAGACAG[gDNA]... -3'\n3'- ...CTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNCCCTCTACACATATTCTCTGTC[gDNA]... -5'\n                                              |--UMI--||--T7+1 GGG + Tn5 mosaic end--|"
     },
     {
       "read": "Index 1 (i7)",
@@ -473,7 +473,7 @@
       "template": "top",
       "cycles": 150,
       "note": "Primer anneals to the top-strand Read 2 adapter and reads leftward through the genomic insert from the opposite (sonicated) amplicon end, giving the paired mate for mapping.",
-      "diagram": "   Read 2  <-----------------------------------------------\n5'- ...[gDNA]XXXAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC... -3'\n3'- ...[gDNA]XXXTCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG... -5'\n              3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'  Read 2 primer"
+      "diagram": "   Read 2  <-----------------------------------------------\n5'- ...[gDNA]XXXAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC... -3'\n3'- ...[gDNA]XXXTCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG... -5'\n             3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'  Read 2 primer"
     }
   ],
   "whitelists": {},

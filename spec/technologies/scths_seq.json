@@ -371,7 +371,7 @@
       "title": "Barcoded r5 tagmentation (round-1 index)",
       "summary": "~2,000 nuclei per well are tagmented in a 384-well plate of uniquely barcoded r5 Tn5059 transposomes, inserting a T7-promoter/r5-barcode transposon into accessible DNA.",
       "note": "Tn5059 super-mutant complexed with 384 unique r5 barcodes; 0.7 uM final, 37 C 30 min; stopped with 50 mM EDTA.",
-      "product": "5'- T7prom-[i5conn]-[r5 BC:6]-[Read1]-AGATGTGTATAAGAGACAG          genomic DNA          -3'\n                                        <--Tn5-->\n3'-                          genomic DNA          CTGTCTCTTATACACATCT-[Read1]-[r5 BC:6]-[i5conn]-T7prom -5'"
+      "product": "5'- T7prom-[i5conn]-[r5 BC:6]-[Read1]-AGATGTGTATAAGAGACAG genomic DNA -3'\n                                                           <--Tn5-->\n3'-                                                       genomic DNA CTGTCTCTTATACACATCT-[Read1]-[r5 BC:6]-[i5conn]-T7prom -5'"
     },
     {
       "step": 3,
@@ -437,7 +437,7 @@
       "template": "top",
       "cycles": 50,
       "note": "50-bp read of captured genomic (accessible-chromatin) DNA, primed from the r5-transposon Read1 site and extending into the insert toward the nXTv2_i7 mosaic end.",
-      "diagram": "                          Read 1 sequencing primer\n                          ------------------------------------->\n5'- [r5 bc (6)][Read1 primer site]|==== genomic DNA insert (50 nt) ====|CTGTCTCTTATACACATCT[i7 adaptor]... -3'\n3'- [r5 bc (6)][Read1 primer site]|==== genomic DNA insert (50 nt) ====|GACAGAGAATATGTGTAGA[i7 adaptor]... -5'\n                                  |<-------------- Read 1: 50 bp -------------->|"
+      "diagram": "               Read 1 sequencing primer\n               ------------------------------------->\n5'- [r5 bc (6)][Read1 primer site]|====     genomic DNA insert (50 nt)      ====|CTGTCTCTTATACACATCT[i7 adaptor]... -3'\n3'- [r5 bc (6)][Read1 primer site]|====     genomic DNA insert (50 nt)      ====|GACAGAGAATATGTGTAGA[i7 adaptor]... -5'\n                                  |<-------------- Read 1: 50 bp -------------->|"
     },
     {
       "read": "I1",
@@ -445,7 +445,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "8-cycle standard Illumina i7 sample index read (round-2 barcode); primer anneals to the P7-proximal nXTv2_i7 adaptor and reads the i7 index.",
-      "diagram": "5'- CTGTCTCTTATACACATCT[i7 adaptor][i7 index (8)]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- GACAGAGAATATGTGTAGA[i7 adaptor][i7 index (8)]TAGAGCATACGGCAGAAGACGAAC -5'\n                                 <----------------------------------------\n                                 i7 index primer  (Index 1: 8 cycles)"
+      "diagram": "5'- CTGTCTCTTATACACATCT[i7 adaptor][i7 index (8)]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- GACAGAGAATATGTGTAGA[i7 adaptor][i7 index (8)]TAGAGCATACGGCAGAAGACGAAC -5'\n                                   <----------------------------------------\n                                   i7 index primer  (Index 1: 8 cycles)"
     },
     {
       "read": "I2",

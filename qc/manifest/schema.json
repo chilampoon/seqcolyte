@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "seqcolyte.input_manifest.v1",
+  "title": "Seqcolyte input manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version"],
+  "properties": {
+    "schema_version": { "const": "seqcolyte.input_manifest.v1" },
+    "protocol_spec": { "type": ["string", "null"] },
+    "fastq": { "type": "array", "items": { "type": "string" } },
+    "bam": { "type": ["string", "null"] },
+    "feature_matrix": { "type": ["string", "null"] },
+    "qc_evidence_reports": { "type": "array", "items": { "type": "string" } },
+    "reference": { "type": ["string", "null"] },
+    "cell_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "target_type"],
+      "properties": {
+        "value": { "type": "number", "exclusiveMinimum": 0 },
+        "target_type": {
+          "enum": [
+            "cells_loaded",
+            "viable_cells_loaded",
+            "expected_captured_cells",
+            "expected_recovered_cells",
+            "expected_called_cells",
+            "expected_cells_across_samples"
+          ]
+        },
+        "scope": { "enum": ["whole_library", "per_sample"] },
+        "source": { "type": "string" },
+        "confidence": { "enum": ["high", "medium", "low", "unknown"] }
+      }
+    },
+    "wet_lab": { "type": "object" },
+    "notes": { "type": ["string", "null"] }
+  }
+}

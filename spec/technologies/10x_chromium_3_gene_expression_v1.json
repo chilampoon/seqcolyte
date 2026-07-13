@@ -437,14 +437,14 @@
       "title": "GEM formation & mRNA capture on gel-bead oligo",
       "summary": "Single cells and barcoded gel beads are co-partitioned into GEMs where the released oligo-dT primer anneals to poly(A) mRNA.",
       "note": "Gel beads dissolve inside each GEM, releasing millions of copies of the barcoded capture primer (P7 + Read 2 + 14 bp barcode + 10 bp UMI + anchored oligo-dT). The oligo-dT hybridizes to the poly(A) tail of cell mRNA.",
-      "product": "|--5'- CAAGCAGAAGACGGCATACGAGATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:14][UMI:10](T)30VN -3'\n                                                                                   ||||||||||\n                                                          3'- AAAAAAAAAA...mRNA -5'"
+      "product": "|--5'- CAAGCAGAAGACGGCATACGAGATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:14][UMI:10](T)30VN -3'\n                                                                                          ||||||||||\n                                                                                      3'- AAAAAAAAAA...mRNA -5'"
     },
     {
       "step": 2,
       "title": "Reverse transcription (GEM-RT)",
       "summary": "Reverse transcriptase extends from the oligo-dT to synthesize barcoded first-strand cDNA.",
       "note": "RT (55 C, 2 h) copies the mRNA into first-strand cDNA carrying the shared GEM barcode and UMI. Every cDNA from one GEM shares the same 14 bp barcode.",
-      "product": "|--5'- CAAGCAGAAGACGGCATACGAGATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:14][UMI:10](T)30VN------[CDNA]------>3'\n                                                          3'- ...AAAAAAAAAA........mRNA........ -5'"
+      "product": "|--5'- CAAGCAGAAGACGGCATACGAGATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:14][UMI:10](T)30VN------[CDNA]------>3'\n                                                                                   3'- ...AAAAAAAAAA........mRNA........ -5'"
     },
     {
       "step": 3,
@@ -458,14 +458,14 @@
       "title": "cDNA amplification (bulk PCR)",
       "summary": "Pooled barcoded cDNA is PCR-amplified with primers against the TSO handle and the P7/Read 2 adapter.",
       "note": "The emulsion is broken, cDNA pooled and amplified (12-14 cycles) to generate double-stranded, full-length barcoded cDNA of sufficient mass for library construction.",
-      "product": "5'- CAAGCAGAAGACGGCATACGAGATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:14][UMI:10](T)30VN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT -3'\n3'- GTTCGTCTTCTGCCGTATGCTCTGACCTCAAGTCTGCACACGAGAAGGCTAGA[CELL_BARCODE:14][UMI:10](A)30 [CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'"
+      "product": "5'- CAAGCAGAAGACGGCATACGAGATGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:14][UMI:10](T)30VN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT -3'\n     3'- GTTCGTCTTCTGCCGTATGCTCTGACCTCAAGTCTGCACACGAGAAGGCTAGA[CELL_BARCODE:14][UMI:10](A)30  [CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'"
     },
     {
       "step": 5,
       "title": "Fragmentation, end repair & A-tailing",
       "summary": "Amplified cDNA is sheared to ~200 bp and the fragments are end-repaired and A-tailed.",
       "note": "Covaris shearing to a ~200 bp peak; only fragments retaining the barcode/UMI end remain useful for the assay. Blunt ends are repaired and dA-tailed.",
-      "product": "5'- ...GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:14][UMI:10](T)30VN[CDNA] *A -3'\n3'- A* ...CTGACCTCAAGTCTGCACACGAGAAGGCTAGA[CELL_BARCODE:14][UMI:10](A)30 [CDNA]    -5'"
+      "product": "5'- ...GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT[CELL_BARCODE:14][UMI:10](T)30VN[CDNA] *A -3'\n3'- A*...CTGACCTCAAGTCTGCACACGAGAAGGCTAGA[CELL_BARCODE:14][UMI:10](A)30  [CDNA]    -5'"
     },
     {
       "step": 6,
@@ -489,7 +489,7 @@
       "template": "bottom",
       "cycles": 98,
       "note": "Read 1 primer anneals to the bottom strand at the partial Read 1 handle; its 3' end sits at the cDNA junction and reads 98 nt of the cDNA insert (shorter reads reduce alignment rate).",
-      "diagram": "                Read 1 primer (TruSeq R1)\n     5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------->   reads cDNA (98 nt)\ntop  5'-...........CTACACGACGCTCTTCCGATCT[====== cDNA insert ======](A)30...-3'\nbot  3'-...........GATGTGCTGCGAGAAGGCTAGA[=== cDNA rev-complement ===](T)30...-5'\n                                        (bottom strand = template)"
+      "diagram": "                Read 1 primer (TruSeq R1)\n     5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------->   reads cDNA (98 nt)\ntop  5'-...........CTACACGACGCTCTTCCGATCT[======  cDNA insert  ======](A)30...-3'\nbot  3'-...........GATGTGCTGCGAGAAGGCTAGA[=== cDNA rev-complement ===](T)30...-5'\n                                        (bottom strand = template)"
     },
     {
       "read": "i7 Index (I1, cell barcode)",
@@ -497,7 +497,7 @@
       "template": "top",
       "cycles": 14,
       "note": "The i7 index read reads the 14 bp 10x cell barcode, which lies immediately 5' of the Read 2 (P7-proximal) constant handle on the top strand.",
-      "diagram": "                  i7 index primer anneals at the R2/P7-proximal handle\ntop 5'-...(A)30 [UMI:10] NNNNNNNNNNNNNN AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC ATCTCG...-3'\n                                    3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\nbot 3'-...(T)30 [UMIrc]  NNNNNNNNNNNNNN TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG TAGAGC...-5'\n                       <------------- read = 14 bp cell barcode (i7)"
+      "diagram": "                  i7 index primer anneals at the R2/P7-proximal handle\ntop 5'-...(A)30 [UMI:10] NNNNNNNNNNNNNN AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC ATCTCG...-3'\n                                     3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\nbot 3'-...(T)30 [UMIrc]  NNNNNNNNNNNNNN TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG TAGAGC...-5'\n                       <------------- read = 14 bp cell barcode (i7)"
     },
     {
       "read": "i5 Index (I2, sample index)",
@@ -505,7 +505,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "The i5 index read reads the 8 bp sample index adjacent to P5; each named sample index is a base-balanced mix of 4 sequences.",
-      "diagram": "        i5 index primer anneals to bottom strand at P5\n        5'-AATGATACGGCGACCACCGAGATCTACAC----->   reads 8 bp sample index\ntop 5'-AATGATACGGCGACCACCGAGATCTACAC NNNNNNNN CTACACGACGCTCTTCCGATCT...-3'\nbot 3'-TTACTATGCCGCTGGTGGCTCTAGATGTG NNNNNNNN GATGTGCTGCGAGAAGGCTAGA...-5'\n                                    ------> read = 8 bp sample index (i5)"
+      "diagram": "        i5 index primer anneals to bottom strand at P5\n    5'-AATGATACGGCGACCACCGAGATCTACAC----->   reads 8 bp sample index\ntop 5'-AATGATACGGCGACCACCGAGATCTACAC NNNNNNNN CTACACGACGCTCTTCCGATCT...-3'\nbot 3'-TTACTATGCCGCTGGTGGCTCTAGATGTG NNNNNNNN GATGTGCTGCGAGAAGGCTAGA...-5'\n                                    ------> read = 8 bp sample index (i5)"
     },
     {
       "read": "Read 2 (UMI)",
@@ -513,7 +513,7 @@
       "template": "top",
       "cycles": 10,
       "note": "Read 2 primer anneals to the top strand at the Read 2 handle (reverse complement) and reads the 10 bp UMI attached during reverse transcription; the 14 bp barcode is captured separately as the i7 index. Some early v1 libraries used a 5 bp UMI (5 bp Read 2).",
-      "diagram": "                    Read 2 primer (TruSeq R2) anneals to top strand\ntop 5'-...(A)30 [UMI:10] [BC:14] AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC ATCTCG...-3'\n                             3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\nbot 3'-...(T)30 [UMIrc]  [BCrc] TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG TAGAGC...-5'\n            <--- read 2 = 10 bp UMI"
+      "diagram": "                    Read 2 primer (TruSeq R2) anneals to top strand\ntop 5'-...(A)30 [UMI:10] [BC:14] AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC ATCTCG...-3'\n                              3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\nbot 3'-...(T)30 [UMIrc]  [BCrc]  TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG TAGAGC...-5'\n            <--- read 2 = 10 bp UMI"
     }
   ],
   "whitelists": {},

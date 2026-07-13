@@ -590,14 +590,14 @@
       "title": "In situ reverse transcription",
       "summary": "TruseqR1_oligo_dT primes mRNA and Maxima H- RT synthesizes first-strand cDNA in the nucleus.",
       "note": "The RT primer contributes a partial TruSeq Read 1 handle and a 10-bp UMI at the 5' end of the cDNA; poly(dT) anneals to the transcript poly-A tail. PEG8000 crowding boosts efficiency.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]------------->\n                                        3'- AAAA...mRNA -5'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]------------->\n                              3'- AAAA...mRNA -5'"
     },
     {
       "step": 4,
       "title": "RNA-DNA hybrid tagmentation (SHERRY)",
       "summary": "A Tn5-S7/S7 homodimer tags the RNA-DNA hybrid, adding a mosaic end + S7 handle to the cDNA 3' end.",
       "note": "The RNA/DNA hybrid is directly tagmented, appending the Nextera S7 (Read 2) adapter without full-length cDNA amplification or template switching.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]          CTGTCTCTTATACACATCT -3'\n3'-                                          [CDNA] GAGATGTGTATAAGAGACAGGGCTCGGGTGCTCTG -5'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[UMI:10](T)30[CDNA]          CTGTCTCTTATACACATCT -3'\n3'-                                    [CDNA] GAGATGTGTATAAGAGACAGGGCTCGGGTGCTCTG -5'"
     },
     {
       "step": 5,
@@ -642,7 +642,7 @@
       "template": "bottom",
       "cycles": 75,
       "note": "Primes on the P5/TruSeq (i5) end, annealing to the bottom strand; the first 10 nt read the UMI, the remainder reads into the cDNA insert (through the poly-T anchor).",
-      "diagram": "Read 1 primer (TruSeq Read 1): 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3'\n       ACACTCTTTCCCTACACGACGCTCTTCCGATCT---------------------->\n5'- ...ACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNN(T)30[cDNA]... -3'\n3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNN(A)30[cDNA]... -5'\n                                        |<-UMI:10->|"
+      "diagram": "Read 1 primer (TruSeq Read 1): 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3'\n       ACACTCTTTCCCTACACGACGCTCTTCCGATCT---------------------->\n5'- ...ACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNN(T)30[cDNA]... -3'\n3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNN(A)30[cDNA]... -5'\n                                       |<-UMI:10->|"
     },
     {
       "read": "Index 1 (i7)",

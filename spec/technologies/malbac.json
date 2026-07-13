@@ -762,7 +762,7 @@
       "title": "Primer annealing at 0\u00b0C",
       "summary": "MALBAC random primers (27-nt common + 8N) hybridize evenly across the single-stranded template on ice.",
       "note": "Cold annealing gives uniform, near-random priming genome-wide.",
-      "product": "                5'- GTGAGTGATGGTTGAGGTAGTGTGGAGNNNNNNNN -3'\n                                                   |||||||| (8N anneals)\n3'- ...GENOMIC template ....................NNNNNNNN........... -5'"
+      "product": "             5'- GTGAGTGATGGTTGAGGTAGTGTGGAGNNNNNNNN -3'\n                                            |||||||| (8N anneals)\n3'- ...GENOMIC template ....................NNNNNNNN........... -5'"
     },
     {
       "step": 4,
@@ -807,7 +807,7 @@
       "template": "bottom",
       "cycles": 100,
       "note": "Sequences from the P5/Read1 constant region into the WGA amplicon body (MALBAC 27-nt tag + 8 random nt + genomic insert). No cell barcode or UMI \u2014 MALBAC is a whole-genome amplification assay; read length set by the vendor (paired-end on HiSeq-2000).",
-      "diagram": "                  Read 1 primer 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3' ------->\n5'- ...GAGATCTACAC ACACTCTTTCCCTACACGACGCTCTTCCGATCT GTGAGTGATGGTTGAGGTAGTGTGGAG NNNNNNNN[genomic insert]... -3'\n                    ||||||||||||||||||||||||||||||||| |||||||||||||||||||||||||||\n3'- ...CTCTAGATGTG TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA CACTCACTACCAACTCCATCACACCTC NNNNNNNN[genomic insert]... -5'"
+      "diagram": "  Read 1 primer 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3' ------->\n5'- ...GAGATCTACAC ACACTCTTTCCCTACACGACGCTCTTCCGATCT GTGAGTGATGGTTGAGGTAGTGTGGAG NNNNNNNN[genomic insert]... -3'\n                   ||||||||||||||||||||||||||||||||| |||||||||||||||||||||||||||\n3'- ...CTCTAGATGTG TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA CACTCACTACCAACTCCATCACACCTC NNNNNNNN[genomic insert]... -5'"
     },
     {
       "read": "Index read (i7)",
@@ -815,7 +815,7 @@
       "template": "bottom",
       "cycles": 6,
       "note": "Sample-demultiplexing index added during standard vendor library prep. Index length/sequence not specified in the source (shown here as a 6-nt placeholder).",
-      "diagram": "                          i7 index primer 5'-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3' ------->\n5'- ...CTCCACACTACCTCAACCATCACTCAC AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC NNNNNN ATCTCGTATGCCGTCTTCTGCTTG -3'\n                                  |||||||||||||||||||||||||||||||||| ||||||\n3'- ...GAGGTGTGATGGAGTTGGTAGTGAGTG TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG NNNNNN TAGAGCATACGGCAGAAGACGAAC -5'\n                                                                     (reads i7 on bottom strand)"
+      "diagram": "                i7 index primer 5'-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3' ------->\n5'- ...CTCCACACTACCTCAACCATCACTCAC AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC NNNNNN ATCTCGTATGCCGTCTTCTGCTTG -3'\n                                   |||||||||||||||||||||||||||||||||| ||||||\n3'- ...GAGGTGTGATGGAGTTGGTAGTGAGTG TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG NNNNNN TAGAGCATACGGCAGAAGACGAAC -5'\n                                                                      (reads i7 on bottom strand)"
     },
     {
       "read": "Read 2 (genomic)",
@@ -823,7 +823,7 @@
       "template": "top",
       "cycles": 100,
       "note": "Paired-end read from the opposite end of the WGA amplicon; anneals at the Read2 constant region and reads back into the genomic insert.",
-      "diagram": "5'- ...NNNNNNNN[genomic insert] CTCCACACTACCTCAACCATCACTCAC AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC... -3'\n                               ||||||||||||||||||||||||||| ||||||||||||||||||||||||||||||||||\n3'- ...NNNNNNNN[genomic insert] GAGGTGTGATGGAGTTGGTAGTGAGTG TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG... -5'\n              <------- 3'-...GAGGTGTGATGGAGTTGGTAGTGAGTG TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5' Read 2 primer"
+      "diagram": "5'- ...NNNNNNNN[genomic insert] CTCCACACTACCTCAACCATCACTCAC AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC... -3'\n                                ||||||||||||||||||||||||||| ||||||||||||||||||||||||||||||||||\n3'- ...NNNNNNNN[genomic insert] GAGGTGTGATGGAGTTGGTAGTGAGTG TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG... -5'\n                 <------- 3'-...GAGGTGTGATGGAGTTGGTAGTGAGTG TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5' Read 2 primer"
     }
   ],
   "whitelists": {},

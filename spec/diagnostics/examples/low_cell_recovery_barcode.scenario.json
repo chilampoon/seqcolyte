@@ -1,0 +1,23 @@
+{
+  "scenario_id": "low_cell_recovery_barcode",
+  "title": "Low cell recovery with degraded barcodes (2,000 of 45,000 expected)",
+  "manifest": {
+    "schema_version": "seqcolyte.input_manifest.v1",
+    "cell_target": {
+      "value": 45000,
+      "target_type": "expected_recovered_cells",
+      "scope": "whole_library",
+      "source": "experimental_design",
+      "confidence": "high"
+    }
+  },
+  "observations": {
+    "cell.called_count": 2000,
+    "barcode.valid_fraction": 0.38,
+    "barcode.whitelist_fraction": 0.40,
+    "barcode.extractable_fraction": 0.55,
+    "cell.reads_in_cells_fraction": 0.35,
+    "mapping.genome_fraction": 0.92,
+    "assignment.gene_fraction": 0.75
+  }
+}

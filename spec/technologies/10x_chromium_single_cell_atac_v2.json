@@ -380,7 +380,7 @@
       "title": "Bulk transposition (tagmentation)",
       "summary": "Hyperactive Tn5 loaded with Read 1N and Read 2N mosaic-end adapters fragments accessible chromatin and adds sequencing handles to fragment ends.",
       "note": "Nuclei are incubated with ATAC Enzyme B (Tn5 transposase) for 60 min at 37 C. The transposase enters intact nuclei and preferentially cuts open (accessible) chromatin, simultaneously adding the Read 1N adapter to one end and the Read 2N adapter to the other end of each fragment.",
-      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT           -3'\n3'-           TCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG -5'"
+      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[CDNA]CTGTCTCTTATACACATCT           -3'\n3'-               TCTACACATATTCTCTGTC[CDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG -5'"
     },
     {
       "step": 2,
@@ -411,7 +411,7 @@
       "template": "bottom",
       "cycles": 50,
       "note": "Read 1N primer anneals to the bottom strand at the Read 1N handle/mosaic end and reads 50 bp of the accessible genomic insert; sequence read matches the top strand.",
-      "diagram": "                 5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG--------------->  Read 1N (50 bp)\n5'- ...[BC16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[========insert========]... -3'\n3'- ...[BC16]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[========insert========]... -5'  (bottom = template)"
+      "diagram": "          5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG--------------->  Read 1N (50 bp)\n5'- ...[BC16]TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[========insert========]... -3'\n3'- ...[BC16]AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[========insert========]... -5'  (bottom = template)"
     },
     {
       "read": "i7 Index",
@@ -427,7 +427,7 @@
       "template": "top",
       "cycles": 16,
       "note": "Index-2 read: captures the 16 bp 10x cell barcode adjacent to P5; barcode sequences used by Cell Ranger ATAC for cell demultiplexing come from this read.",
-      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[NNNNNNNNNNNNNNNN]TCGTCGGCAGCGTC... -3'  (top = template)\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[NNNNNNNNNNNNNNNN]AGCAGCCGTCGCAGTC.. -5'\n                  10x cell barcode  <----[NNNNNNNNNNNNNNNN]  i5 read (16 bp)"
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC[NNNNNNNNNNNNNNNN]TCGTCGGCAGCGTC... -3'  (top = template)\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG[NNNNNNNNNNNNNNNN]AGCAGCCGTCGCAGTC.. -5'\n          10x cell barcode  <----[NNNNNNNNNNNNNNNN]  i5 read (16 bp)"
     },
     {
       "read": "Read 2N",
@@ -435,7 +435,7 @@
       "template": "top",
       "cycles": 50,
       "note": "Read 2N primer anneals to the top-strand Read 2N handle/mosaic end and reads 50 bp of the accessible genomic insert from the opposite end; sequence read matches the bottom strand.",
-      "diagram": "5'- ...[========insert========]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC... -3'  (top = template)\n3'- ...[========insert========]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG... -5'\n     Read 2N (50 bp)  <---------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'"
+      "diagram": "5'- ...[========insert========]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC... -3'  (top = template)\n3'- ...[========insert========]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG... -5'\n    Read 2N (50 bp)  <---------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'"
     }
   ],
   "whitelists": {},

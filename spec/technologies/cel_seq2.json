@@ -508,7 +508,7 @@
       "title": "Anneal barcoded CEL-Seq2 primer & reverse transcription",
       "summary": "The barcoded poly(dT) CEL-Seq2 primer captures a single cell's poly(A) mRNA and SuperScript II reverse-transcribes first-strand cDNA.",
       "note": "Each cell/well gets a unique 6-nt barcode; the primer also carries a T7 promoter, the Illumina 5' adapter and a 6-nt UMI. SuperScript II extends from the anchored poly(dT) into the transcript body.",
-      "product": "5'- GCCGGTAATACGACTCACTATAGGGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]------->\n                                                                             3'- AAAAAAAAAAAAAAAAAAAAAAAA...(mRNA)...-5'"
+      "product": "5'- GCCGGTAATACGACTCACTATAGGGAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]------->\n                                                                    3'- AAAAAAAAAAAAAAAAAAAAAAAA...(mRNA)...-5'"
     },
     {
       "step": 2,
@@ -536,7 +536,7 @@
       "title": "RT of aRNA with random-hexamer / 3'-adapter primer",
       "summary": "A random hexamer bearing a 5'-tail Illumina 3' adapter reverse-transcribes the fragmented aRNA into cDNA, appending the 3' adapter (ligation-free).",
       "note": "SuperScript II RT. This CEL-Seq2 change replaces the inefficient adapter ligation of the original CEL-Seq, improving read mapping (93.8% vs 60.9%).",
-      "product": "5'- ...GAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGC -3'\n                                                                            (Illumina 3' adapter from randomhexRT)"
+      "product": "5'- ...GAGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:6]TTTTTTTTTTTTTTTTTTTTTTTTV[CDNA]TGGAATTCTCGGGTGCCAAGGC -3'\n                                                                                  (Illumina 3' adapter from randomhexRT)"
     },
     {
       "step": 6,

@@ -578,7 +578,7 @@
       "title": "Bulk Tn5 tagging (tagmentation)",
       "summary": "Standard Nextera Tn5 transposome tags open chromatin across a bulk pool of 5,000\u201350,000 cells without fragmenting the genome.",
       "note": "Cells are resuspended in tagmentation mix (Tris-acetate/K-acetate/Mg-acetate, 16% DMF, 0.01% digitonin, Illumina Tn5) and incubated 37 \u00b0C, 800 rpm, 30 min. The Tn5 binds and inserts the ME-A and ME-B adapters into accessible sites but stays bound, so nuclei remain intact. Reaction stopped with EDTA stop buffer.",
-      "product": "        Read1/ME-A arm                                        Read2/ME-B arm\n5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[==== genomic insert ====]                              -3'\n        (Tn5 still bound)          3'-[==== genomic insert ====]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n   (9-bp gaps at the recessed 3' ends; transferred ME strands on 5' ends)"
+      "product": "        Read1/ME-A arm                                        Read2/ME-B arm\n5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[==== genomic insert ====]                              -3'\n        (Tn5 still bound)        3'-[==== genomic insert ====]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n   (9-bp gaps at the recessed 3' ends; transferred ME strands on 5' ends)"
     },
     {
       "step": 2,
@@ -592,7 +592,7 @@
       "title": "Tn5 release and SDS quench",
       "summary": "Heating to 65 \u00b0C releases Tn5 and fragments the tagged genome; Tween-20 then quenches the SDS so it will not inhibit PCR.",
       "note": "Incubate 65 \u00b0C 15 min (Tn5 release). Add 10% Tween-20 to neutralize SDS, then water and PCR master mix. This liberates free tagmented fragments carrying ME-A/ME-B ends.",
-      "product": "5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[==== genomic insert ====]                              -3'\n                             3'-[==== genomic insert ====]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n   (free tagmented DNA, 9-bp gaps, ready for gap-fill + PCR)"
+      "product": "5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[==== genomic insert ====]                              -3'\n                                 3'-[==== genomic insert ====]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n   (free tagmented DNA, 9-bp gaps, ready for gap-fill + PCR)"
     },
     {
       "step": 4,
@@ -638,7 +638,7 @@
       "primer": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
       "template": "bottom",
       "note": "Read 2 sequences the accessible genomic insert from the i7/P7 (ME-B) side. The Read2 primer anneals to the top strand at CTGTCTCTTATACACATCTCCGAGCCCACGAGAC and extends leftward into the insert. Read length is the genomic fragment length (variable).",
-      "diagram": "5'-...GATGTGTATAAGAGACAG[==== genomic insert ====]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-3'\n3'-...CTACACATATTCTCTGTC[==== genomic insert ====]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n            <-------Read2 primer  3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5' (anneals top strand)"
+      "diagram": "5'-...GATGTGTATAAGAGACAG[==== genomic insert ====]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC-3'\n3'-...CTACACATATTCTCTGTC[==== genomic insert ====]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n                         <-------Read2 primer  3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5' (anneals top strand)"
     }
   ],
   "whitelists": {},

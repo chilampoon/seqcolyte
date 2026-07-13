@@ -1,0 +1,90 @@
+# Default diagnosis threshold/scoring profile.
+#
+# IMPORTANT: these are OPERATIONAL DEFAULTS — provisional operating points for turning a metric into an
+# ok/warn/fail status — NOT validated biological cutoffs. They are versioned, transparent, and tunable
+# per assay. The diagnostic catalog itself carries no thresholds (to avoid presenting fabricated numbers
+# as facts); thresholds live here, as config, with an explicit evidence_strength.
+#
+# Where a metric is inherently relative (e.g. target_attainment), the operating point is a ratio, and the
+# metric is marked target_dependent so the engine only assesses it when a compatible target exists.
+
+profile_version: "0.1.0"
+evidence_strength: operational_default
+
+metrics:
+  # read_processing — barcode / UMI recovery
+  barcode.valid_fraction:
+    direction: higher_is_better
+    warn_below: 0.75
+    fail_below: 0.50
+  barcode.whitelist_fraction:
+    direction: higher_is_better
+    warn_below: 0.75
+    fail_below: 0.50
+  barcode.extractable_fraction:
+    direction: higher_is_better
+    warn_below: 0.80
+    fail_below: 0.50
+  umi.extractable_fraction:
+    direction: higher_is_better
+    warn_below: 0.80
+    fail_below: 0.50
+  umi.valid_fraction:
+    direction: higher_is_better
+    warn_below: 0.80
+    fail_below: 0.50
+
+  # cell_analysis — recovery (target-relative)
+  cell.target_attainment:
+    direction: higher_is_better
+    warn_below: 0.70
+    fail_below: 0.30
+    target_dependent: true
+  cell.reads_in_cells_fraction:
+    direction: higher_is_better
+    warn_below: 0.70
+    fail_below: 0.50
+
+  # library_structure — informative yield (lower is better)
+  library.adapter_only_fraction:
+    direction: lower_is_better
+    warn_above: 0.10
+    fail_above: 0.20
+  library.short_insert_fraction:
+    direction: lower_is_better
+    warn_above: 0.10
+    fail_above: 0.20
+  library.tso_at_rna_read_start_fraction:
+    direction: lower_is_better
+    warn_above: 0.05
+    fail_above: 0.15
+  library.internal_adapter_fraction:
+    direction: lower_is_better
+    warn_above: 0.05
+    fail_above: 0.15
+  library.polyg_tail_fraction:
+    direction: lower_is_better
+    warn_above: 0.03
+    fail_above: 0.10
+  library.unclassified_fraction:
+    direction: lower_is_better
+    warn_above: 0.10
+    fail_above: 0.25
+  library.full_length_proxy_fraction:
+    direction: higher_is_better
+    warn_below: 0.60
+    fail_below: 0.40
+
+  # alignment_assignment
+  mapping.genome_fraction:
+    direction: higher_is_better
+    warn_below: 0.85
+    fail_below: 0.70
+  assignment.gene_fraction:
+    direction: higher_is_better
+    warn_below: 0.70
+    fail_below: 0.50
+  assignment.transcript_fraction:
+    direction: higher_is_better
+    warn_below: 0.50
+    fail_below: 0.30

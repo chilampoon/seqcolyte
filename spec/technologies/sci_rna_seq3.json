@@ -553,7 +553,7 @@
       "title": "Indexed reverse transcription (index 1)",
       "summary": "Barcoded oligo-dT RT primers capture polyadenylated mRNA in fixed nuclei and make first-strand cDNA, adding the RT barcode and UMI.",
       "note": "Superscript IV reverse transcriptase extends the anchored oligo-dT primer along the mRNA. The primer carries a 5' phosphate, the CAGAGC linker, an 8-bp UMI, a 10-bp well-specific RT barcode, and a 30-nt poly(dT). Performed in-well across a 96-/384-well plate so nuclei from different samples get distinct RT barcodes.",
-      "product": "(1) First-strand cDNA after indexed RT:\n\n5'- /5Phos/CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]--------> -3'\n                                       ||||||||||\n                                  3'- AAAAAAAAAA......[mRNA] -5'\n(mRNA template is nicked and used to prime second-strand synthesis in step 3)"
+      "product": "(1) First-strand cDNA after indexed RT:\n\n5'- /5Phos/CAGAGC[UMI:8][RT_BARCODE:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT[CDNA]--------> -3'\n                                       ||||||||||\n                                   3'- AAAAAAAAAA......[mRNA] -5'\n(mRNA template is nicked and used to prime second-strand synthesis in step 3)"
     },
     {
       "step": 2,
@@ -591,7 +591,7 @@
       "template": "bottom",
       "cycles": 34,
       "note": "Reads the cell barcode + UMI: 10-bp ligation barcode + CAGAGC linker (6) + 8-bp UMI + 10-bp RT barcode = 34 bp. Primer is identical to the top-strand TruSeq R1 region, anneals to the bottom strand, and reads rightward.",
-      "diagram": "Read 1 (34 cycles) - Illumina TruSeq Read 1 primer:\n\n   Read 1 primer 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT------------------------------------>\n5'-...ACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNCAGAGCNNNNNNNNNNNNNNNNNNTTTTTTTTTT...-3'\n3'-...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNGTCTCGNNNNNNNNNNNNNNNNNNAAAAAAAAAA...-5'\n                                     |-Lig BC(10)-|link||-UMI(8)-||- RT BC(10)-|"
+      "diagram": "Read 1 (34 cycles) - Illumina TruSeq Read 1 primer:\n\n   Read 1 primer 5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT------------------------------------>\n5'-...ACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNCAGAGCNNNNNNNNNNNNNNNNNNTTTTTTTTTT...-3'\n3'-...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNGTCTCGNNNNNNNNNNNNNNNNNNAAAAAAAAAA...-5'\n                                       |-Lig BC(10)-|link||-UMI(8)-||- RT BC(10)-|"
     },
     {
       "read": "Read 2",
@@ -599,7 +599,7 @@
       "template": "top",
       "cycles": 48,
       "note": "Reads into the cDNA insert from the Tn5/N7 (P7) side. Primer anneals to the top-strand ME/N7 region and extends leftward into the cDNA. 48 cycles (optimized); 52 in the original 2019 protocol.",
-      "diagram": "Read 2 (48 cycles) - Illumina Nextera Read 2 primer:\n\n Read 2 primer 3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n              <-------------------------------------\n5'-...XXXXXXXCTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNNNATCTCGTATGCC...-3'\n3'-...XXXXXXXGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNNNTAGAGCATACGG...-5'\n     |-cDNA-||------ME + N7 (rc) junction------||-i7(10)-|"
+      "diagram": "Read 2 (48 cycles) - Illumina Nextera Read 2 primer:\n\n Read 2 primer 3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n              <-------------------------------------\n5'-...XXXXXXXCTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNNNATCTCGTATGCC...-3'\n3'-...XXXXXXXGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNNNTAGAGCATACGG...-5'\n      |-cDNA-||------ME + N7 (rc) junction------||-i7(10)-|"
     },
     {
       "read": "Index 1 (i7)",
@@ -607,7 +607,7 @@
       "template": "bottom",
       "cycles": 10,
       "note": "Reads index 3 / the PCR P7 barcode (10 bp). Primer is identical to the top-strand ME/N7 region, anneals to the bottom strand, and reads rightward into the i7 index.",
-      "diagram": "Index read 1 / i7 (10 cycles) - Nextera Index 1 primer:\n\n   i7 primer 5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC---------->\n5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNNNATCTCGTATGCC...-3'\n3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNNNTAGAGCATACGG...-5'\n                                       |- i7 (10)-|"
+      "diagram": "Index read 1 / i7 (10 cycles) - Nextera Index 1 primer:\n\n   i7 primer 5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC---------->\n5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNNNATCTCGTATGCC...-3'\n3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNNNTAGAGCATACGG...-5'\n                                        |- i7 (10)-|"
     },
     {
       "read": "Index 2 (i5)",
@@ -615,7 +615,7 @@
       "template": "top",
       "cycles": 10,
       "note": "Optional PCR P5 / plate index (10 bp), present only when the P5 primer is indexed. On the NextSeq/NovaSeq platforms used here it is read as the reverse complement: the primer anneals to the top-strand TruSeq R1 region and extends leftward into the i5 index.",
-      "diagram": "Index read 2 / i5 (10 cycles, optional plate index) - read as reverse complement on NextSeq/NovaSeq:\n\n                 i5 primer 3'-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-5'\n                          <-------------------------------------\n5'-AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNACACTCTTTCCCTACACGACGCTCTTCCGATCT...-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNTGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA...-5'\n     |------- P5 --------------||-i5(10)-||-------- TruSeq Read 1 ---------|"
+      "diagram": "Index read 2 / i5 (10 cycles, optional plate index) - read as reverse complement on NextSeq/NovaSeq:\n\n                             i5 primer 3'-TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA-5'\n                                     <-------------------------------------\n5'-AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNACACTCTTTCCCTACACGACGCTCTTCCGATCT...-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNTGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA...-5'\n   |------- P5 --------------||-i5(10)-||-------- TruSeq Read 1 ---------|"
     }
   ],
   "whitelists": {},

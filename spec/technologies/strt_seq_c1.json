@@ -278,7 +278,7 @@
       "title": "Lysis, RT + template switching",
       "summary": "Cells are lysed and reverse-transcribed with oligo(dT) primer C1-P1-T31 while the all-RNA TSO C1-P1-RNA-TSO adds P1+UMI+GGG to the transcript 5' end.",
       "note": "SuperScript II extends from the oligo(dT), reaches the 5' cap, adds a CCC overhang, and template-switches onto the GGG of the TSO, tagging each molecule with a 5 bp UMI and the Illumina read-1 adapter.",
-      "product": "mRNA        5'- [cap] XXXXXXXXXXXX AAAA...A -3'\n                           |||||||||||| ||||||||\n1st cDNA 3'- GGG NNNNN TAGCCACCAGCGGCATAGTAA ... TTTT...T GCTAGCC... -5'\n\nfull-length cDNA (sense, after switching):\n5'- AATGATACGGCGACCACCGAT NNNNN GGG [CDNA] AAAA...A CGATCGGTGGTCGCCGTATCATT -3'"
+      "product": "mRNA         5'- [cap] XXXXXXXXXXXX              AAAA...A -3'\n                       ||||||||||||              ||||||||\n1st cDNA 3'- GGG NNNNN TAGCCACCAGCGGCATAGTAA ... TTTT...T GCTAGCC... -5'\n\nfull-length cDNA (sense, after switching):\n5'- AATGATACGGCGACCACCGAT NNNNN GGG [CDNA] AAAA...A CGATCGGTGGTCGCCGTATCATT -3'"
     },
     {
       "step": 3,

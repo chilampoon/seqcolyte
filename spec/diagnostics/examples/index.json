@@ -1,0 +1,20 @@
+[
+  {
+    "file": "low_cell_recovery_barcode.diagnosis.json",
+    "scenario_id": "low_cell_recovery_barcode",
+    "title": "Low cell recovery with degraded barcodes (2,000 of 45,000 expected)",
+    "top_hypothesis": "cause.barcode_boundary_shift"
+  },
+  {
+    "file": "low_cell_recovery_strict_calling.diagnosis.json",
+    "scenario_id": "low_cell_recovery_strict_calling",
+    "title": "Low cell recovery with healthy barcodes (2,000 of 45,000 expected)",
+    "top_hypothesis": "cause.poor_partition_capture_or_rt"
+  },
+  {
+    "file": "low_informative_yield_dimers.diagnosis.json",
+    "scenario_id": "low_informative_yield_dimers",
+    "title": "Low informative-read yield from adapter dimers / short inserts",
+    "top_hypothesis": "cause.adapter_dimer_or_short_insert"
+  }
+]

@@ -730,7 +730,7 @@
       "title": "Assemble barcoded Tn5 transposomes",
       "summary": "Anneal 8 barcoded DNA_#_RE adaptors to the common pMENTs strand and load onto Tn5.",
       "note": "Each transposome carries a first-round (BC#1) barcode, a NotI site, and the mosaic end; also a separate Tn5-P5 (AdaptorA) transposome is made for the later second-tagging step.",
-      "product": "5'- AGGCCAGAGCATTCG-[BC1]-GCGGCCGC-AGATGTGTATAAGAGACAG -3'\n                                3'- CTCTATACATATTCTCTGTC/ddC-5'  (pMENTs)"
+      "product": "5'- AGGCCAGAGCATTCG-[BC1]-GCGGCCGC-AGATGTGTATAAGAGACAG -3'\n                              3'- CTCTATACATATTCTCTGTC/ddC-5'  (pMENTs)"
     },
     {
       "step": 2,
@@ -751,7 +751,7 @@
       "title": "Ligation round 2 (BC#2)",
       "summary": "Splint (Linker-R02) ligates the R02 barcode onto the 5' end of every DNA and cDNA molecule.",
       "note": "Nuclei pooled and split into a 96-well R02 plate; Blocker-R02 quenches unreacted linker.",
-      "product": "5'- GTGCGAACTCAGACC-[BC2]-ATCCACGTGCTTGAG-AGGCCAGAGCATTCG-[BC1]-...-[insert] -3'\n         |splint Linker-R02: 3'- ...CACGTGGATCTCAAG TCCGGTCTCGTAAGC-5'"
+      "product": "5'- GTGCGAACTCAGACC-[BC2]-ATCCACGTGCTTGAG-AGGCCAGAGCATTCG-[BC1]-...-[insert] -3'\n|splint Linker-R02: 3'-...CACGTGGATCTCAAG TCCGGTCTCGTAAGC-5'"
     },
     {
       "step": 5,
@@ -824,7 +824,7 @@
       "template": "top",
       "cycles": 53,
       "note": "Reads the tagmented genomic open-chromatin fragment (DNA library) or the cDNA (RNA library). Primer 3' end abuts the insert and extends across it.",
-      "diagram": "                Read 1 primer\n                5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG----------->\n5'-...TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[====INSERT 53 nt====]...-3'  (top, reported)\n      |||||||||||||||||||||||||||||||||\n3'-...AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[====insert  compl====]...-5'  (bottom, template)"
+      "diagram": "   Read 1 primer\n   5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG----------->\n5'-...TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG[====INSERT 53 nt====]...-3'  (top, reported)\n      |||||||||||||||||||||||||||||||||\n3'-...AGCAGCCGTCGCAGTCTACACATATTCTCTGTC[====insert  compl====]...-5'  (bottom, template)"
     },
     {
       "read": "Index 1 (i7 sample index)",
@@ -832,7 +832,7 @@
       "template": "bottom",
       "cycles": 7,
       "note": "Reads the 6 nt i7 sample index added by P7XX; 7 cycles cover the 6 nt index. Primer anneals to the top strand just 5' of the index and copies the bottom strand.",
-      "diagram": "                   i7 index primer\n                   5'-...GAACTCCAGTCAC---->\n5'-...GAACTCCAGTCAC[i7:6=NNNNNN]ATCTCGTATGCCGTCTTCTGCTTG-3'  (top)\n      |||||||||||||          |||||||||||||||||||||||||\n3'-...CTTGAGGTCAGTG[  i7' :6 ]TAGAGCATACGGCAGAAGACGAAC-5'  (bottom, template)"
+      "diagram": "i7 index primer\n5'-...GAACTCCAGTCAC---->\n5'-...GAACTCCAGTCAC[i7:6=NNNNNN]ATCTCGTATGCCGTCTTCTGCTTG-3'  (top)\n      |||||||||||||             |||||||||||||||||||||||||\n3'-...CTTGAGGTCAGTG[  i7' :6   ]TAGAGCATACGGCAGAAGACGAAC-5'  (bottom, template)"
     },
     {
       "read": "Read 2 (UMI + 4 cell barcodes)",

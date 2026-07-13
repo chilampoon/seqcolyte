@@ -199,7 +199,7 @@ def cmd_wiki_index(args: argparse.Namespace) -> int:
     tdir = _REPO / "spec" / "technologies"
     index, records = [], []
     for f in sorted(tdir.glob("*.json")):
-        if f.name == "index.json" or f.name.endswith(".crosscheck.json"):
+        if f.name in ("index.json", "roadmap.json") or f.name.endswith(".crosscheck.json"):
             continue
         spec = json.loads(f.read_text())
         # the spec itself acts as the extraction (it carries oligos + the annotated library)
@@ -210,13 +210,33 @@ def cmd_wiki_index(args: argparse.Namespace) -> int:
                       "platform": spec.get("platform"), "chemistry_version": spec.get("chemistry_version"),
                       "modality": spec.get("modality"), "method_type": spec.get("method_type"),
                       "description": spec.get("description"), "big_conflict": cc.get("big_conflict", False),
-                      "oligo_seq_recall": cc.get("oligo_seq_recall")})
+                      "oligo_seq_recall": cc.get("oligo_seq_recall"),
+                      "status": spec.get("status", "supported"), "source_url": spec.get("source_url")})
         records.append({"folder": spec["spec_id"], "title": spec.get("title"), "crosscheck": cc})
-    index.sort(key=lambda x: (x["title"] or x["id"]).lower())
+
+    # Roadmap / not-yet-supported methods (the scg_lib_structs TODO list) live in roadmap.json — they have
+    # no spec file (id + title + source_url only), so they're appended here and deduped against shipped ids.
+    roadmap_path = tdir / "roadmap.json"
+    if roadmap_path.exists():
+        have = {x["id"] for x in index}
+        for e in json.loads(roadmap_path.read_text()):
+            if e["id"] in have:
+                continue
+            have.add(e["id"])
+            index.append({"id": e["id"], "title": e.get("title"), "platform": None,
+                          "chemistry_version": None, "modality": None, "method_type": None,
+                          "description": None, "big_conflict": False, "oligo_seq_recall": None,
+                          "status": e.get("status", "tbd"), "source_url": e.get("source_url")})
+
+    # supported first (alphabetical), then roadmap entries (alphabetical)
+    index.sort(key=lambda x: (x.get("status", "supported") != "supported", (x["title"] or x["id"]).lower()))
     (tdir / "index.json").write_text(json.dumps(index, indent=2) + "\n")
     (tdir / "CONFLICTS.md").write_text(render_report(records))
     n_flag = sum(1 for x in index if x["big_conflict"])
-    print(f"wrote {tdir/'index.json'} ({len(index)} technologies, {n_flag} big conflicts) + CONFLICTS.md")
+    n_supported = sum(1 for x in index if x.get("status", "supported") == "supported")
+    n_roadmap = len(index) - n_supported
+    print(f"wrote {tdir/'index.json'} ({n_supported} supported + {n_roadmap} roadmap, "
+          f"{n_flag} big conflicts) + CONFLICTS.md")
     return 0
 
 

@@ -517,7 +517,7 @@
       "title": "Reverse transcription (barcoded oligo-dT)",
       "summary": "SuperScript III extends the well-barcoded oligo-dT primer on the poly(A)-tailed fragments, making first-strand cDNA tagged with the UFI/UMI and cell barcode.",
       "note": "The CEL-seq2 primer's poly(dT) anneals to the new poly(A) tail; RT (50 C, 1 h) copies the fragment, embedding the T7 promoter, Read 1 region, 6-nt UFI/UMI and 8-nt cell barcode at the 5' end of the cDNA.",
-      "product": "(4) First-strand cDNA:\n\n5'- GCCGGT[T7]AGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:8]TTTTTTTTTTTT[cDNA]------->\n                                                          AAAAAAAAAAAA[RNA] -5'"
+      "product": "(4) First-strand cDNA:\n\n5'- GCCGGT[T7]AGTTCTACAGTCCGACGATC[UMI:6][CELL_BARCODE:8]TTTTTTTTTTTT[cDNA]------->\n                                                         AAAAAAAAAAAA[RNA] -5'"
     },
     {
       "step": 5,

@@ -608,14 +608,14 @@
       "title": "Round 1 \u2014 in-cell reverse transcription (barcode 1)",
       "summary": "In-cell RT with well-specific barcoded poly-dT and random-hexamer primers writes barcode 1 into first-strand cDNA.",
       "note": "Cells are split into a 96-well plate; each well's RT primer carries a unique 8 nt barcode plus a 5'-phosphate/ACTGTGG ligation handle. Poly-dT and random-hexamer primers of the same well share a barcode and are pooled. Maxima H Minus RT adds untemplated Cs at the cDNA 3' end.",
-      "product": "5'- [mRNA] AAAAA...A --------3'\n            ||||||\n         3'- VN(T)15 [BC1:8] GGTGTCA -Phos-5'   (round-1 primer)\n\nfirst-strand cDNA (5'->3'):\n5'-Phos- ACTGTGG [BC1:8] TTTTTTTTTTTTTTT [cDNA] CCC -3'"
+      "product": "5'- [mRNA] AAAAA...A --------3'\n            ||||||\n        3'- VN(T)15 [BC1:8] GGTGTCA -Phos-5'   (round-1 primer)\n\nfirst-strand cDNA (5'->3'):\n5'-Phos- ACTGTGG [BC1:8] TTTTTTTTTTTTTTT [cDNA] CCC -3'"
     },
     {
       "step": 3,
       "title": "Round 2 \u2014 in-cell ligation (barcode 2)",
       "summary": "Cells are pooled, re-split, and an 8 nt barcode-2 oligo is ligated onto the cDNA 5' end via a splint linker.",
       "note": "The round-2 barcode linker (BC_0335) and blocking strand (BC_0340) bridge the round-1 ACTGTGG end and the round-2 barcode oligo (5'-P-CATCGGCGTACGACT-[BC2]-ATCCACGTGCTTGAG) for ligation.",
-      "product": "5'-Phos- CATCGGCGTACGACT [BC2:8] ATCCACGTGCTTGAG | ACTGTGG [BC1:8] T15 [cDNA] -3'\n                                        ^ligation junction (round-2 linker splint)"
+      "product": "5'-Phos- CATCGGCGTACGACT [BC2:8] ATCCACGTGCTTGAG | ACTGTGG [BC1:8] T15 [cDNA] -3'\n                                                 ^ligation junction (round-2 linker splint)"
     },
     {
       "step": 4,
@@ -653,7 +653,7 @@
       "template": "bottom",
       "cycles": 74,
       "note": "Sequences into the cDNA insert (the captured transcript). Primer anneals to the bottom strand at the TruSeq Read 1 handle and extends toward the poly-A / BC1 block.",
-      "diagram": "                Read 1 sequencing primer\n             5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------->\ntop:    5'- ...ACACTCTTTCCCTACACGACGCTCTTCCGATCT[cDNA]AAAAAAAAAAAAAAA[BC1]... -3'\nbottom: 3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[cDNA]TTTTTTTTTTTTTTT[BC1]... -5'\n               (primer = top-strand sequence; it anneals to the bottom strand,\n                which is the template, and reads 74 nt of cDNA)"
+      "diagram": "                Read 1 sequencing primer\n            5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------->\ntop:    5'- ...ACACTCTTTCCCTACACGACGCTCTTCCGATCT[cDNA]AAAAAAAAAAAAAAA[BC1]... -3'\nbottom: 3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[cDNA]TTTTTTTTTTTTTTT[BC1]... -5'\n               (primer = top-strand sequence; it anneals to the bottom strand,\n                which is the template, and reads 74 nt of cDNA)"
     },
     {
       "read": "Index read (i7) \u2014 sublibrary barcode 4",
@@ -661,7 +661,7 @@
       "template": "bottom",
       "cycles": 6,
       "note": "Reads the 6 nt sublibrary index (the 4th barcode, added during indexing PCR). The index primer anneals to the bottom strand at the Read 2 handle, its 3' end abutting the i7, and reads toward P7.",
-      "diagram": "                              i7 index-read primer\n                  5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC------->\ntop:    5'- ...[UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\nbottom: 3'- ...[UMI']  TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7']  TAGAGCATACGGCAGAAGACGAAC -5'\n               (primer = top-strand handle sequence; anneals to the bottom strand,\n                which is the template, and reads the 6 nt i7 index toward P7)"
+      "diagram": "                              i7 index-read primer\n                     5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC------->\ntop:    5'- ...[UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7:6]ATCTCGTATGCCGTCTTCTGCTTG -3'\nbottom: 3'- ...[UMI']  TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7'] TAGAGCATACGGCAGAAGACGAAC -5'\n               (primer = top-strand handle sequence; anneals to the bottom strand,\n                which is the template, and reads the 6 nt i7 index toward P7)"
     },
     {
       "read": "Read 2 \u2014 UMI + cell barcodes (BC3, BC2, BC1)",
@@ -669,7 +669,7 @@
       "template": "top",
       "cycles": 86,
       "note": "Reads the 10 nt UMI, then BC3, BC2, BC1 (8 nt each) through the two ligation-linker constants. Primer anneals to the top-strand Read 2 handle and extends leftward (toward the cDNA end).",
-      "diagram": "top:    5'- [BC1]CCACAGTCTCAAGCACGTGGAT[BC2]AGTCGTACGCCGATGCGAAACATCGGCCAC[BC3][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7]... -3'\nbottom: 3'- [BC1]GGTGTCAGAGTTCGTGCACCTA[BC2]TCAGCATGCGGCTACGCTTTGTAGCCGGTG[BC3][UMI'] TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7]... -5'\n            <-------------------------------------------------------------- Read 2 (86 nt)\n                                                              3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\n                                                        (primer 5'-GTGACTGG...CCGATCT-3' anneals to\n                                                         the top strand = template; reads UMI+BC3+BC2+BC1)"
+      "diagram": "top:    5'- [BC1]CCACAGTCTCAAGCACGTGGAT[BC2]AGTCGTACGCCGATGCGAAACATCGGCCAC[BC3][UMI:10]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7]... -3'\nbottom: 3'- [BC1]GGTGTCAGAGTTCGTGCACCTA[BC2]TCAGCATGCGGCTACGCTTTGTAGCCGGTG[BC3][UMI']  TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7]... -5'\n            <-------------------------------------------------------------- Read 2 (86 nt)\n                                                                                    3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\n                                                        (primer 5'-GTGACTGG...CCGATCT-3' anneals to\n                                                         the top strand = template; reads UMI+BC3+BC2+BC1)"
     }
   ],
   "whitelists": {},

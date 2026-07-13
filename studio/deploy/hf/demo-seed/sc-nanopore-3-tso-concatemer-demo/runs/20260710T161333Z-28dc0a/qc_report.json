@@ -1,0 +1,175 @@
+{
+  "qc_version": "0.1.0",
+  "spec_id": "nanopore_10x_3p_direct_ligation",
+  "assay": "10x Chromium Single Cell 3' Gene Expression amplified cDNA \u2014 baseline Oxford Nanopore direct-ligation simulation",
+  "platform": "nanopore",
+  "profile": {
+    "n_pairs": 40000,
+    "r1_len": {
+      "min": 317,
+      "max": 2637,
+      "modal": 1309
+    },
+    "r2_len": {
+      "min": 317,
+      "max": 2637,
+      "modal": 1309
+    },
+    "long_read": {
+      "n_reads": 40000,
+      "min_length": 317,
+      "median_length": 1398,
+      "n50": 1692,
+      "max_length": 2637,
+      "modal_length": 1309,
+      "full_length_fraction": 0.9428,
+      "orientation_fraction": {
+        "reverse": 0.4961,
+        "forward": 0.5033,
+        "unknown": 0.0006
+      },
+      "classified_fraction": 0.9993,
+      "categories": {
+        "fused_or_concatemer": 10279,
+        "full_length": 28036,
+        "adapter2_only": 1153,
+        "unclassified": 26,
+        "adapter1_only": 506
+      }
+    }
+  },
+  "findings": [
+    {
+      "check_id": "tso_concatemer",
+      "title": "TSO concatemers / fused reads (internal adapter2)",
+      "verdict": "fail",
+      "value": 0.257,
+      "unit": "fraction",
+      "threshold": "< 0.05",
+      "affected_fraction": 0.257,
+      "severity": 0.514,
+      "evidence": [
+        {
+          "spec_ref": "adapter_detection.adapter2_motif",
+          "note": "an internal adapter2/TSO copy is the hallmark of a fused/concatemer read"
+        }
+      ],
+      "detail": "25.7% of reads carry an internal TSO/adapter2 signature (template-switch concatemer or two fused cDNAs). Fix: split reads at internal TSO junctions (computational). At the bench, the optional enriched profile \u2014 full-length biotinylated-primer streptavidin pull-down (ONT SST_9198) \u2014 depletes such artifacts; the baseline direct-ligation prep does not."
+    },
+    {
+      "check_id": "read_classification",
+      "title": "Stranding / read classification",
+      "verdict": "pass",
+      "value": 0.9993,
+      "unit": "fraction",
+      "threshold": ">= 0.8",
+      "affected_fraction": 0.0007,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "read_models",
+          "note": "adapter1/adapter2 detection on both strands"
+        }
+      ],
+      "detail": "99.9% of reads classified; 94.3% full-length (both flanks); orientation 50% forward. Categories: {'fused_or_concatemer': 10279, 'full_length': 28036, 'adapter2_only': 1153, 'unclassified': 26, 'adapter1_only': 506}."
+    },
+    {
+      "check_id": "handle_detection",
+      "title": "R1-derived handle detected near read end",
+      "verdict": "pass",
+      "value": 0.9598,
+      "unit": "fraction",
+      "threshold": ">= 0.7",
+      "affected_fraction": 0.0402,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "adapter_detection.adapter1",
+          "note": "R1 handle (partial TruSeq Read 1)"
+        }
+      ],
+      "detail": "R1 handle detected in 96.0% of reads (handle detection \u2260 barcode recovery)."
+    },
+    {
+      "check_id": "cb_umi_extractable",
+      "title": "Extractable cell barcode + UMI",
+      "verdict": "pass",
+      "value": 0.9598,
+      "unit": "fraction",
+      "threshold": ">= 0.6",
+      "affected_fraction": 0.0402,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "read_models",
+          "note": "handle-anchored 16 bp CB + 12 bp UMI probe"
+        }
+      ],
+      "detail": "CB+UMI extractable in 96.0% of reads (whitelist match not evaluated here)."
+    },
+    {
+      "check_id": "read_length",
+      "title": "Long-read length distribution",
+      "verdict": "pass",
+      "value": 1398,
+      "unit": "bp",
+      "threshold": "descriptive",
+      "affected_fraction": null,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "read_structure.reads",
+          "note": "single full-molecule read (L1)"
+        }
+      ],
+      "detail": "n=40,000, median 1398 bp, N50 1692 bp, max 2637 bp."
+    }
+  ],
+  "plan": {
+    "ranked": [
+      {
+        "check_id": "tso_concatemer",
+        "severity": "high",
+        "why": "25.7% of reads carry an internal TSO/adapter2 signature (template-switch concatemer or two fused cDNAs). Fix: split reads at internal TSO junctions (computational). At the bench, the optional enriched profile \u2014 full-length biotinylated-primer streptavidin pull-down (ONT SST_9198) \u2014 depletes such artifacts; the baseline direct-ligation prep does not."
+      },
+      {
+        "check_id": "read_classification",
+        "severity": "none",
+        "why": "99.9% of reads classified; 94.3% full-length (both flanks); orientation 50% forward. Categories: {'fused_or_concatemer': 10279, 'full_length': 28036, 'adapter2_only': 1153, 'unclassified': 26, 'adapter1_only': 506}."
+      },
+      {
+        "check_id": "handle_detection",
+        "severity": "none",
+        "why": "R1 handle detected in 96.0% of reads (handle detection \u2260 barcode recovery)."
+      },
+      {
+        "check_id": "cb_umi_extractable",
+        "severity": "none",
+        "why": "CB+UMI extractable in 96.0% of reads (whitelist match not evaluated here)."
+      },
+      {
+        "check_id": "read_length",
+        "severity": "none",
+        "why": "n=40,000, median 1398 bp, N50 1692 bp, max 2637 bp."
+      }
+    ],
+    "root_cause": "TSO concatemers / fused reads (internal adapter2)",
+    "diagnosis": "tso concatemers / fused reads (internal adapter2) (25.7% of reads carry an internal TSO/adapter2 signature (template-switch concatemer or two fused cDNAs). Fix: split reads at internal TSO junctions (computational). At the bench, the optional enriched profile \u2014 full-length biotinylated-primer streptavidin pull-down (ONT SST_9198) \u2014 depletes such artifacts; the baseline direct-ligation prep does not.).",
+    "method": "deterministic"
+  },
+  "overall": "fail",
+  "eval": {
+    "n": 40000,
+    "predicted_affected": 10279,
+    "true_affected": 11855,
+    "precision": 1.0,
+    "recall": 0.8671,
+    "f1": 0.9288,
+    "confusion": {
+      "tp": 10279,
+      "fp": 0,
+      "fn": 1576,
+      "tn": 28145
+    }
+  }
+}

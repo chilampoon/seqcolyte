@@ -1,0 +1,279 @@
+{
+  "fired_signals": [
+    {
+      "driving_metrics": [
+        "library.adapter_only_fraction"
+      ],
+      "label": "Adapter-only reads are elevated",
+      "magnitude": 1.0,
+      "signal_id": "signal.elevated_adapter_only"
+    },
+    {
+      "driving_metrics": [
+        "library.short_insert_fraction"
+      ],
+      "label": "Short-insert / adapter read-through elevated",
+      "magnitude": 1.0,
+      "signal_id": "signal.short_insert_elevated"
+    },
+    {
+      "driving_metrics": [
+        "library.polyg_tail_fraction"
+      ],
+      "label": "Poly-G / no-signal tails elevated",
+      "magnitude": 1.0,
+      "signal_id": "signal.polyg_tail_elevated"
+    }
+  ],
+  "hypotheses": [
+    {
+      "cause_id": "cause.adapter_dimer_or_short_insert",
+      "cell_recovery_relationship": "indirect",
+      "confirmatory_tests": [
+        "test.adapter_configuration_classification"
+      ],
+      "contradicting_signals": [],
+      "mechanism": "Adapter-dimer and short-insert molecules consume sequencing capacity and produce adapter-only or read-through reads. Directly relevant to low informative yield. Note: a physical library dimer percentage does not equal the sequenced-read percentage unless cluster-generation bias is modelled.",
+      "produces_issues": [
+        "issue.low_informative_read_yield",
+        "issue.abnormal_library_structure"
+      ],
+      "recoverability": "recoverable_by_additional_sequencing",
+      "score": 3.0,
+      "supporting_signals": [
+        "signal.elevated_adapter_only",
+        "signal.short_insert_elevated",
+        "signal.polyg_tail_elevated"
+      ],
+      "title": "Adapter dimers or short inserts"
+    },
+    {
+      "cause_id": "cause.read_past_end_or_signal_decay",
+      "cell_recovery_relationship": "unlikely",
+      "confirmatory_tests": [
+        "test.adapter_configuration_classification"
+      ],
+      "contradicting_signals": [],
+      "mechanism": "Sequencing reads past the insert end or suffers signal decay, producing poly-G (two-colour) or no-signal tails.",
+      "produces_issues": [
+        "issue.low_informative_read_yield"
+      ],
+      "recoverability": "computationally_recoverable",
+      "score": 2.0,
+      "supporting_signals": [
+        "signal.polyg_tail_elevated",
+        "signal.short_insert_elevated"
+      ],
+      "title": "Read-past-end or signal decay"
+    },
+    {
+      "cause_id": "cause.short_or_empty_cdna_products",
+      "cell_recovery_relationship": "indirect",
+      "confirmatory_tests": [
+        "test.adapter_configuration_classification"
+      ],
+      "contradicting_signals": [],
+      "mechanism": "Reverse transcription produced short or empty cDNA, so reads begin with TSO-derived sequence (short-read) or fail the full-length architecture (long-read).",
+      "produces_issues": [
+        "issue.abnormal_library_structure",
+        "issue.low_informative_read_yield"
+      ],
+      "recoverability": "partially_recoverable",
+      "score": 1.0,
+      "supporting_signals": [
+        "signal.short_insert_elevated"
+      ],
+      "title": "Short or empty cDNA products"
+    }
+  ],
+  "inputs_summary": {
+    "metrics_supplied": [
+      "assignment.gene_fraction",
+      "library.adapter_only_fraction",
+      "library.polyg_tail_fraction",
+      "library.short_insert_fraction",
+      "mapping.genome_fraction"
+    ],
+    "profile_evidence_strength": "operational_default",
+    "profile_version": "0.1.0"
+  },
+  "issues_ranked": [
+    {
+      "fired_signals": [
+        "signal.elevated_adapter_only",
+        "signal.short_insert_elevated",
+        "signal.polyg_tail_elevated"
+      ],
+      "issue_id": "issue.low_informative_read_yield",
+      "score": 3.0,
+      "title": "Low informative-read yield"
+    },
+    {
+      "fired_signals": [
+        "signal.short_insert_elevated",
+        "signal.elevated_adapter_only"
+      ],
+      "issue_id": "issue.abnormal_library_structure",
+      "score": 2.0,
+      "title": "Abnormal library structure"
+    }
+  ],
+  "metric_assessments": [
+    {
+      "basis": "0.72 >= warn_below 0.7",
+      "magnitude": 0.0,
+      "metric_id": "assignment.gene_fraction",
+      "source_scope": null,
+      "status": "ok",
+      "value": 0.72
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "barcode.extractable_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "barcode.valid_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "barcode.whitelist_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no profile rule",
+      "magnitude": 0.0,
+      "metric_id": "cell.barcode_rank_separation",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no profile rule",
+      "magnitude": 0.0,
+      "metric_id": "cell.called_count",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "cell.reads_in_cells_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "cell.target_attainment",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no profile rule",
+      "magnitude": 0.0,
+      "metric_id": "cell.target_count",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "0.3 > fail_above 0.2",
+      "magnitude": 1.0,
+      "metric_id": "library.adapter_only_fraction",
+      "source_scope": null,
+      "status": "fail",
+      "value": 0.3
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "library.full_length_proxy_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "library.internal_adapter_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "0.12 > fail_above 0.1",
+      "magnitude": 1.0,
+      "metric_id": "library.polyg_tail_fraction",
+      "source_scope": null,
+      "status": "fail",
+      "value": 0.12
+    },
+    {
+      "basis": "0.25 > fail_above 0.2",
+      "magnitude": 1.0,
+      "metric_id": "library.short_insert_fraction",
+      "source_scope": null,
+      "status": "fail",
+      "value": 0.25
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "library.tso_at_rna_read_start_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    },
+    {
+      "basis": "0.88 >= warn_below 0.85",
+      "magnitude": 0.0,
+      "metric_id": "mapping.genome_fraction",
+      "source_scope": null,
+      "status": "ok",
+      "value": 0.88
+    },
+    {
+      "basis": "no value",
+      "magnitude": 0.0,
+      "metric_id": "umi.extractable_fraction",
+      "source_scope": null,
+      "status": "unknown",
+      "value": null
+    }
+  ],
+  "missing_evidence": [
+    "barcode.extractable_fraction",
+    "barcode.valid_fraction",
+    "barcode.whitelist_fraction",
+    "cell.barcode_rank_separation",
+    "cell.called_count",
+    "cell.reads_in_cells_fraction",
+    "cell.target_attainment",
+    "cell.target_count",
+    "library.full_length_proxy_fraction",
+    "library.internal_adapter_fraction",
+    "library.tso_at_rna_read_start_fraction",
+    "umi.extractable_fraction"
+  ],
+  "profile_version": "0.1.0",
+  "scenario_id": "low_informative_yield_dimers",
+  "schema_version": "seqcolyte.diagnosis.v1",
+  "summary": null,
+  "title": "Low informative-read yield from adapter dimers / short inserts",
+  "warnings": []
+}

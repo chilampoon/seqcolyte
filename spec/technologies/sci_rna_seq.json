@@ -350,7 +350,7 @@
       "title": "In situ barcoded reverse transcription (1st index + UMI)",
       "summary": "A well-specific barcoded oligo-dT primer with a UMI primes RT on the poly(A) tail in situ.",
       "note": "1 uL 25 uM anchored oligo-dT RT primer + dNTPs, denature 55C, then SuperScript IV mix; RT 55C 10 min. Each well delivers a distinct RT barcode; the UMI tags individual molecules.",
-      "product": "mRNA:cDNA hybrid\n5'- ...[mRNA]... AAAAAAAAAAAA -3'\n3'-        ...[cDNA]... TTTTTTTTTTTT[CELL_BARCODE:10][UMI:8]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA -5'"
+      "product": "mRNA:cDNA hybrid\n5'- ...[mRNA]... AAAAAAAAAAAA -3'\n3'- ...[cDNA]... TTTTTTTTTTTT[CELL_BARCODE:10][UMI:8]TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA -5'"
     },
     {
       "step": 3,
@@ -364,14 +364,14 @@
       "title": "Second-strand synthesis",
       "summary": "mRNA Second Strand Synthesis converts the RT product into double-stranded cDNA.",
       "note": "NEB mRNA Second Strand Synthesis buffer + enzyme, 16C 150 min, stop 75C 20 min.",
-      "product": "double-stranded cDNA\n5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTT...[CDNA] -3'\n3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[UMI:8comp][CELL_BARCODE:10comp]AAAA...[CDNAcomp] -5'"
+      "product": "double-stranded cDNA\n5'-    ACACTCTTTCCCTACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTT...[CDNA] -3'\n3'- ...TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[UMI:8comp][CELL_BARCODE:10comp]AAAA...[CDNAcomp] -5'"
     },
     {
       "step": 5,
       "title": "Tn5 tagmentation (Nextera)",
       "summary": "Tn5 transposase fragments the ds-cDNA and inserts Nextera mosaic-end adaptors.",
       "note": "Nextera TD buffer + TDE1, 55C 5 min, with carrier genomic DNA to avoid over-tagmentation. In the three-level variant a barcoded/indexed Tn5 adds a third cellular index here. Only the i7-side adaptor is retained because downstream PCR primers are RT-product-specific.",
-      "product": "5'- ...[CELL_BARCODE:10]TTTT...[CDNA]      AGATGTGTATAAGAGACAG -3'\n                                   3'- TCTACACATATTCTCTGTCGGCTCGGGTGCTCTG -5'"
+      "product": "5'- ...[CELL_BARCODE:10]TTTT...[CDNA]      AGATGTGTATAAGAGACAG -3'\n                                       3'- TCTACACATATTCTCTGTCGGCTCGGGTGCTCTG -5'"
     },
     {
       "step": 6,
@@ -395,7 +395,7 @@
       "template": "top",
       "cycles": 18,
       "note": "Read 1 primer anneals to the RT/R1 handle on the bottom strand and reads the 8-nt UMI immediately followed by the 10-nt RT barcode (8 + 10 = 18 cycles).",
-      "diagram": "Read 1 primer:\n5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------->\n                                    (reads UMI 8 + RT barcode 10 = 18 nt)\n\n5'-...ACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTTTTTTTT...[cDNA]-3'   (top strand)\n3'-...TGTGCTGCGAGAAGGCTAGA[UMI:8][CELL_BARCODE:10]AAAAAAAAAA...[cDNA]-5'   (bottom strand)"
+      "diagram": "Read 1 primer:\n5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT----------------------->\n                                    (reads UMI 8 + RT barcode 10 = 18 nt)\n\n          5'-...ACACGACGCTCTTCCGATCT[UMI:8][CELL_BARCODE:10]TTTTTTTTTT...[cDNA]-3'   (top strand)\n          3'-...TGTGCTGCGAGAAGGCTAGA[UMI:8][CELL_BARCODE:10]AAAAAAAAAA...[cDNA]-5'   (bottom strand)"
     },
     {
       "read": "Read 2",
@@ -403,7 +403,7 @@
       "template": "bottom",
       "cycles": 52,
       "note": "Read 2 primer anneals to the Tn5 mosaic-end/S7 region on the top strand and reads the 3' cDNA tag off the bottom strand (52 cycles).",
-      "diagram": "                                              Read 2 primer:\n                        3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n<---------------------(reads cDNA 3' tag, 52 nt)\n\n5'-...[cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:10]ATCTCGTATGCCGTCTTCTGCTTG-3'   (top strand)\n3'-...[cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:10]TAGAGCATACGGCAGAAGACGAAC-5'   (bottom strand)"
+      "diagram": "                               Read 2 primer:\n         3'-GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'\n<---------------------(reads cDNA 3' tag, 52 nt)\n\n5'-...[cDNA]CTGTCTCTTATACACATCTCCGAGCCCACGAGAC[i7:10]ATCTCGTATGCCGTCTTCTGCTTG-3'   (top strand)\n3'-...[cDNA]GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG[i7:10]TAGAGCATACGGCAGAAGACGAAC-5'   (bottom strand)"
     },
     {
       "read": "Index 1 (i7)",
@@ -411,7 +411,7 @@
       "template": "bottom",
       "cycles": 10,
       "note": "The i7 index read primer anneals at the mosaic-end/S7 junction and reads the 10-nt i7 (second-round PCR) barcode toward P7.",
-      "diagram": "Index 1 (i7) primer:\n5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG--->\n                                        (reads i7, 10 nt)\n\n5'-...CTCCGAGCCCACGAGAC[SAMPLE_INDEX:10(i7)]ATCTCGTATGCCGTCTTCTGCTTG-3'   (top strand)\n3'-...GAGGCTCGGGTGCTCTG[SAMPLE_INDEX:10(i7)]TAGAGCATACGGCAGAAGACGAAC-5'   (bottom strand)"
+      "diagram": "Index 1 (i7) primer:\n5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG--->\n                                        (reads i7, 10 nt)\n\n              5'-...CTCCGAGCCCACGAGAC[SAMPLE_INDEX:10(i7)]ATCTCGTATGCCGTCTTCTGCTTG-3'   (top strand)\n              3'-...GAGGCTCGGGTGCTCTG[SAMPLE_INDEX:10(i7)]TAGAGCATACGGCAGAAGACGAAC-5'   (bottom strand)"
     },
     {
       "read": "Index 2 (i5)",
@@ -419,7 +419,7 @@
       "template": "top",
       "cycles": 10,
       "note": "On the NextSeq 500 the i5 (second-round PCR) barcode is read from the R1-handle primer toward P5 (10 cycles); on this patterned-flow-cell workflow it is read off the resynthesized bottom strand.",
-      "diagram": "                                     Index 2 (i5) primer:\n              <---3'-TCTAGCCTTCTCGCAGCACATATCCCTTTCTCACA-5'\n(reads i5, 10 nt)\n\n5'-AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10(i5)]ACACTCTTTCCCTACACGACGCTCTTCCGATCT...-3'   (top strand)\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:10(i5)]TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA...-5'   (bottom strand)"
+      "diagram": "                                                                        Index 2 (i5) primer:\n                                                 <---3'-TCTAGCCTTCTCGCAGCACATATCCCTTTCTCACA-5'\n(reads i5, 10 nt)\n\n5'-AATGATACGGCGACCACCGAGATCTACAC[SAMPLE_INDEX:10(i5)]ACACTCTTTCCCTACACGACGCTCTTCCGATCT...-3'   (top strand)\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTG[SAMPLE_INDEX:10(i5)]TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA...-5'   (bottom strand)"
     }
   ],
   "whitelists": {},

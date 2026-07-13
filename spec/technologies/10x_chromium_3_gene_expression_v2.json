@@ -457,42 +457,42 @@
       "title": "mRNA capture & reverse transcription in GEMs (GEM-RT)",
       "summary": "Bead poly(dT) captures polyadenylated mRNA in each droplet and MMLV reverse-transcribes it into barcoded first-strand cDNA.",
       "note": "In the GEM the dissolving gel bead releases the Beads-oligo-dT; its anchored poly(dT)VN primes polyA mRNA and Maxima H Minus (MMLV) reverse transcriptase extends, incorporating the shared 10x Barcode + per-molecule UMI.",
-      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN----------->\n                                                             3'-AAA...AAAXXXX...XXXX[mRNA] -5'"
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN----------->\n                                                   3'-AAA...AAAXXXX...XXXX[mRNA] -5'"
     },
     {
       "step": 2,
       "title": "MMLV terminal transferase adds untemplated C's",
       "summary": "At the cDNA 3' end MMLV's terminal-transferase activity adds a few untemplated cytosines.",
       "note": "The template-independent tailing that enables template switching.",
-      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXXCCC -3'\n   3'-                                              (pA)30BNXXX...XXX      -5'"
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXXCCC -3'\n   3'-                                              (pA)30BNXXX...XXX    -5'"
     },
     {
       "step": 3,
       "title": "Template switching (TSO)",
       "summary": "The TSO anneals to the C overhang and templates second-strand extension, appending a defined handle to the cDNA 3' end.",
       "note": "TSO 3' rGrGrG pairs with the CCC; MMLV switches template and copies the TSO.",
-      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXXCCC-------->\n                                                       (pA)30BNXXX...XXXGGGTACATGAGACGCAACTATGGTGACGAA -5'"
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXXCCC-------->\n                                                      (pA)30BNXXX...XXXGGGTACATGAGACGCAACTATGGTGACGAA -5'"
     },
     {
       "step": 4,
       "title": "Full-length cDNA amplification (cDNA Fwd + Rev primers)",
       "summary": "After the emulsion is broken, pooled barcoded cDNA is PCR-amplified with primers against the Read 1 handle and the TSO handle.",
       "note": "cDNA Forward primer (CTACACGACGCTCTTCCGATCT) + cDNA Reverse primer (AAGCAGTGGTATCAACGCAGAG) generate double-stranded full-length cDNA (14 cycles typical).",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXXCCCATGTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CB_rc:16][UMI_rc:10](pA)30BNXXX...XXXGGGTACATGAGACGCAACTATGGTGACGAA -5'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]   (dT)30VNXXX...XXXCCCATGTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CB_rc:16]       [UMI_rc:10](pA)30BNXXX...XXXGGGTACATGAGACGCAACTATGGTGACGAA -5'"
     },
     {
       "step": 5,
       "title": "Enzymatic fragmentation, end repair & A-tailing",
       "summary": "Full-length cDNA is sheared (~200 bp) and the fragment ends are repaired and A-tailed.",
       "note": "Only fragments carrying the 5' barcode handle and internal cDNA fragments enter the library; a single 3' A overhang is added for adaptor ligation.",
-      "product": "5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXX*A -3'\n3'-A*GATGTGCTGCGAGAAGGCTAGA[CB_rc:16][UMI_rc:10](pA)30BNXXX...XXX     -5'"
+      "product": "5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]   (dT)30VNXXX...XXX*A -3'\n3'-A*GATGTGCTGCGAGAAGGCTAGA[CB_rc:16]       [UMI_rc:10](pA)30BNXXX...XXX   -5'"
     },
     {
       "step": 6,
       "title": "Adaptor ligation (TruSeq Read 2 adapter)",
       "summary": "The T-overhang double-stranded TruSeq adapter is ligated onto the A-tailed fragment ends, adding the Read 2 primer site.",
       "note": "Adaptor Mix (PN 220026) ligated by DNA Ligase.",
-      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXXAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -3'\n3'-  ...GAGAAGGCTAGA[CB_rc][UMI_rc](pA)30BNXXX...XXXTCTAGCCTTCTCG                                       -5'"
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10](dT)30VNXXX...XXXAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -3'\n3'-                  ...GAGAAGGCTAGA[CB_rc][UMI_rc](pA)30BNXXX...XXXTCTAGCCTTCTCG                      -5'"
     },
     {
       "step": 7,

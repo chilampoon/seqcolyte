@@ -663,21 +663,21 @@
       "title": "mRNA capture in droplet",
       "summary": "Cells are lysed inside droplets and poly(A)+ mRNA anneals to the poly(dT) tail of the released, uniquely barcoded bead primer.",
       "note": "DTT in the RT mix cleaves the disulfide linker, releasing the barcoded primer from the dissolving hydrogel; bead lysis buffer lyses the cell simultaneously.",
-      "product": "5'- ...AAGCAGTGGTATCAACGCAGAGTAC-[BC1]-CAGCTACTGC-[BC2]-CGAGTACCCT-[BC3]-[UMI:8]-TTTTTTTTTTTTTTTTTTTTTTTTT -3'\n                                                                                    ||||||||||||||||||\n                                                                    3'-[mRNA]-AAAAAAAAAAAAAAAAAA-5'"
+      "product": "5'- ...AAGCAGTGGTATCAACGCAGAGTAC-[BC1]-CAGCTACTGC-[BC2]-CGAGTACCCT-[BC3]-[UMI:8]-TTTTTTTTTTTTTTTTTTTTTTTTT -3'\n                                                                                        ||||||||||||||||||\n                                                                              3'-[mRNA]-AAAAAAAAAAAAAAAAAA-5'"
     },
     {
       "step": 2,
       "title": "Reverse transcription (first strand)",
       "summary": "Maxima H- RT extends the bead primer along the mRNA, producing barcoded first-strand cDNA and adding untemplated C's at the 3' end.",
       "note": "In-droplet RT: 42C 90 min with 11 cycles of 50C/42C, GTP + PEG-8000 supplemented to stabilize the template-switch complex and act as a crowding agent.",
-      "product": "5'- ...CGCAGAGTAC-[BC1]-CAGCTACTGC-[BC2]-CGAGTACCCT-[BC3]-[UMI:8]-TTTTT...TTTTT-[cDNA]-CCC -3'\n                                                            3'-AAAAA...AAAAA-[mRNA]-5'"
+      "product": "5'- ...CGCAGAGTAC-[BC1]-CAGCTACTGC-[BC2]-CGAGTACCCT-[BC3]-[UMI:8]-TTTTT...TTTTT-[cDNA]-CCC -3'\n                                                               3'-AAAAA...AAAAA-[mRNA]-5'"
     },
     {
       "step": 3,
       "title": "Template switching",
       "summary": "The TSO anneals via its 3' rGGG to the untemplated CCC and RT copies it, appending the ISPCR/SMART handle to the cDNA 3' end.",
       "note": "TSO = AAGCAGTGGTATCAACGCAGAGTGAATGGG.",
-      "product": "5'- ...TTTTT-[cDNA]-CCCATTCACTCTGCGTTGATACCACTGCTT -3'\n                     3'-AAAAA-[mRNA]-GGGTAAGTGAGACGCAACTATGGTGACGAA-5' (TSO)"
+      "product": "5'- ...TTTTT-[cDNA]-CCCATTCACTCTGCGTTGATACCACTGCTT -3'\n    3'-AAAAA-[mRNA]-GGGTAAGTGAGACGCAACTATGGTGACGAA-5' (TSO)"
     },
     {
       "step": 4,
@@ -723,7 +723,7 @@
       "template": "top",
       "cycles": 10,
       "note": "Reads the 10 nt i7 index. The custom primer (5'-GTACTCTGCGTTGATACCACTGCTTCCGCGGACAG-3') is the reverse complement of the CTGTCCGCGG...AGAGTAC bead handle; it anneals to the top strand just 3' of the i7 and reads leftward into it. In HyDrop the i7 read is NOT used for sample demultiplexing.",
-      "diagram": "                         3'-GACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG-5'   HyDrop_CustSeq_Short\n              <------- read i7 (10 nt)\n5'-CAAGCAGAAGACGGCATACGAGAT[i7:10]CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC...-3'   (top)\n3'-GTTCGTCTTCTGCCGTATGCTCTA[i7:10]GACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG...-5'   (bottom)"
+      "diagram": "                               3'-GACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG-5'   HyDrop_CustSeq_Short\n                                  <------- read i7 (10 nt)\n5'-CAAGCAGAAGACGGCATACGAGAT[i7:10]CTGTCCGCGGAAGCAGTGGTATCAACGCAGAGTAC...-3'   (top)\n3'-GTTCGTCTTCTGCCGTATGCTCTA[i7:10]GACAGGCGCCTTCGTCACCATAGTTGCGTCTCATG...-5'   (bottom)"
     },
     {
       "read": "I2 (i5 index)",
@@ -731,7 +731,7 @@
       "template": "bottom",
       "cycles": 10,
       "note": "Reads the 10 nt i5 index from the P5/TruSeq side. i5 is the true sample-demultiplexing index for HyDrop-RNA (a different i5 per sample). On the NextSeq2000 the i5 is read from the resynthesized bottom strand.",
-      "diagram": "                              i5 index primer\n                    <------- read i5 (10 nt)\n5'-...AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT[i5:10]GTGTAGATCTCGGTGGTCGCCGTATCATT-3'   (top)\n3'-...TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA[i5:10]CACATCTAGAGCCACCAGCGGCATAGTAA-5'   (bottom)"
+      "diagram": "                                              i5 index primer\n                                              <------- read i5 (10 nt)\n5'-...AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT[i5:10]GTGTAGATCTCGGTGGTCGCCGTATCATT-3'   (top)\n3'-...TCTAGCCTTCTCGCAGCACATCCCTTTCTCACA[i5:10]CACATCTAGAGCCACCAGCGGCATAGTAA-5'   (bottom)"
     },
     {
       "read": "R2 (cell barcode + UMI)",

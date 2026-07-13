@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "studio.project.v1",
+  "id": "sc-nanopore-3-healthy-demo",
+  "name": "sc-Nanopore 3\u2032 \u2014 Healthy (demo)",
+  "assay": "10x Chromium Single Cell 3' Gene Expression (Nanopore long-read)",
+  "specId": "nanopore_10x_3p_direct_ligation",
+  "createdAt": "2026-07-10T16:13:33.073386Z",
+  "updatedAt": "2026-07-10T16:13:33.073386Z",
+  "activeSpecPath": "spec/spec.json",
+  "phase": "complete",
+  "specConfirmed": true,
+  "demo": true,
+  "inputs": {
+    "protocolDoc": null,
+    "notesPath": "inputs/notes.md",
+    "reads": "demo",
+    "tables": [],
+    "fastq": {
+      "source": "sim",
+      "r1": null,
+      "r2": null
+    }
+  },
+  "latestRunId": "20260710T161333Z-7e9cb9",
+  "runIds": [
+    "20260710T161333Z-7e9cb9"
+  ],
+  "demoBlurb": "Nanopore long-read: clean full-length reads (96.6% full-length) \u2014 TSO-concatemer rate 2.7% (below threshold)."
+}

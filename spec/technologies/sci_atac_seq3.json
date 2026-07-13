@@ -557,7 +557,7 @@
       "title": "Round 1 ligation \u2014 N5 barcode (split-pool)",
       "summary": "A splint bridges each ME-A end to a well-specific N5 barcode oligo, which is ligated on as the first combinatorial index.",
       "note": "Nuclei are split across 384 wells; T7 DNA ligase seals the N5 oligo 3'-OH (...GTAATCAG) to the ME-A 5'-phosphate, guided by the N5 splint (GCCGACGACTGATTA/3ddC). Wells are pooled after ligation.",
-      "product": "N5 oligo                                ME-A (tagmented fragment)\n5'- CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAG TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic]...\n                        3'-Cdd-ATTAGTCAGCAGCCG-5'   (N5 splint holds ends together)\n\nafter ligation:\n5'- CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic]..."
+      "product": "N5 oligo                                ME-A (tagmented fragment)\n5'- CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAG TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic]...\n                              3'-Cdd-ATTAGTC AGCAGCCG-5'   (N5 splint holds ends together)\n\nafter ligation:\n5'- CACCGCACGAGAGGT[CELL_BARCODE:10]GTAATCAGTCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic]..."
     },
     {
       "step": 4,

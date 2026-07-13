@@ -497,7 +497,7 @@
       "title": "GEM generation & barcoding",
       "summary": "Cells, barcoded 5' gel beads and RT reagents (poly-dT RT primer) are co-partitioned into nanoliter GEMs on Chromium Next GEM Chip K.",
       "note": "Each gel bead carries ~750,000-member-pool oligos with a common 16 nt 10x barcode: partial Read 1 + barcode + UMI + a 13 nt TSO ending in rGrGrG. The poly-dT RT primer is supplied in the master mix. Bead dissolution releases the oligos into the droplet with lysed-cell mRNA.",
-      "product": "Co-partitioned in one GEM:\n\nGel bead oligo:\n|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG -3'\n\nPoly-dT RT primer annealed to mRNA poly(A):\n5'- AAGCAGTGGTATCAACGCAGAGTAC(T)30VN -3'\n                            3'- ...(A)n-mRNA-5'cap"
+      "product": "Co-partitioned in one GEM:\n\nGel bead oligo:\n|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG -3'\n\nPoly-dT RT primer annealed to mRNA poly(A):\n5'- AAGCAGTGGTATCAACGCAGAGTAC(T)30VN -3'\n                      3'- ...(A)n-mRNA-5'cap"
     },
     {
       "step": 2,
@@ -511,14 +511,14 @@
       "title": "cDNA amplification (PCR)",
       "summary": "After silane cleanup, barcoded cDNA is PCR-amplified with the cDNA Forward (partial Read 1) and cDNA Reverse (RT handle) primers.",
       "note": "Generates sufficient double-stranded, full-length cDNA mass to build the 5' gene expression library (and optionally V(D)J libraries from the same material).",
-      "product": "cDNA Forward:  5'- CTACACGACGCTCTTCCGATCT ---->\n5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]GTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]CATGAGACGCAACTATGGTGACGAA -5'\n                                                        <---- GAGACGCAACTATGGTGACGAA -5'  :cDNA Reverse"
+      "product": "cDNA Forward:  5'- CTACACGACGCTCTTCCGATCT ---->\n5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]GTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]CATGAGACGCAACTATGGTGACGAA -5'\n                                                                   <---- GAGACGCAACTATGGTGACGAA -5'  :cDNA Reverse"
     },
     {
       "step": 4,
       "title": "Fragmentation, End Repair & A-tailing",
       "summary": "Amplified cDNA is enzymatically fragmented and A-tailed to optimize amplicon size for 5' GEX library construction.",
       "note": "Only fragments retaining the barcoded 5' (Read 1) end carry the cell barcode/UMI and go on to amplify in Sample Index PCR; internal fragments lack the Read 1 handle.",
-      "product": "Barcoded 5'-end fragment (A-tailed):\n5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]*A -3'\n3'- A*GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]  -5'"
+      "product": "Barcoded 5'-end fragment (A-tailed):\n5'-   CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]*A -3'\n3'- A*GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]  -5'"
     },
     {
       "step": 5,
@@ -542,7 +542,7 @@
       "template": "bottom",
       "cycles": 26,
       "note": "Primer anneals to the bottom strand at the TruSeq Read 1 region and reads the 16 nt 10x cell barcode followed by the 10 nt UMI.",
-      "diagram": "                Read 1 sequencing primer\n           5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT---------------------------->\n               |||||||||||||||||||||||||||||||||\n3'- ...GATCTACAC TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNNNNNNNNNNN NNNNNNNNNN AAAGAATATACCC... -5'\n                                                  <---16 nt 10x BC---><-10 nt UMI->\n                                                        (template = bottom strand)"
+      "diagram": "                Read 1 sequencing primer\n             5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT---------------------------->\n                 |||||||||||||||||||||||||||||||||\n3'- ...GATCTACAC TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA NNNNNNNNNNNNNNNN NNNNNNNNNN AAAGAATATACCC... -5'\n                                                  <---16 nt 10x BC---><-10 nt UMI->\n                                                        (template = bottom strand)"
     },
     {
       "read": "Index 1 (i7)",
@@ -558,7 +558,7 @@
       "template": "top",
       "cycles": 10,
       "note": "Reads the 10 bp i5 sample index. On forward-strand instruments (MiSeq, HiSeq 2500, NovaSeq 6000 standard) the primer reads the i5 as shown; on reverse-complement workflow instruments (NextSeq, NovaSeq Xp) the i5 is reported as its reverse complement.",
-      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC NNNNNNNNNN ACACTCTTTCCCTACACGACGCTC... -3'\n                                            ||||||||||||||||||||||||\n                       <---i5 (10)---------- GAGCGTCGTGTAGGGAAAGAGTGT -5'\n                                          3' i5 index sequencing primer\n                                             (template = top strand)"
+      "diagram": "5'- AATGATACGGCGACCACCGAGATCTACAC NNNNNNNNNN ACACTCTTTCCCTACACGACGCTC... -3'\n                                             ||||||||||||||||||||||||\n                       <---i5 (10)---------- GAGCGTCGTGTAGGGAAAGAGTGT -5'\n                                          3' i5 index sequencing primer\n                                             (template = top strand)"
     },
     {
       "read": "Read 2",

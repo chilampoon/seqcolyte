@@ -1,12 +1,12 @@
 {
   "schemaVersion": "studio.project.v1",
   "id": "10x-pbmc-3-adapter-dimer-qc-demo-d13261",
-  "name": "10x PBMC 3′ — adapter-dimer QC (demo)",
+  "name": "10x PBMC 3\u2032 \u2014 Adapter-dimer library (demo)",
   "assay": "10x Chromium Single Cell 3' Gene Expression",
   "specId": "10x_3p_v3",
   "createdAt": "2026-07-09T00:09:57.059Z",
-  "updatedAt": "2026-07-09T00:09:58.163Z",
-  "activeSpecPath": null,
+  "updatedAt": "2026-07-10T01:38:28.894Z",
+  "activeSpecPath": "spec/spec.json",
   "inputs": {
     "protocolDoc": null,
     "notesPath": "inputs/notes.md",
@@ -14,10 +14,15 @@
       "source": "sim",
       "r1": null,
       "r2": null
-    }
+    },
+    "reads": "demo"
   },
   "latestRunId": "20260709T000958Z-d29e8b",
   "runIds": [
     "20260709T000958Z-d29e8b"
-  ]
+  ],
+  "phase": "complete",
+  "demo": true,
+  "specConfirmed": true,
+  "demoBlurb": "Illumina short-read: adapter-dimer failures injected \u2014 QC catches them (recall 1.0)."
 }

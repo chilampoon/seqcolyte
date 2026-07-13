@@ -308,7 +308,7 @@
       "title": "mRNA capture & first-strand synthesis",
       "summary": "The anchored oligo-dT primer anneals to the poly(A) tail and Superscript II reverse transcribes the mRNA, adding 3\u20136 non-templated C's at the cDNA 3\u2032 end.",
       "note": "Mn2+ in the RT mix improves template-switching efficiency. MMLV RT adds non-templated dC (typically CCC) at the 3\u2032 end of the completed first strand (the 5\u2032 end of the mRNA).",
-      "product": "mRNA   5'- [transcript] -AAAAAAAA -3'\n              |||||||| (reverse transcription)\ncDNA 3'-CCC-[cDNA]------TTTTTTTTVN-AGCAGTGGTATCAACGCAGAGTCGACT...-Bio-5'\n         ^^^ non-templated dC tail"
+      "product": "mRNA   5'- [transcript]-AAAAAAAA -3'\n                        |||||||| (reverse transcription)\ncDNA 3'-CCC-[cDNA]------TTTTTTTTVN-AGCAGTGGTATCAACGCAGAGTCGACT...-Bio-5'\n        ^^^ non-templated dC tail"
     },
     {
       "step": 3,
@@ -343,7 +343,7 @@
       "title": "End repair & dA-tailing",
       "summary": "Fragment ends are blunted (end repair) and a single 3\u2032 A overhang is added with Klenow exo\u2212.",
       "note": "The dA overhang enables T/A ligation of the P2 adapter to the free (fragmented) end.",
-      "product": "[bead]~Bio-5'-...GGG-[cDNA fragment]-A    -3'\n           3'-    ...CCC-[cDNA comp]  -   -5'  (blunt + 3'-A overhang)"
+      "product": "[bead]~Bio-5'-...GGG-[cDNA fragment]-A    -3'\n           3'-...CCC-[cDNA comp]  -   -5'  (blunt + 3'-A overhang)"
     },
     {
       "step": 8,
@@ -374,7 +374,7 @@
       "template": "top",
       "cycles": 50,
       "note": "Mandatory custom sequencing primer read from the P1 side (the standard Illumina primer does not anneal). The primer's 3' end sits immediately upstream of the barcode, so the read begins with the 6-bp well/cell barcode, then the template-switch GGG, then the 5' end (TSS) of the transcript. Original paper reported ~55-bp reads on a Genome Analyzer IIx.",
-      "diagram": "                        Read 1 (STRT-SEQ-V3, single-end from the P1 side)\n           5'-AAGCAGTGGTATCAACGCAGAGTGCAGTGCT----------------------->   (read = BC6 + GGG + cDNA 5' end)\n5'- ...GAGATCTAAGCAGTGGTATCAACGCAGAGTGCAGTGCT[BC6]GGG[cDNA]AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG -3'   (top / sense)\n3'- ...CTCTAGATTCGTCACCATAGTTGCGTCTCACGTCACGA[BC6]CCC[cDNA]TCTAGCCTTCTCGAGCATACGGCAGAAGACGAAC -5'   (bottom / antisense)\n                                              ^ read starts here (barcode)"
+      "diagram": "                        Read 1 (STRT-SEQ-V3, single-end from the P1 side)\n           5'-AAGCAGTGGTATCAACGCAGAGTGCAGTGCT----------------------->   (read = BC6 + GGG + cDNA 5' end)\n5'- ...GAGATCTAAGCAGTGGTATCAACGCAGAGTGCAGTGCT[BC6]GGG[cDNA]AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG -3'   (top / sense)\n3'- ...CTCTAGATTCGTCACCATAGTTGCGTCTCACGTCACGA[BC6]CCC[cDNA]TCTAGCCTTCTCGAGCATACGGCAGAAGACGAAC -5'   (bottom / antisense)\n                                             ^ read starts here (barcode)"
     }
   ],
   "whitelists": {},

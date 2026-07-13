@@ -122,6 +122,22 @@ export function Workspace({
     [refreshRuns, project.id, project.phase, router, showFile, traceRunId],
   );
 
+  // On first load, reveal the report of an already-finished run so it's visible without hunting for it
+  // in the Files panel (demos load complete, so their report would otherwise stay hidden).
+  const autoOpenedRef = useRef(false);
+  useEffect(() => {
+    if (autoOpenedRef.current) return;
+    const latest = runs.find((r) => r.id === project.latestRunId) ?? runs[0];
+    if (latest && latest.overallStatus === "succeeded") {
+      autoOpenedRef.current = true;
+      showFile({
+        kind: "html",
+        url: `/api/projects/${project.id}/runs/${latest.id}/report?format=html`,
+        title: "QC report",
+      });
+    }
+  }, [runs, project.latestRunId, project.id, showFile]);
+
   const specHeaderAction =
     openFile?.kind === "spec" && project.phase === "awaiting_spec_review" ? (
       <button

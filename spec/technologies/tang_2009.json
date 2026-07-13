@@ -461,7 +461,7 @@
       "title": "First-strand cDNA synthesis (reverse transcription)",
       "summary": "SuperScript III + UP1 anchored poly(dT) primer reverse-transcribes mRNA into first-strand cDNA.",
       "note": "The 24-nt poly(dT) of UP1 anneals to the mRNA poly(A) tail; the 24-nt UP1 anchor becomes the cDNA 5' universal handle. 50 C, 30 min for full-length synthesis.",
-      "product": "(RT extends from UP1 across the mRNA)\n5'- ATATGGATCCGGCGCGCCGTCGAC(T)24[CDNA]------->\n                        3'-...[mRNA](A)n -5'"
+      "product": "(RT extends from UP1 across the mRNA)\n5'- ATATGGATCCGGCGCGCCGTCGAC(T)24[CDNA]------->\n                3'-...[mRNA](A)n -5'"
     },
     {
       "step": 3,
@@ -482,7 +482,7 @@
       "title": "Second-strand cDNA synthesis",
       "summary": "UP2 anchored poly(dT) primer anneals to the poly(dA) tail and extends to make second-strand cDNA.",
       "note": "Adds the universal UP2 handle to the other end; product per protocol is 5'-UP2-(T)n-cDNA-(A)n-UP1-3'.",
-      "product": "5'- ATATCTCGAGGGCGCGCCGGATCC(T)n[CDNA](A)n GTCGACGGCGCGCCGGATCCATAT -3'\n3'- TATAGGATCCGCGCGCCCTCGAG(A)n[CDNA](T)n CAGCTGGCCGCGCGGGATCCTATA -5'"
+      "product": "5'- ATATCTCGAGGGCGCGCCGGATCC(T)n[CDNA](A)n GTCGACGGCGCGCCGGATCCATAT -3'\n3'-  TATAGGATCCGCGCGCCCTCGAG(A)n[CDNA](T)n CAGCTGGCCGCGCGGGATCCTATA -5'"
     },
     {
       "step": 6,

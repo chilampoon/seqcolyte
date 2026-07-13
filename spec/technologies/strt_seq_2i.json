@@ -468,14 +468,14 @@
       "title": "In-well lysis & oligo-dT capture",
       "summary": "Cells/nuclei are lysed in-well and the biotinylated oligo-dT primer STRT-P1-T31 anneals to the mRNA poly(A) tail.",
       "note": "50 nl lysis mix with 500 nM STRT-P1-T31 (Bio-P5tail-poly(dT)), 3 min at 72 \u00b0C (up to 95 \u00b0C in optimized conditions), captures polyadenylated RNA.",
-      "product": "5'- [5'CAP transcript]XXXXX...XXXXX A A A A A A                            -3'   mRNA\n                                    | | | | | |\n                              3'- T T T T T T ...GCTAGCCACCAGCGGCATAGTAA -Bio-5'   STRT-P1-T31\n                              <----------- RT extends from 3' end"
+      "product": "5'- [5'CAP transcript]XXXXX...XXXXX A A A A A A                            -3'   mRNA\n                                    | | | | | |\n                                3'- T T T T T T ...GCTAGCCACCAGCGGCATAGTAA -Bio-5'   STRT-P1-T31\n                                <----------- RT extends from 3' end"
     },
     {
       "step": 2,
       "title": "Reverse transcription (SuperScript II)",
       "summary": "SuperScript II extends the oligo-dT primer into first-strand cDNA and adds untemplated C's at the transcript 5' cap.",
       "note": "85 nl RT mix (SuperScript II, betaine, MgCl2) at 42 \u00b0C for 90 min; MMLV terminal transferase adds 2\u20135 C's at the cDNA 3' end (opposite the mRNA 5' cap).",
-      "product": "5'- [5'CAP transcript]XXXXX...XXXXX AAAAAAAA                         -3'   mRNA\n3'- CCC[========= first-strand cDNA =========]TTTTTTTT GCTAGCCACCAGCGGCATAGTAA -Bio-5'"
+      "product": "5'- [5'CAP transcript]XXXXX...XXXXX           AAAAAAAA                         -3'   mRNA\n3'- CCC[========= first-strand cDNA =========]TTTTTTTT GCTAGCCACCAGCGGCATAGTAA -Bio-5'"
     },
     {
       "step": 3,
@@ -521,7 +521,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "8-bp subarray barcode (Index 1), added by barcoded Tn5. Sequenced with the phosphorylated mosaic-end strand STRT-Tn5-U.",
-      "diagram": "                    5'-CTGTCTCTTATACACATCTGACGC-------->  (STRT-Tn5-U)\n                                                    reads NNNNNNNN (subarray idx, 8 bp)\n5'- ...[CDNA]CTGTCTCTTATACACATCTGACGCNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[CDNA]GACAGAGAATATGTGTAGACTGCGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'"
+      "diagram": "          5'-CTGTCTCTTATACACATCTGACGC-------->  (STRT-Tn5-U)\n                                                    reads NNNNNNNN (subarray idx, 8 bp)\n5'- ...[CDNA]CTGTCTCTTATACACATCTGACGCNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...[CDNA]GACAGAGAATATGTGTAGACTGCGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'"
     },
     {
       "read": "Index 2",
@@ -529,7 +529,7 @@
       "template": "bottom",
       "cycles": 5,
       "note": "5-bp well barcode (Index 2), added by the first indexed PCR. Sequenced with the P5/P1A-region primer DI-idxP1A-Seq, whose 3\u2032 end abuts the well index.",
-      "diagram": "5'-AATGATACGGCGACCACCGAGATCTACAC-------->  (DI-idxP1A-Seq)\n                                 reads NNNNN (well idx, 5 bp)\n5'- AATGATACGGCGACCACCGAGATCTACACNNNNNCTACACGACGCTCTTCCGATCT... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNGATGTGCTGCGAGAAGGCTAGA... -5'"
+      "diagram": " 5'-AATGATACGGCGACCACCGAGATCTACAC-------->  (DI-idxP1A-Seq)\n                                 reads NNNNN (well idx, 5 bp)\n5'- AATGATACGGCGACCACCGAGATCTACACNNNNNCTACACGACGCTCTTCCGATCT... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNGATGTGCTGCGAGAAGGCTAGA... -5'"
     }
   ],
   "whitelists": {},

@@ -688,14 +688,14 @@
       "title": "Cell-surface protein labeling with Feature Barcode antibodies",
       "summary": "Cells are stained with antibodies conjugated to Feature Barcode oligos (TotalSeq-C) that encode antibody identity and a TSO-complementary capture sequence.",
       "note": "Cells are Fc-blocked and incubated (30 min, 4\u00b0C) with a pool of antibody\u2013oligonucleotide conjugates, then washed to remove unbound conjugate. Each antibody carries a 15 nt Feature Barcode plus a 3\u2032 capture sequence (CCCATATAAGAAA) complementary to the gel-bead template-switch handle.",
-      "product": "         Antibody\n            |\n /5AmMC12/-CGGAGATGTGTATAAGAGACAG-[SPACER:10]-[FEATURE_BARCODE:15]-[SPACER:9]-CCCATATAAGAAA -3'\n           (Nextera Read 2N)                                              (Capture Seq)"
+      "product": "         Antibody\n            |\n /5AmMC12/-CGGAGATGTGTATAAGAGACAG-[SPACER:10]-[FEATURE_BARCODE:15]-[SPACER:9]-CCCATATAAGAAA -3'\n           (Nextera Read 2N)                                                  (Capture Seq)"
     },
     {
       "step": 2,
       "title": "GEM generation, mRNA reverse transcription & Feature Barcode capture",
       "summary": "In each GEM the poly-dT primer reverse-transcribes mRNA and the RT template-switches onto the gel-bead TSO, which simultaneously captures the antibody Feature Barcode \u2014 both tagged with the same 10x barcode + UMI.",
       "note": "MMLV RT extends from the poly(dT) primer, then template-switches at the 5\u2032 cap onto the GGG of the gel-bead TSO (giving 5\u2032 cDNA the barcode/UMI/Read 1 handle). The identical TSO handle base-pairs to the antibody-oligo capture sequence, so the Feature Barcode is copied and 10x-barcoded in the same partition.",
-      "product": "mRNA path (5' cDNA after template switch):\n5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]GTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]CATGAGACGCAACTATGGTGACGAA -5'\n\nFeature Barcode path (capture onto TSO):\n|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG ------->\n                                                    AAAGAATATACCC[SPACER:9][FEATURE_BARCODE:15][SPACER:10]GACAGAGAATATGTGTAGAGGC -5'"
+      "product": "mRNA path (5' cDNA after template switch):\n5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG[CDNA]GTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC[CDNA]CATGAGACGCAACTATGGTGACGAA -5'\n\nFeature Barcode path (capture onto TSO):\n|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG ------->\n                                                      AAAGAATATACCC[SPACER:9][FEATURE_BARCODE:15][SPACER:10]GACAGAGAATATGTGTAGAGGC -5'"
     },
     {
       "step": 3,
@@ -734,7 +734,7 @@
       "template": "bottom",
       "cycles": 10,
       "note": "Reads the 10 nt i7 sample index (index read N for the Cell Surface Protein library).",
-      "diagram": "   5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC---------->  (i7 index)\n5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'\n3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'\n                                     |<-i7:10->|"
+      "diagram": "   5'-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC---------->  (i7 index)\n5'-...CTGTCTCTTATACACATCTCCGAGCCCACGAGACNNNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG-3'\n3'-...GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTGNNNNNNNNNNTAGAGCATACGGCAGAAGACGAAC-5'\n                                        |<-i7:10->|"
     },
     {
       "read": "Index 2 (i5)",
@@ -742,7 +742,7 @@
       "template": "bottom",
       "cycles": 10,
       "note": "Reads the 10 nt i5 sample index (dual-index, forward-strand workflow).",
-      "diagram": "5'-AATGATACGGCGACCACCGAGATCTACAC---------->  (i5 index)\n5'-AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNACACTCTTTCCCTACACGACGCTC...-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNTGTGAGAAAGGGATGTGCTGCGAG...-5'\n                             |<-i5:10->|"
+      "diagram": "5'-AATGATACGGCGACCACCGAGATCTACAC---------->  (i5 index)\n5'-AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNACACTCTTTCCCTACACGACGCTC...-3'\n3'-TTACTATGCCGCTGGTGGCTCTAGATGTGNNNNNNNNNNTGTGAGAAAGGGATGTGCTGCGAG...-5'\n                                |<-i5:10->|"
     },
     {
       "read": "Read 2",
@@ -750,7 +750,7 @@
       "template": "top",
       "cycles": 90,
       "note": "For the Cell Surface Protein library this reads the 15 nt antibody Feature Barcode; for the GEX / V(D)J libraries the same-position read is TruSeq Read 2 sequencing the cDNA insert instead.",
-      "diagram": "5'-...TTTCTTATATGGGNNNNNNNNNXXXXXXXXXXXXXXXNNNNNNNNNNCTGTCTCTTATACACATCTCCGAGCCCACGAGAC...-3'\n3'-...AAAGAATATACCCNNNNNNNNNXXXXXXXXXXXXXXXNNNNNNNNNNGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG...-5'\n                          |<-15nt Feature BC->|\n                     <-----------------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  (Read 2N)"
+      "diagram": "5'-...TTTCTTATATGGGNNNNNNNNNXXXXXXXXXXXXXXXNNNNNNNNNNCTGTCTCTTATACACATCTCCGAGCCCACGAGAC...-3'\n3'-...AAAGAATATACCCNNNNNNNNNXXXXXXXXXXXXXXXNNNNNNNNNNGACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG...-5'\n                            |<-15nt Feature BC->|\n                             <-----------------------GACAGAGAATATGTGTAGAGGCTCGGGTGCTCTG-5'  (Read 2N)"
     }
   ],
   "whitelists": {},

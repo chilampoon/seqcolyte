@@ -338,14 +338,14 @@
       "title": "End-repair and dA-tailing",
       "summary": "Fragment ends are blunted and 3' A-tailed to prepare for T-overhang TruSeq adapter ligation.",
       "note": "Standard Illumina TruSeq end-repair converts ragged ends to blunt, phosphorylated ends; Klenow exo- adds a single 3' dA overhang.",
-      "product": "5'-  XXXXXXXXXXXXXXXX A -3'\n3'- A XXXXXXXXXXXXXXXX   -5'\n(blunt, 5'-phosphorylated, single 3' dA overhangs)"
+      "product": "5'-   XXXXXXXXXXXXXXXX A -3'\n3'- A XXXXXXXXXXXXXXXX   -5'\n(blunt, 5'-phosphorylated, single 3' dA overhangs)"
     },
     {
       "step": 5,
       "title": "TruSeq forked-adapter ligation",
       "summary": "Y-shaped TruSeq adapters are ligated to both ends of each DHS fragment; circular carrier remains unligated.",
       "note": "The forked adapter creates asymmetric ends carrying the Read 1 and Read 2 primer landing sites, so only ligated fragments become PCR-amplifiable.",
-      "product": "5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT XXXX...XXXX AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -3'\n3'- GAGTGTGCTGCGAGAAGGCTAGA          XXXX...XXXX TCTAGCCTTCTCACACGTGTGCA          -5'\n(forked/Y adapters on both ends; carrier plasmid not ligated)"
+      "product": "5'- ACACTCTTTCCCTACACGACGCTCTTCCGATCT XXXX...XXXX AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -3'\n3'-           GAGTGTGCTGCGAGAAGGCTAGA XXXX...XXXX TCTAGCCTTCTCACACGTGTGCA           -5'\n(forked/Y adapters on both ends; carrier plasmid not ligated)"
     },
     {
       "step": 6,
@@ -383,7 +383,7 @@
       "template": "bottom",
       "cycles": 50,
       "note": "Reads one end of the genomic DHS insert (top-strand sequence). Most single-cell libraries were single-end; some were paired-end (paired reads with insert distance <500 bp were retained). The Read 1 primer is identical to a top-strand segment, so it anneals to the bottom strand and is extended into the insert.",
-      "diagram": "                  Read 1 primer  5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3'\n                  ------------------------------------->  (read = top-strand insert)\n5'- ...GAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[INSERT]AGATCGGAAGAGC... -3'\n3'- ...CTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[INSERT]TCTAGCCTTCTCG... -5'   (template = bottom)"
+      "diagram": "Read 1 primer  5'-ACACTCTTTCCCTACACGACGCTCTTCCGATCT-3'\n                                                   ------------------------------------->  (read = top-strand insert)\n    5'- ...GAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[INSERT]AGATCGGAAGAGC... -3'\n    3'- ...CTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[INSERT]TCTAGCCTTCTCG... -5'   (template = bottom)"
     },
     {
       "read": "Index 1 (i7)",
@@ -391,7 +391,7 @@
       "template": "bottom",
       "cycles": 6,
       "note": "Reads the 6-nt i7 sample index identifying the single-cell/sample library. The index primer is identical to the top-strand Read 2 adapter segment, so it anneals to the bottom strand and is extended rightward into the index.",
-      "diagram": "        i7 index primer  5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3'\n        ------------------------------------->  (read = NNNNNN i7 index)\n5'- ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC NNNNNN ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG NNNNNN TAGAGCATACGGCAGAAGACGAAC -5'   (template = bottom)"
+      "diagram": "i7 index primer  5'-GATCGGAAGAGCACACGTCTGAACTCCAGTCAC-3'\n                                                     ------------------------------------->  (read = NNNNNN i7 index)\n            5'- ...AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC NNNNNN ATCTCGTATGCCGTCTTCTGCTTG -3'\n            3'- ...TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG NNNNNN TAGAGCATACGGCAGAAGACGAAC -5'   (template = bottom)"
     },
     {
       "read": "Read 2",
@@ -399,7 +399,7 @@
       "template": "top",
       "cycles": 50,
       "note": "In paired-end runs, reads the opposite end of the genomic DHS insert (bottom-strand sequence). The Read 2 primer is the bottom-strand adapter sequence, so it anneals to the top strand and is extended leftward into the insert.",
-      "diagram": "5'- ...[INSERT]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'   (template = top)\n              <-------------------------------------  (read = bottom-strand insert)\n              Read 2 primer  3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\n3'- ...[INSERT]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7]TAGAGCATACGGCAGAAGACGAAC -5'"
+      "diagram": "   5'- ...[INSERT]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[i7]ATCTCGTATGCCGTCTTCTGCTTG -3'   (template = top)\n              <-------------------------------------  (read = bottom-strand insert)\nRead 2 primer  3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'\n   3'- ...[INSERT]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[i7]TAGAGCATACGGCAGAAGACGAAC -5'"
     }
   ],
   "whitelists": {},

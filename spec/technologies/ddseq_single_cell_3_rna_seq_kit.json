@@ -362,7 +362,7 @@
       "title": "In-droplet lysis, mRNA capture, RT, and DO-dimer formation",
       "summary": "Cells lyse; mRNA is captured on poly(T) and reverse-transcribed to first-strand cDNA, while DOs from co-encapsulated beads hybridize and extend into DO dimers.",
       "note": "RT enzyme extends the poly(T) capture oligo along the mRNA template. In parallel, DOs form and extend dimers that encode which beads shared a droplet.",
-      "product": "Captured / reverse-transcribed cDNA:\n|--5'- [CELL_BARCODE][UMI](T)n------------------------------>\n                            3'- (A)n XXXX...XXX mRNA -5'\n\nDO dimer (two beads' DOs hybridize + extend):\n|--5'- [CELL_BARCODE_a][UMI_a][DO_REGION]====[DO_REGION'][UMI_b][CELL_BARCODE_b] -3'"
+      "product": "Captured / reverse-transcribed cDNA:\n|--5'- [CELL_BARCODE][UMI](T)n------------------------------>\n                      3'- (A)n XXXX...XXX mRNA -5'\n\nDO dimer (two beads' DOs hybridize + extend):\n|--5'- [CELL_BARCODE_a][UMI_a][DO_REGION]====[DO_REGION'][UMI_b][CELL_BARCODE_b] -3'"
     },
     {
       "step": 3,
@@ -400,7 +400,7 @@
       "template": "bottom",
       "cycles": 54,
       "note": "Reads the bead barcode + UMI on the bead oligo; 54 cycles per Table 33. Barcode/UMI/poly(dT) lengths and the Read-1 primer-site sequence are not disclosed in the Bio-Rad user guide (shown as placeholder tokens).",
-      "diagram": "                          Read 1 primer\n                       5'-[READ1_PRIMER_SITE]------------------------------>  (reads CELL_BARCODE + UMI, 54 cyc)\n5'- ...GAGATCTACAC [i5] [READ1_PRIMER_SITE]  [CELL_BARCODE][UMI](T)n [cDNA]... -3'   (top)\n3'- ...CTCTAGATGTG [i5']-[READ1_PRIMER_SITE']-[CELL_BARCODE'][UMI'](A)n [cDNA']...-5'  (bottom, template)\n(primer copies the bottom strand, synthesizing the top-strand barcode+UMI; arrow = 5'->3' read direction)"
+      "diagram": "                          Read 1 primer\n                     5'-[READ1_PRIMER_SITE]------------------------------>  (reads CELL_BARCODE + UMI, 54 cyc)\n5'- ...GAGATCTACAC [i5] [READ1_PRIMER_SITE]  [CELL_BARCODE][UMI](T)n [cDNA]... -3'   (top)\n3'- ...CTCTAGATGTG [i5']-[READ1_PRIMER_SITE']-[CELL_BARCODE'][UMI'](A)n [cDNA']...-5'  (bottom, template)\n(primer copies the bottom strand, synthesizing the top-strand barcode+UMI; arrow = 5'->3' read direction)"
     },
     {
       "read": "Index 1 (i7)",
@@ -408,7 +408,7 @@
       "template": "bottom",
       "cycles": 8,
       "note": "Reads the 8-bp i7 sample index (Index 1). 24 UDIs, Table 34; cDNA and DO libraries of one sample must share the same UDI.",
-      "diagram": "                                   i7 index primer\n                    5'-[TN5_READ2_HANDLE]------------->\n5'- ...[cDNA][TN5_READ2_HANDLE] [i7]  ATCTCGTATGCCGTCTTCTGCTTG -3'   (top)\n3'- ...[cDNA'][TN5_READ2_HANDLE'][i7'] TAGAGCATACGGCAGAAGACGAAC -5'   (bottom, template)\n                                NNNNNNNN = i7 (Index 1, 8 cyc)"
+      "diagram": "                                   i7 index primer\n          5'-[TN5_READ2_HANDLE]------------->\n5'- ...[cDNA][TN5_READ2_HANDLE] [i7]  ATCTCGTATGCCGTCTTCTGCTTG -3'   (top)\n3'- ...[cDNA'][TN5_READ2_HANDLE'][i7'] TAGAGCATACGGCAGAAGACGAAC -5'   (bottom, template)\n                                NNNNNNNN = i7 (Index 1, 8 cyc)"
     },
     {
       "read": "Index 2 (i5)",
@@ -416,7 +416,7 @@
       "template": "top",
       "cycles": 8,
       "note": "Reads the 8-bp i5 sample index (Index 2). 24 UDIs, Table 34.",
-      "diagram": "   i5 index primer (P5 side)\n5'-AATGATACGGCGACCACCGAGATCTACAC----------->\n5'- AATGATACGGCGACCACCGAGATCTACAC [i5]  [READ1_PRIMER_SITE]... -3'   (top, template)\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG [i5'] [READ1_PRIMER_SITE']...-5'   (bottom)\n                                  NNNNNNNN = i5 (Index 2, 8 cyc)"
+      "diagram": "   i5 index primer (P5 side)\n 5'-AATGATACGGCGACCACCGAGATCTACAC----------->\n5'- AATGATACGGCGACCACCGAGATCTACAC [i5]  [READ1_PRIMER_SITE]... -3'   (top, template)\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG [i5'] [READ1_PRIMER_SITE']...-5'   (bottom)\n                                  NNNNNNNN = i5 (Index 2, 8 cyc)"
     },
     {
       "read": "Read 2 (cDNA insert)",
@@ -424,7 +424,7 @@
       "template": "top",
       "cycles": 68,
       "note": "Reads into the 3' cDNA insert from the tagmented (Read-2) end; 68 cycles per Table 33. For the parallel DO library, Read 2 reads into the DO-dimer body instead of cDNA.",
-      "diagram": "5'- ...(T)n [cDNA] [TN5_READ2_HANDLE]  [i7] ATCTCGTATGCCGTCTTCTGCTTG -3'   (top, template)\n3'- ...(A)n [cDNA'][TN5_READ2_HANDLE'] [i7'] TAGAGCATACGGCAGAAGACGAAC -5'   (bottom)\n            <---------------------[Read 2 primer]\n            reads cDNA insert (68 cyc); primer anneals to [TN5_READ2_HANDLE] on the top strand,\n            extends 5'->3' leftward into the cDNA"
+      "diagram": "5'- ...(T)n [cDNA] [TN5_READ2_HANDLE]  [i7]  ATCTCGTATGCCGTCTTCTGCTTG -3'   (top, template)\n3'- ...(A)n [cDNA'][TN5_READ2_HANDLE'] [i7'] TAGAGCATACGGCAGAAGACGAAC -5'   (bottom)\n            <---------------------[Read 2 primer]\n            reads cDNA insert (68 cyc); primer anneals to [TN5_READ2_HANDLE] on the top strand,\n            extends 5'->3' leftward into the cDNA"
     }
   ],
   "whitelists": {},

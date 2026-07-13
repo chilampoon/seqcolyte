@@ -338,7 +338,7 @@
       "orientation_a_r1_handle_first": "5'-CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT-3'",
       "orientation_b_tso_first": "5'-[TSO][CDNA_RC][NB][polyA:30][UMI_RC][CELL_BARCODE_RC:16][R1_HANDLE_RC]-3'",
       "normalization": "Detect the R1-derived (adapter1) and TSO-derived (adapter2) terminal motifs; reverse-complement Orientation B reads to the R1-handle-first representation.",
-      "diagram": "Orientation A: 5'-CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT-3'\nOrientation B: 5'-[TSO][CDNA_RC][NB][polyA:30][UMI_RC][CELL_BARCODE_RC:16][R1_HANDLE_RC]-3'\n              |---------------- one long read (L1) ----------------|"
+      "diagram": "Orientation A: 5'-CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT-3'\nOrientation B: 5'-[TSO][CDNA_RC][NB][polyA:30][UMI_RC][CELL_BARCODE_RC:16][R1_HANDLE_RC]-3'\n               |---------------- one long read (L1) ----------------|"
     }
   ],
   "whitelists": {

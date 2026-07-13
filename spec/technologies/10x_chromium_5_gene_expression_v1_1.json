@@ -457,7 +457,7 @@
       "title": "GEM-RT: mRNA capture, reverse transcription & template switch",
       "summary": "Poly(dT) RT primer primes polyadenylated mRNA and reverse transcriptase copies it, then template-switches onto the gel-bead oligo to append the 10x barcode and UMI at the transcript 5' end.",
       "note": "Inside each GEM the gel bead dissolves, releasing the barcoded Gel Bead Oligo (partial Read 1 + 16 nt 10x barcode + 10 nt UMI + rGrGrG TSO). MMLV-type reverse transcriptase extends the poly(dT) RT primer to the 5' cap, adds untemplated C's, and switches templates onto the bead TSO \u2014 producing barcoded full-length first-strand cDNA.",
-      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG--------[CDNA]-------->NV(T)30 AAGCAGTGGTATCAACGCAGAGTAC -3'\n 3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC--------[CDNA]--------(A)nCATGAGACGCAACTATGGTGACGAA -5'"
+      "product": "|--5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:10]TTTCTTATATGGG--------[CDNA]-------->NV(T)30 AAGCAGTGGTATCAACGCAGAGTAC -3'\n   3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:10]AAAGAATATACCC--------[CDNA]--------(A)nCATGAGACGCAACTATGGTGACGAA -5'"
     },
     {
       "step": 2,
@@ -511,7 +511,7 @@
       "template": "top",
       "cycles": 91,
       "note": "Primer anneals at the Read 2 adapter and extends leftward into the cDNA insert toward the TSO (top strand as template); this is the 5' gene-expression read.",
-      "diagram": "5'- ...TTTCTTATATGGG-[CDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...AAAGAATATACCC-[CDNA]-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'\n          <-----------------3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'   (Read 2 primer, reads into cDNA)"
+      "diagram": "5'- ...TTTCTTATATGGG-[CDNA]-AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- ...AAAGAATATACCC-[CDNA]-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'\n       <-----------------3'-TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG-5'   (Read 2 primer, reads into cDNA)"
     }
   ],
   "whitelists": {},

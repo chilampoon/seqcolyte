@@ -309,7 +309,7 @@
       "title": "DamID PCR amplification",
       "summary": "The single DamID PCR primer amplifies adapter-flanked fragments for 26 cycles, adding 4 random bases at each end.",
       "note": "Advantage cDNA polymerase; 26 cycles (29 for Dam-only). The primer's 4 random 5' nt make read-start sequences diverse for cluster calling; amplification is exponential only for fragments with adapters on both ends.",
-      "product": "     NNNNGTGGTCGCGGCCGAGGATC-------->\n5'-NNNNGTGGTCGCGGCCGAGGATC[gDNA]GATCCTCGGCCGCGACCACNNNN-3'\n3'-NNNNCACCAGCGCCGGCTCCTAG[gDNA]CTAGGAGCCGGCGCTGGTGNNNN-5'\n              <--------GTGGTCGCGGCCGAGGATCNNNN"
+      "product": "   NNNNGTGGTCGCGGCCGAGGATC-------->\n5'-NNNNGTGGTCGCGGCCGAGGATC[gDNA]GATCCTCGGCCGCGACCACNNNN-3'\n3'-NNNNCACCAGCGCCGGCTCCTAG[gDNA]CTAGGAGCCGGCGCTGGTGNNNN-5'\n                       <--------GTGGTCGCGGCCGAGGATCNNNN"
     },
     {
       "step": 6,

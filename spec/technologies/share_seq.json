@@ -672,35 +672,35 @@
       "title": "Assemble Tn5 transposomes",
       "summary": "Anneal Read1 and phosphorylated-Read2 adapters to Blocked ME-complement and load onto in-house Tn5.",
       "note": "Two transposomes are formed sharing the mosaic end: one carrying the Nextera Read1 handle, one carrying the 5'-phosphorylated Read2/ligation handle (GTCTCGTGGGCTCGG...). ME-comp is 3'-ddC/phosphorothioate to prevent self-tagmentation.",
-      "product": "Read1 adapter:          5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG -3'\n                             3'-        CACATATTCTCTGTC -5' (ddC)\n\nPhospho-Read2 adapter: 5'p- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG -3'\n                             3'-        CACATATTCTCTGTC -5' (ddC)"
+      "product": "Read1 adapter:          5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG -3'\n                                   3'-        CACATATTCTCTGTC -5' (ddC)\n\nPhospho-Read2 adapter: 5'p- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG -3'\n                                    3'-        CACATATTCTCTGTC -5' (ddC)"
     },
     {
       "step": 2,
       "title": "Transposition (ATAC)",
       "summary": "Tagment fixed, permeabilized cells/nuclei so Tn5 inserts Read1 and Read2 handles into open chromatin.",
       "note": "Marks accessible genomic DNA; leaves 9 bp gaps filled later. Chromatin fragments now carry the universal Read2/ligation handle for barcoding.",
-      "product": "5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic DNA] CTGTCTCTTATACAC...      -3'\n         ...       p- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG [genomic DNA] ...   -3'"
+      "product": "                   5'- TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [genomic DNA] CTGTCTCTTATACAC...      -3'\n         ...       p- GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG [genomic DNA] ...   -3'"
     },
     {
       "step": 3,
       "title": "Reverse transcription (RNA)",
       "summary": "Reverse-transcribe mRNA with the biotinylated poly(dT)+UMI RT primer, adding the ligation handle and UMI to cDNA.",
       "note": "The RT primer's 5' end carries the same GTCTCGTGGGCTCGG ligation handle plus a 10 nt UMI and internal biotin, so cDNA and chromatin become barcode-compatible in the same tube.",
-      "product": "mRNA:  5'- [.....transcript.....] AAAAAAAAAAAA -3'\ncDNA: 3'-...[cDNA]...VN TTTTTTTTTTTTTT(bio)[UMI] GACAGAAATATGTGTAGAGGCTCGGGTGCTCTG -p5'\n                                          (handle: GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG)"
+      "product": "mRNA:  5'- [.....transcript.....] AAAAAAAAAAAA -3'\ncDNA:           3'-...[cDNA]...VN TTTTTTTTTTTTTT(bio)[UMI] GACAGAAATATGTGTAGAGGCTCGGGTGCTCTG -p5'\n                                                  (handle: GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG)"
     },
     {
       "step": 4,
       "title": "Round 1 split-pool barcoding",
       "summary": "Distribute cells into a 96-well plate, hybridize Round 1 barcodes, then add Round 1 blocking strands.",
       "note": "Well-specific Round 1 barcode (annealed to Round 1 linker) hybridizes to the ligation handle on both cDNA and chromatin; blocking strands cap unligated overhangs before pooling.",
-      "product": "handle 5'p- GTCTCGTGGGCTCGG... -3'\n            ligate <-- Round1: -CCCATGATCGTCCGA-[B1:8]-CGCGCTGCATACTTGA-p5'"
+      "product": "handle 5'p- GTCTCGTGGGCTCGG... -3'\n               ligate <-- Round1: -CCCATGATCGTCCGA-[B1:8]-CGCGCTGCATACTTGA-p5'"
     },
     {
       "step": 5,
       "title": "Round 2 split-pool barcoding",
       "summary": "Pool, re-split into a second 96-well plate, hybridize Round 2 barcodes, then block.",
       "note": "Round 2 barcode ligates 5' of Round 1 via its constant junction (ATCCACGTGCTTGAG / CGCGCTGCATACTTGA).",
-      "product": "...-[B1:8]-CGCGCTGCATACTTGA-p5'\n  ligate <-- Round2: -ATCCACGTGCTTGAG-[B2:8]-CATCGGCGTACGACTA-p5'"
+      "product": "...-[B1:8]-CGCGCTGCATACTTGA-p5'\n            ligate <-- Round2: -ATCCACGTGCTTGAG-[B2:8]-CATCGGCGTACGACTA-p5'"
     },
     {
       "step": 6,
@@ -745,7 +745,7 @@
       "template": "top",
       "cycles": 30,
       "note": "Nextera Read 1 primer + mosaic end; reads into the cDNA insert (RNA library) or one genomic end (ATAC library).",
-      "diagram": "                     Read 1 primer  ------------------> (30 cyc)\n                  5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG\n5'- P5-[i5]-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [insert] ... -3'\n3'- P5-[i5]-AGCAGCCGTCGCAGTCTACACATATTCTCTGTC [insert] ... -5'"
+      "diagram": "                              Read 1 primer  ------------------> (30 cyc)\n         5'-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG\n5'- P5-[i5]-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG [insert] ... -3'\n3'- P5-[i5]-AGCAGCCGTCGCAGTCTACACATATTCTCTGTC [insert] ... -5'"
     },
     {
       "read": "Index 1 (i7)",
@@ -753,7 +753,7 @@
       "template": "bottom",
       "cycles": 99,
       "note": "Reads the shared cell identity: three split-pool ligation barcodes B3-B2-B1 (8 bp each) separated by their constant linkers. 99 cycles span B3 + linker + B2 + linker + B1.",
-      "diagram": "                        i7 index primer ------------------------------------------------> (99 cyc)\n                     5'-CAAGCAGAAGACGGCATACGAGAT\n5'- CAAGCAGAAGACGGCATACGAGAT [B3] GTGGCCGATGTTTCGCATCGGCGTACGACTA [B2] ATCCACGTGCTTGAGCGCGCTGCATACTTGA [B1] CCCATGATCGTCCGA... -3'\n3'- GTTCGTCTTCTGCCGTATGCTCTA [B3] CACCGGCTACAAAGCGTAGCCGCATGCTGAT [B2] TAGGTGCACGAACTCGCGCGACGTATGAACT [B1] GGGTACTAGCAGGCT... -5'"
+      "diagram": "            i7 index primer ------------------------------------------------> (99 cyc)\n 5'-CAAGCAGAAGACGGCATACGAGAT\n5'- CAAGCAGAAGACGGCATACGAGAT [B3] GTGGCCGATGTTTCGCATCGGCGTACGACTA [B2] ATCCACGTGCTTGAGCGCGCTGCATACTTGA [B1] CCCATGATCGTCCGA... -3'\n3'- GTTCGTCTTCTGCCGTATGCTCTA [B3] CACCGGCTACAAAGCGTAGCCGCATGCTGAT [B2] TAGGTGCACGAACTCGCGCGACGTATGAACT [B1] GGGTACTAGCAGGCT... -5'"
     },
     {
       "read": "Index 2 (i5)",
@@ -761,7 +761,7 @@
       "template": "top",
       "cycles": 8,
       "note": "Reads the 8 bp i5 sample/library index (plate Ad1) that distinguishes PCR sub-libraries.",
-      "diagram": "                   i5 index primer  ----------> (8 cyc)\n                5'-AATGATACGGCGACCACCGAGATCTACAC\n5'- AATGATACGGCGACCACCGAGATCTACAC [i5] TCGTCGGCAGCGTCAGATGTGTAT... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG [i5] AGCAGCCGTCGCAGTCTACACATA... -5'"
+      "diagram": "                i5 index primer  ----------> (8 cyc)\n 5'-AATGATACGGCGACCACCGAGATCTACAC\n5'- AATGATACGGCGACCACCGAGATCTACAC [i5] TCGTCGGCAGCGTCAGATGTGTAT... -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTG [i5] AGCAGCCGTCGCAGTCTACACATA... -5'"
     },
     {
       "read": "Read 2",
@@ -769,7 +769,7 @@
       "template": "bottom",
       "cycles": 30,
       "note": "RNA library: reads the 10 bp UMI, then the poly-dT (bases 11-16 must be TTTTTT), then into the cDNA. ATAC library: reads the second genomic end.",
-      "diagram": "                     Read 2 primer  ---------------------------------> (30 cyc)\n                  5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG\n5'- ...CTCGG-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG [UMI:10] TTTTTTTTTTTTTTT [cDNA] -3'\n3'- ...GAGCC-CAGAGCACCCGAGCCTCTACACATATTCTCTGTC [UMI  ] AAAAAAAAAAAAAAA [cDNA] -5'"
+      "diagram": "                                Read 2 primer  ---------------------------------> (30 cyc)\n          5'-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG\n5'- ...CTCGG-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG [UMI:10] TTTTTTTTTTTTTTT [cDNA] -3'\n3'- ...GAGCC-CAGAGCACCCGAGCCTCTACACATATTCTCTGTC [UMI  ]  AAAAAAAAAAAAAAA [cDNA] -5'"
     }
   ],
   "whitelists": {},

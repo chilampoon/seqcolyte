@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "studio.run.v1",
+  "id": "20260710T031653Z-82a2fa",
+  "projectId": "10x-pbmc-3-healthy-library-demo-9ec7eb",
+  "createdAt": "2026-07-10T03:16:53.455Z",
+  "pipeline": [
+    "qc"
+  ],
+  "options": {
+    "useLlm": true,
+    "maxReads": null,
+    "withLabels": false,
+    "withWhitelist": true,
+    "fastqSource": "control"
+  },
+  "inputsSnapshot": {
+    "specPath": "/Users/seqmachines/playground/seqcolyte/studio/projects/10x-pbmc-3-healthy-library-demo-9ec7eb/runs/20260710T031653Z-82a2fa/spec.json",
+    "r1": "/Users/seqmachines/playground/seqcolyte/data/raw/pbmc_1k_v3_sub_R1.fastq.gz",
+    "r2": "/Users/seqmachines/playground/seqcolyte/data/raw/pbmc_1k_v3_sub_R2.fastq.gz",
+    "whitelist": "/Users/seqmachines/playground/seqcolyte/whitelists/3M-february-2018.txt.gz",
+    "labels": null
+  },
+  "steps": {
+    "qc": {
+      "name": "qc",
+      "status": "succeeded",
+      "log": "logs/qc.log",
+      "startedAt": "2026-07-10T03:16:53.467Z",
+      "pid": 77027,
+      "exitCode": 0,
+      "finishedAt": "2026-07-10T03:17:24.118Z",
+      "durationMs": 30649
+    }
+  },
+  "overallStatus": "succeeded",
+  "startedAt": "2026-07-10T03:16:53.463Z",
+  "overall": "pass",
+  "finishedAt": "2026-07-10T03:17:24.119Z"
+}
