@@ -72,8 +72,8 @@ function ProjectCard({ project }: { project: ProjectManifest }) {
   );
 }
 
-// curated example order: Illumina clean → Illumina problem → Nanopore problem
-const EXAMPLE_ORDER = ["healthy-library", "adapter-dimer"];
+// curated example order: Illumina clean → Illumina problem → Nanopore starter
+const EXAMPLE_ORDER = ["clean-library", "adapter-dimer", "nanopore"];
 const exampleRank = (id: string) => {
   const i = EXAMPLE_ORDER.findIndex((k) => id.includes(k));
   return i < 0 ? 99 : i;

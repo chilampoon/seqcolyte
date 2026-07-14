@@ -1,0 +1,161 @@
+{
+  "qc_version": "0.1.0",
+  "spec_id": "10x_3p_v3",
+  "assay": "10x Chromium Single Cell 3' Gene Expression",
+  "platform": "illumina",
+  "profile": {
+    "n_pairs": 40000,
+    "r1_len": {
+      "min": 28,
+      "max": 28,
+      "modal": 28
+    },
+    "r2_len": {
+      "min": 91,
+      "max": 91,
+      "modal": 91
+    }
+  },
+  "findings": [
+    {
+      "check_id": "r1_length",
+      "title": "R1 length matches the expected fixed structure",
+      "verdict": "pass",
+      "value": 28.0,
+      "unit": "bp",
+      "threshold": "== 28",
+      "affected_fraction": null,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "read_structure.R1",
+          "note": "R1 should be exactly 28 bp (sum of its fixed-length segments)"
+        }
+      ],
+      "detail": "R1 lengths span 28\u201328 bp"
+    },
+    {
+      "check_id": "whitelist_hit_rate",
+      "title": "Cell barcodes on the 10x whitelist",
+      "verdict": "pass",
+      "value": 0.9489,
+      "unit": "fraction",
+      "threshold": ">= 0.85",
+      "affected_fraction": null,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "whitelists.cell_barcode_3M_feb2018",
+          "note": "R1[0:16] should match the 3M-february-2018 gel-bead barcode whitelist"
+        }
+      ],
+      "detail": "94.9% of cell barcodes are on the whitelist"
+    },
+    {
+      "check_id": "tso_at_r2_start",
+      "title": "R2 reads beginning with the TSO (adapter-dimer / short insert)",
+      "verdict": "fail",
+      "value": 0.3258,
+      "unit": "fraction",
+      "threshold": "< 0.05",
+      "affected_fraction": 0.3258,
+      "severity": 0.6516,
+      "evidence": [
+        {
+          "spec_ref": "read_structure.R2.readthrough_chain[tso_5prime]",
+          "note": "R2 should start with cDNA; a leading TSO is the hallmark of empty/short-insert products"
+        }
+      ],
+      "detail": "32.6% of R2 start with the TSO"
+    },
+    {
+      "check_id": "r1_adapter_readthrough",
+      "title": "R1 read-through into the 3' adapter",
+      "verdict": "pass",
+      "value": 0.0,
+      "unit": "fraction",
+      "threshold": "< 0.02",
+      "affected_fraction": 0.0,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "oligos[role=read_through_adapter]",
+          "note": "the AGATCGGAAGAGCACA adapter stem in R1 means the insert was shorter than the read length"
+        }
+      ],
+      "detail": "0.0% of R1 contain the adapter stem AGATCGGAAGAGCACA"
+    },
+    {
+      "check_id": "r2_adapter_readthrough",
+      "title": "R2 read-through into the 3' adapter",
+      "verdict": "warn",
+      "value": 0.0362,
+      "unit": "fraction",
+      "threshold": "< 0.02",
+      "affected_fraction": 0.0362,
+      "severity": 0.0723,
+      "evidence": [
+        {
+          "spec_ref": "oligos[role=read_through_adapter]",
+          "note": "the AGATCGGAAGAGCACA adapter stem in R2 means the insert was shorter than the read length"
+        }
+      ],
+      "detail": "3.6% of R2 contain the adapter stem AGATCGGAAGAGCACA"
+    },
+    {
+      "check_id": "r2_polyg_tail",
+      "title": "R2 with a poly-G no-signal tail",
+      "verdict": "fail",
+      "value": 0.0983,
+      "unit": "fraction",
+      "threshold": "< 0.01",
+      "affected_fraction": 0.098275,
+      "severity": 0.2948,
+      "evidence": [
+        {
+          "spec_ref": "platform_params.dark_base",
+          "note": "a poly-G 3' tail on two-color instruments is 'no signal' \u2014 typical of empty/short fragments"
+        }
+      ],
+      "detail": "9.8% of R2 have a poly-G tail"
+    }
+  ],
+  "plan": {
+    "ranked": [
+      {
+        "check_id": "tso_at_r2_start",
+        "severity": "high",
+        "why": "32.6% of R2 begin with the TSO versus a <5% threshold (6.5x over). Per spec, R2 should start with cDNA; a leading TSO is the direct hallmark of empty/short-insert (adapter-dimer) products, so a third of the library carries no usable insert."
+      },
+      {
+        "check_id": "r2_polyg_tail",
+        "severity": "medium",
+        "why": "9.8% of R2 carry a poly-G no-signal tail versus a <1% threshold (~10x over). On this two-color Illumina platform poly-G means 'no signal', i.e. the fragment ran out of insert \u2014 independent corroboration of the empty/short-fragment population flagged by the TSO check."
+      },
+      {
+        "check_id": "r2_adapter_readthrough",
+        "severity": "low",
+        "why": "3.6% of R2 contain the AGATCGGAAGAGCACA adapter stem versus <2% (mild ~1.8x exceedance), indicating some inserts were shorter than the 91 bp read \u2014 consistent with, but a much weaker signal than, the short-insert population above."
+      },
+      {
+        "check_id": "r1_length",
+        "severity": "none",
+        "why": "R1 is exactly 28 bp (16 bp CB + 12 bp UMI) as the v3/v3.1 fixed structure requires; barcode read geometry is intact."
+      },
+      {
+        "check_id": "whitelist_hit_rate",
+        "severity": "none",
+        "why": "94.9% of cell barcodes match the 3M-february-2018 whitelist (>85% threshold), so GEM formation and barcode integrity are healthy \u2014 the failure is not in cell barcoding."
+      },
+      {
+        "check_id": "r1_adapter_readthrough",
+        "severity": "none",
+        "why": "0.0% R1 adapter read-through; the 28 bp R1 shows no read-through and behaves exactly as specified."
+      }
+    ],
+    "root_cause": "A large fraction of the library consists of empty / short-insert products (TSO-only, no-cDNA molecules), most consistent with low cDNA input or poor reverse-transcription / template yield during library prep rather than any barcoding or sequencing-geometry fault.",
+    "diagnosis": "About a third of your R2 reads start with the TSO (32.6% vs a <5% expectation) and ~10% end in a poly-G no-signal tail, both signatures of empty/short-insert fragments with little or no cDNA \u2014 meanwhile R1 length (28 bp) and barcode whitelist match (94.9%) are healthy, so GEM formation and barcoding are fine. This points to a cDNA/insert problem, most likely low RNA input or weak reverse-transcription yield producing adapter-dimer\u2013like TSO artifacts. Check cDNA yield/traces and input quantity, and consider a size-selection cleanup before re-sequencing, since a substantial share of your reads carry no usable transcript.",
+    "method": "llm"
+  },
+  "overall": "fail"
+}

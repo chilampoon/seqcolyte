@@ -1,0 +1,747 @@
+{
+  "schema_version": "seqcolyte.spec.v1",
+  "spec_id": "10x_3p_v3",
+  "assay": "10x Chromium Single Cell 3' Gene Expression",
+  "title": "10x 3' scRNA-seq (v3)",
+  "description": "Droplet-based single-cell 3' gene-expression profiling on Illumina. Cells are partitioned into gel-bead emulsions (GEMs); mRNA is barcoded during reverse transcription with a per-cell 16 nt barcode + 12 nt UMI, and the amplified cDNA is fragmented and built into a P5/P7-indexed short-read library. Profiles the transcriptomes of thousands of single cells per run.",
+  "chemistry_version": "v3/v3.1",
+  "platform": "illumina",
+  "platform_params": {
+    "two_color_chemistry": true,
+    "dark_base": "G",
+    "polyA_base": "A",
+    "index_scheme": "single",
+    "i7_length": 8,
+    "i5_length": null,
+    "read_lengths": {
+      "R1": 28,
+      "R2": 90,
+      "I1": 8
+    }
+  },
+  "source_docs": [
+    {
+      "doc_id": "scg_10xChromium3",
+      "title": "scg_lib_structs \u2014 10x Chromium Single Cell 3' Gene Expression",
+      "url": "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html",
+      "path": "protocols/10xChromium3.html",
+      "retrieved_date": "2026-07-07"
+    },
+    {
+      "doc_id": "illumina_truseq",
+      "title": "Illumina Adapter Sequences (doc #1000000002694) \u2014 TruSeq Read 1/Read 2 primers",
+      "url": "https://support-docs.illumina.com/SHARE/AdapterSequences/Content/SHARE/AdapterSeq/TruSeq/SequencesTruSeq.htm",
+      "path": null,
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "illumina_adapters",
+      "title": "Illumina P5/P7 flow-cell adapter sequences (doc #1000000002694)",
+      "url": "https://teichlab.github.io/scg_lib_structs/data/illumina-adapter-sequences-1000000002694-14.pdf",
+      "path": null,
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "10x_tso",
+      "title": "10x Genomics \u2014 Template Switch Oligo (Cell Ranger GEX algorithm / KB)",
+      "url": "https://www.10xgenomics.com/support/software/cell-ranger/latest/algorithms-overview/cr-gex-algorithm",
+      "path": null,
+      "retrieved_date": null
+    },
+    {
+      "doc_id": "cellranger_gex",
+      "title": "10x Cell Ranger GEX algorithm \u2014 R2 orientation, TSO(5')/poly-A(3') trimming",
+      "url": "https://www.10xgenomics.com/support/software/cell-ranger/latest/algorithms-overview/cr-gex-algorithm",
+      "path": null,
+      "retrieved_date": null
+    }
+  ],
+  "reference": {
+    "kind": "protocol_doc",
+    "label": "10x Genomics CG000204 (Chromium Next GEM Single Cell 3' v3.1 User Guide)",
+    "path": null,
+    "url": "https://www.10xgenomics.com/support/single-cell-gene-expression",
+    "doi": null
+  },
+  "publication": {
+    "year": 2017,
+    "original_publication": {
+      "title": "Massively parallel digital transcriptional profiling of single cells",
+      "journal": "Nature Communications",
+      "doi": "10.1038/ncomms14049",
+      "url": "https://www.nature.com/articles/ncomms14049"
+    },
+    "authors": [
+      {
+        "name": "Grace X. Y. Zheng",
+        "corresponding": false,
+        "email": null,
+        "affiliation": "10x Genomics"
+      },
+      {
+        "name": "Benjamin J. Hindson",
+        "corresponding": true,
+        "email": "ben@10xgenomics.com",
+        "affiliation": "10x Genomics"
+      },
+      {
+        "name": "Jason H. Bielas",
+        "corresponding": true,
+        "email": "jbielas@fredhutch.org",
+        "affiliation": "Fred Hutchinson Cancer Research Center"
+      }
+    ],
+    "throughput": {
+      "summary": "~50% cell capture efficiency; ~8,000-9,000 cells recovered per channel",
+      "cells": "~8,000-9,000 per channel",
+      "rna": null,
+      "dna": null
+    },
+    "statistical_model": "Poisson - cells are loaded at limiting dilution following Poisson statistics to minimize multiplets.",
+    "other": [
+      {
+        "label": "Partitioning",
+        "value": "GEMs (gel beads-in-emulsion)"
+      }
+    ]
+  },
+  "oligos": [
+    {
+      "oligo_id": "oligo_beads_oligo_dt",
+      "name": "Beads-oligo-dT",
+      "aliases": [],
+      "role": "oligo",
+      "kind": "assembled",
+      "sequence": "CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "cDNA forward primer",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "primer"
+        },
+        {
+          "name": "[CELL_BARCODE:16]",
+          "sequence": "[CELL_BARCODE:16]",
+          "role": "cell_barcode"
+        },
+        {
+          "name": "[UMI:12]",
+          "sequence": "[UMI:12]",
+          "role": "umi"
+        },
+        {
+          "name": "polyT",
+          "sequence": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN",
+          "role": "polyT"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://support-docs.illumina.com/SHARE/AdapterSequences/Content/SHARE/AdapterSeq/TruSeq/SequencesTruSeq.htm",
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_template_switching_oligo_tso",
+      "name": "Template Switching Oligo (TSO)",
+      "aliases": [],
+      "role": "oligo",
+      "kind": "assembled",
+      "sequence": "AAGCAGTGGTATCAACGCAGAGTACATGGG",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "cDNA reverse primer",
+          "sequence": "AAGCAGTGGTATCAACGCAGAG",
+          "role": "primer"
+        }
+      ],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://www.10xgenomics.com/support/software/cell-ranger/latest/algorithms-overview/cr-gex-algorithm",
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": "Terminal rGrGrG (riboguanosines); parsed as GGG."
+    },
+    {
+      "oligo_id": "oligo_cdna_forward_primer",
+      "name": "cDNA Forward primer",
+      "aliases": [],
+      "role": "primer",
+      "kind": "single",
+      "sequence": "CTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_cdna_reverse_primer",
+      "name": "cDNA Reverse primer",
+      "aliases": [],
+      "role": "primer",
+      "kind": "single",
+      "sequence": "AAGCAGTGGTATCAACGCAGAG",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "reagent",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": "v3/v3.1/v4 variant."
+    },
+    {
+      "oligo_id": "oligo_illumina_truseq_read_1_primer",
+      "name": "Illumina TruSeq Read 1 primer",
+      "aliases": [],
+      "role": "primer",
+      "kind": "assembled",
+      "sequence": "ACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "cDNA forward primer",
+          "sequence": "CTACACGACGCTCTTCCGATCT",
+          "role": "primer"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://support-docs.illumina.com/SHARE/AdapterSequences/Content/SHARE/AdapterSeq/TruSeq/SequencesTruSeq.htm",
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_illumina_truseq_read_2_primer",
+      "name": "Illumina TruSeq Read 2 primer",
+      "aliases": [],
+      "role": "primer",
+      "kind": "single",
+      "sequence": "GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://support-docs.illumina.com/SHARE/AdapterSequences/Content/SHARE/AdapterSeq/TruSeq/SequencesTruSeq.htm",
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_truseq_adapter",
+      "name": "TruSeq adapter",
+      "aliases": [
+        "TruSeq adapter forward",
+        "TruSeq adapter reverse"
+      ],
+      "role": "adapter",
+      "kind": "double_stranded",
+      "sequence": null,
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "TruSeq adapter forward",
+          "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCA",
+          "role": "forward_strand"
+        },
+        {
+          "name": "TruSeq adapter reverse",
+          "sequence": "TCTAGCCTTCTCG",
+          "role": "reverse_strand"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": []
+        }
+      ],
+      "notes": "Double-stranded with a T overhang; v3/v3.1/v4 variant."
+    },
+    {
+      "oligo_id": "oligo_library_pcr_primer_1",
+      "name": "Library PCR primer 1",
+      "aliases": [],
+      "role": "primer",
+      "kind": "assembled",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTC",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Illumina P5 adapter",
+          "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+          "role": "adapter"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://teichlab.github.io/scg_lib_structs/data/illumina-adapter-sequences-1000000002694-14.pdf",
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_library_pcr_primer_2",
+      "name": "Library PCR primer 2",
+      "aliases": [],
+      "role": "primer",
+      "kind": "assembled",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT[SAMPLE_INDEX:8]GTGACTGGAGTTCAGACGTGT",
+      "direction": "5_to_3",
+      "components": [
+        {
+          "name": "Illumina P7 adapter",
+          "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+          "role": "adapter"
+        },
+        {
+          "name": "[SAMPLE_INDEX:8]",
+          "sequence": "[SAMPLE_INDEX:8]",
+          "role": "sample_index"
+        }
+      ],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://teichlab.github.io/scg_lib_structs/data/illumina-adapter-sequences-1000000002694-14.pdf",
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_sample_index_sequencing_primer",
+      "name": "Sample index sequencing primer",
+      "aliases": [],
+      "role": "primer",
+      "kind": "single",
+      "sequence": "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://support-docs.illumina.com/SHARE/AdapterSequences/Content/SHARE/AdapterSeq/TruSeq/SequencesTruSeq.htm",
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_illumina_p5_adapter",
+      "name": "Illumina P5 adapter",
+      "aliases": [],
+      "role": "adapter",
+      "kind": "single",
+      "sequence": "AATGATACGGCGACCACCGAGATCTACAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://teichlab.github.io/scg_lib_structs/data/illumina-adapter-sequences-1000000002694-14.pdf",
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_illumina_p7_adapter",
+      "name": "Illumina P7 adapter",
+      "aliases": [],
+      "role": "adapter",
+      "kind": "single",
+      "sequence": "CAAGCAGAAGACGGCATACGAGAT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": null,
+      "sequence_source": "parsed_scg_html",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Adapter and primer sequences",
+          "verified_against": [
+            "https://teichlab.github.io/scg_lib_structs/data/illumina-adapter-sequences-1000000002694-14.pdf",
+            "https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html"
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "oligo_id": "oligo_r2_readthrough_adapter",
+      "name": "Read 2 read-through adapter",
+      "aliases": [],
+      "role": "read_through_adapter",
+      "kind": "single",
+      "sequence": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": "revcomp(oligo_illumina_truseq_read_2_primer)",
+      "sequence_source": "derived_revcomp",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Derived (reverse complement) \u2014 see base oligo",
+          "verified_against": [
+            "https://support-docs.illumina.com/SHARE/AdapterSequences/Content/SHARE/AdapterSeq/TruSeq/SequencesTruSeq.htm",
+            "https://www.10xgenomics.com/support/software/cell-ranger/latest/algorithms-overview/cr-gex-algorithm"
+          ]
+        }
+      ],
+      "notes": "3' adapter observed as R2 read-through when the insert is shorter than the read."
+    },
+    {
+      "oligo_id": "oligo_r1_readinto_adapter",
+      "name": "Short-insert R2 read-into adapter",
+      "aliases": [],
+      "role": "read_through_adapter",
+      "kind": "single",
+      "sequence": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": "revcomp(oligo_illumina_truseq_read_1_primer)",
+      "sequence_source": "derived_revcomp",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Derived (reverse complement) \u2014 see base oligo",
+          "verified_against": [
+            "https://support-docs.illumina.com/SHARE/AdapterSequences/Content/SHARE/AdapterSeq/TruSeq/SequencesTruSeq.htm",
+            "https://www.10xgenomics.com/support/software/cell-ranger/latest/algorithms-overview/cr-gex-algorithm"
+          ]
+        }
+      ],
+      "notes": "Adapter a short-insert R2 reads into, past poly(A) + reverse-complemented barcode/UMI."
+    },
+    {
+      "oligo_id": "oligo_p5_rc",
+      "name": "Illumina P5 adapter (reverse complement)",
+      "aliases": [],
+      "role": "adapter_rc",
+      "kind": "single",
+      "sequence": "GTGTAGATCTCGGTGGTCGCCGTATCATT",
+      "direction": "5_to_3",
+      "components": [],
+      "provenance": "document",
+      "derivation": "revcomp(oligo_illumina_p5_adapter)",
+      "sequence_source": "derived_revcomp",
+      "evidence": [
+        {
+          "source_doc": "scg_10xChromium3",
+          "locator": "Derived (reverse complement) \u2014 see base oligo",
+          "verified_against": [
+            "https://teichlab.github.io/scg_lib_structs/data/illumina-adapter-sequences-1000000002694-14.pdf"
+          ]
+        }
+      ],
+      "notes": "Terminal 3' segment of a fully read-through R2."
+    }
+  ],
+  "final_library": {
+    "source_label": "V3, V3.1 & V4 final library structure",
+    "annotated_library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG",
+    "library_sequence": "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT################~~~~~~~~~~~~TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVNAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC@@@@@@@@ATCTCGTATGCCGTCTTCTGCTTG",
+    "strands": [
+      {
+        "direction": "5_to_3",
+        "source_html": "5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'",
+        "source_sequence": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTNNNNNNNNNNNNNNNNNNNNNNNNNNNN(dT)VXXX...XXXAGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNNNATCTCGTATGCCGTCTTCTGCTTG -3'"
+      },
+      {
+        "direction": "3_to_5",
+        "source_html": "3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'",
+        "source_sequence": "3'- TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGANNNNNNNNNNNNNNNNNNNNNNNNNNNN(pA)BXXX...XXXTCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTGNNNNNNNNTAGAGCATACGGCAGAAGACGAAC -5'"
+      }
+    ],
+    "annotation_lines": [
+      "Illumina P5 | TruSeq Read 1 | cell barcode | UMI | poly(dT)VN | cDNA | TruSeq Read 2 | sample index (i7) | Illumina P7"
+    ],
+    "evidence": [
+      {
+        "source_doc": "scg_10xChromium3",
+        "locator": "Step-by-step library generation / (8) Final library structure \u2014 V3, V3.1 & V4",
+        "verified_against": [
+          "https://support-docs.illumina.com/SHARE/AdapterSequences/Content/SHARE/AdapterSeq/TruSeq/SequencesTruSeq.htm",
+          "https://www.10xgenomics.com/support/software/cell-ranger/latest/algorithms-overview/cr-gex-algorithm"
+        ]
+      }
+    ]
+  },
+  "read_structure": {
+    "reads": [
+      {
+        "read": "R1",
+        "primer": "Illumina TruSeq Read 1 primer",
+        "template": "bottom",
+        "cycles": 28,
+        "segments": [
+          {
+            "name": "cell_barcode",
+            "type": "barcode",
+            "order": 0,
+            "length": 16,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": "cell_barcode_3M_feb2018",
+            "constant_ref": null,
+            "notes": null
+          },
+          {
+            "name": "umi",
+            "type": "umi",
+            "order": 1,
+            "length": 12,
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": null
+          }
+        ]
+      },
+      {
+        "read": "I1",
+        "primer": "Sample index sequencing primer",
+        "template": "bottom",
+        "cycles": 8,
+        "segments": [
+          {
+            "name": "sample_index_i7",
+            "type": "index",
+            "order": 0,
+            "length": 8,
+            "scored": false,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": "v3/v3.1 single index (SI-GA)"
+          }
+        ]
+      },
+      {
+        "read": "R2",
+        "primer": "Illumina TruSeq Read 2 primer",
+        "template": "top",
+        "cycles": 90,
+        "segments": [
+          {
+            "name": "cdna_insert",
+            "type": "insert",
+            "order": 0,
+            "length_range": [
+              1,
+              90
+            ],
+            "scored": true,
+            "provenance": null,
+            "whitelist_ref": null,
+            "constant_ref": null,
+            "notes": "sequenced from TSO/5' end toward poly(A)/3' end; read length preserved by the simulator"
+          }
+        ],
+        "readthrough_chain": [
+          {
+            "name": "tso_5prime",
+            "type": "constant",
+            "constant_ref": "oligo_template_switching_oligo_tso",
+            "notes": "adapter-dimer / short-insert R2 leads with the TSO (HTML Step (5)-(6) Product 1)"
+          },
+          {
+            "name": "cdna_short",
+            "type": "insert",
+            "notes": "residual insert 0-30 nt (pure dimer: 0)"
+          },
+          {
+            "name": "polyA",
+            "type": "polyA",
+            "base": "A",
+            "notes": "variable-length poly(A)"
+          },
+          {
+            "name": "umi_rc",
+            "type": "umi",
+            "derivation": "revcomp(umi)"
+          },
+          {
+            "name": "cbc_rc",
+            "type": "barcode",
+            "derivation": "revcomp(cell_barcode)"
+          },
+          {
+            "name": "r1_primer_rc",
+            "type": "constant",
+            "constant_ref": "oligo_r1_readinto_adapter"
+          },
+          {
+            "name": "p5_rc",
+            "type": "constant",
+            "constant_ref": "oligo_p5_rc"
+          },
+          {
+            "name": "polyG_pad",
+            "type": "constant",
+            "base": "G",
+            "notes": "two-color (NextSeq/NovaSeq) no-signal pad to read length; spuriously high quality"
+          }
+        ]
+      }
+    ]
+  },
+  "library_generation": [
+    {
+      "step": 1,
+      "title": "mRNA capture using Beads-oligo-dT in the droplets, and reverse transcription using MMLV",
+      "note": null,
+      "summary": "Poly(dT) beads capture mRNA in droplets; MMLV reverse-transcribes it into barcoded cDNA."
+    },
+    {
+      "step": 2,
+      "title": "The terminal tranferase acitivity of MMLV adds extra Cs",
+      "note": null,
+      "summary": "MMLV's terminal-transferase activity adds a few untemplated C's to the cDNA 3' end."
+    },
+    {
+      "step": 3,
+      "title": "Adding TSO for second strand synthesis",
+      "note": null,
+      "summary": "The TSO base-pairs with the C overhang to prime second-strand synthesis."
+    },
+    {
+      "step": 4,
+      "title": "Adding cDNA Forward and Reverse primers to amplify full length cDNA",
+      "note": null,
+      "summary": "cDNA Forward/Reverse primers PCR-amplify the full-length cDNA."
+    },
+    {
+      "step": 5,
+      "title": "Use Fragmentase to fragment cDNA and perform A-tailing",
+      "note": null,
+      "summary": "Fragmentase shears the cDNA and A-tails the fragment ends."
+    },
+    {
+      "step": 6,
+      "title": "Add double stranded Illumina Truseq adapter (with a T overhang) for ligation",
+      "note": null,
+      "summary": "A T-overhang TruSeq adapter is ligated onto the A-tailed fragments."
+    },
+    {
+      "step": 7,
+      "title": "Add Library PCR Primers 1 & 2 to amplify library",
+      "note": null,
+      "summary": "Library PCR primers 1 & 2 add P5/P7 and the i7 sample index."
+    },
+    {
+      "step": 8,
+      "title": "Final library structure",
+      "note": null,
+      "summary": "The final P5/P7-indexed Illumina paired-end library."
+    }
+  ],
+  "whitelists": {
+    "cell_barcode_3M_feb2018": {
+      "name": "3M-february-2018",
+      "path": "whitelists/3M-february-2018.txt.gz",
+      "md5": null,
+      "md5_provenance": "computed_local_no_official_checksum",
+      "source_url": "https://raw.githubusercontent.com/f0t1h/3M-february-2018/master/3M-february-2018.txt.gz",
+      "source_note": "community mirror; official file ships only inside Cell Ranger; no vendor checksum published",
+      "size_bytes_gz": 18350152,
+      "count": 6794880,
+      "length": 16,
+      "retrieved_date": null
+    }
+  },
+  "build": {
+    "builder_version": "1.0",
+    "deterministic": true,
+    "source_html_sha256": "4ce49cf0d59a44cd573324e0a2c6325eef003e914c338cec2e8afef7a51cce29"
+  }
+}

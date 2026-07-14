@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "studio.project.v1",
+  "id": "10x-chromium-3-clean-library-f60917",
+  "name": "10x Chromium 3′ — clean library",
+  "assay": "10x Chromium Single Cell 3' Gene Expression",
+  "specId": "10x_3p_v3",
+  "createdAt": "2026-07-14T04:51:44.782Z",
+  "updatedAt": "2026-07-14T04:52:59.210Z",
+  "activeSpecPath": "spec/spec.json",
+  "phase": "complete",
+  "specConfirmed": true,
+  "inputs": {
+    "protocolDoc": null,
+    "notesPath": "inputs/notes.md",
+    "reads": "uploaded",
+    "fastq": {
+      "source": "upload",
+      "r1": "inputs/fastq/R1.fastq.gz",
+      "r2": "inputs/fastq/R2.fastq.gz"
+    }
+  },
+  "latestRunId": "20260714T045144Z-602951",
+  "runIds": [
+    "20260714T045144Z-602951"
+  ],
+  "platform": "illumina",
+  "demo": true,
+  "demoBlurb": "A clean 10x PBMC v3 short-read library — every QC check lands in range. The healthy baseline to compare problem runs against."
+}

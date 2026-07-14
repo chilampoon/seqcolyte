@@ -1,0 +1,161 @@
+{
+  "qc_version": "0.1.0",
+  "spec_id": "10x_3p_v3",
+  "assay": "10x Chromium Single Cell 3' Gene Expression",
+  "platform": "illumina",
+  "profile": {
+    "n_pairs": 36343,
+    "r1_len": {
+      "min": 28,
+      "max": 28,
+      "modal": 28
+    },
+    "r2_len": {
+      "min": 20,
+      "max": 91,
+      "modal": 91
+    }
+  },
+  "findings": [
+    {
+      "check_id": "r1_length",
+      "title": "R1 length matches the expected fixed structure",
+      "verdict": "pass",
+      "value": 28.0,
+      "unit": "bp",
+      "threshold": "== 28",
+      "affected_fraction": null,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "read_structure.R1",
+          "note": "R1 should be exactly 28 bp (sum of its fixed-length segments)"
+        }
+      ],
+      "detail": "R1 lengths span 28\u201328 bp"
+    },
+    {
+      "check_id": "whitelist_hit_rate",
+      "title": "Cell barcodes on the 10x whitelist",
+      "verdict": "pass",
+      "value": 0.9488,
+      "unit": "fraction",
+      "threshold": ">= 0.85",
+      "affected_fraction": null,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "whitelists.cell_barcode_3M_feb2018",
+          "note": "R1[0:16] should match the 3M-february-2018 gel-bead barcode whitelist"
+        }
+      ],
+      "detail": "94.9% of cell barcodes are on the whitelist"
+    },
+    {
+      "check_id": "tso_at_r2_start",
+      "title": "R2 reads beginning with the TSO (adapter-dimer / short insert)",
+      "verdict": "pass",
+      "value": 0.0014,
+      "unit": "fraction",
+      "threshold": "< 0.05",
+      "affected_fraction": 0.0014308119858019426,
+      "severity": 0.0029,
+      "evidence": [
+        {
+          "spec_ref": "read_structure.R2.readthrough_chain[tso_5prime]",
+          "note": "R2 should start with cDNA; a leading TSO is the hallmark of empty/short-insert products"
+        }
+      ],
+      "detail": "0.1% of R2 start with the TSO"
+    },
+    {
+      "check_id": "r1_adapter_readthrough",
+      "title": "R1 read-through into the 3' adapter",
+      "verdict": "pass",
+      "value": 0.0,
+      "unit": "fraction",
+      "threshold": "< 0.02",
+      "affected_fraction": 0.0,
+      "severity": 0.0,
+      "evidence": [
+        {
+          "spec_ref": "oligos[role=read_through_adapter]",
+          "note": "the AGATCGGAAGAGCACA adapter stem in R1 means the insert was shorter than the read length"
+        }
+      ],
+      "detail": "0.0% of R1 contain the adapter stem AGATCGGAAGAGCACA"
+    },
+    {
+      "check_id": "r2_adapter_readthrough",
+      "title": "R2 read-through into the 3' adapter",
+      "verdict": "warn",
+      "value": 0.0398,
+      "unit": "fraction",
+      "threshold": "< 0.02",
+      "affected_fraction": 0.0398,
+      "severity": 0.0796,
+      "evidence": [
+        {
+          "spec_ref": "oligos[role=read_through_adapter]",
+          "note": "the AGATCGGAAGAGCACA adapter stem in R2 means the insert was shorter than the read length"
+        }
+      ],
+      "detail": "4.0% of R2 contain the adapter stem AGATCGGAAGAGCACA"
+    },
+    {
+      "check_id": "r2_polyg_tail",
+      "title": "R2 with a poly-G no-signal tail",
+      "verdict": "pass",
+      "value": 0.0001,
+      "unit": "fraction",
+      "threshold": "< 0.01",
+      "affected_fraction": 8.254684533472746e-05,
+      "severity": 0.0002,
+      "evidence": [
+        {
+          "spec_ref": "platform_params.dark_base",
+          "note": "a poly-G 3' tail on two-color instruments is 'no signal' \u2014 typical of empty/short fragments"
+        }
+      ],
+      "detail": "0.0% of R2 have a poly-G tail"
+    }
+  ],
+  "plan": {
+    "ranked": [
+      {
+        "check_id": "r2_adapter_readthrough",
+        "severity": "low",
+        "why": "Only non-passing check: 4.0% of R2 contain the AGATCGGAAGAGCACA adapter stem vs the <2% threshold. It exceeds threshold but by roughly 2x on a lenient bar, indicating a modest tail of short cDNA inserts (consistent with variable R2 length 20-91 bp) rather than a systemic failure."
+      },
+      {
+        "check_id": "tso_at_r2_start",
+        "severity": "none",
+        "why": "0.14% of R2 begin with the TSO, far under the <5% threshold; adapter-dimer / empty-droplet short-insert products are negligible."
+      },
+      {
+        "check_id": "r2_polyg_tail",
+        "severity": "none",
+        "why": "0.01% poly-G no-signal tails vs <1% threshold; essentially no empty/dark-base fragments on this two-color run."
+      },
+      {
+        "check_id": "whitelist_hit_rate",
+        "severity": "none",
+        "why": "94.9% of R1[0:16] barcodes match the 3M-february-2018 whitelist (>=85% threshold), confirming correct gel-bead chemistry and clean barcode reads."
+      },
+      {
+        "check_id": "r1_length",
+        "severity": "none",
+        "why": "R1 is uniformly 28 bp (16 bp cell barcode + 12 bp UMI), exactly matching the expected v3/v3.1 fixed structure."
+      },
+      {
+        "check_id": "r1_adapter_readthrough",
+        "severity": "none",
+        "why": "0.0% of R1 contain the 3' adapter stem, expected since R1 is fixed-length barcode+UMI and cannot read through."
+      }
+    ],
+    "root_cause": "A minor tail of short cDNA inserts causing R2 read-through into the 3' adapter (4.0% carry the AGATCGGAAGAGCACA stem). This is a mild insert-size skew in the library, not a library-prep or sequencing failure.",
+    "diagnosis": "The library is fundamentally healthy: R1 is exactly 28 bp, 94.9% of cell barcodes are on the 10x whitelist, and TSO-at-start (0.1%) and poly-G tails (0.0%) are negligible. The only flag is 4.0% of R2 reading through into the 3' adapter \u2014 a modest fraction of short inserts, slightly over the 2% guideline. No action is required for QC pass; if short fragments are a concern, tighten the post-cDNA size selection (bead ratio) to trim small products before sequencing.",
+    "method": "llm"
+  },
+  "overall": "warn"
+}

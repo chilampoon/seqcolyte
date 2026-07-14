@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "studio.run.v1",
+  "id": "20260714T044708Z-126d97",
+  "projectId": "10x-chromium-3-adapter-dimers-cff24b",
+  "createdAt": "2026-07-14T04:47:08.572Z",
+  "pipeline": [
+    "qc"
+  ],
+  "options": {
+    "useLlm": true,
+    "maxReads": null,
+    "withLabels": false,
+    "withWhitelist": true,
+    "fastqSource": "remediated",
+    "platform": "illumina"
+  },
+  "inputsSnapshot": {
+    "specPath": "/Users/seqmachines/playground/seqcolyte/studio/projects/10x-chromium-3-adapter-dimers-cff24b/runs/20260714T044708Z-126d97/spec.json",
+    "r1": "/Users/seqmachines/playground/seqcolyte/studio/projects/10x-chromium-3-adapter-dimers-cff24b/remediated/R1.fastq.gz",
+    "r2": "/Users/seqmachines/playground/seqcolyte/studio/projects/10x-chromium-3-adapter-dimers-cff24b/remediated/R2.fastq.gz",
+    "whitelist": "/Users/seqmachines/playground/seqcolyte/whitelists/3M-february-2018.txt.gz",
+    "labels": null
+  },
+  "steps": {
+    "qc": {
+      "name": "qc",
+      "status": "succeeded",
+      "log": "logs/qc.log",
+      "startedAt": "2026-07-14T04:47:08.579Z",
+      "pid": 78294,
+      "exitCode": 0,
+      "finishedAt": "2026-07-14T04:47:34.781Z",
+      "durationMs": 26200
+    }
+  },
+  "overallStatus": "succeeded",
+  "startedAt": "2026-07-14T04:47:08.577Z",
+  "overall": "warn",
+  "finishedAt": "2026-07-14T04:47:34.782Z"
+}

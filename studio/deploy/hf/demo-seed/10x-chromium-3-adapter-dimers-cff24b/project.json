@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "studio.project.v1",
+  "id": "10x-chromium-3-adapter-dimers-cff24b",
+  "name": "10x Chromium 3′ — adapter dimers",
+  "assay": "10x Chromium Single Cell 3' Gene Expression",
+  "specId": "10x_3p_v3",
+  "createdAt": "2026-07-14T04:43:56.061Z",
+  "updatedAt": "2026-07-14T04:49:55.891Z",
+  "activeSpecPath": "spec/spec.json",
+  "phase": "complete",
+  "specConfirmed": true,
+  "inputs": {
+    "protocolDoc": null,
+    "notesPath": "inputs/notes.md",
+    "reads": "uploaded",
+    "fastq": {
+      "source": "upload",
+      "r1": "inputs/fastq/R1.fastq.gz",
+      "r2": "inputs/fastq/R2.fastq.gz"
+    }
+  },
+  "latestRunId": "20260714T044708Z-126d97",
+  "runIds": [
+    "20260714T044708Z-126d97",
+    "20260714T044356Z-a78f3c"
+  ],
+  "platform": "illumina",
+  "demo": true,
+  "demoBlurb": "A 10x short-read library with adapter dimers — QC flags the TSO-at-R2 read-through, the assistant explains the root cause, and an in-silico trim fix cleans it up.",
+  "scripts": [
+    {
+      "path": "scripts/fix_tso_at_r2_start.py",
+      "checkId": "tso_at_r2_start",
+      "label": "Fix: R2 reads beginning with the TSO (adapter-dimer / short insert)",
+      "status": "ran",
+      "createdAt": "2026-07-14T04:44:33.527Z"
+    },
+    {
+      "path": "scripts/fix_r2_adapter_readthrough.py",
+      "checkId": "r2_adapter_readthrough",
+      "label": "Fix: R2 read-through into the 3' adapter",
+      "status": "ran",
+      "createdAt": "2026-07-14T04:44:33.527Z"
+    },
+    {
+      "path": "scripts/fix_r2_polyg_tail.py",
+      "checkId": "r2_polyg_tail",
+      "label": "Fix: R2 with a poly-G no-signal tail",
+      "status": "ran",
+      "createdAt": "2026-07-14T04:44:33.527Z"
+    }
+  ]
+}

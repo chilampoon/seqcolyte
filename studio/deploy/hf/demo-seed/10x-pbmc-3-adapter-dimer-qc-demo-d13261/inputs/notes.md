@@ -1,1 +1,0 @@
-Example run: a 10x Chromium 3′ GEX library with adapter-dimer / short-insert contamination injected into a known-good control. Shows how Seqcolyte flags the failure and ties each finding back to the expected read structure.

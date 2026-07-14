@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "studio.run.v1",
+  "id": "20260714T045144Z-602951",
+  "projectId": "10x-chromium-3-clean-library-f60917",
+  "createdAt": "2026-07-14T04:51:44.887Z",
+  "pipeline": [
+    "qc"
+  ],
+  "options": {
+    "useLlm": true,
+    "maxReads": null,
+    "withLabels": false,
+    "withWhitelist": true,
+    "fastqSource": "upload",
+    "platform": "illumina"
+  },
+  "inputsSnapshot": {
+    "specPath": "/Users/seqmachines/playground/seqcolyte/studio/projects/10x-chromium-3-clean-library-f60917/runs/20260714T045144Z-602951/spec.json",
+    "r1": "/Users/seqmachines/playground/seqcolyte/studio/projects/10x-chromium-3-clean-library-f60917/inputs/fastq/R1.fastq.gz",
+    "r2": "/Users/seqmachines/playground/seqcolyte/studio/projects/10x-chromium-3-clean-library-f60917/inputs/fastq/R2.fastq.gz",
+    "whitelist": "/Users/seqmachines/playground/seqcolyte/whitelists/3M-february-2018.txt.gz",
+    "labels": null
+  },
+  "steps": {
+    "qc": {
+      "name": "qc",
+      "status": "succeeded",
+      "log": "logs/qc.log",
+      "startedAt": "2026-07-14T04:51:44.896Z",
+      "pid": 78520,
+      "exitCode": 0,
+      "finishedAt": "2026-07-14T04:52:07.113Z",
+      "durationMs": 22215
+    }
+  },
+  "overallStatus": "succeeded",
+  "startedAt": "2026-07-14T04:51:44.893Z",
+  "overall": "pass",
+  "finishedAt": "2026-07-14T04:52:07.114Z"
+}
