@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -15,16 +16,22 @@ export function EditableTitle({
   initialName: string;
   className?: string;
 }) {
+  const router = useRouter();
   const [name, setName] = useState(initialName);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(initialName);
   const inputRef = useRef<HTMLInputElement>(null);
+  const lastInitial = useRef(initialName);
 
-  // Reflect server-side updates (e.g. auto-name after extraction) when not editing.
+  // Reflect a genuine server-side name change (e.g. auto-name after extraction) — but NOT on every
+  // editing toggle, which used to clobber a just-saved optimistic name back to the stale prop.
   useEffect(() => {
-    if (!editing) {
-      setName(initialName);
-      setDraft(initialName);
+    if (initialName !== lastInitial.current) {
+      lastInitial.current = initialName;
+      if (!editing) {
+        setName(initialName);
+        setDraft(initialName);
+      }
     }
   }, [initialName, editing]);
 
@@ -50,7 +57,10 @@ export function EditableTitle({
       setName(prev);
       setDraft(prev);
       toast.error("Rename failed");
+      return;
     }
+    lastInitial.current = next; // keep the sync-guard in step with the saved name
+    router.refresh(); // update the landing card + any other consumers of this name
   }
 
   if (editing) {

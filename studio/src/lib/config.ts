@@ -42,3 +42,11 @@ export const assets = {
 
 export const DEFAULT_ASSAY = "10x Chromium Single Cell 3' Gene Expression";
 export const DEFAULT_SPEC_ID = "10x_3p_v3";
+
+/**
+ * A brand-new project has no identified library structure yet. It stays labelled
+ * "new" until a protocol is extracted; only then does it adopt a known
+ * technology's id (or fall back to "new" for a custom structure).
+ */
+export const NEW_ASSAY = "New library — describe or upload a protocol";
+export const NEW_SPEC_ID = "new";

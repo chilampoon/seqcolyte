@@ -41,7 +41,7 @@ export interface RunOptions {
   withWhitelist?: boolean;
   failureMode?: string;
   seed?: number;
-  fastqSource?: "control" | "sim" | "upload";
+  fastqSource?: "control" | "sim" | "upload" | "remediated";
   /** modality: "nanopore" runs use the long-read QC path */
   platform?: string;
 }
@@ -75,6 +75,7 @@ export type ProjectPhase =
   | "extracting"
   | "awaiting_spec_review"
   | "spec_confirmed"
+  | "awaiting_reads"
   | "analyzing"
   | "complete";
 
@@ -84,6 +85,8 @@ export interface ProjectManifest {
   name: string;
   assay: string;
   specId: string;
+  /** Sequencing platform from the extracted spec — "nanopore" ⇒ single long-read file, not paired. */
+  platform?: string;
   createdAt: string;
   updatedAt: string;
   /** relative-to-project path of the active spec (extract output or reference copy) */
@@ -111,6 +114,19 @@ export interface ProjectManifest {
   };
   latestRunId: string | null;
   runIds: string[];
+  /** AI-authored remediation scripts (Phase 3): generated per finding, run on demand. */
+  scripts?: ScriptRecord[];
+}
+
+export interface ScriptRecord {
+  /** project-relative path, e.g. scripts/fix_r2_adapter_readthrough.py */
+  path: string;
+  checkId: string;
+  label: string;
+  status: "generating" | "generated" | "ran" | "failed";
+  createdAt: string;
+  /** the re-QC run launched on the cleaned reads this script produced */
+  resultRunId?: string;
 }
 
 // ---- QC report (tolerant; the report is partial by design) ----

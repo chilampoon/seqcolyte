@@ -37,11 +37,40 @@ pub fn has_homopolymer_tail(seq: &[u8], base: u8) -> bool {
     count >= tail.len() - TOL
 }
 
+/// True if `seq` carries `pattern` at `offset` allowing up to `max_mismatch` substitutions.
+/// Reads too short to contain the pattern at that offset never match. Used to validate a
+/// fixed-offset constant anchor (e.g. a TSO-derived linker at a known R1 position).
+pub fn matches_at(seq: &[u8], offset: usize, pattern: &[u8], max_mismatch: u32) -> bool {
+    if pattern.is_empty() || offset + pattern.len() > seq.len() {
+        return false;
+    }
+    let mut mm = 0u32;
+    for (i, &p) in pattern.iter().enumerate() {
+        if seq[offset + i] != p {
+            mm += 1;
+            if mm > max_mismatch {
+                return false;
+            }
+        }
+    }
+    true
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     const TSO: &[u8] = b"AAGCAGTGGTATCAACGCAGAGTACATGGG";
+
+    #[test]
+    fn matches_at_offset() {
+        let read = b"NNNNNNNNCTAACGGGACGT"; // anchor CTAACGGG at offset 8
+        assert!(matches_at(read, 8, b"CTAACGGG", 1));
+        assert!(matches_at(read, 8, b"CTAACGGA", 1)); // 1 mismatch ok
+        assert!(!matches_at(read, 8, b"CTAACAAA", 1)); // 3 mismatches
+        assert!(!matches_at(read, 7, b"CTAACGGG", 1)); // wrong offset
+        assert!(!matches_at(b"AC", 8, b"CTAACGGG", 1)); // too short
+    }
 
     #[test]
     fn startswith_fuzzy_edges() {

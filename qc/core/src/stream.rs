@@ -7,12 +7,13 @@
 //! (so a truncated run never raises a pairing error).
 
 use anyhow::{bail, Result};
-use memchr::memmem::Finder;
+use memchr::memmem;
 use needletail::parse_fastx_file;
 use rayon::prelude::*;
 use rustc_hash::{FxHashMap, FxHashSet};
 
-use crate::seqops::{has_homopolymer_tail, startswith_fuzzy};
+use crate::seqops::{has_homopolymer_tail, matches_at, startswith_fuzzy};
+use crate::spec::Anchor;
 use crate::whitelist::hit as wl_hit;
 
 const BATCH: usize = 50_000;
@@ -21,7 +22,10 @@ const BATCH: usize = 50_000;
 pub struct Ctx<'a> {
     pub tso: Option<&'a [u8]>,
     pub dark: Option<u8>,
-    pub stem: Finder<'a>,
+    /// Read-through adapter stems (from the spec's oligos) — searched in both mates.
+    pub adapters: &'a [Vec<u8>],
+    /// Fixed-offset constant anchors to validate.
+    pub anchors: &'a [Anchor],
     pub wl: Option<&'a FxHashSet<u64>>,
     pub cb_start: usize,
     pub cb_len: usize,
@@ -30,18 +34,24 @@ pub struct Ctx<'a> {
 
 struct Flags {
     tso: bool,
-    adapter: bool,
+    r1_adapter: bool,
+    r2_adapter: bool,
     polyg: bool,
     wl: bool,
+    /// One bool per `ctx.anchors` (same order): did the read carry the anchor at its offset?
+    anchors: Vec<bool>,
 }
 
 #[derive(Default)]
 pub struct Acc {
     pub n: u64,
     pub tso: u64,
-    pub adapter: u64,
+    pub r1_adapter: u64,
+    pub r2_adapter: u64,
     pub polyg: u64,
     pub wl: u64,
+    /// Per-anchor match count, in `ctx.anchors` order.
+    pub anchor_hits: Vec<u64>,
     /// `predict_affected` per pair, in read order — only populated when `collect_preds`.
     pub preds: Vec<bool>,
 }
@@ -107,6 +117,7 @@ pub fn stream(
     let mut r1 = parse_fastx_file(r1_path)?;
     let mut r2 = parse_fastx_file(r2_path)?;
     let mut acc = Acc::default();
+    acc.anchor_hits = vec![0; ctx.anchors.len()];
     let mut h1 = OrderedHist::default();
     let mut h2 = OrderedHist::default();
     let mut batch: Vec<(Box<[u8]>, Box<[u8]>)> = Vec::with_capacity(BATCH);
@@ -151,21 +162,37 @@ fn flush(batch: &[(Box<[u8]>, Box<[u8]>)], ctx: &Ctx, acc: &mut Acc) {
     // Parallel map preserves order; the fold below is order-stable so preds stay in read order.
     let flags: Vec<Flags> = batch
         .par_iter()
-        .map(|(r1, r2)| Flags {
-            tso: ctx.tso.map_or(false, |t| startswith_fuzzy(r2, t, 2)),
-            adapter: ctx.stem.find(r2).is_some(),
-            polyg: ctx.dark.map_or(false, |b| has_homopolymer_tail(r2, b)),
-            wl: ctx
-                .wl
-                .map_or(false, |s| wl_hit(r1, ctx.cb_start, ctx.cb_len, s)),
+        .map(|(r1, r2)| {
+            let anchors = ctx
+                .anchors
+                .iter()
+                .map(|a| {
+                    let read: &[u8] = if a.read == "R1" { r1 } else { r2 };
+                    matches_at(read, a.offset, &a.seq, 1)
+                })
+                .collect();
+            Flags {
+                tso: ctx.tso.map_or(false, |t| startswith_fuzzy(r2, t, 2)),
+                r1_adapter: ctx.adapters.iter().any(|a| memmem::find(r1, a).is_some()),
+                r2_adapter: ctx.adapters.iter().any(|a| memmem::find(r2, a).is_some()),
+                polyg: ctx.dark.map_or(false, |b| has_homopolymer_tail(r2, b)),
+                wl: ctx
+                    .wl
+                    .map_or(false, |s| wl_hit(r1, ctx.cb_start, ctx.cb_len, s)),
+                anchors,
+            }
         })
         .collect();
 
     for f in &flags {
         acc.tso += f.tso as u64;
-        acc.adapter += f.adapter as u64;
+        acc.r1_adapter += f.r1_adapter as u64;
+        acc.r2_adapter += f.r2_adapter as u64;
         acc.polyg += f.polyg as u64;
         acc.wl += f.wl as u64;
+        for (i, hit) in f.anchors.iter().enumerate() {
+            acc.anchor_hits[i] += *hit as u64;
+        }
         if ctx.collect_preds {
             // predict_affected(r2, tso, dark) = tso_match OR (dark AND polyg_tail)
             acc.preds.push(f.tso || (ctx.dark.is_some() && f.polyg));

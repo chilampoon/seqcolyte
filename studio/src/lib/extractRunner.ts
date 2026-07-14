@@ -1,11 +1,36 @@
 import { promises as fs } from "node:fs";
+import path from "node:path";
 import { spawn } from "node:child_process";
-import { CLAUDE_BIN, DEFAULT_MODEL, DEFAULT_SPEC_ID, PYTHON, REPO_ROOT } from "./config";
-import { inProject } from "./paths";
+import { CLAUDE_BIN, DEFAULT_MODEL, PYTHON, REPO_ROOT } from "./config";
+import { assertSafeId, inProject } from "./paths";
+import { techSpecPath } from "./technologies";
 import { getProject, updateProject } from "./store";
 import { appendConversation, readConversation } from "./chat";
 import { spawnLogged } from "./spawn";
 import type { ProjectManifest, SpecDoc } from "./types";
+
+/**
+ * Is this spec id a *known* library structure — one the /technologies gallery
+ * lists, or a packaged reference spec? If so a project adopts it as its tag;
+ * otherwise the extracted structure is custom and the project stays "new".
+ */
+async function isKnownStructure(specId: string): Promise<boolean> {
+  const exists = async (p: string) => {
+    try {
+      await fs.access(p);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+  try {
+    if (await exists(techSpecPath(specId))) return true; // spec/technologies/{id}.json
+    if (await exists(path.join(REPO_ROOT, "spec", `${assertSafeId(specId)}.json`))) return true;
+  } catch {
+    /* assertSafeId rejected an unsafe id → treat as unknown */
+  }
+  return false;
+}
 
 /**
  * Extract a spec from an uploaded protocol doc via `python -m extract from-doc`.
@@ -181,8 +206,10 @@ export async function startExtract(projectId: string, docRel: string): Promise<v
     "from-doc",
     "--doc",
     docAbs,
+    // Technology-agnostic inference — respect the protocol's real read structure
+    // (custom/novel assays included), not a forced 10x template.
     "--spec",
-    DEFAULT_SPEC_ID,
+    "generic",
     "--model",
     DEFAULT_MODEL,
     "--out",
@@ -262,7 +289,10 @@ async function driveExtract(
     specConfirmed: false,
   };
   if (spec.assay) patch.assay = spec.assay;
-  if (spec.spec_id) patch.specId = spec.spec_id;
+  if (spec.platform) patch.platform = spec.platform; // nanopore ⇒ single-read flow
+  // Adopt the identified id only when it's a known structure; a custom library
+  // keeps the neutral "new" tag rather than inventing a fake catalog id.
+  if (spec.spec_id && (await isKnownStructure(spec.spec_id))) patch.specId = spec.spec_id;
 
   // Auto-name only while still "Untitled": "{sample} · {assay}" when the user
   // described a sample, else the assay alone.

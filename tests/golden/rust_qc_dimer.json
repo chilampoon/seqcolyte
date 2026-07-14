@@ -21,13 +21,13 @@
         "detail": "R1 lengths span 28\u201328 bp",
         "evidence": [
           {
-            "note": "R1 should be exactly 28 bp (16 bp cell barcode + 12 bp UMI)",
+            "note": "R1 should be exactly 28 bp (sum of its fixed-length segments)",
             "spec_ref": "read_structure.R1"
           }
         ],
         "severity": 0.0,
         "threshold": "== 28",
-        "title": "R1 length matches barcode + UMI",
+        "title": "R1 length matches the expected fixed structure",
         "unit": "bp",
         "value": 28.0,
         "verdict": "pass"
@@ -67,20 +67,37 @@
         "verdict": "fail"
       },
       {
-        "affected_fraction": 0.0545,
-        "check_id": "r2_adapter_readthrough",
-        "detail": "5.5% of R2 contain the adapter stem AGATCGGAAGAGC",
+        "affected_fraction": 0.0,
+        "check_id": "r1_adapter_readthrough",
+        "detail": "0.0% of R1 contain the adapter stem AGATCGGAAGAGCACA",
         "evidence": [
           {
-            "note": "the AGATCGGAAGAGC adapter stem in R2 means the insert was shorter than the read length",
-            "spec_ref": "oligos.oligo_r1_readinto_adapter"
+            "note": "the AGATCGGAAGAGCACA adapter stem in R1 means the insert was shorter than the read length",
+            "spec_ref": "oligos[role=read_through_adapter]"
           }
         ],
-        "severity": 0.109,
+        "severity": 0.0,
         "threshold": "< 0.02",
-        "title": "R2 read-through into the Illumina adapter",
+        "title": "R1 read-through into the 3' adapter",
         "unit": "fraction",
-        "value": 0.0545,
+        "value": 0.0,
+        "verdict": "pass"
+      },
+      {
+        "affected_fraction": 0.0362,
+        "check_id": "r2_adapter_readthrough",
+        "detail": "3.6% of R2 contain the adapter stem AGATCGGAAGAGCACA",
+        "evidence": [
+          {
+            "note": "the AGATCGGAAGAGCACA adapter stem in R2 means the insert was shorter than the read length",
+            "spec_ref": "oligos[role=read_through_adapter]"
+          }
+        ],
+        "severity": 0.0723,
+        "threshold": "< 0.02",
+        "title": "R2 read-through into the 3' adapter",
+        "unit": "fraction",
+        "value": 0.0362,
         "verdict": "warn"
       },
       {
@@ -137,13 +154,13 @@
         "detail": "R1 lengths span 28\u201328 bp",
         "evidence": [
           {
-            "note": "R1 should be exactly 28 bp (16 bp cell barcode + 12 bp UMI)",
+            "note": "R1 should be exactly 28 bp (sum of its fixed-length segments)",
             "spec_ref": "read_structure.R1"
           }
         ],
         "severity": 0.0,
         "threshold": "== 28",
-        "title": "R1 length matches barcode + UMI",
+        "title": "R1 length matches the expected fixed structure",
         "unit": "bp",
         "value": 28.0,
         "verdict": "pass"
@@ -183,20 +200,37 @@
         "verdict": "fail"
       },
       {
-        "affected_fraction": 0.0602,
-        "check_id": "r2_adapter_readthrough",
-        "detail": "6.0% of R2 contain the adapter stem AGATCGGAAGAGC",
+        "affected_fraction": 0.0,
+        "check_id": "r1_adapter_readthrough",
+        "detail": "0.0% of R1 contain the adapter stem AGATCGGAAGAGCACA",
         "evidence": [
           {
-            "note": "the AGATCGGAAGAGC adapter stem in R2 means the insert was shorter than the read length",
-            "spec_ref": "oligos.oligo_r1_readinto_adapter"
+            "note": "the AGATCGGAAGAGCACA adapter stem in R1 means the insert was shorter than the read length",
+            "spec_ref": "oligos[role=read_through_adapter]"
           }
         ],
-        "severity": 0.1204,
+        "severity": 0.0,
         "threshold": "< 0.02",
-        "title": "R2 read-through into the Illumina adapter",
+        "title": "R1 read-through into the 3' adapter",
         "unit": "fraction",
-        "value": 0.0602,
+        "value": 0.0,
+        "verdict": "pass"
+      },
+      {
+        "affected_fraction": 0.0418,
+        "check_id": "r2_adapter_readthrough",
+        "detail": "4.2% of R2 contain the adapter stem AGATCGGAAGAGCACA",
+        "evidence": [
+          {
+            "note": "the AGATCGGAAGAGCACA adapter stem in R2 means the insert was shorter than the read length",
+            "spec_ref": "oligos[role=read_through_adapter]"
+          }
+        ],
+        "severity": 0.0836,
+        "threshold": "< 0.02",
+        "title": "R2 read-through into the 3' adapter",
+        "unit": "fraction",
+        "value": 0.0418,
         "verdict": "warn"
       },
       {
@@ -240,13 +274,13 @@
         "detail": "R1 lengths span 28\u201328 bp",
         "evidence": [
           {
-            "note": "R1 should be exactly 28 bp (16 bp cell barcode + 12 bp UMI)",
+            "note": "R1 should be exactly 28 bp (sum of its fixed-length segments)",
             "spec_ref": "read_structure.R1"
           }
         ],
         "severity": 0.0,
         "threshold": "== 28",
-        "title": "R1 length matches barcode + UMI",
+        "title": "R1 length matches the expected fixed structure",
         "unit": "bp",
         "value": 28.0,
         "verdict": "pass"
@@ -269,20 +303,37 @@
         "verdict": "fail"
       },
       {
-        "affected_fraction": 0.0545,
-        "check_id": "r2_adapter_readthrough",
-        "detail": "5.5% of R2 contain the adapter stem AGATCGGAAGAGC",
+        "affected_fraction": 0.0,
+        "check_id": "r1_adapter_readthrough",
+        "detail": "0.0% of R1 contain the adapter stem AGATCGGAAGAGCACA",
         "evidence": [
           {
-            "note": "the AGATCGGAAGAGC adapter stem in R2 means the insert was shorter than the read length",
-            "spec_ref": "oligos.oligo_r1_readinto_adapter"
+            "note": "the AGATCGGAAGAGCACA adapter stem in R1 means the insert was shorter than the read length",
+            "spec_ref": "oligos[role=read_through_adapter]"
           }
         ],
-        "severity": 0.109,
+        "severity": 0.0,
         "threshold": "< 0.02",
-        "title": "R2 read-through into the Illumina adapter",
+        "title": "R1 read-through into the 3' adapter",
         "unit": "fraction",
-        "value": 0.0545,
+        "value": 0.0,
+        "verdict": "pass"
+      },
+      {
+        "affected_fraction": 0.0362,
+        "check_id": "r2_adapter_readthrough",
+        "detail": "3.6% of R2 contain the adapter stem AGATCGGAAGAGCACA",
+        "evidence": [
+          {
+            "note": "the AGATCGGAAGAGCACA adapter stem in R2 means the insert was shorter than the read length",
+            "spec_ref": "oligos[role=read_through_adapter]"
+          }
+        ],
+        "severity": 0.0723,
+        "threshold": "< 0.02",
+        "title": "R2 read-through into the 3' adapter",
+        "unit": "fraction",
+        "value": 0.0362,
         "verdict": "warn"
       },
       {

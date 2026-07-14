@@ -9,8 +9,6 @@ use crate::model::{Evidence, Finding};
 use crate::spec::SpecInfo;
 use crate::stream::{Acc, OrderedHist};
 
-const ADAPTER_STEM: &str = "AGATCGGAAGAGC";
-
 /// `qc.checks._tri`
 fn tri(v: f64, warn: f64, fail: f64) -> &'static str {
     if v >= fail {
@@ -33,32 +31,86 @@ pub fn build_findings(spec: &SpecInfo, acc: &Acc, h1: &OrderedHist, have_whiteli
     let mut out: Vec<Finding> = Vec::new();
     let n = acc.n as f64;
 
-    // ---- 1. r1_length ----
+    // ---- 1. r1_length — spec-driven: gate only when R1 is fully fixed-length, else report ----
     {
-        let expected = spec.r1_cycles;
-        // ok = {distinct R1 lengths} == {expected}
-        let ok = h1.distinct() == 1 && h1.contains(expected as u32);
         let modal = h1.modal();
-        let detail = if h1.is_empty() {
+        let span = if h1.is_empty() {
             "no reads".to_string()
         } else {
-            // U+2013 en-dash, verbatim from Python f"...span {min}–{max} bp"
+            // U+2013 en-dash
             format!("R1 lengths span {}\u{2013}{} bp", h1.min(), h1.max())
         };
+        match spec.expected_r1_len {
+            Some(exp) => {
+                let ok = h1.distinct() == 1 && h1.contains(exp as u32);
+                out.push(Finding {
+                    check_id: "r1_length".to_string(),
+                    title: "R1 length matches the expected fixed structure".to_string(),
+                    verdict: (if ok { "pass" } else { "fail" }).to_string(),
+                    value: modal as f64,
+                    unit: "bp".to_string(),
+                    threshold: format!("== {}", exp),
+                    affected_fraction: None,
+                    severity: if ok { 0.0 } else { 0.9 },
+                    evidence: ev(
+                        "read_structure.R1",
+                        format!("R1 should be exactly {} bp (sum of its fixed-length segments)", exp),
+                    ),
+                    detail: span,
+                });
+            }
+            None => {
+                // R1 carries a variable-length insert — report the distribution, do not gate.
+                out.push(Finding {
+                    check_id: "r1_length".to_string(),
+                    title: "R1 length distribution".to_string(),
+                    verdict: "pass".to_string(),
+                    value: modal as f64,
+                    unit: "bp".to_string(),
+                    threshold: "informational".to_string(),
+                    affected_fraction: None,
+                    severity: 0.0,
+                    evidence: ev(
+                        "read_structure.R1",
+                        "R1 carries a variable-length insert; length is reported, not gated".to_string(),
+                    ),
+                    detail: span,
+                });
+            }
+        }
+    }
+
+    // ---- 1b. anchor presence — spec-driven: each fixed-offset constant should be carried ----
+    for (i, a) in spec.anchors.iter().enumerate() {
+        let frac = if acc.n > 0 { acc.anchor_hits[i] as f64 / n } else { 0.0 };
+        let seq = String::from_utf8_lossy(&a.seq).to_string();
+        let verdict = if frac >= 0.8 {
+            "pass"
+        } else if frac >= 0.5 {
+            "warn"
+        } else {
+            "fail"
+        };
         out.push(Finding {
-            check_id: "r1_length".to_string(),
-            title: "R1 length matches barcode + UMI".to_string(),
-            verdict: (if ok { "pass" } else { "fail" }).to_string(),
-            value: modal as f64,
-            unit: "bp".to_string(),
-            threshold: format!("== {}", expected),
-            affected_fraction: None,
-            severity: if ok { 0.0 } else { 0.9 },
+            check_id: format!("anchor_{}_{}", a.read.to_ascii_lowercase(), i),
+            title: format!("{} carries the expected {} anchor", a.read, seq),
+            verdict: verdict.to_string(),
+            value: round4(frac),
+            unit: "fraction".to_string(),
+            threshold: ">= 0.8".to_string(),
+            affected_fraction: Some(round4((1.0 - frac).max(0.0))),
+            severity: round4((0.8 - frac).max(0.0)),
             evidence: ev(
-                "read_structure.R1",
-                format!("R1 should be exactly {} bp (16 bp cell barcode + 12 bp UMI)", expected),
+                &format!("read_structure.{}", a.read),
+                format!("{} should carry the constant {} at position {}", a.read, seq, a.offset + 1),
             ),
-            detail,
+            detail: format!(
+                "{} of {} carry {} at position {} (the rest are off-target / mispriming)",
+                pct1(frac),
+                a.read,
+                seq,
+                a.offset + 1
+            ),
         });
     }
 
@@ -109,24 +161,30 @@ pub fn build_findings(spec: &SpecInfo, acc: &Acc, h1: &OrderedHist, have_whiteli
         });
     }
 
-    // ---- 4. r2_adapter_readthrough (always) ----
-    {
-        let frac = if acc.n > 0 { acc.adapter as f64 / n } else { 0.0 };
-        out.push(Finding {
-            check_id: "r2_adapter_readthrough".to_string(),
-            title: "R2 read-through into the Illumina adapter".to_string(),
-            verdict: tri(frac, 0.02, 0.10).to_string(),
-            value: round4(frac),
-            unit: "fraction".to_string(),
-            threshold: "< 0.02".to_string(),
-            affected_fraction: Some(frac),
-            severity: round4((frac * 2.0).min(1.0)),
-            evidence: ev(
-                "oligos.oligo_r1_readinto_adapter",
-                format!("the {} adapter stem in R2 means the insert was shorter than the read length", ADAPTER_STEM),
-            ),
-            detail: format!("{} of R2 contain the adapter stem {}", pct1(frac), ADAPTER_STEM),
-        });
+    // ---- 4. adapter read-through — spec-driven: the spec's actual 3' adapter, both mates ----
+    if !spec.adapters.is_empty() {
+        let adapter_str = String::from_utf8_lossy(&spec.adapters[0]).to_string();
+        for (id, name, hits) in [("r1", "R1", acc.r1_adapter), ("r2", "R2", acc.r2_adapter)] {
+            let frac = if acc.n > 0 { hits as f64 / n } else { 0.0 };
+            out.push(Finding {
+                check_id: format!("{}_adapter_readthrough", id),
+                title: format!("{} read-through into the 3' adapter", name),
+                verdict: tri(frac, 0.02, 0.10).to_string(),
+                value: round4(frac),
+                unit: "fraction".to_string(),
+                threshold: "< 0.02".to_string(),
+                affected_fraction: Some(round4(frac)),
+                severity: round4((frac * 2.0).min(1.0)),
+                evidence: ev(
+                    "oligos[role=read_through_adapter]",
+                    format!(
+                        "the {} adapter stem in {} means the insert was shorter than the read length",
+                        adapter_str, name
+                    ),
+                ),
+                detail: format!("{} of {} contain the adapter stem {}", pct1(frac), name, adapter_str),
+            });
+        }
     }
 
     // ---- 5. r2_polyg_tail (skip without a dark_base) ----

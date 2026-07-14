@@ -26,6 +26,11 @@ _SPEC_META = {
         "assay": "10x Chromium Single Cell 3' Gene Expression", "chemistry_version": "v3/v3.1",
         "protocol_name": "10x Chromium 3' Gene Expression v3", "whitelist": _WHITELIST_3M,
     },
+    # Technology-agnostic inference: respect the LLM's read structure, no 10x template.
+    "generic": {
+        "assay": "", "chemistry_version": "",
+        "protocol_name": "the sequencing library described in the document", "whitelist": {},
+    },
 }
 
 
@@ -58,33 +63,54 @@ def cmd_check(args: argparse.Namespace) -> int:
 
 
 def cmd_from_doc(args: argparse.Namespace) -> int:
-    """Extract a spec from a protocol PDF via Claude Code headless (LLM extraction)."""
-    from extract.doc_extract import assemble_spec, cross_check, evaluate, extract_document
+    """Extract a spec from a protocol/description doc via Claude Code headless (LLM extraction).
+
+    `--spec generic` runs technology-agnostic INFERENCE (respects the model's inferred read structure —
+    use for custom/novel assays); `--spec 10x_3p_v3` uses the 10x-anchored template assembly.
+    """
+    from extract.doc_extract import (assemble_generic_spec, assemble_spec, cross_check, evaluate,
+                                     extract_document, extract_documents, _INFER_ADDENDUM)
 
     meta = _SPEC_META.get(args.spec)
     if meta is None:
         print(f"ERROR: no metadata registered for spec {args.spec!r} (known: {list(_SPEC_META)})", file=sys.stderr)
         return 1
 
-    print(f"[from-doc] extracting {args.doc} via Claude Code ({args.model}) …", file=sys.stderr)
-    result = extract_document(args.doc, meta["protocol_name"], model=args.model)
+    generic = args.spec == "generic"
+    print(f"[from-doc] extracting {args.doc} via Claude Code ({args.model}"
+          f"{'; inferring structure' if generic else ''}) …", file=sys.stderr)
+
+    if generic:
+        result = extract_documents([args.doc], meta["protocol_name"], model=args.model,
+                                   extra_instructions=_INFER_ADDENDUM)
+    else:
+        result = extract_document(args.doc, meta["protocol_name"], model=args.model)
     extraction = result["extraction"]
     print(f"[from-doc] extracted {len(extraction['oligos'])} oligos "
           f"(source {result['source_chars']} chars, {result.get('duration_ms', 0)/1000:.0f}s, "
           f"${result.get('cost_usd') or 0:.3f})", file=sys.stderr)
 
-    cc = cross_check(extraction)
-    print(f"[from-doc] cross-check vs verified constants: {cc['matched']}/{cc['checked']} matched", file=sys.stderr)
-
-    spec = assemble_spec(extraction, spec_id=args.spec, assay=meta["assay"],
-                         chemistry_version=meta["chemistry_version"], source_doc_path=args.doc,
-                         model=args.model, whitelist_block=meta["whitelist"])
+    if generic:
+        spec = assemble_generic_spec(
+            extraction, spec_id=args.spec,
+            assay=extraction.get("title") or "Custom sequencing library",
+            chemistry_version="",
+            source_docs=[{"doc_id": "protocol", "title": Path(args.doc).name, "url": None,
+                          "path": str(args.doc), "retrieved_date": None}],
+            model=args.model,
+        )
+    else:
+        cc = cross_check(extraction)
+        print(f"[from-doc] cross-check vs verified constants: {cc['matched']}/{cc['checked']} matched", file=sys.stderr)
+        spec = assemble_spec(extraction, spec_id=args.spec, assay=meta["assay"],
+                             chemistry_version=meta["chemistry_version"], source_doc_path=args.doc,
+                             model=args.model, whitelist_block=meta["whitelist"])
     out = Path(args.out) if args.out else _REPO / "spec" / f"{args.spec}.pdf.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes(to_canonical_json(spec))
     print(f"[from-doc] wrote {out} ({len(spec['oligos'])} oligos, LLM-extracted)")
 
-    if args.eval:
+    if args.eval and not generic:
         gt_dir = args.groundtruth_dir or str(Path(args.doc).parent)
         ev = evaluate(extraction, gt_dir)
         print("\n[from-doc] EVAL vs groundtruth:")

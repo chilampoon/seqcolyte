@@ -7,6 +7,8 @@ import { inProject } from "@/lib/paths";
 import { getProject, updateProject } from "@/lib/store";
 import { appendConversation } from "@/lib/chat";
 import { startExtract } from "@/lib/extractRunner";
+import { startQcRun } from "@/lib/runner";
+import { authChallenge, basicAuthOk } from "@/lib/auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -63,13 +65,48 @@ async function streamToFile(
 }
 
 /**
- * Raw-streaming upload. The client POSTs the file as the request body
- * (`application/octet-stream`) with the original name in the `x-filename`
- * header — no multipart envelope to buffer. FASTQ mates land in `inputs/fastq/`
- * and are tracked on the manifest; protocol docs kick off extraction; design
- * tables are recorded.
+ * Pull the filename + a body stream from either upload format:
+ *  - raw streaming (current client): `x-filename` header + the octet-stream body;
+ *  - multipart/form-data (older cached clients, `curl -F`, other callers): the
+ *    `file` part.
+ * Accepting both means a deploy that changes the client wire format can never
+ * strand a browser running stale JS — the exact failure that made uploads look
+ * like "nothing happened". `multipart` lets the caller skip the Content-Length
+ * pre-check (that length includes the envelope, and the body is already read).
+ */
+async function readUpload(
+  req: Request,
+): Promise<
+  { filename: string; body: ReadableStream<Uint8Array>; multipart: boolean } | { error: string }
+> {
+  const ct = req.headers.get("content-type") ?? "";
+  if (ct.includes("multipart/form-data")) {
+    const form = await req.formData().catch(() => null);
+    const file = form?.get("file");
+    if (!(file instanceof File)) return { error: "no file in form data" };
+    return { filename: file.name, body: file.stream() as ReadableStream<Uint8Array>, multipart: true };
+  }
+  const rawName = req.headers.get("x-filename");
+  if (!rawName) return { error: "missing file (send x-filename header or multipart form-data)" };
+  if (!req.body) return { error: "empty request body" };
+  let filename: string;
+  try {
+    filename = decodeURIComponent(rawName);
+  } catch {
+    filename = rawName;
+  }
+  return { filename, body: req.body, multipart: false };
+}
+
+/**
+ * Upload endpoint. Streams the file straight to disk (flat memory) from either a
+ * raw octet body or a multipart form. FASTQ mates land in `inputs/fastq/` and are
+ * tracked on the manifest; protocol docs kick off extraction; design tables are
+ * recorded.
  */
 export async function POST(req: Request, ctx: { params: Promise<{ id: string }> }) {
+  // This route is excluded from the auth middleware (to avoid its 10 MiB body cap), so gate here.
+  if (!basicAuthOk(req)) return authChallenge();
   const { id } = await ctx.params;
   let project;
   try {
@@ -78,16 +115,11 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     return NextResponse.json({ error: "project not found" }, { status: 404 });
   }
 
-  const rawName = req.headers.get("x-filename");
-  if (!rawName) {
-    return NextResponse.json({ error: "missing x-filename header" }, { status: 400 });
+  const src = await readUpload(req);
+  if ("error" in src) {
+    return NextResponse.json({ error: src.error }, { status: 400 });
   }
-  let filename: string;
-  try {
-    filename = sanitize(decodeURIComponent(rawName));
-  } catch {
-    filename = sanitize(rawName);
-  }
+  const filename = sanitize(src.filename);
   const ext = path.extname(filename).toLowerCase();
 
   if (BLOCKED_EXT.has(ext)) {
@@ -102,14 +134,11 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   if (!kind) {
     return NextResponse.json({ error: `unsupported file type ${ext || "(none)"}` }, { status: 400 });
   }
-  if (!req.body) {
-    return NextResponse.json({ error: "empty request body" }, { status: 400 });
-  }
 
   const cap = isFastq ? MAX_FASTQ_BYTES : MAX_DOC_BYTES;
-  // Cheap up-front reject when the browser declares the size (it does for a File body).
+  // Cheap up-front reject when the size is declared (raw File body sets Content-Length).
   const declared = Number(req.headers.get("content-length"));
-  if (Number.isFinite(declared) && declared > cap) {
+  if (!src.multipart && Number.isFinite(declared) && declared > cap) {
     return NextResponse.json(
       { error: `file too large (${(declared / 1e6) | 0} MB > ${(cap / 1e6) | 0} MB) — subsample it first` },
       { status: 413 },
@@ -118,7 +147,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
 
   const rel = isFastq ? `inputs/fastq/${filename}` : `inputs/${filename}`;
   await fs.mkdir(inProject(id, path.dirname(rel)), { recursive: true });
-  const streamed = await streamToFile(req.body, inProject(id, rel), cap);
+  const streamed = await streamToFile(src.body, inProject(id, rel), cap);
   if ("error" in streamed) {
     if (streamed.error === "TOO_LARGE") {
       return NextResponse.json(
@@ -129,33 +158,61 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     return NextResponse.json({ error: "upload failed while writing to disk" }, { status: 500 });
   }
 
-  // ---- FASTQ reads: R1/R2 tracked on the manifest ----
+  // ---- FASTQ reads: single long-read (nanopore) or paired R1/R2 (short-read) ----
   if (isFastq) {
+    const single = project.platform === "nanopore";
     const fastq = { ...(project.inputs.fastq ?? { source: "upload", r1: null, r2: null }) };
-    let slot = readSide(filename);
-    if (fastq[slot]) slot = slot === "r1" ? "r2" : "r1"; // preferred mate taken -> fill the other
     fastq.source = "upload";
-    fastq[slot] = rel;
+    let slot: "r1" | "r2" = "r1";
+    if (single) {
+      fastq.r1 = rel; // nanopore: one long-read file, no mate
+      fastq.r2 = null;
+    } else {
+      slot = readSide(filename);
+      if (fastq[slot]) slot = slot === "r1" ? "r2" : "r1"; // preferred mate taken -> fill the other
+      fastq[slot] = rel;
+    }
     await updateProject(id, { inputs: { ...project.inputs, fastq, reads: "uploaded" } });
 
-    const haveBoth = fastq.r1 && fastq.r2;
+    const haveReads = single ? !!fastq.r1 : !!(fastq.r1 && fastq.r2);
     await appendConversation(id, [
       {
         role: "user",
-        text: `📎 Uploaded reads **${filename}** (${slot.toUpperCase()})`,
+        text: `📎 Uploaded reads **${filename}**${single ? "" : ` (${slot.toUpperCase()})`}`,
         ts: new Date().toISOString(),
       },
-      ...(haveBoth
-        ? [
-            {
-              role: "assistant" as const,
-              text: "Both mates (R1 + R2) are in. Confirm the spec and I'll run QC on **your** reads.",
-              ts: new Date().toISOString(),
-            },
-          ]
-        : []),
     ]);
-    return NextResponse.json({ ok: true, filename, kind: "reads", side: slot, haveBoth });
+
+    // If the spec is already confirmed and the reads are complete, QC auto-starts.
+    if (haveReads && project.specConfirmed && !project.latestRunId) {
+      const result = await startQcRun(id, { useLlm: true, fastqSource: "upload" });
+      if (!("error" in result)) {
+        await updateProject(id, { phase: "analyzing" });
+        await appendConversation(id, [
+          {
+            role: "assistant",
+            text:
+              "Reads are in — running the QC pipeline on **your reads** now. I'll stream each " +
+              "stage below; the ranked diagnosis and evidence chain land when it finishes.",
+            ts: new Date().toISOString(),
+          },
+        ]);
+        return NextResponse.json({ ok: true, filename, kind: "reads", side: slot, haveBoth: haveReads, runId: result.runId });
+      }
+    }
+
+    if (haveReads) {
+      await appendConversation(id, [
+        {
+          role: "assistant",
+          text: single
+            ? "Your reads are in. Confirm the spec and I'll run QC on **your reads**."
+            : "Both mates (R1 + R2) are in. Confirm the spec and I'll run QC on **your reads**.",
+          ts: new Date().toISOString(),
+        },
+      ]);
+    }
+    return NextResponse.json({ ok: true, filename, kind: "reads", side: slot, haveBoth: haveReads });
   }
 
   // ---- protocol doc / design table ----

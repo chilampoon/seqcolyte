@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import crypto from "node:crypto";
 import path from "node:path";
-import { DEFAULT_ASSAY, DEFAULT_SPEC_ID, STORE_ROOT } from "./config";
+import { NEW_ASSAY, NEW_SPEC_ID, STORE_ROOT } from "./config";
 import { assertSafeId, projectDir, runDir } from "./paths";
 import type { ProjectManifest, RunRecord } from "./types";
 
@@ -82,8 +82,8 @@ export async function createProject(input: { name: string }): Promise<ProjectMan
     schemaVersion: "studio.project.v1",
     id,
     name: input.name.trim() || id,
-    assay: DEFAULT_ASSAY,
-    specId: DEFAULT_SPEC_ID,
+    assay: NEW_ASSAY,
+    specId: NEW_SPEC_ID,
     createdAt: now,
     updatedAt: now,
     activeSpecPath: null,

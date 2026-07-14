@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getProject, listRuns, projectExists } from "@/lib/store";
+import { NEW_SPEC_ID } from "@/lib/config";
 import { inProject } from "@/lib/paths";
 import { Badge } from "@/components/ui/badge";
 import { Workspace } from "@/components/workspace";
@@ -47,9 +48,15 @@ export default async function ProjectPage({
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <Badge variant="secondary" className="font-mono text-xs">
-            {project.specId}
-          </Badge>
+          {project.specId === NEW_SPEC_ID ? (
+            <Badge variant="outline" className="text-muted-foreground text-xs">
+              new
+            </Badge>
+          ) : (
+            <Badge variant="secondary" className="font-mono text-xs">
+              {project.specId}
+            </Badge>
+          )}
           <ModeToggle />
         </div>
       </header>

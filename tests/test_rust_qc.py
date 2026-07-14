@@ -62,8 +62,8 @@ def test_rust_qc_matches_golden(variant, golden):
 def test_whitelist_and_labels_toggle_output(golden):
     """Sanity: omitting the whitelist drops a check; omitting labels drops the eval block."""
     _require(GOLDEN)
-    assert len(golden["full"]["findings"]) == 5
-    assert len(golden["no_whitelist"]["findings"]) == 4      # whitelist check omitted
+    assert len(golden["full"]["findings"]) == 6
+    assert len(golden["no_whitelist"]["findings"]) == 5      # whitelist check omitted
     assert golden["full"]["eval"] is not None
     assert golden["no_whitelist"]["eval"] is None            # no labels -> no eval
     assert golden["max_reads_5000"]["profile"]["n_pairs"] == 5000

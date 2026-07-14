@@ -40,10 +40,15 @@ const CHECK_KNOWLEDGE: Record<string, CheckKnowledge> = {
       },
     ],
   },
-  r2_adapter_readthrough: {
+  adapter_readthrough: {
     rootCause:
-      "Read 2 runs through the insert into the Illumina adapter stem (AGATCGGAAGAGC), meaning inserts are shorter than the read length — short fragments or residual adapter dimers.",
-    fix: "Adapter-trim R2 (cutadapt / fastp) before alignment to recover the usable portion. To fix the source, improve size selection so inserts exceed the read length.",
+      "The read runs through the insert into the library's 3′ adapter (the exact stem is in the finding detail), meaning inserts are shorter than the read length — short fragments or residual adapter dimers.",
+    fix: "Adapter-trim the reads (remove the 3′ adapter stem and everything after it) before alignment to recover the usable portion. To fix the source, improve size selection so inserts exceed the read length.",
+  },
+  anchor: {
+    rootCause:
+      "A large fraction of reads do not carry the expected constant anchor at its position — the rest are off-target products (mispriming, internal priming, or non-target molecules) rather than on-structure library reads.",
+    fix: "Filter to reads that carry the anchor at the expected offset (and re-extract UMIs relative to it) to keep only on-target molecules. Persistently low rates point to a prep issue (TSO/primer specificity) at the bench.",
   },
   r2_polyg_tail: {
     rootCause:
@@ -94,6 +99,14 @@ const CHECK_KNOWLEDGE: Record<string, CheckKnowledge> = {
   },
 };
 
+/** Resolve per-check knowledge, handling the spec-driven dynamic ids (r1/r2 adapter, anchor_*). */
+export function knowledgeFor(checkId: string): CheckKnowledge | undefined {
+  if (CHECK_KNOWLEDGE[checkId]) return CHECK_KNOWLEDGE[checkId];
+  if (checkId.endsWith("_adapter_readthrough")) return CHECK_KNOWLEDGE.adapter_readthrough;
+  if (checkId.startsWith("anchor_")) return CHECK_KNOWLEDGE.anchor;
+  return undefined;
+}
+
 /** A deterministic 0–100 quality score from the finding severities (fail full weight, warn 0.6×). */
 function scoreOf(findings: QcFinding[]): { score: number; band: "good" | "warn" | "critical" } {
   let keep = 1;
@@ -138,7 +151,7 @@ const fmtValue = (f: QcFinding): string =>
 /** A structured card for a failing/warning check: issue → root cause → suggested fix (with references). */
 function issueCard(f: QcFinding): string {
   const c = sevColor(f.verdict);
-  const k = CHECK_KNOWLEDGE[f.check_id];
+  const k = knowledgeFor(f.check_id);
   const detail = splitDetail(f.detail);
   const rootCause = k?.rootCause ?? detail.cause;
   const fix = k?.fix ?? detail.fix;
@@ -196,7 +209,7 @@ function otherRow(f: QcFinding): string {
 /** Render a QC report (qc_report.json) as a self-contained, theme-aware HTML document. */
 export function renderQcReportHtml(
   report: QcReport,
-  meta: { runId: string; projectName: string },
+  meta: { runId: string; projectName: string; afterFixes?: boolean },
 ): string {
   const profile = report.profile;
   const findings = report.findings ?? [];
@@ -210,7 +223,7 @@ export function renderQcReportHtml(
   const body = `
   <header class="topbar">
     <div>
-      <div class="up muted xsmall">QC report</div>
+      <div class="up muted xsmall">QC report${meta.afterFixes ? " · after fixes" : ""}</div>
       <h1>${esc(meta.projectName)}</h1>
       <div class="muted small">${esc(report.platform ?? "")} · spec <code>${esc(
         report.spec_id ?? "",

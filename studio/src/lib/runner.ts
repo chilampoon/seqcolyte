@@ -4,6 +4,9 @@ import { assets, DEFAULT_MODEL, PYTHON, REPO_ROOT } from "./config";
 import { inProject, runDir } from "./paths";
 import { allocateRun, getProject, getRun, updateRun } from "./store";
 import { killGroup, spawnLogged } from "./spawn";
+import { generateAllFixes } from "./remediate";
+import { appendConversation } from "./chat";
+import { knowledgeFor } from "./reportHtml";
 import type { QcReport, RunRecord, StepName, StepStatus } from "./types";
 
 async function fileExists(p: string): Promise<boolean> {
@@ -21,7 +24,11 @@ async function fileExists(p: string): Promise<boolean> {
  */
 export async function startQcRun(
   projectId: string,
-  opts: { useLlm?: boolean; fastqSource?: "control" | "sim" | "upload"; maxReads?: number | null } = {},
+  opts: {
+    useLlm?: boolean;
+    fastqSource?: "control" | "sim" | "upload" | "remediated";
+    maxReads?: number | null;
+  } = {},
 ): Promise<{ runId: string } | { error: string }> {
   let project;
   try {
@@ -30,8 +37,11 @@ export async function startQcRun(
     return { error: "project not found" };
   }
   const useLlm = opts.useLlm !== false;
-  const fastqSource: "control" | "sim" | "upload" =
-    opts.fastqSource === "control" ? "control" : opts.fastqSource === "upload" ? "upload" : "sim";
+  const fastqSource = (
+    ["control", "upload", "remediated"] as const
+  ).includes(opts.fastqSource as never)
+    ? (opts.fastqSource as "control" | "upload" | "remediated")
+    : "sim";
   const maxReads =
     typeof opts.maxReads === "number" && opts.maxReads > 0 ? Math.floor(opts.maxReads) : null;
 
@@ -41,29 +51,46 @@ export async function startQcRun(
       ? inProject(projectId, project.activeSpecPath)
       : assets.referenceSpec;
 
+  // Nanopore = a single long-read file (no R2, no whitelist); short-read = paired R1/R2.
+  const single = project.platform === "nanopore";
   let r1: string, r2: string;
   if (fastqSource === "upload") {
     const fq = project.inputs.fastq;
-    if (!fq || fq.source !== "upload" || !fq.r1 || !fq.r2) {
-      return { error: "upload both R1 and R2 FASTQ before running on your reads" };
+    if (!fq || fq.source !== "upload" || !fq.r1 || (!single && !fq.r2)) {
+      return {
+        error: single
+          ? "upload your reads FASTQ before running"
+          : "upload both R1 and R2 FASTQ before running on your reads",
+      };
     }
     r1 = inProject(projectId, fq.r1);
-    r2 = inProject(projectId, fq.r2);
+    r2 = single ? "" : inProject(projectId, fq.r2!);
+  } else if (fastqSource === "remediated") {
+    // Cleaned reads written by a remediation script.
+    r1 = inProject(projectId, single ? "remediated/reads.fastq.gz" : "remediated/R1.fastq.gz");
+    r2 = single ? "" : inProject(projectId, "remediated/R2.fastq.gz");
   } else {
     r1 = fastqSource === "control" ? assets.control.r1 : assets.sim.r1;
     r2 = fastqSource === "control" ? assets.control.r2 : assets.sim.r2;
   }
-  const whitelist = (await fileExists(assets.whitelist)) ? assets.whitelist : null;
-  // Ground-truth labels only exist for the simulated dataset (enables the eval panel).
+  const whitelist = !single && (await fileExists(assets.whitelist)) ? assets.whitelist : null;
+  // Ground-truth labels only exist for the simulated (short-read) dataset (enables the eval panel).
   const labels =
-    fastqSource === "sim" && (await fileExists(assets.sim.labels)) ? assets.sim.labels : null;
-  if (!(await fileExists(r1)) || !(await fileExists(r2))) {
+    !single && fastqSource === "sim" && (await fileExists(assets.sim.labels)) ? assets.sim.labels : null;
+  if (!(await fileExists(r1)) || (!single && !(await fileExists(r2)))) {
     return { error: `reads not found for source "${fastqSource}"` };
   }
 
   const run = await allocateRun(projectId, {
     pipeline: ["qc"],
-    options: { useLlm, maxReads, withLabels: !!labels, withWhitelist: !!whitelist, fastqSource },
+    options: {
+      useLlm,
+      maxReads,
+      withLabels: !!labels,
+      withWhitelist: !!whitelist,
+      fastqSource,
+      platform: project.platform,
+    },
     inputsSnapshot: { specPath: "", r1, r2, whitelist, labels },
     steps: { qc: { name: "qc", status: "queued", log: "logs/qc.log" } },
     overallStatus: "queued",
@@ -111,8 +138,26 @@ function release(): void {
 
 function buildArgs(step: StepName, run: RunRecord, dir: string): string[] {
   const snap = run.inputsSnapshot;
+  const jsonOut = path.join(dir, "qc_report.json");
   switch (step) {
     case "qc":
+      // Nanopore: the single-long-read QC engine (no --r2 / --whitelist / --max-reads).
+      if (run.options.platform === "nanopore") {
+        return [
+          "-m",
+          "qc.nanopore",
+          "--spec",
+          snap.specPath,
+          "--reads",
+          snap.r1,
+          "--json-out",
+          jsonOut,
+          "--model",
+          DEFAULT_MODEL,
+          ...(snap.labels ? ["--labels", snap.labels] : []),
+          ...(run.options.useLlm ? [] : ["--no-llm"]),
+        ];
+      }
       return [
         "-m",
         "qc",
@@ -124,7 +169,7 @@ function buildArgs(step: StepName, run: RunRecord, dir: string): string[] {
         "--r2",
         snap.r2,
         "--json-out",
-        path.join(dir, "qc_report.json"),
+        jsonOut,
         "--model",
         DEFAULT_MODEL,
         ...(snap.whitelist ? ["--whitelist", snap.whitelist] : []),
@@ -233,7 +278,51 @@ async function driveRun(projectId: string, runId: string): Promise<void> {
   }
 }
 
+/** A conversational diagnosis + suggested-fix summary from the report (posted after each QC run). */
+function buildDiagnosisMessage(report: QcReport): string {
+  const issues = (report.findings ?? []).filter((f) => f.verdict === "fail" || f.verdict === "warn");
+  const verdict = (report.overall ?? "").toUpperCase();
+  const lines: string[] = [`**QC complete — overall ${verdict || "done"}.**`];
+  const plan = report.plan;
+  if (plan?.diagnosis) lines.push(plan.diagnosis);
+  else if (plan?.root_cause) lines.push(`Likely root cause: ${plan.root_cause}.`);
+  if (issues.length) {
+    lines.push("", "**Issues & suggested fixes:**");
+    for (const f of issues.slice(0, 6)) {
+      const inlineFix = /Fix:/i.test(f.detail);
+      const fix = inlineFix ? null : knowledgeFor(f.check_id)?.fix ?? null;
+      lines.push(`- **${f.title}** — ${f.detail}${fix ? `\n  _Suggested fix:_ ${fix}` : ""}`);
+    }
+  } else {
+    lines.push("", "All checks passed — the reads are consistent with the expected structure.");
+  }
+  lines.push(
+    "",
+    "The full report (root cause + suggested fix per issue) is open in the viewer. Any " +
+      "computationally-fixable issue also appears in the **Computational fixes** panel below — tick " +
+      "them and Apply to clean the reads and re-score.",
+  );
+  return lines.join("\n");
+}
+
 async function finalize(projectId: string, runId: string, status: StepStatus): Promise<void> {
+  if (status === "succeeded") {
+    try {
+      const report = JSON.parse(
+        await fs.readFile(path.join(runDir(projectId, runId), "qc_report.json"), "utf8"),
+      ) as QcReport;
+      // Post the diagnosis + suggested fixes into the conversation (not only in the report). Awaited
+      // BEFORE the status flips so the client's post-run hydrate always sees it.
+      await appendConversation(projectId, [
+        { role: "assistant", text: buildDiagnosisMessage(report), ts: now() },
+      ]);
+      // Eager remediation (fire-and-forget): only for a first-pass run, not a re-QC on cleaned reads.
+      const cur = await getRun(projectId, runId);
+      if (cur.options.fastqSource !== "remediated") generateAllFixes(projectId, report);
+    } catch {
+      /* best effort — diagnosis/remediation are optional */
+    }
+  }
   await updateRun(projectId, runId, (r) => ({
     ...r,
     overallStatus: status,

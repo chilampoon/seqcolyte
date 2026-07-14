@@ -2,7 +2,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { NextResponse } from "next/server";
 import { runDir } from "@/lib/paths";
-import { getProject } from "@/lib/store";
+import { getProject, getRun } from "@/lib/store";
 import { renderQcReportHtml } from "@/lib/reportHtml";
 import type { QcReport } from "@/lib/types";
 
@@ -33,7 +33,13 @@ export async function GET(
   } catch {
     /* fall back to id */
   }
-  const html = renderQcReportHtml(report, { runId, projectName });
+  let afterFixes = false;
+  try {
+    afterFixes = (await getRun(id, runId)).options?.fastqSource === "remediated";
+  } catch {
+    /* not a remediated run */
+  }
+  const html = renderQcReportHtml(report, { runId, projectName, afterFixes });
   const download = url.searchParams.get("download") != null;
   return new Response(html, {
     headers: {

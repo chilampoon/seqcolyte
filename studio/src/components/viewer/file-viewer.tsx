@@ -15,7 +15,7 @@ import {
 
 /** A file opened in the middle viewer pane. */
 export type OpenFile = {
-  kind: "spec" | "pdf" | "markdown" | "table" | "json" | "html";
+  kind: "spec" | "pdf" | "markdown" | "table" | "json" | "html" | "code";
   /** project-relative path served by /api/projects/[id]/files/[...] (pdf/markdown/table/json) */
   path?: string;
   /** absolute URL to embed directly (html/pdf reports served by their own route) */
@@ -218,6 +218,11 @@ export function FileViewer({
         {state === "idle" && file.kind === "table" && rows != null && <TableView rows={rows} />}
         {state === "idle" && file.kind === "json" && text != null && (
           <pre className="bg-muted/40 overflow-x-auto rounded-md p-3 font-mono text-[11px] whitespace-pre-wrap break-all">
+            {text}
+          </pre>
+        )}
+        {state === "idle" && file.kind === "code" && text != null && (
+          <pre className="bg-muted/40 overflow-x-auto rounded-md p-3 font-mono text-[11px] whitespace-pre">
             {text}
           </pre>
         )}

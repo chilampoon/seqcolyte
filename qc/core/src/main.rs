@@ -14,12 +14,9 @@ mod whitelist;
 
 use anyhow::{bail, Context, Result};
 use clap::Parser;
-use memchr::memmem::Finder;
 
 use crate::cli::Args;
 use crate::model::{LenStats, Output, Profile};
-
-const ADAPTER_STEM: &[u8] = b"AGATCGGAAGAGC";
 
 fn main() -> Result<()> {
     let args = Args::parse();
@@ -30,12 +27,13 @@ fn main() -> Result<()> {
         serde_json::from_str(&spec_text).with_context(|| format!("parsing spec {}", args.spec))?;
     let spec = spec::parse_spec(&spec_json)?;
 
-    // Whitelist (optional) — load once, encoded to u64.
-    let wl = match &args.whitelist {
-        Some(p) => Some(
+    // Whitelist (optional) — load once, encoded to u64. Only meaningful when R1 actually has a
+    // cell_barcode segment; a barcode-less custom library skips it even if a whitelist is passed.
+    let wl = match (&args.whitelist, spec.has_cb) {
+        (Some(p), true) => Some(
             whitelist::load(p, spec.cb_len).with_context(|| format!("loading whitelist {}", p))?,
         ),
-        None => None,
+        _ => None,
     };
 
     // The Python eval calls spec.oligo_sequence(TSO), which raises if the TSO is absent.
@@ -48,7 +46,8 @@ fn main() -> Result<()> {
     let ctx = stream::Ctx {
         tso: spec.tso.as_deref().map(str::as_bytes),
         dark: spec.dark_base,
-        stem: Finder::new(ADAPTER_STEM),
+        adapters: &spec.adapters,
+        anchors: &spec.anchors,
         wl: wl.as_ref(),
         cb_start: spec.cb_start,
         cb_len: spec.cb_len,

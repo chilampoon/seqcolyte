@@ -15,11 +15,20 @@ import {
   Wrench,
 } from "lucide-react";
 import { toast } from "sonner";
-import type { StepStatus } from "@/lib/types";
+import type { ScriptRecord, StepStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { AnalysisTrace } from "@/components/trace/analysis-trace";
+import { RemediationPanel } from "@/components/chat/remediation-panel";
 
 const UPLOAD_ACCEPT = ".pdf,.txt,.md,.csv,.tsv,.xlsx,.xls,.fastq,.fq,.fastq.gz,.fq.gz,.gz";
+
+/** Concatenated text of a message's text parts (ignores tool parts). */
+function messageText(m: UIMessage): string {
+  return ((m.parts ?? []) as AnyPart[])
+    .filter((p) => p.type === "text")
+    .map((p) => p.text ?? "")
+    .join("");
+}
 
 const fmtMB = (bytes: number) => (bytes / 1e6).toFixed(1);
 const uploadPct = (u: { loaded: number; total: number }) =>
@@ -38,7 +47,10 @@ function xhrUpload(
   url: string,
   file: File,
   onProgress: (loaded: number, total: number) => void,
-): Promise<{ ok: boolean; data: { error?: string; filename?: string; extract?: boolean } }> {
+): Promise<{
+  ok: boolean;
+  data: { error?: string; filename?: string; extract?: boolean; runId?: string };
+}> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", url);
@@ -151,6 +163,11 @@ export function Chat({
   railOpen,
   onToggleRail,
   onExtractDone,
+  onInputsChanged,
+  hasSpec,
+  phase,
+  scripts,
+  onRunStarted,
   traceRunId,
   onRunDone,
 }: {
@@ -159,6 +176,16 @@ export function Chat({
   onToggleRail: () => void;
   /** Called after an uploaded protocol finishes extraction (opens the Spec viewer). */
   onExtractDone?: () => void;
+  /** Called after any upload changes the project inputs (so the Files panel refreshes). */
+  onInputsChanged?: () => void;
+  /** Whether the project already has an extracted spec (gates the auto-build). */
+  hasSpec?: boolean;
+  /** Current project phase (auto-build only fires while gathering inputs). */
+  phase?: string;
+  /** Remediation scripts on the project (drives the fix panel's Generate/Run state). */
+  scripts?: ScriptRecord[];
+  /** Fires when an upload auto-starts a QC run (so the workspace shows its trace). */
+  onRunStarted?: (runId: string) => void;
   /** When set, the QC run's workflow trace renders in the chat stream. */
   traceRunId?: string | null;
   /** Fires when the traced run reaches a terminal status (`live` = finished while watching). */
@@ -167,12 +194,16 @@ export function Chat({
   const [input, setInput] = useState("");
   const [uploading, setUploading] = useState(false);
   const [upload, setUpload] = useState<{ name: string; loaded: number; total: number } | null>(null);
+  const [dragActive, setDragActive] = useState(false);
+  const [doneRunId, setDoneRunId] = useState<string | null>(null);
+  const dragDepth = useRef(0);
   const [extract, setExtract] = useState<{ status: string; log: string; doc: string } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const esRef = useRef<EventSource | null>(null);
   const onExtractDoneRef = useRef(onExtractDone);
   onExtractDoneRef.current = onExtractDone;
+  const autoBuildUserCountRef = useRef(0);
 
   const { messages, sendMessage, status, setMessages } = useChat({
     id: `chat-${projectId}`,
@@ -197,9 +228,17 @@ export function Chat({
   }, [hydrate]);
 
   // A newly-started run appends an out-of-band "Spec confirmed" message — re-pull it.
+  // Also reset the "run finished" marker so the remediation panel hides during the new run.
   useEffect(() => {
+    setDoneRunId(null);
     if (traceRunId) void hydrate();
   }, [traceRunId, hydrate]);
+
+  // The phase advancing (confirm → awaiting_reads, an auto-started run, …) appends
+  // assistant messages server-side — re-pull the conversation so they show.
+  useEffect(() => {
+    void hydrate();
+  }, [phase, hydrate]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -209,6 +248,33 @@ export function Chat({
   useEffect(() => () => esRef.current?.close(), []);
 
   const busy = status === "submitted" || status === "streaming";
+
+  // Auto-build the spec from the chat description — no button. Fires once per NEW
+  // user message while the project has no spec yet and is still gathering inputs.
+  // The endpoint silently no-ops (400) until the description is substantive, so a
+  // short question won't trigger it; a real library description does.
+  useEffect(() => {
+    if (status !== "ready" || hasSpec || extract) return;
+    if (phase && phase !== "awaiting_inputs") return;
+    // Count only real typed descriptions — ignore "📎 Uploaded …" notices (those
+    // have their own extraction path) so an upload never double-triggers a build.
+    const userCount = messages.filter(
+      (m) => m.role === "user" && !messageText(m).startsWith("📎"),
+    ).length;
+    if (userCount === 0 || userCount === autoBuildUserCountRef.current) return;
+    autoBuildUserCountRef.current = userCount;
+    void (async () => {
+      try {
+        const res = await fetch(`/api/projects/${projectId}/generate-spec`, { method: "POST" });
+        if (!res.ok) return; // description not substantive yet — retry on the next message
+        const d = (await res.json().catch(() => ({}))) as { ok?: boolean };
+        if (d.ok) streamExtract("your library description");
+      } catch {
+        /* ignore — user can upload a protocol file instead */
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, hasSpec, extract, phase, messages, projectId]);
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -242,10 +308,7 @@ export function Chat({
     };
   }
 
-  async function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    e.target.value = "";
-    if (!file) return;
+  async function uploadFile(file: File) {
     setUploading(true);
     setUpload({ name: file.name, loaded: 0, total: file.size });
     try {
@@ -259,6 +322,8 @@ export function Chat({
         return;
       }
       await hydrate();
+      onInputsChanged?.(); // refresh the Files panel (new reads/doc/table appear immediately)
+      if (data.runId) onRunStarted?.(data.runId); // an upload auto-started QC → show its trace
       if (data.extract) streamExtract(data.filename ?? file.name);
     } catch {
       toast.error("Upload failed");
@@ -268,8 +333,65 @@ export function Chat({
     }
   }
 
+  /** Upload one or more files sequentially (keeps R1/R2 slotting deterministic). */
+  async function uploadFiles(files: File[]) {
+    for (const f of files) await uploadFile(f);
+  }
+
+  async function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    e.target.value = "";
+    if (files.length) await uploadFiles(files);
+  }
+
+  // --- drag-and-drop upload onto the whole chat surface ---
+  function hasFiles(e: React.DragEvent): boolean {
+    return Array.from(e.dataTransfer?.types ?? []).includes("Files");
+  }
+  function onDragEnter(e: React.DragEvent) {
+    if (!hasFiles(e)) return;
+    e.preventDefault();
+    dragDepth.current += 1;
+    setDragActive(true);
+  }
+  function onDragOver(e: React.DragEvent) {
+    if (hasFiles(e)) e.preventDefault(); // required for the drop event to fire
+  }
+  function onDragLeave(e: React.DragEvent) {
+    if (!hasFiles(e)) return;
+    dragDepth.current -= 1;
+    if (dragDepth.current <= 0) {
+      dragDepth.current = 0;
+      setDragActive(false);
+    }
+  }
+  async function onDrop(e: React.DragEvent) {
+    if (!hasFiles(e)) return;
+    e.preventDefault();
+    dragDepth.current = 0;
+    setDragActive(false);
+    if (uploading) return;
+    const files = Array.from(e.dataTransfer.files ?? []);
+    if (files.length) await uploadFiles(files);
+  }
+
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-hidden">
+    <div
+      className="relative flex h-full min-h-0 flex-col overflow-hidden"
+      onDragEnter={onDragEnter}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+    >
+      {dragActive && (
+        <div className="border-primary/50 bg-background/80 pointer-events-none absolute inset-2 z-20 flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed backdrop-blur-sm">
+          <Paperclip className="text-primary size-6" />
+          <div className="text-sm font-medium">Drop to upload</div>
+          <div className="text-muted-foreground text-xs">
+            protocol (PDF / txt / md), FASTQ reads, or design tables
+          </div>
+        </div>
+      )}
       <header className="border-border/60 flex shrink-0 items-center gap-2 border-b px-3 py-2.5">
         <button
           onClick={onToggleRail}
@@ -319,7 +441,20 @@ export function Chat({
               key={traceRunId}
               projectId={projectId}
               runId={traceRunId}
-              onRunDone={onRunDone}
+              onRunDone={(status, live) => {
+                if (status === "succeeded") setDoneRunId(traceRunId);
+                onRunDone?.(status, live);
+              }}
+            />
+          )}
+          {doneRunId && (
+            <RemediationPanel
+              key={`rem-${doneRunId}`}
+              projectId={projectId}
+              runId={doneRunId}
+              scripts={scripts ?? []}
+              onRunStarted={(rid) => onRunStarted?.(rid)}
+              onChanged={() => onInputsChanged?.()}
             />
           )}
         </div>
@@ -349,6 +484,7 @@ export function Chat({
           <input
             ref={fileRef}
             type="file"
+            multiple
             accept={UPLOAD_ACCEPT}
             className="hidden"
             onChange={onPickFile}

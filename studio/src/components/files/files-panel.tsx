@@ -1,8 +1,10 @@
 "use client";
 
 import {
+  Dna,
   Download,
   Eye,
+  FileCode,
   FileJson,
   FileSpreadsheet,
   FileText,
@@ -93,6 +95,19 @@ export function FilesPanel({
       downloadHref: `${fileHref(t)}?download`,
     });
   }
+  const fq = project.inputs.fastq;
+  if (fq?.source === "upload") {
+    for (const mate of ["r1", "r2"] as const) {
+      const rel = fq[mate];
+      if (!rel) continue;
+      rows.push({
+        icon: Dna,
+        label: `Reads (${mate.toUpperCase()})`,
+        sub: rel.split("/").pop(),
+        downloadHref: `${fileHref(rel)}?download`,
+      });
+    }
+  }
   if (project.inputs.notesPath && hasNotes) {
     const rel = project.inputs.notesPath;
     rows.push({
@@ -112,16 +127,27 @@ export function FilesPanel({
       downloadHref: `${fileHref(project.activeSpecPath)}?download`,
     });
   }
+  for (const s of project.scripts ?? []) {
+    rows.push({
+      icon: FileCode,
+      label: s.label,
+      sub: `${s.path.split("/").pop()}${s.status === "ran" ? " · applied" : s.status === "failed" ? " · failed" : ""}`,
+      open: { kind: "code", path: s.path, title: s.path.split("/").pop() ?? "script" },
+      downloadHref: `${fileHref(s.path)}?download`,
+    });
+  }
   for (const run of runs) {
     if (run.steps.qc?.status === "succeeded" || run.overall != null) {
+      const afterFixes = run.options?.fastqSource === "remediated";
+      const label = afterFixes ? "QC report (after fixes)" : "QC report";
       rows.push({
         icon: FileJson,
-        label: "QC report",
+        label,
         sub: `${run.id}${run.overall ? ` · ${run.overall.toUpperCase()}` : ""}`,
         open: {
           kind: "html",
           url: `/api/projects/${project.id}/runs/${run.id}/report?format=html`,
-          title: `QC report · ${run.id}`,
+          title: `${label} · ${run.id}`,
         },
         downloadHref: `/api/projects/${project.id}/runs/${run.id}/report?format=html&download`,
       });

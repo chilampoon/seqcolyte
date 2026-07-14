@@ -11,6 +11,8 @@ const CONTENT_TYPES: Record<string, string> = {
   ".md": "text/markdown; charset=utf-8",
   ".txt": "text/plain; charset=utf-8",
   ".log": "text/plain; charset=utf-8",
+  ".py": "text/plain; charset=utf-8",
+  ".sh": "text/plain; charset=utf-8",
   ".csv": "text/csv; charset=utf-8",
   ".tsv": "text/tab-separated-values; charset=utf-8",
   ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

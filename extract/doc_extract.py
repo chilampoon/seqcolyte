@@ -372,12 +372,30 @@ def extract_document(pdf_path: str | Path, protocol_name: str, *, model: str = D
     return result
 
 
+# Pushed into the generic prompt when extracting a single, possibly incomplete/novel protocol from the
+# studio: infer the read LAYOUT as fully as possible without fabricating exact sequences.
+_INFER_ADDENDUM = """INFERENCE (this may be an incomplete, custom, or NOVEL protocol — not a catalog technology):
+- Build the MOST COMPLETE read_structure you can from whatever is stated. For EACH sequencing read \
+(R1/R2/I1/…), list its segments in 5'->3' order with a `name`, a `type` \
+(barcode/umi/index/insert/cdna/constant/spacer/polyA) and a best-effort integer `length`: use the stated \
+length; if only a run of Ns is shown (e.g. NNNNNNNN) use its exact count; include any fixed constant \
+anchor/linker as a `constant` segment with its literal sequence in the name. State clearly which mate \
+carries the UMI/barcode vs the cDNA insert, and record any 3' read-through adapter.
+- INFER structure, NEVER sequences: do not invent exact adapter/primer/barcode NUCLEOTIDE strings that \
+are not in the source. Omit an oligo's `sequence` (leave null) rather than guessing it."""
+
+
 def extract_documents(paths, protocol_name: str, *, model: str = DEFAULT_MODEL,
-                      char_budget: int = 1_800_000) -> dict:
+                      char_budget: int = 1_800_000, extra_instructions: str = "") -> dict:
     """Extract one spec from MANY concatenated documents (paper + protocol + supplements) via Claude,
     using the technology-agnostic prompt. Returns the extraction plus a per-doc text budget log."""
     combined, text_log = extract_texts(paths, char_budget=char_budget)
     prompt = _PROMPT_GENERIC.replace("{protocol_name}", protocol_name).replace("{doc_text}", combined)
+    if extra_instructions:
+        prompt = prompt.replace(
+            "Output ONLY the structured JSON.",
+            f"{extra_instructions}\n\nOutput ONLY the structured JSON.",
+        )
     result = _run_claude(prompt, EXTRACTION_SCHEMA, model=model)
     result["source_chars"] = len(combined)
     result["text_log"] = text_log

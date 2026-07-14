@@ -86,13 +86,19 @@ export function Workspace({
     setConfirming(true);
     try {
       const res = await fetch(`/api/projects/${project.id}/confirm-spec`, { method: "POST" });
-      const data = (await res.json().catch(() => ({}))) as { runId?: string; error?: string };
-      if (!res.ok || !data.runId) {
-        toast.error(data.error ?? "Could not start analysis");
+      const data = (await res.json().catch(() => ({}))) as {
+        runId?: string;
+        needReads?: boolean;
+        error?: string;
+      };
+      if (!res.ok) {
+        toast.error(data.error ?? "Could not confirm the spec");
         return;
       }
-      setTraceRunId(data.runId);
-      router.refresh(); // phase → analyzing (hides the Confirm button, updates gating)
+      // With reads → QC started (show its trace). Without reads → awaiting_reads
+      // (the assistant asks the user to upload FASTQ; QC auto-starts on upload).
+      if (data.runId) setTraceRunId(data.runId);
+      router.refresh(); // updates phase → hides Confirm button, refreshes gating + chat
     } finally {
       setConfirming(false);
     }
@@ -151,11 +157,12 @@ export function Workspace({
     ) : null;
 
   return (
-    <ResizablePanelGroup
-      direction="horizontal"
-      autoSaveId="project-workspace"
-      className={cn("min-h-0", className)}
-    >
+    <div className={cn("flex min-h-0 flex-col", className)}>
+      <ResizablePanelGroup
+        direction="horizontal"
+        autoSaveId="project-workspace"
+        className="min-h-0 flex-1"
+      >
       <ResizablePanel
         id="rail"
         order={1}
@@ -210,10 +217,19 @@ export function Workspace({
           railOpen={railOpen}
           onToggleRail={toggleRail}
           onExtractDone={onExtractDone}
+          onInputsChanged={() => router.refresh()}
+          hasSpec={!!project.activeSpecPath}
+          phase={project.phase ?? "awaiting_inputs"}
+          scripts={project.scripts ?? []}
+          onRunStarted={(rid) => {
+            setTraceRunId(rid);
+            router.refresh();
+          }}
           traceRunId={traceRunId}
           onRunDone={onRunDone}
         />
       </ResizablePanel>
-    </ResizablePanelGroup>
+      </ResizablePanelGroup>
+    </div>
   );
 }

@@ -188,6 +188,7 @@ export function buildGatingPreamble(project: ProjectManifest): string {
       hasOligoInfo ? (hasSpec ? "extracted into the spec" : "present in inputs") : "MISSING"
     }`,
     `- Reads: ${hasReads ? reads : "not chosen (a labeled demo dataset is available)"}`,
+    "CAPABILITY: You are a READ-ONLY assistant. The spec is BUILT AUTOMATICALLY once the user describes the library in chat or uploads a protocol (you do NOT build it; there is no button for it). You CANNOT run QC or confirm a spec yourself — the user reviews the spec in the viewer and clicks Confirm spec, after which QC runs automatically on their reads. NEVER claim you have built, run, or 'confirmed'/'locked' anything, and never invent numbers. Point the user to review + Confirm the spec, or to upload their reads, when relevant.",
   ];
 
   switch (phase) {
@@ -196,8 +197,8 @@ export function buildGatingPreamble(project: ProjectManifest): string {
         missing.length
           ? `GATE: Inputs are incomplete. Ask the user specifically for the MISSING item(s): ${missing.join(
               "; ",
-            )}. They can attach files with the 📎 button or describe the assay in chat. Do NOT start any analysis yet.`
-          : "GATE: Inputs look complete — offer to extract the spec / proceed.",
+            )}. They can attach files with the 📎 button, or just describe the library structure directly in chat (read layout, UMI/barcode positions + lengths, adapters). Once a real description or protocol is provided, the spec is BUILT AUTOMATICALLY and opens in the viewer for review. Do NOT claim to have built or run anything yourself.`
+          : "GATE: Inputs look complete — the spec builds automatically from what's provided and opens in the viewer. Tell the user to review it and click Confirm spec.",
       );
       break;
     case "extracting":
@@ -208,6 +209,13 @@ export function buildGatingPreamble(project: ProjectManifest): string {
     case "awaiting_spec_review":
       lines.push(
         'GATE: A spec was extracted and is shown in the middle viewer. If the user asks to run QC / analysis, first ask them to review the spec and click "Confirm spec" — do NOT start analysis until the spec is confirmed.',
+      );
+      break;
+    case "awaiting_reads":
+      lines.push(
+        project.platform === "nanopore"
+          ? "GATE: The spec is confirmed. The pipeline needs the user's reads — ask them to upload their single long-read FASTQ (.fastq.gz) with the 📎 button or by dragging it in. QC starts AUTOMATICALLY once it's uploaded; you cannot start it yourself."
+          : "GATE: The spec is confirmed. The pipeline now needs the user's sequencing reads — ask them to upload R1 + R2 FASTQ (.fastq.gz) with the 📎 button or by dragging them in. QC starts AUTOMATICALLY once both mates are uploaded; you cannot start it yourself.",
       );
       break;
     case "spec_confirmed":
