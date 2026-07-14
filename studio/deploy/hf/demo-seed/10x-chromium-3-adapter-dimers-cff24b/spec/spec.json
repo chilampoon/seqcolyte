@@ -542,7 +542,15 @@
       }
     ],
     "annotation_lines": [
-      "Illumina P5 | TruSeq Read 1 | cell barcode | UMI | poly(dT)VN | cDNA | TruSeq Read 2 | sample index (i7) | Illumina P7"
+      "AATGATACGGCGACCACCGAGATCTACAC = Illumina P5",
+      "TCTTTCCCTACACGACGCTCTTCCGATCT = TruSeq Read 1",
+      "[CELL_BARCODE:16] = cell barcode",
+      "[UMI:12] = UMI",
+      "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN = poly(dT)VN",
+      "[CDNA] = cDNA",
+      "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC = TruSeq Read 2",
+      "[SAMPLE_INDEX:8] = sample index (i7)",
+      "ATCTCGTATGCCGTCTTCTGCTTG = Illumina P7"
     ],
     "evidence": [
       {
@@ -680,49 +688,57 @@
       "step": 1,
       "title": "mRNA capture using Beads-oligo-dT in the droplets, and reverse transcription using MMLV",
       "note": null,
-      "summary": "Poly(dT) beads capture mRNA in droplets; MMLV reverse-transcribes it into barcoded cDNA."
+      "summary": "Poly(dT) beads capture mRNA in droplets; MMLV reverse-transcribes it into barcoded cDNA.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA] -3'\n                                               3'- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[mRNA] -5'"
     },
     {
       "step": 2,
       "title": "The terminal tranferase acitivity of MMLV adds extra Cs",
       "note": null,
-      "summary": "MMLV's terminal-transferase activity adds a few untemplated C's to the cDNA 3' end."
+      "summary": "MMLV's terminal-transferase activity adds a few untemplated C's to the cDNA 3' end.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCC -3'\n                                               3'- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[mRNA] -5'"
     },
     {
       "step": 3,
       "title": "Adding TSO for second strand synthesis",
       "note": null,
-      "summary": "The TSO base-pairs with the C overhang to prime second-strand synthesis."
+      "summary": "The TSO base-pairs with the C overhang to prime second-strand synthesis.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCC------->\n                                                                                         GGGTACATGAGACGCAACTATGGTGACGAA -5'"
     },
     {
       "step": 4,
       "title": "Adding cDNA Forward and Reverse primers to amplify full length cDNA",
       "note": null,
-      "summary": "cDNA Forward/Reverse primers PCR-amplify the full-length cDNA."
+      "summary": "cDNA Forward/Reverse primers PCR-amplify the full-length cDNA.",
+      "product": "5'- CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]CCCATGTACTCTGCGTTGATACCACTGCTT -3'\n3'- GATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]GGGTACATGAGACGCAACTATGGTGACGAA -5'"
     },
     {
       "step": 5,
       "title": "Use Fragmentase to fragment cDNA and perform A-tailing",
       "note": null,
-      "summary": "Fragmentase shears the cDNA and A-tails the fragment ends."
+      "summary": "Fragmentase shears the cDNA and A-tails the fragment ends.",
+      "product": "5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]A -3'\n3'- AGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]  -5'"
     },
     {
       "step": 6,
       "title": "Add double stranded Illumina Truseq adapter (with a T overhang) for ligation",
       "note": null,
-      "summary": "A T-overhang TruSeq adapter is ligated onto the A-tailed fragments."
+      "summary": "A T-overhang TruSeq adapter is ligated onto the A-tailed fragments.",
+      "product": "5'-  CTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -3'\n3'- AGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG -5'"
     },
     {
       "step": 7,
       "title": "Add Library PCR Primers 1 & 2 to amplify library",
       "note": null,
-      "summary": "Library PCR primers 1 & 2 add P5/P7 and the i7 sample index."
+      "summary": "Library PCR primers 1 & 2 add P5/P7 and the i7 sample index.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'"
     },
     {
       "step": 8,
       "title": "Final library structure",
       "note": null,
-      "summary": "The final P5/P7-indexed Illumina paired-end library."
+      "summary": "The final P5/P7-indexed Illumina paired-end library.",
+      "product": "5'- AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT[CELL_BARCODE:16][UMI:12]TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN[CDNA]AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[SAMPLE_INDEX:8]ATCTCGTATGCCGTCTTCTGCTTG -3'\n3'- TTACTATGCCGCTGGTGGCTCTAGATGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA[CELL_BARCODE:16][UMI:12]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN[CDNA]TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG[SAMPLE_INDEX:8]TAGAGCATACGGCAGAAGACGAAC -5'"
     }
   ],
   "whitelists": {

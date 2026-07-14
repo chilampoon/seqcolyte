@@ -1,7 +1,7 @@
 //! Loose spec accessors over `serde_json::Value` — no schema re-validation (the Python side
 //! already loaded/validated the spec). Mirrors the handful of `seqcolyte.spec.model.Spec`
-//! accessors the checks/eval need: R1 `cycles`, the cell-barcode segment slice, the TSO oligo,
-//! and `platform_params.dark_base`.
+//! accessors the checks/eval need: the cell-barcode segment slice, the TSO oligo, and
+//! `platform_params.dark_base`.
 
 use anyhow::{anyhow, Result};
 use serde_json::Value;
@@ -17,7 +17,6 @@ pub struct Anchor {
 }
 
 pub struct SpecInfo {
-    pub r1_cycles: i64,
     /// Whether R1 has a fixed-length cell_barcode segment (barcode-less custom libraries omit it).
     pub has_cb: bool,
     pub cb_start: usize,
@@ -171,9 +170,6 @@ pub fn parse_spec(v: &Value) -> Result<SpecInfo> {
         .find(|rd| rd.get("read").and_then(|x| x.as_str()) == Some("R1"))
         .ok_or_else(|| anyhow!("spec has no R1 read"))?;
 
-    // `spec.read("R1").get("cycles", 28)`
-    let r1_cycles = r1.get("cycles").and_then(|c| c.as_i64()).unwrap_or(28);
-
     // `spec.segment_slice("R1", "cell_barcode")` via segment_offsets. Optional: a custom,
     // barcode-less library (e.g. plate/index-demuxed 5' RNA-seq) simply has no cell_barcode —
     // the whitelist check then skips instead of the run failing.
@@ -204,7 +200,6 @@ pub fn parse_spec(v: &Value) -> Result<SpecInfo> {
     let (anchors, expected_r1_len) = anchors_and_r1_len(v);
 
     Ok(SpecInfo {
-        r1_cycles,
         has_cb: cb.is_some(),
         cb_start,
         cb_len,

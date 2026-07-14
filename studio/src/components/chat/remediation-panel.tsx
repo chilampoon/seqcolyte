@@ -132,13 +132,34 @@ export function RemediationPanel({
   };
 
   const chip = (st: FixStatus) =>
-    st === "generated" || st === "ran"
-      ? { text: "ready", cls: "text-emerald-600 dark:text-emerald-400" }
-      : st === "failed"
-        ? { text: "failed", cls: "text-destructive" }
-        : { text: "generating…", cls: "text-muted-foreground" };
+    st === "ran"
+      ? { text: "applied", cls: "text-emerald-600 dark:text-emerald-400" }
+      : st === "generated"
+        ? { text: "ready", cls: "text-emerald-600 dark:text-emerald-400" }
+        : st === "failed"
+          ? { text: "failed", cls: "text-destructive" }
+          : { text: "generating…", cls: "text-muted-foreground" };
 
   const nSel = [...selected].filter((id) => statusOf(id) === "generated").length;
+
+  // Every solvable finding here has already been fixed and re-scored (e.g. re-opening a completed
+  // run whose panel attaches to the after-fixes re-QC). Show that, not a picker of locked checkboxes.
+  if (fixes.every((f) => statusOf(f.check_id) === "ran")) {
+    return (
+      <div className="flex justify-start">
+        <div className="bg-muted/50 max-w-[85%] space-y-1.5 rounded-lg px-3 py-2 text-sm">
+          <div className="flex items-center gap-1.5 font-medium">
+            <Wrench className="size-3.5" /> Computational fixes
+          </div>
+          <div className="text-muted-foreground text-xs">
+            ✓ The suggested fixes were applied — the reads were cleaned and re-scored. Open{" "}
+            <span className="font-medium">“QC report (after fixes)”</span> in the Files panel to
+            compare against the original.
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-start">
