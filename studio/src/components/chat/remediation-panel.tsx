@@ -5,12 +5,13 @@ import { Loader2, Play, Wrench } from "lucide-react";
 import { toast } from "sonner";
 import type { QcFinding, ProjectManifest, ScriptRecord } from "@/lib/types";
 
-/** Which failing checks a generated script can fix (mirrors remediate.ts isSolvable). */
+/** Which failing checks a generated script can fix (MUST mirror remediate.ts isSolvable). */
 const isSolvable = (id: string) =>
   id.endsWith("_adapter_readthrough") ||
   id.startsWith("anchor_") ||
   id === "tso_at_r2_start" ||
-  id === "r2_polyg_tail";
+  id === "r2_polyg_tail" ||
+  id === "tso_concatemer";
 
 type FixStatus = ScriptRecord["status"];
 
@@ -39,6 +40,7 @@ export function RemediationPanel({
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [applying, setApplying] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const lastStatusKey = useRef("");
 
   // Solvable findings from this run's report (fixed once).
   useEffect(() => {
@@ -70,7 +72,13 @@ export function RemediationPanel({
           await fetch(`/api/projects/${projectId}`, { cache: "no-store" })
         ).json()) as ProjectManifest;
         const map = Object.fromEntries((p.scripts ?? []).map((s) => [s.checkId, s.status]));
+        const key = JSON.stringify(map);
         setStatuses(map);
+        // A status change (…→generated) means a script file now exists — refresh the Files panel.
+        if (key !== lastStatusKey.current) {
+          lastStatusKey.current = key;
+          onChanged();
+        }
         const allResolved = fixes.every((f) => {
           const st = map[f.check_id];
           return st === "generated" || st === "ran" || st === "failed";

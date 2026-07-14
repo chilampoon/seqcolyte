@@ -95,7 +95,7 @@ function claudeText(prompt: string): Promise<string | null> {
         /* gone */
       }
       resolve(null);
-    }, 180_000);
+    }, 300_000);
     child.on("error", () => {
       clearTimeout(timer);
       resolve(null);

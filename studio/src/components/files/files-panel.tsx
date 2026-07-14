@@ -128,12 +128,22 @@ export function FilesPanel({
     });
   }
   for (const s of project.scripts ?? []) {
+    // The file only exists once generation finishes — don't offer to open/download it before then.
+    const ready = s.status === "generated" || s.status === "ran";
+    const note =
+      s.status === "generating"
+        ? " · generating…"
+        : s.status === "failed"
+          ? " · generation failed"
+          : s.status === "ran"
+            ? " · applied"
+            : "";
     rows.push({
       icon: FileCode,
       label: s.label,
-      sub: `${s.path.split("/").pop()}${s.status === "ran" ? " · applied" : s.status === "failed" ? " · failed" : ""}`,
-      open: { kind: "code", path: s.path, title: s.path.split("/").pop() ?? "script" },
-      downloadHref: `${fileHref(s.path)}?download`,
+      sub: `${s.path.split("/").pop()}${note}`,
+      open: ready ? { kind: "code", path: s.path, title: s.path.split("/").pop() ?? "script" } : undefined,
+      downloadHref: ready ? `${fileHref(s.path)}?download` : undefined,
     });
   }
   for (const run of runs) {
