@@ -32,9 +32,9 @@ export function NewProjectButton() {
   }
 
   return (
-    <Button size="sm" onClick={create} disabled={busy}>
+    <Button size="sm" onClick={create} disabled={busy} aria-label="New project">
       {busy ? <Loader2 className="size-4 animate-spin" /> : <Plus className="size-4" />}
-      New project
+      <span className="hidden sm:inline">New project</span>
     </Button>
   );
 }

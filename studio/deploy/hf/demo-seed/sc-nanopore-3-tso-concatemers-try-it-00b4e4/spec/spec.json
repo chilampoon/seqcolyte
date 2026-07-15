@@ -681,31 +681,37 @@
     "doi": null
   },
   "publication": {
-    "year": 2023,
+    "year": 2020,
     "original_publication": {
-      "title": "Single-cell multi-omics defines the cell-type-specific impact of splicing aberrations in human hematopoietic clonal outgrowths",
-      "journal": "Cell Stem Cell",
-      "doi": "10.1016/j.stem.2023.07.012",
-      "url": "https://www.cell.com/cell-stem-cell/fulltext/S1934-5909(23)00257-6"
+      "title": "High throughput error corrected Nanopore single cell transcriptome sequencing",
+      "journal": "Nature Communications",
+      "doi": "10.1038/s41467-020-17800-6",
+      "url": "https://www.nature.com/articles/s41467-020-17800-6"
     },
     "authors": [
       {
-        "name": "Mariela Cortes-Lopez",
+        "name": "Kevin Lebrigand",
         "corresponding": false,
         "email": null,
-        "affiliation": "New York Genome Center"
+        "affiliation": null
       },
       {
-        "name": "Federico Gaiti",
-        "corresponding": true,
-        "email": "federico.gaiti@uhn.ca",
-        "affiliation": "University Health Network / New York Genome Center"
+        "name": "Virginie Magnone",
+        "corresponding": false,
+        "email": null,
+        "affiliation": null
       },
       {
-        "name": "Dan A. Landau",
-        "corresponding": true,
-        "email": "dlandau@nygenome.org",
-        "affiliation": "New York Genome Center / Weill Cornell Medicine"
+        "name": "Pascal Barbry",
+        "corresponding": false,
+        "email": null,
+        "affiliation": null
+      },
+      {
+        "name": "Rainer Waldmann",
+        "corresponding": false,
+        "email": null,
+        "affiliation": null
       }
     ],
     "throughput": {
@@ -714,12 +720,7 @@
       "rna": null,
       "dna": null
     },
-    "statistical_model": "Linear mixed models with sample-aware permutation testing for differential splicing; Wilcoxon rank-sum, likelihood-ratio, and Fisher's exact tests.",
-    "other": [
-      {
-        "label": "Full-length read yield (paper, enriched protocol)",
-        "value": "50.4%+/-2.7 -> 77.6%+/-2.0 with biotin enrichment; the baseline direct-ligation model does not reproduce this."
-      }
-    ]
+    "statistical_model": null,
+    "other": []
   }
 }

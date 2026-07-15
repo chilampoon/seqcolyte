@@ -5,6 +5,7 @@ import { listProjects } from "@/lib/store";
 import { PreflightPanel } from "@/components/preflight-panel";
 import { NewProjectButton } from "@/components/new-project-button";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Stethoscope, Layers } from "lucide-react";
 import {
   Card,
   CardDescription,
@@ -87,8 +88,8 @@ export default async function Home() {
   return (
     <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <header className="border-border/60 shrink-0 border-b">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-4">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-6 sm:py-4">
+          <div className="flex min-w-0 items-center gap-3">
             <div className="ring-border/60 relative size-9 shrink-0 overflow-hidden rounded-lg ring-1">
               <Image
                 src="/seqcolyte-logo.png"
@@ -99,25 +100,31 @@ export default async function Home() {
                 priority
               />
             </div>
-            <div>
-              <h1 className="text-lg font-semibold tracking-tight">Seqcolyte Studio</h1>
-              <p className="text-muted-foreground text-sm">
+            <div className="min-w-0">
+              <h1 className="truncate text-base font-semibold tracking-tight sm:text-lg">
+                Seqcolyte Studio
+              </h1>
+              <p className="text-muted-foreground hidden truncate text-sm sm:block">
                 Root cause analysis for genomic sequencing runs.
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <Link
               href="/diagnostics"
-              className="border-border/70 bg-secondary/60 text-foreground hover:bg-secondary hover:border-border rounded-md border px-3 py-1.5 text-sm font-medium transition-colors"
+              aria-label="Diagnostics"
+              className="border-border/70 bg-secondary/60 text-foreground hover:bg-secondary hover:border-border inline-flex items-center justify-center rounded-md border px-2.5 py-1.5 text-sm font-medium transition-colors"
             >
-              Diagnostics
+              <Stethoscope className="size-4 sm:hidden" />
+              <span className="hidden sm:inline">Diagnostics</span>
             </Link>
             <Link
               href="/technologies"
-              className="border-border/70 bg-secondary/60 text-foreground hover:bg-secondary hover:border-border rounded-md border px-3 py-1.5 text-sm font-medium transition-colors"
+              aria-label="Technologies"
+              className="border-border/70 bg-secondary/60 text-foreground hover:bg-secondary hover:border-border inline-flex items-center justify-center rounded-md border px-2.5 py-1.5 text-sm font-medium transition-colors"
             >
-              Technologies
+              <Layers className="size-4 sm:hidden" />
+              <span className="hidden sm:inline">Technologies</span>
             </Link>
             <ModeToggle />
             <NewProjectButton />
@@ -126,7 +133,7 @@ export default async function Home() {
       </header>
 
       <div className="min-h-0 flex-1 overflow-y-auto">
-        <div className="mx-auto grid w-full max-w-6xl gap-6 px-6 py-8 lg:grid-cols-[1fr_20rem]">
+        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-6 sm:px-6 sm:py-8 lg:grid-cols-[1fr_20rem]">
           <div className="space-y-8">
             <section>
               <h2 className="text-foreground mb-3 text-sm font-semibold tracking-wide uppercase">
@@ -134,7 +141,7 @@ export default async function Home() {
               </h2>
               {rest.length === 0 ? (
                 <Card className="border-dashed">
-                  <CardHeader className="items-center py-14 text-center">
+                  <CardHeader className="items-center justify-items-center py-14 text-center">
                     <CardTitle className="text-base">No projects yet</CardTitle>
                     <CardDescription className="max-w-sm">
                       Create a project to load a protocol, run the QC pipeline on your reads, and ask
